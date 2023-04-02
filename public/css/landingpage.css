@@ -1,0 +1,230 @@
+        /* General styles */
+body {
+    font-family: Arial, sans-serif;
+    height: 550px;
+  }
+
+  .lead {
+    font-size: 1.5rem;
+    font-weight: bolder;
+    line-height: 1.5;
+  }
+
+  /* Jumbotron styles */
+  .jumbotron {
+    /* background-image: url('assets/img/Background.png');    */
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-align: center;
+  }
+  
+  .jumbotron h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+  
+  .jumbotron p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Features section styles */
+  .features {
+    background-color: #f8f9fa;
+    padding: 5rem 0;
+  }
+  
+  .features h2 {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  
+  .features .feature {
+    margin-bottom: 3rem;
+  }
+  
+  .features .feature h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .features .feature p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+  }
+  
+  /* Testimonials section styles */
+  .testimonials {
+    background-color: #e9ecef;
+    padding: 5rem 0;
+  }
+  
+  .testimonials h2 {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  
+  .testimonials .card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .testimonials .card-body {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .testimonials .card-text {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .testimonials .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Footer styles */
+  footer {
+    color: white;
+    font-size: 1.2rem;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Media queries for responsiveness */
+  @media screen and (max-width: 992px) {
+    .jumbotron {
+      height: 400px;
+    }
+    
+    .jumbotron h1 {
+      font-size: 3rem;
+    }
+    
+    .jumbotron p {
+      font-size: 1.2rem;
+    }
+    
+    .features h2 {
+      font-size: 2rem;
+    }
+    
+    .features .feature h3 {
+      font-size: 1.5rem;
+    }
+    
+    .features .feature p {
+      font-size: 1rem;
+    }
+    
+    .testimonials h2 {
+      font-size: 2rem;
+    }
+    
+    .testimonials .card-text {
+      font-size: 1rem;
+    }
+    
+    .testimonials .card-title {
+      font-size: 1.2rem;
+    }
+    
+    footer {
+      font-size: 1rem;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .jumbotron {
+      height: 300px;
+    }
+    
+    .jumbotron h1 {
+      font-size: 2rem;
+    }
+    
+    .jumbotron p {
+      font-size: 1rem;
+    }
+    
+    .features h2 {
+      font-size: 1.5rem;
+    }
+    
+    .features .feature h3 {
+      font-size: 1.2rem;
+    }
+    
+    .features .feature p {
+      font-size: 0.9rem;
+    }
+    
+    .testimonials h2 {
+      font-size: 1.5rem;
+    }
+    
+    .testimonials .card-text {
+      font-size: 0.9rem;
+    }
+    
+    .testimonials .card-title {
+      font-size: 1rem;
+    }
+    
+    footer {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media screen and (max-width: 576px) {
+    .jumbotron {
+      height: 200px;
+    }
+    
+    .jumbotron h1 {
+      font-size: 1.5rem;
+    }
+    
+    .jumbotron p {
+      font-size: 0.8rem;
+    }
+    
+    .features h2 {
+      font-size: 1.2rem;
+    }
+    
+    .features .feature h3 {
+      font-size: 1rem;
+    }
+    
+    .features .feature p {
+      font-size: 0.8rem;
+    }
+    
+    .testimonials h2 {
+      font-size: 1.2rem;
+    }
+    
+    .testimonials .card-text {
+      font-size: 0.8rem;
+    }
+    
+    .testimonials .card-title {
+      font-size: 1rem;
+    }
+    
+    footer {
+      font-size: 0.8rem;
+    }
+  }

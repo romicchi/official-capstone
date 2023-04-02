@@ -1,0 +1,321 @@
+body {
+  padding-left: 15.6rem; /* Set padding top equal to navbar height */
+  padding-top: 0rem;
+}
+
+
+@media (min-width: 993px) {
+
+  .navbar {
+    flex-direction: column;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    padding: 0;
+  }
+  
+  .navbar-collapse {
+    width: 100%;
+    padding: 20px;
+    position: absolute;
+    top: 50px;
+    left: 0;
+  }
+  
+  .navbar-nav {
+    width: 100%;
+  }
+  .nav-link {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    margin-top: 10px;
+    margin-left: 10%;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 15px;
+    padding-left: 15px;
+    color: #fff;
+    text-align: justify;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .navbar-brand {
+    margin-top: 20px;
+    margin-bottom: 25px;
+    padding-left: 10px;
+    font-size: 35px;
+    font-family: Arial, sans-serif;
+    font-weight: bolder;
+  }
+}
+
+/*courses content */
+.panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.panel-body {
+  padding: 15px;
+  height: 35vh;
+}
+.cardbgcolor {
+  background-color: white;
+  border-color: black;
+}
+
+.images1 {
+  width: 1vw;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+
+/* Landing Page */
+.lnu {
+  width: 65%;
+  height: 50%;
+}
+
+.jumbotron {
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  text-align: center;
+}
+
+.jumbotron h1 {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.jumbotron p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Features section styles */
+.features {
+  background-color: #f8f9fa;
+  padding: 5rem 0;
+}
+
+.features h2 {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.features .feature {
+  margin-bottom: 3rem;
+}
+
+.features .feature h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.features .feature p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+/* Testimonials section styles */
+.testimonials {
+  background-color: #e9ecef;
+  padding: 5rem 0;
+}
+
+.testimonials h2 {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.testimonials .card {
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.testimonials .card-body {
+  padding: 2rem;
+  text-align: center;
+}
+
+.testimonials .card-text {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.testimonials .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Footer styles */
+footer {
+  color: white;
+  font-size: 1.2rem;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 993px) {
+  body {
+    padding-top: 3.5rem;
+    padding-left: 0rem;
+  }
+
+  .jumbotron {
+    height: 400px;
+  }
+  
+  .jumbotron h1 {
+    font-size: 3rem;
+  }
+  
+  .jumbotron p {
+    font-size: 1.2rem;
+  }
+  
+  .features h2 {
+    font-size: 2rem;
+  }
+  
+  .features .feature h3 {
+    font-size: 1.5rem;
+  }
+  
+  .features .feature p {
+    font-size: 1rem;
+  }
+  
+  .testimonials h2 {
+    font-size: 2rem;
+  }
+  
+  .testimonials .card-text {
+    font-size: 1rem;
+  }
+  
+  .testimonials .card-title {
+    font-size: 1.2rem;
+  }
+  
+  footer {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  body {
+    padding-top: 3.5rem;
+  }
+  .jumbotron {
+    height: 300px;
+  }
+  
+  .jumbotron h1 {
+    font-size: 2rem;
+  }
+  
+  .jumbotron p {
+    font-size: 1rem;
+  }
+  
+  .features h2 {
+    font-size: 1.5rem;
+  }
+  
+  .features .feature h3 {
+    font-size: 1.2rem;
+  }
+  
+  .features .feature p {
+    font-size: 0.9rem;
+  }
+  
+  .testimonials h2 {
+    font-size: 1.5rem;
+  }
+  
+  .testimonials .card-text {
+    font-size: 0.9rem;
+  }
+  
+  .testimonials .card-title {
+    font-size: 1rem;
+  }
+  
+  footer {
+    font-size: 0.9rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  body {
+    padding-left: 0rem;
+    padding-top: 3.5rem;
+  }
+
+  .jumbotron {
+    height: 200px;
+  }
+  
+  .jumbotron h1 {
+    font-size: 1.5rem;
+  }
+  
+  .jumbotron p {
+    font-size: 0.8rem;
+  }
+  
+  .features h2 {
+    font-size: 1.2rem;
+  }
+  
+  .features .feature h3 {
+    font-size: 1rem;
+  }
+  
+  .features .feature p {
+    font-size: 0.8rem;
+  }
+  
+  .testimonials h2 {
+    font-size: 1.2rem;
+  }
+  
+  .testimonials .card-text {
+    font-size: 0.8rem;
+  }
+  
+  .testimonials .card-title {
+    font-size: 1rem;
+  }
+  
+  footer {
+    font-size: 0.8rem;
+  }
+}
