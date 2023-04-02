@@ -1,0 +1,33 @@
+body {
+  padding-top: 8%;
+  background-color: whitesmoke;
+}
+
+.panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.panel-body {
+  padding: 15px;
+  height: 35vh;
+}
+
+.cardbgcolor {
+  border-color: black;
+  background-size: 100%; 
+  background-position: center; 
+  background-repeat: no-repeat;
+}
+
+li {
+  font-weight: bolder;
+  font-size: 1.4vw;
+  color: #111;
+}
+
+
+
+
