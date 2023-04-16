@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider; // added by cirera
+use Illuminate\Support\Facades\View;
+use App\Models\Channel; 
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::share('channels', Channel::all()); //comment if you want to run migrate in a new environment
     }
 }

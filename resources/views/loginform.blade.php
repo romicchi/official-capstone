@@ -1,3 +1,5 @@
+@include('layout.homenav')
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,20 +13,40 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset ('css/login.css') }}">
 </head>
 <body>
-	<div class="container">
+	<div class="container"> 
+	<div class="mt-5 message">
+  @if($errors->any())
+    <div class="col-12">
+      @foreach($errors->all() as $error)
+        <div class="alert alert-danger">{{ $error }}</div>
+      @endforeach
+    </div>
+  @endif
+
+  <!-- Session Error -->
+  @if(session()->has('error'))
+    <div class="alert alert-danger">{{session('error')}}</div>
+  @endif
+
+  <!-- Success Message -->
+  @if(session()->has('success'))
+    <div class="alert alert-success">{{session('success')}}</div>
+  @endif
+</div>
 		<div class="col">
-			<form method="post">
+			<form action="{{ route('login.post') }}" method="post">
+				@csrf
                 <h1>Login</h1>
 				<div class="form-group">
-					<label for="username">Email:</label>
-					<input type="text" class="form-control" id="username" name="username" placeholder="Enter Email" required>
+					<label for="email">Username/Email:</label>
+					<input type="text" class="form-control" id="email" name="email" placeholder="Enter Username/Email" required>
 				</div>
 				<div class="form-group">
 					<label for="password">Password:</label>
 					<input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
 				</div>
 
-				<button type="submit" class="btn btn-primary">Login</button>
+				<button type="submit" class="btn btn-primary"<a href="{{ route('dashboard') }}">Login</a></button>
 			
 
 			<p>Don't have an account yet? <a href="/register">Sign Up</a></p>

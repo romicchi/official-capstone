@@ -1,4 +1,6 @@
 @extends('dashboard')
+@include('layout.homenav')
+
 <head>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/landingpage.css') }}">

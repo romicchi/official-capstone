@@ -1,12 +1,12 @@
 html {
     background-color: #858585;
 }
-/* Position the form in the middle-right of the screen */
+/* Position the form in the middle of the screen */
 form {
     border: 2px solid black;
     border-radius: 20px;
     position: absolute;
-    top: 30vh;
+    top: 340px;
     right: 0%;
     left: 0%;
     padding: 50px 30px;
@@ -46,7 +46,4 @@ form {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.logo {
-  width: 200px;
-  height: 70px;
-}
+

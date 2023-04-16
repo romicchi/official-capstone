@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    height: 0;
+  }
+
+
+.navbar {
+    background-color: #e9ecef; /* set the background color */
+    overflow: hidden; /* hide any overflowing elements */
+    z-index: 1;
+    height: 60px;
+  }
+  
+  .navbar a {
+    float: left; /* align links horizontally */
+    display: block; /* make links take up full width of container */
+    font-weight: bold;
+    /* color: white; set text color */
+    text-align: center; /* center text within links */
+    padding: 14px 16px; /* add padding to links */
+    text-decoration: none; /* remove underlines from links */
+  }
+  
+  .navbar a:hover {
+    background-color: #ddd; /* change background color on hover */
+    color: black; /* change text color on hover */
+  }
+  
+  .active {
+    background-color: #4CAF50; /* set active link background color */
+    color: white; /* set active link text color */
+  }

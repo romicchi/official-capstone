@@ -1,3 +1,5 @@
+@include('layout.homenav')
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,13 +8,36 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset ('css/register.css') }}">
 </head>
 <body>
+
+<!-- Error messages -->
 <div class="container">
+    <div class="mt-5">
+      @if($errors->any())
+        <div class="col-12">
+            @foreach($errors->all() as $error)
+              <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+        </div>
+      @endif
+
+    <!-- Session Error -->
+      @if(session()->has('error'))
+        <div class="alert alert-danger">{{session('error')}}</div>
+      @endif
+
+      <!-- Success Message -->
+      @if(session()->has('success'))
+        <div class="alert alert-success">{{session('success')}}</div>
+      @endif
+    </div>
+
   <div class="col">
-    <form method="post" enctype="multipart/form-data">
-      <h1>Register</h1>
+    <form action="{{ route('register.post') }}" method="post" enctype="multipart/form-data">
+      @csrf
+    <h1>Register</h1>
       <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" required>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Username" required>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
@@ -34,7 +59,11 @@
         <input type="file" class="form-control-file" id="school_id" name="school_id" accept="image/*" required>
       </div>
       <button type="submit" class="btn btn-primary">Sign Up</button>
+<<<<<<< Updated upstream
       <div><img class="logo" src="{{ asset ('assets/img/logo.png') }}" alt="Logo"></div>
+=======
+      <p><a href="/loginform">Already have an account?</a></p>
+>>>>>>> Stashed changes
     </form>
   </div>
 </div>

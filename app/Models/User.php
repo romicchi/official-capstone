@@ -11,6 +11,10 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    
+    public $timestamps=false; // Added for the admin-user-update
+
+    protected $table = "users"; // table name in database. note: that sometimes the table is not reading in laravel so we will add this.
 
     /**
      * The attributes that are mass assignable.
@@ -41,4 +45,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //This part is for the DiscussionsController. Means that user can have many discussions
+    public function discussions()
+    {
+        return $this->hasMany(Discussion::class);
+    }
+
+    //This part is for the RepliesController. Means that a user can have many replies
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
 }
