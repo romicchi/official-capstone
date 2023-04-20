@@ -1,5 +1,6 @@
-@extends('dashboard')
+@include('layout.usernav')
 
+@yield('usernav')
 @section('content')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/fav.css') }}">
 

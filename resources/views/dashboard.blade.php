@@ -1,4 +1,4 @@
-
+@include('layout.usernav')
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,82 +9,102 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
       </head>
     <body>
-      <!-- @auth
-      {{auth()->user()}}
-      @endauth -->
-      <div class="container-fluid">
-        <div class="row">
-          <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top col-12 col-lg-2">
-            <a class="navbar-brand" href="#">{{config('app.name')}}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ route('landingpage') }}"> <img class="images1" src="{{ asset ('assets/img/dashboard.png') }}" style="width: 1vw;
-                    height: 100%;
-                    object-fit: cover;">Dashboard</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" id="dropdown01"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img class="images" src="{{ asset ('assets/img/courses.png') }}">Courses</a>
-                  <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="/bacomm">BACOMM</a>
-                    <a class="dropdown-item" href="#">BEED</a>
-                    <a class="dropdown-item" href="/bsit">BSIT</a>
-                    <a class="dropdown-item" href="#">HRM</a>
-                    <a class="dropdown-item" href="#">TM</a>
-                  </div>
-                </li>
+  <!-- Nav Bar -->
+  @yield('usernav')
+  <!-- Content -->
+  <header>
+		<div class="dashboard">
+    <h2>Welcome to the User Dashboard, <strong>{{ Auth::user()->name }}</strong></h2>
+			<p>Here you can manage your account, view statistics, history, and more.</p>
+		</div>
+	</header>
+	<main>
 
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" id="dropdown2"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="imgages" src="{{ asset ('assets/img/personal.png') }}">Personal</a>
-                  <div class="dropdown-menu" aria-labelledby="dropdown2">
-                    <a class="dropdown-item" href="#">Notes History</a>
-                    <a class="dropdown-item" href="{% url 'personal' %}">Study Journal</a>
-                    <a class="dropdown-item" href="/favorites">Favorites</a>
-                  </div>
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ route ('discussions.index') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}">Forum</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'settings' %}"><img class="images1" src="{{ asset ('assets/img/setting.png') }}">Settings</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#" onclick="confirmLogout()" style="cursor: pointer;"><img class="images1" src="{{ asset ('assets/img/logout.png') }}" style="width: 1vw;
-                    height: 100%;
-                    object-fit: cover;">Logout</a>
-                </li>
-              </ul>
+    <section class="personal-info">
+        <h2>Personal Information</h2>
+        <p>Name: {{ Auth::user()->name }}</p>
+        <p>Email: {{ Auth::user()->email }}</p>
+    </section>
+		
+    <section class="overview">
+			<h2>Overview</h2>
+			<div class="stats">
+				<div class="stat">
+					<h3>Total Users</h3>
+					<p>1500</p>
+				</div>
+				<div class="stat">
+					<h3>Total Resources</h3>
+					<p>2000</p>
+				</div>
+				<div class="stat">
+					<h3>Active Users</h3>
+					<p>1000</p>
+				</div>
+				<div class="stat">
+					<h3>Inactive Users</h3>
+					<p>500</p>
+				</div>
+			</div>
+		</section>
+    <section class="resource-upload">
+  <h2>Upload Resource</h2>
+  <form>
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" class="form-control" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="file">Select file:</label>
+      <input type="file" id="file" name="file" class="form-control-file" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Upload Resource</button>
+  </form>
+</section>
+
+<section class="resource-management">
+  <h2>Resource Management</h2>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">Add Resource</h4>
+          <form>
+            <div class="form-group">
+              <label for="title">Title</label>
+              <input type="text" class="form-control" id="title" name="title">
             </div>
-          </nav>
-          
+            <div class="form-group">
+              <label for="author">Author</label>
+              <input type="text" class="form-control" id="author" name="author">
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="file">File</label>
+              <input type="file" class="form-control-file" id="file" name="file">
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
         </div>
       </div>
-      <script>
-    function confirmLogout() {
-        if (confirm('Are you sure you want to logout?')) {
-            window.location.href = '{{ route('logout') }}';
-        }
-    }
-</script>
+    </div>
+  </div>
+</section>
 
-          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-          <script>
-            $(document).ready(function() {
-              $('.dropdown-toggle').dropdown();
-            });
-          </script>
-          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        </body>
+
+</main>
+<footer>
+	<p>Copyright &copy; 2023 Librar-e. All rights reserved.</p>
+</footer>
+    </body>
 </html>

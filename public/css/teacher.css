@@ -1,0 +1,30 @@
+/* teacherupload */
+.containerbg {
+    background-color: #b6b6b6;
+    width: 80%;
+    height: 85vh;
+    border-radius: 5px;
+  }
+  
+  .dropdown {
+    display: inline-block;
+    position: relative;
+    /* padding-left: 23px;
+    padding-right: 23px; */
+  }
+  
+  .link1 {
+    padding-right: 100px;
+    padding-left: 100px;
+  }
+  
+  .card {
+    width: 79%;
+    height: 44vh;
+  }
+  
+  .dz-button {
+    background-color: #89C3F9;
+    border-radius: 20px;
+    border: none;
+  }
