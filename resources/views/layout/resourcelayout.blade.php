@@ -1,5 +1,4 @@
-@extends('dashboard')
-    
+@section('resourcelayout')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/quantitative.css')}}">
 
 	<h3 class="title-subject">@yield('title')</h3>
@@ -161,3 +160,4 @@
 			</div>
 		</div>
 	</center>
+@show

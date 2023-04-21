@@ -59,11 +59,7 @@
         <input type="file" class="form-control-file" id="school_id" name="school_id" accept="image/*" required>
       </div>
       <button type="submit" class="btn btn-primary">Sign Up</button>
-<<<<<<< Updated upstream
-      <div><img class="logo" src="{{ asset ('assets/img/logo.png') }}" alt="Logo"></div>
-=======
       <p><a href="/loginform">Already have an account?</a></p>
->>>>>>> Stashed changes
     </form>
   </div>
 </div>

@@ -12,14 +12,14 @@ class AuthController extends Controller
 {
     function login(){
         if (Auth::check()) { // This will check if the user is login, if login then the user will not be able to access loginform
-            return redirect(route('landingpage'));
+            return redirect(route('dashboard'));
         }
         return view('loginform');
     }
 
     function registration(){
         if (Auth::check()) { // This will check if the user is login, if login then the user will not be able to access register
-            return redirect(route('landingpage'));
+            return redirect(route('dashboard'));
         }
         return view('register');
     }
@@ -32,7 +32,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)) {
-            return redirect()->intended(route('landingpage'));
+            return redirect()->intended(route('dashboard'));
         }
         return redirect(route('login'))->with("error", "login credentials are not valid!"); //with("key", "error message") and inside the route is the name in get
     }
@@ -55,7 +55,7 @@ class AuthController extends Controller
         if ($data['role'] === 'teacher') {
             $user->role = 'teacher';
             $user->save();
-    }
+        }
 
         if(!$user) {
         return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get

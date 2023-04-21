@@ -1,4 +1,6 @@
-@extends('dashboard')
+@include('layout.usernav')
+
+@yield('usernav')
 
 <head>
 <title>@yield('title')</title>

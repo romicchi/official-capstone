@@ -19,14 +19,14 @@
     @section('subject4', 'Web Development')
 
     <!-- Subject #5 -->
-    @section('subject5', 'Computer Networks')
-    @section('subject6', 'Computer Organization and Architecture')
-    @section('subject7', 'Database Management Systems')
-    @section('subject8', 'Operating Systems')
-    @section('subject9', 'Software Engineering')
-    @section('subject10', 'Computer Graphics')
-    @section('subject11', 'Artificial Intelligence')
-    @section('subject12', 'Computer Forensics')
+    @section('subject5', 'Computing Programming I - Java')
+    @section('subject6', 'Discrete Mathematics')
+    @section('subject7', 'Programming II - Python')
+    @section('subject8', 'Computer Hardware Repair and Maintenance')
+    @section('subject9', 'IT Elective I - Platform Technologies')
+    @section('subject10', 'Fundamentals of Database System')
+    @section('subject11', 'Cisco I - Networking Fundamentals')
+    @section('subject12', 'Data Structure and Algorithms')
 
   <!-- Images -->
     @section('subject-image1', asset('assets/img/BSIT/Quantitative.jpg'))

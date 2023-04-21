@@ -1,4 +1,4 @@
-@extends('dashboard')
+@include('layout.usernav')
 @include('layout.forumlayout')
 
 <!DOCTYPE html>
@@ -15,6 +15,8 @@
     <!-- @yield('css') -->
 </head>
 <body>
+<!-- Nav Bar -->
+@yield('usernav')
 
 <!-- This will display the Channels in the Providers/AppServiceProvider -->
 @auth

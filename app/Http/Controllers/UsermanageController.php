@@ -35,7 +35,6 @@ class UsermanageController extends Controller
         $userdata = User::find($req->id);
         $userdata->name = $req->name;
         $userdata->email = $req->email;
-        $userdata->password = $req->password;
         $userdata->role = $req->role;
         $userdata->save();
         return redirect()->route('usermanage');

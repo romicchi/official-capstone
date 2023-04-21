@@ -50,7 +50,6 @@
 			
 
 			<p>Don't have an account yet? <a href="/register">Sign Up</a></p>
-            <p>Click for <a href="/adminaccess">Admin Access</a></p>
 			<img src="{{ asset ('assets/img/logo.png') }}" alt="Logo" style="width: 10vw; height: 6vh;  display: block; margin-left: auto; margin-right: auto;">
         </form>
 		</div>

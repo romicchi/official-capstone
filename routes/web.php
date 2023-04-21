@@ -31,10 +31,6 @@ Route::get('/adminaccess', function () {
     return view('adminaccess');
 });
 
-<<<<<<< Updated upstream
-Route::get('/register', function () {
-    return view('register');
-=======
 // LOGIN/REGISTER/ADMIN/MAIN PAGE
 Route::get('/loginform', [AuthController::class, 'login'])->name('login'); //second 'login' -> function
 Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.post');
@@ -59,7 +55,6 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('adminedit/{id}',[UsermanageController::class, 'showadminedit'])->name('adminedit');
     Route::post('adminedit',[UsermanageController::class, 'update'])->name('update');
     Route::get('search',[UsermanageController::class, 'search'])->name('search');
->>>>>>> Stashed changes
 });
 
 // If you are student/teacher then only you can access this page
@@ -119,8 +114,21 @@ Route::group(['middleware' => 'auth'], function() { //if the user is login only 
     Route::get('/quantitative', function () {
         return view('subjects.quantitative');
     });
+
+    Route::get('/teacherupload', function () {
+        return view('teacherupload');
+    });
+
+    Route::get('/teachermanage', function () {
+        return view('teachermanage');
+    });
 }); 
 
+// Special Route for Teacher Role only
+Route::group(['middleware' => ['auth', 'role:teacher']], function () {
+
+
+});
 
 //ALWAYS! php artisan optimize when modifying something inside this web.php file
 
