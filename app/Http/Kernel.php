@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isAdmin' => \App\Http\Middleware\AdminMiddleware::class, // added by cirera
         'student_teacher' => \App\Http\Middleware\StudentTeacherMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 }

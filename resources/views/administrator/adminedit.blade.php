@@ -20,7 +20,10 @@
         <label for="role">Role:</label>
         <input class="form-control border-0 rounded-0" type="text" name="role" value="{{ $users->role }}" required>
       </div>
-      <button type="submit" class="btn btn-primary">Update</button>
+      <div style="display: flex;">
+        <button type="submit" class="btn btn-primary" style="flex: 1;">Update</button>
+        <a href="{{route('usermanage')}}" class="btn btn-danger" style="flex: 1;">Cancel</a>
+      </div>
     </form>
   </div>
 </div>

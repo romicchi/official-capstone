@@ -57,4 +57,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reply::class);
     }
+
+    // ...
+
+    /**
+     * Force the user to logout.
+     *
+     * @return void
+     */
+    public function forceLogout()
+    {
+        Auth::logoutOtherDevices($this->password);
+        Auth::logout();
+    }
+
+    // ...
 }

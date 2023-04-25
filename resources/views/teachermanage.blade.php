@@ -5,8 +5,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
     <!-- Teacher Resource Table -->
-<section class="resource-management">
-  <h2>Resource Management</h2>
+    <section class="resource-management">
+  <h2>Management Resources</h2>
   <div class="row">
     <div class="col-md-4">
       <div class="card">
@@ -18,19 +18,19 @@
               <input type="text" class="form-control" id="title" name="title">
             </div>
             <div class="form-group">
-              <label for="title">Topic(s)</label>
-              <input type="text" class="form-control" id="title" name="title">
+              <label for="topic">Topic(s)</label>
+              <input type="text" class="form-control" id="topic" name="topic">
             </div>
             <div class="form-group">
-              <label for="title">Keywords</label>
-              <input type="text" class="form-control" id="title" name="title">
+              <label for="keywords">Keywords</label>
+              <input type="text" class="form-control" id="keywords" name="keywords">
             </div>
             <div class="form-group">
-              <label for="author">Author</label>
+              <label for="author">Owner(s)</label>
               <input type="text" class="form-control" id="author" name="author">
             </div>
             <div class="form-group">
-              <label for="description">Description</label>
+              <label for="description">Description/Summary</label>
               <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
             <div class="form-group">

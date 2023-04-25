@@ -64,7 +64,6 @@ form {
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 5px;
-    border: none;
   }
   
   input[type=submit] {
@@ -72,7 +71,6 @@ form {
     color: #fff;
     padding: 10px;
     border-radius: 5px;
-    border: none;
     cursor: pointer;
   }
   
@@ -82,7 +80,7 @@ form {
 
   .form-control {
     width: 100%;
-    max-width: 250px;
+    max-width: 50rem;
     display: inline-block;
   }
   

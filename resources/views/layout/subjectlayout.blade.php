@@ -55,7 +55,7 @@
           <div class="panel cardbgcolor">
           <div class="panel-body custom-image" style="background-image: url(@yield('subject-image1', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                    <li>@yield('subject1')</li>
+                    <p>@yield('subject1')</p>
                   </ul>
               </div>
           </div>
@@ -66,7 +66,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image2', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject2')</li>
+                      <p>@yield('subject2')</p>
                   </ul>
               </div>
           </div>
@@ -77,7 +77,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image3', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject3')</li>
+                      <p>@yield('subject3')</p>
                   </ul>
               </div>
           </div>
@@ -88,7 +88,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image4', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject4')</li>
+                      <p>@yield('subject4')</p>
                   </ul>
               </div>
           </div>
@@ -99,7 +99,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image5', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject5')</li>
+                      <p>@yield('subject5')</p>
                   </ul>
               </div>
           </div>
@@ -110,7 +110,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image6', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject6')</li>
+                      <p>@yield('subject6')</p>
                   </ul>
               </div>
           </div>
@@ -121,7 +121,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image7', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject7')</li>
+                      <p>@yield('subject7')</p>
                   </ul>
               </div>
           </div>
@@ -132,7 +132,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image8', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject8')</li>
+                      <p>@yield('subject8')</p>
                   </ul>
               </div>
           </div>
@@ -143,7 +143,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image9', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject9')</li>
+                      <p>@yield('subject9')</p>
                   </ul>
               </div>
           </div>
@@ -154,7 +154,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image10', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject10')</li>
+                      <p>@yield('subject10')</p>
                   </ul>
               </div>
           </div>
@@ -165,7 +165,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image11', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject11')</li>
+                      <p>@yield('subject11')</p>
                   </ul>
               </div>
           </div>
@@ -176,7 +176,7 @@
           <div class="panel cardbgcolor">
               <div class="panel-body custom-image" style="background-image: url(@yield('subject-image12', asset('assets/img/Custom_image.jpg'))); background-size: 100% 100%;">
                   <ul class="list-unstyled center text-center">
-                      <li>@yield('subject12')</li>
+                      <p>@yield('subject12')</p>
                   </ul>
               </div>
           </div>

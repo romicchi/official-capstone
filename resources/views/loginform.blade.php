@@ -23,19 +23,20 @@
     </div>
   @endif
 
-  <!-- Session Error -->
-  @if(session()->has('error'))
-    <div class="alert alert-danger">{{session('error')}}</div>
-  @endif
-
-  <!-- Success Message -->
-  @if(session()->has('success'))
-    <div class="alert alert-success">{{session('success')}}</div>
-  @endif
 </div>
 		<div class="col">
 			<form action="{{ route('login.post') }}" method="post">
 				@csrf
+
+        <!-- Success Message -->
+  @if(session()->has('success'))
+    <div class="alert alert-success">{{session('success')}}</div>
+  @endif
+  
+          <!-- Session Error -->
+  @if(session()->has('error'))
+    <div class="alert alert-danger">{{session('error')}}</div>
+  @endif
                 <h1>Login</h1>
 				<div class="form-group">
 					<label for="email">Username/Email:</label>
