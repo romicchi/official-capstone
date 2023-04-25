@@ -1,4 +1,5 @@
 @include('layout.homenav')
+@include('layout.chatbotlayout')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -12,13 +13,12 @@
         <link rel="stylesheet" type="text/css" href="{{ asset ('css/landingpage.css') }}">
 
     </head>
+    @yield('chatbot')
     <body class="antialiased">
         @section('navbar')
         @endsection
                 <!-- Jumbotron -->
     <div class="jumbotron" style="background-image: url({{ asset('assets/img/Background.png')}}">
-      <img class="lnu" src="{{ asset( 'assets/img/LNU.png') }}" alt="Description of the image">
-      <p class="lead">EDUCATIONAL RESOURCE POOL</p>
       <hr class="my-4">
     </div>
 

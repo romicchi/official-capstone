@@ -27,7 +27,7 @@ class AdminMiddleware
             }
         } else {
             
-            return redirect('login')->with('message', 'Login first');
+            return redirect('loginform')->with('message', 'Login first');
         }
 
     }

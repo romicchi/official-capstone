@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;     
 use App\Models\User;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -32,6 +33,11 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)) {
+            // Update user's last activity timestamp
+            $user = Auth::user();
+            $user->last_activity = Carbon::now();
+            $user->save();
+            
             return redirect()->intended(route('dashboard'));
         }
         return redirect(route('login'))->with("error", "login credentials are not valid!"); //with("key", "error message") and inside the route is the name in get
@@ -71,3 +77,4 @@ class AuthController extends Controller
         return redirect(route('login'))->with('logout_message', true);
     }
 }
+

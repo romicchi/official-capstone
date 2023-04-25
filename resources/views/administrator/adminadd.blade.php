@@ -1,17 +1,13 @@
-@include('layout.homenav')
+@include('layout.adminnavlayout')
 
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Register Account</title>
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-		<link rel="stylesheet" type="text/css" href="{{ asset ('css/register.css') }}">
-</head>
-<body>
-  
+@yield('adminnavbar')
+
+	<title>Add User</title>
+	<link rel="stylesheet" type="text/css" href="{{ asset ('css/register.css') }}">
+
 <div class="container">
   <div class="col">
-    <form action="{{ route('register.post') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('add.user') }}" method="post" enctype="multipart/form-data">
       @csrf
       
       <!-- Error Message -->
@@ -34,7 +30,7 @@
       @endif
 
       
-    <h1>Register</h1>
+    <h1>Add User</h1>
       <div class="form-group">
         <label for="username">Username:</label>
         <input type="text" class="form-control" id="name" name="name" placeholder="Enter Username" required>
@@ -48,20 +44,22 @@
         <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
       </div>
       <div class="form-group">
-        <label for="role">I am a:</label>
+        <label for="role">Role of the user:</label>
         <select class="form-control" id="role" name="role">
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
+			<option value="student">Student</option>
+			<option value="teacher">Teacher</option>
+			<option value="programcoordinator">Program Coordinator</option>
+			<option value="departmentchair">Department Chair</option>
+            <option value="admin">Admin</option>
         </select>
       </div>
       <div class="form-group">
         <label for="school_id">School ID:</label>
         <input type="file" class="form-control-file" id="school_id" name="school_id" accept="image/*" required>
       </div>
-      <button type="submit" class="btn btn-primary">Sign Up</button>
-      <p><a href="/loginform">Already have an account?</a></p>
+      <button type="submit" class="btn btn-primary">Add User</button>
+      <a href="{{route('usermanage')}}" class="btn btn-danger" style="flex: 1;">Cancel</a>
     </form>
   </div>
 </div>
-</body>
-</html>
+
