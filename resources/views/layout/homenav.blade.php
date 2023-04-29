@@ -15,15 +15,15 @@
                 @if (Route::has('login'))
                 <li class="nav-item">
                     @auth
-                    <a class="nav-link" href="{{ url('/dashboard') }}">Home</a>
+                        @if (Auth::user()->role === 'admin')
+                            <a class="nav-link" href="{{ route('adminpage') }}">Home</a>
+                        @else
+                            <a class="nav-link" href="{{ url('/dashboard') }}">Home</a>
+                        @endif
                     @else
-                    <a class="nav-link" href="{{ route('login') }}">Log in</a>
-
-                    <!-- @if (Route::has('register'))
-                    <a class="nav-link" href="{{ route('register') }}">Register</a>
-                    @endif -->
+                        <a class="nav-link" href="{{ route('login') }}">Log in</a>
                     @endauth
-                </li>
+                    </li>
                 @endif
             </ul>
         </div>

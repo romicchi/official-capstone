@@ -46,6 +46,22 @@ class UsermanageController extends Controller
         return view('administrator.usermanage',['users'=>$userdata]);
     }
 
+    function verifyUsers(){
+        $users = User::where('verified', false)->get();
+    
+        return view('administrator.usermanage', ['users' => $users]);
+    }
+    
+    function postVerifyUsers(Request $request){
+        $verifiedUserIds = $request->input('verified_users', []);
+        $rejectedUserIds = $request->input('rejected_users', []);
+    
+        User::whereIn('id', $verifiedUserIds)->update(['verified' => true]);
+        User::whereIn('id', $rejectedUserIds)->delete();
+    
+        return redirect()->route('usermanage')->with('success', 'Users verified successfully.');
+    }
+
     //delete user function
     public function delete($id) 
     {  

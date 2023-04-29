@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class StudentTeacherMiddleware
+class AuthenticatedMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,7 +17,7 @@ class StudentTeacherMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::check()){
-            if(Auth::user()->role == 'student' || Auth::user()->role == 'teacher'){
+            if(Auth::user()->role == 'student' || Auth::user()->role == 'teacher' || Auth::user()->role == 'departmentchair' || Auth::user()->role == 'programcoordinator'){
                 return $next($request);
                 
             } else {

@@ -93,38 +93,6 @@
 			</form>
 		</section>
 
-		<section class="user-management">
-  <h2>User Management</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John Doe</td>
-        <td>johndoe@example.com</td>
-        <td>Pending</td>
-        <td>
-          <form method="POST" action="">
-            @csrf
-            <button type="submit" class="btn btn-success">Approve</button>
-          </form>
-          <form method="POST" action="">
-            @csrf
-            <button type="submit" class="btn btn-danger">Reject</button>
-          </form>
-        </td>
-      </tr>
-      <!-- Add more rows as needed -->
-    </tbody>
-  </table>
-</section>
-
 </main>
 <footer>
 	<p>Copyright &copy; 2023 Librar-e. All rights reserved.</p>
