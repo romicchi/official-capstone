@@ -7,6 +7,8 @@ use App\Http\Controllers\UsermanageController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\AuthenticatedController;
 use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\CourseController;
 
 
 /*
@@ -115,6 +117,11 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:teacher']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
     });
+    // Route to get subjects by course ID
+    Route::get('/api/subjects/{courseId}', [SubjectController::class, 'getSubjectsByCourse']);
+    
+    // Route to get courses by college ID
+    Route::get('/api/courses/{collegeId}', [CourseController::class, 'getCoursesByCollege']);
 });
 
 // -------------------------- VERIFIER ACCESS --------------------------------//

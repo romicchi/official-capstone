@@ -34,32 +34,29 @@
               <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
             <div class="form-group">
-                 <label for="subject">College</label>
-                 <select class="form-control" id="subject" name="subject">
-                     <option value="">Select College</option>
-                     @foreach ($colleges as $college)
-                         <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
-                     @endforeach
-                 </select>
-             </div>
-            <div class="form-group">
-                 <label for="course">Course</label>
-                 <select class="form-control" id="course" name="course">
-                     <option value="">Select Course</option>
-                     @foreach ($courses as $course)
-                         <option value="{{ $course->id }}">{{ $course->subjectName }}</option>
-                     @endforeach
-                 </select>
-             </div>
-             <div class="form-group">
-                 <label for="subject">Subject</label>
-                 <select class="form-control" id="subject" name="subject">
-                     <option value="">Select Subject</option>
-                     @foreach ($subjects as $subject)
-                         <option value="{{ $subject->id }}">{{ $subject->subjectName }}</option>
-                     @endforeach
-                 </select>
-             </div>
+              <label for="college">College</label>
+              <select class="form-control" id="college" name="college">
+                <option value="">Select College</option>
+                @foreach ($colleges as $college)
+                <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
+                @endforeach
+              </select>
+            </div>
+            
+            <div class="form-group" id="courseContainer" style="display: none;">
+              <label for="course">Course</label>
+              <select class="form-control" id="courseSelect" name="course">
+                <option value="">Select Course</option>
+              </select>
+            </div>
+            
+            <div class="form-group" id="subjectContainer" style="display: none;">
+              <label for="subject">Subject</label>
+              <select class="form-control" id="subjectSelect" name="subject">
+                <option value="">Select Subject</option>
+              </select>
+            </div>
+
             <div class="form-group">
               <label for="resourceType">File</label>
               <input type="file" class="form-control-file" id="resourceType" name="resourceType">
@@ -108,3 +105,5 @@
     </div>
   </div>
 </section>
+
+<script src="{{ asset('js/fetch.js') }}"></script>

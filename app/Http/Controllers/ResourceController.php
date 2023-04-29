@@ -8,7 +8,6 @@ use App\Models\Course;
 use App\Models\Subject;
 use App\Models\User;
 
-
 class ResourceController extends Controller
 {
     public function store()
@@ -23,6 +22,20 @@ class ResourceController extends Controller
         $subjects = Subject::all();
     
         return view('teachermanage')->with(compact('colleges','courses', 'subjects'));
+    }
+
+    public function getCoursesByCollege($collegeId)
+    {
+        $courses = Course::where('college_id', $collegeId)->get();
+
+        return response()->json($courses);
+    }
+
+    public function getSubjectsByCourse($courseId)
+    {   
+        $subjects = Subject::where('course_id', $courseId)->get();  
+
+        return response()->json($subjects);
     }
 
     public function showResourceManage() 
