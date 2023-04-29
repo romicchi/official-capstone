@@ -1,14 +1,8 @@
-@include('layout.adminnavlayout')
+@include('layout.usernav')
 
-@yield('adminnavbar')
+@yield('usernav')
 
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/admin.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
-
-<!-- Search Bar -->
-<div class="dropdown">
-  <input class="form-control-sm" id="myInput" type="text" placeholder="Search..">
-</div>
 
 <center>
 
@@ -21,7 +15,7 @@
 			<th>Date</th>
             <th>Course</th>
             <th>Subject</th>
-			      <th>Description</th>
+			<th>Description</th>
             <th>Status</th>
 		</tr>
 		</thead>
@@ -47,4 +41,5 @@
 	</table>
 	</form>
 </center>
+
 

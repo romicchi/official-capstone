@@ -18,9 +18,10 @@
 <!-- Add User Button -->
 <a href="{{ route('adminadd') }}" class="btn btn-primary">ADD USER</a>
 
-<!-- Admin Table -->
-<h2>Admin</h2>
-<form class="table-responsive table-wrapper" id="admin-table">
+<!-- Unverified Users Table -->
+<h2>Pending Users</h2>
+<form class="table-responsive table-wrapper" id="admin-table" method="post" action="{{ route('verify-users.post') }}">
+  @csrf
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
@@ -28,104 +29,43 @@
         <th>Username</th>
         <th>Email</th>
         <th>Role</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach ($users as $user)
-        @if ($user->role == 'admin')
-          <tr>
-            <td>{{ $user->id }}</td> 
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
-            <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
-            <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
-          </tr>
-        @endif
-      @endforeach
-    </tbody>
-  </table>
-</form>
-
-<!-- Department Chair Table -->
-<h2>Department Chair</h2>
-<form class="table-responsive table-wrapper" id="admin-table">
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-        <!-- If empty this message will display -->
-        @if ($users->where('role', 'departmentchair')->isEmpty())
-        <tr>
-          <td colspan="6"><strong>No departmentchairs inside the table</strong></td>
-        </tr>
-        @endif
-      @foreach ($users as $user)
-        @if ($user->role == 'departmentchair')
-          <tr>
-            <td>{{ $user->id }}</td> 
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
-            <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
-            <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
-          </tr>
-        @endif
-      @endforeach
-    </tbody>
-  </table>
-</form>
-
-<!-- Program Coordinator Table -->
-<h2>Program Coordinator</h2>
-<form class="table-responsive table-wrapper" id="admin-table">
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th>Verified</th>
+        <th>Approve</th>
+        <th>Reject</th>
       </tr>
     </thead>
     <tbody>
       <!-- If empty this message will display -->
-        @if ($users->where('role', 'programcoordinator')->isEmpty())
+      @if ($users->where('verified', false)->isEmpty())
         <tr>
-          <td colspan="6"><strong>No programcoordinators inside the table</strong></td>
+          <td colspan="6"><strong>No unverified users inside the table</strong></td>
         </tr>
-        @endif
+      @else     
       @foreach ($users as $user)
-        @if ($user->role == 'programcoordinator')
+        @if ($user->verified == '0')
           <tr>
             <td>{{ $user->id }}</td> 
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>
-            <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
-            <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
+            <td>{{ $user->verified }}</td> 
+            <td>
+              <button type="submit" name="verified_users[]" value="{{ $user->id }}" class="btn btn-primary">Approve</button>
+            </td>
+            <td>
+              <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
+            </td>
           </tr>
         @endif
       @endforeach
+      @endif
     </tbody>
   </table>
 </form>
 
-<!-- Teacher Table -->
-<h2>Teacher</h2>
-<form class="table-responsive">
+<!-- Verified Users Table -->
+<h2>Existing Users</h2>
+<form class="table-responsive table-wrapper" id="admin-table">
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
@@ -133,69 +73,36 @@
         <th>Username</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Verified</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
     </thead>
     <tbody>
         <!-- If empty this message will display -->
-        @if ($users->where('role', 'teacher')->isEmpty())
+        @if (\App\Models\User::count() === 0)
         <tr>
-          <td colspan="6"><strong>No teachers inside the table</strong></td>
+          <td colspan="6"><strong>No verified users inside the table</strong></td>
         </tr>
-        @endif
+        @else      
       @foreach ($users as $user)
-        @if ($user->role == 'teacher')
+        @if ($user->verified == '1')
           <tr>
             <td>{{ $user->id }}</td> 
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>
+            <td>{{ $user->verified }}</td> 
             <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
             <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
           </tr>
         @endif
       @endforeach
+      @endif
     </tbody>
   </table>
 </form>
 
-<!-- Student Table -->
-<h2>Student</h2>
-<form class="table-responsive">
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-        <!-- If empty this message will display -->
-        @if ($users->where('role', 'student')->isEmpty())
-        <tr>
-          <td colspan="6"><strong>No students inside the table</strong></td>
-        </tr>
-        @endif
-      @foreach ($users as $user)
-        @if ($user->role == 'student')
-          <tr>
-            <td>{{ $user->id }}</td> 
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
-            <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
-            <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
-          </tr>
-        @endif
-      @endforeach
-    </tbody>
-  </table>
-</form>
 
 @else
 <div class="d-flex justify-content-end my-1">
