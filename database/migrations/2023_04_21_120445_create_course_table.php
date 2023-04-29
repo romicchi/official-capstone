@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('resources', function (Blueprint $table) {
+        Schema::create('course', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('topic');
-            $table->string('keywords');
-            $table->string('author');
-            $table->text('description');
-            $table->string('file');
+            $table->unsignedBigInteger('college_id'); // Foreign key for subjects table
+            $table->string('subjectName');
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('resources');
+        Schema::dropIfExists('course');
     }
 };

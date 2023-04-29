@@ -10,6 +10,7 @@
    
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
+		<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
       </head>
     <body>
   <!-- Nav Bar -->
@@ -29,32 +30,60 @@
         <p>Email: {{ Auth::user()->email }}</p>
     </section>
 		
-    <section class="overview">
-			<h2>Overview</h2>
-			<div class="stats">
-				<div class="stat">
-					<h3>Total Users</h3>
-					<p>1500</p>
-				</div>
-				<div class="stat">
-					<h3>Total Resources</h3>
-					<p>2000</p>
-				</div>
-				<div class="stat">
-					<h3>Active Users</h3>
-					<p>1000</p>
-				</div>
-				<div class="stat">
-					<h3>Inactive Users</h3>
-					<p>500</p>
-				</div>
-			</div>
-		</section>
+    <section class="chart">
+        <h2>User Statistics</h2>
+        <canvas id="myChart"></canvas>
+    </section>
+	
+</section>
+
 
 
 </main>
 <footer>
 	<p>Copyright &copy; 2023 Librar-e. All rights reserved.</p>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<script>
+// Initialize Pusher
+var pusher = new Pusher('{{env("PUSHER_APP_KEY")}}', {
+    cluster: '{{env("PUSHER_APP_CLUSTER")}}',
+    encrypted: true
+});
+
+// Subscribe to the channel that broadcasts updates to the user count
+var channel = pusher.subscribe('user-count');
+
+// Listen for updates to the user count
+channel.bind('update', function(data) {
+    // Update the data for the chart
+    myChart.data.datasets[0].data = data;
+    
+    // Update the chart
+    myChart.update();
+});
+
+// Initialize the chart with the initial data
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Teachers', 'Students'],
+        datasets: [{
+            label: 'Number of users',
+            data: [{{$teachersCount}}, {{$studentsCount}}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+});
+</script>
     </body>
 </html>
