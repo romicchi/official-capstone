@@ -33,6 +33,7 @@ return array(
     'App\\Http\\Requests\\CreateReplyRequest' => $baseDir . '/app/Http/Requests/CreateReplyRequest.php',
     'App\\Models\\Channel' => $baseDir . '/app/Models/Channel.php',
     'App\\Models\\Discussion' => $baseDir . '/app/Models/Discussion.php',
+    'App\\Models\\Image' => $baseDir . '/app/Models/Image.php',
     'App\\Models\\Model' => $baseDir . '/app/Models/Model.php',
     'App\\Models\\Reply' => $baseDir . '/app/Models/Reply.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',

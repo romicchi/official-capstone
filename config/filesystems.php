@@ -73,4 +73,16 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    'firebase' => [
+        'driver' => 'firebase',
+        'url' => env('FIREBASE_STORAGE_URL'),
+        'path_prefix' => env('FIREBASE_STORAGE_PATH_PREFIX'),
+        'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'),
+        'project_id' => env('FIREBASE_PROJECT_ID'),
+        'key_file' => env('FIREBASE_KEY_FILE'),
+        'cache_control' => 'public, max-age=31536000',
+        'visibility' => 'public',
+    ],
+    
+
 ];

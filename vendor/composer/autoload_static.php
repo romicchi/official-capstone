@@ -751,6 +751,7 @@ class ComposerStaticInit7d7e6671c315be2215640336d907abfa
         'App\\Http\\Requests\\CreateReplyRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CreateReplyRequest.php',
         'App\\Models\\Channel' => __DIR__ . '/../..' . '/app/Models/Channel.php',
         'App\\Models\\Discussion' => __DIR__ . '/../..' . '/app/Models/Discussion.php',
+        'App\\Models\\Image' => __DIR__ . '/../..' . '/app/Models/Image.php',
         'App\\Models\\Model' => __DIR__ . '/../..' . '/app/Models/Model.php',
         'App\\Models\\Reply' => __DIR__ . '/../..' . '/app/Models/Reply.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
