@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UsermanageController;
+use App\Http\Controllers\ImageController;
+
 
 
 /*
@@ -133,19 +135,19 @@ Route::group(['middleware' => ['auth', 'student_teacher']], function () {
 // -------------------------- VERIFIER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'student_teacher']], function () {
     Route::group(['middleware' => ['role:programcoordinator']], function () {
-        Route::get('/teachermanage', function () {
-            return view('teachermanage');
-        });
     });
 });
 
 Route::group(['middleware' => ['auth', 'student_teacher']], function () {
     Route::group(['middleware' => ['role:departmentchair']], function () {
-        Route::get('/teachermanage', function () {
-            return view('teachermanage');
-        });
     });
 });
+
+Route::post('/image', [ImageController::class, 'store'])->name('image.store');
+Route::delete('/image/{id}', [ImageController::class, 'destroy'])->name('image.destroy');
+
+Route::resource('/teachermanage', App\Http\Controllers\ImageController::class);
+
 
 
 
