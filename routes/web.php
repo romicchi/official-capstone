@@ -9,6 +9,9 @@ use App\Http\Controllers\AuthenticatedController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\DiscussionsController;
+
 
 
 /*
@@ -69,7 +72,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::post('/add.user', [UsermanageController::class, 'addUser'])->name('add.user');
 });
 
-// -------------------------- STUDENT-TEACHER-ADMIN --------------------------------//
+// -------------------------- STUDENT-TEACHER-PROGRAMCOORDINATOR-DEPARTMENTCHAIR-ADMIN --------------------------------//
 Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the user is login only he/she can see this 
     
     Route::resource('discussions', 'App\Http\Controllers\DiscussionsController');
@@ -83,6 +86,8 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/forum', function () {
         return view('forum');
     })->name('forum');
+    Route::resource('discussions', 'App\Http\Controllers\DiscussionsController');
+    Route::delete('/discussions/{discussion}', [DiscussionsController::class, 'destroy'])->name('discussions.destroy');
 
     Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');
 
@@ -92,6 +97,14 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/favorites', function () {
         return view('favorites');
     });
+    // JOURNAL
+    Route::get('/journals', [JournalController::class, 'index'])->name('journals.index');
+    Route::get('/journals/create', [JournalController::class, 'create'])->name('journals.create');
+    Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
+    Route::get('/journals/{journal}', [JournalController::class, 'show'])->name('journals.show');
+    Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
+    Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
+    Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
     
     // COURSES
     Route::get('/bsit', function () {
@@ -132,11 +145,6 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         })->name('resmanage');
     });
 });
-
-
-
-
-
 
 
 

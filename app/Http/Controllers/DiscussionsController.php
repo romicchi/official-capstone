@@ -58,7 +58,8 @@ class DiscussionsController extends Controller
     public function show(Discussion $discussion) //default: show(string $id)
     {
         return view('discussions.show', [
-            'discussion' => $discussion 
+            'discussion' => $discussion,
+            'userId' => auth()->check() ? auth()->user()->id : null 
         ]);
     }
 
@@ -81,8 +82,16 @@ class DiscussionsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Discussion $discussion)
     {
-        //
+        // Check if the authenticated user is the owner of the discussion
+        if (auth()->user()->id !== $discussion->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $discussion->delete();
+
+        session()->flash('success', 'Discussion deleted.');
+        return redirect()->route('discussions.index');
     }
 }

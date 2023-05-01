@@ -63,7 +63,7 @@
                     <img class="imgages" src="{{ asset ('assets/img/personal.png') }}"> Personal</a>
                   <div class="dropdown-menu" aria-labelledby="dropdown2">
                     <a class="dropdown-item" href="#">Notes History</a>
-                    <a class="dropdown-item" href="#">Study Journal</a>
+                    <a class="dropdown-item" href="/journals">Study Journal</a>
                     <a class="dropdown-item" href="/favorites">Favorites</a>
                   </div>
                 <li class="nav-item">

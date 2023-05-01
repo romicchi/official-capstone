@@ -14,7 +14,7 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        $bsit = Course::where('subjectName', 'BSIT')->first();
+        $bsit = Course::where('courseName', 'BSIT')->first();
 
         Subject::create([
             'course_id' => $bsit->id,

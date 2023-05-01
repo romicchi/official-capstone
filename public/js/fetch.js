@@ -15,7 +15,7 @@ collegeSelect.addEventListener('change', () => {
                 courses.forEach(course => {
                     const option = document.createElement('option');
                     option.value = course.id;
-                    option.textContent = course.subjectName;
+                    option.textContent = course.courseName;
                     courseSelect.appendChild(option);
                 });
 

@@ -21,46 +21,43 @@ class CourseSeeder extends Seeder
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BSIT',
+            'courseName' => 'BSIT',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BACOMM',
+            'courseName' => 'BACOMM',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BAEL',
+            'courseName' => 'BAEL',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BAPOS',
+            'courseName' => 'BAPOS',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BLIS',
+            'courseName' => 'BLIS',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BMME',
+            'courseName' => 'BMME',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BSBIO',
+            'courseName' => 'BSBIO',
         ]);
 
         Course::create([
             'college_id' => $cas->id,
-            'subjectName' => 'BSSW',
+            'courseName' => 'BSSW',
         ]);
 
-        
-
-        // Add more courses and associate them with the appropriate college
     }
 }
