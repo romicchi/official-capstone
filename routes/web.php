@@ -54,10 +54,11 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('/adminpage', function () {
         return view('administrator.adminpage');
     })->name('adminpage');
-    
-    Route::get('/resourcemanage', function () {
-        return view('administrator.resourcemanage');
-    })->name('resourcemanage'); 
+
+    Route::get('/adminresourcemanage', function () {
+        return view('administrator.adminresourcemanage');
+    })->name('adminresourcemanage'); 
+    Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
     
     Route::get('usermanage',[UsermanageController::class, 'show'])->name('usermanage');
     Route::get('usermanage/verify-users',[UsermanageController::class, 'verifyUsers'])->name('verify-users');
@@ -130,19 +131,25 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:teacher']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
     });
+    Route::post('/resources', [ResourceController::class, 'storeResource'])->name('resources.store');
+
     // Route to get subjects by course ID
     Route::get('/api/subjects/{courseId}', [SubjectController::class, 'getSubjectsByCourse']);
     
     // Route to get courses by college ID
     Route::get('/api/courses/{collegeId}', [CourseController::class, 'getCoursesByCollege']);
+
+    Route::delete('/resources/{resource}', [ResourceController::class, 'destroy'])->name('resources.destroy');
+    Route::get('/resources/{resource}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
+    Route::put('/resources/{resource}', [ResourceController::class, 'update'])->name('resources.update');
 });
 
 // -------------------------- VERIFIER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:programcoordinator,departmentchair']], function () {
-        Route::get('/resmanage', function () {
-            return view('resmanage');
-        })->name('resmanage');
+        Route::get('/resourcemanage', 'App\Http\Controllers\ResourceController@showResourceManage')->name('resourcemanage');
+        Route::put('/resources/{resource}/approve', [ResourceController::class, 'approve'])->name('resources.approve');
+        Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'disapprove'])->name('resources.disapprove');
     });
 });
 

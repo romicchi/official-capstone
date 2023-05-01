@@ -80,7 +80,7 @@
                 <!-- Button available for the following roles only -->
                 @if (auth()->user()->role === 'programcoordinator' || auth()->user()->role === 'departmentchair')
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ route('resmanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Manage</a>
+                  <a class="nav-link" href="{{ route('resourcemanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Manage</a>
                 </li>
                 @endif
 
