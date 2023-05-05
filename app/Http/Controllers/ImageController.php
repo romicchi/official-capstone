@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Auth as FirebaseAuth;
+use Kreait\Firebase\Auth\SignInResult\SignInResult;
+use Kreait\Firebase\Exception\FirebaseException;
+use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Storage\StorageClient;
 use App\Models\Image;
+use Session;
 
 class ImageController extends Controller
 {
     /**
-     * Show the teacher management page.
+     * Show the form for managing images.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function manage()
     {
         $files = Image::all();
 
@@ -21,71 +28,70 @@ class ImageController extends Controller
     }
 
     /**
-     * Upload a file to Firebase Storage.
+     * Handle file upload and save metadata to database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function uploadFile(Request $request)
+    public function upload(Request $request)
     {
-        // Validate file input
-        $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,mp4|max:10240',
-        ]);
-
-        // Store file in Firebase Storage
-        $path = $request->file('file')->store('images', 'local');
-        $url = Storage::disk('local')->url($path);
-        $type = $request->file('file')->getMimeType();
-
-        // Save file metadata to database
-        $file = new Image;
-        $file->name = $request->file('file')->getClientOriginalName();
-        $file->subject = '';
-        $file->about = '';
-        $file->url = $url;
-        $file->type = $type;
-        $file->save();
-
-        return redirect()->back()->with('success', 'File uploaded successfully!');
+      $request->validate([
+        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:2048',
+        'title' => 'required|string|max:255',
+        'topics' => 'nullable|string|max:255',
+        'keywords' => 'nullable|string|max:255',
+        'owners' => 'nullable|string|max:255',
+        'description' => 'nullable|string|max:255',
+    ]);
+    
+    $firebase_storage_path = 'images/';
+    $file = $request->file('file');
+    $extension = $file->getClientOriginalExtension();
+    $filename = uniqid() . '.' . $extension;
+    $localPath = storage_path('app/' . $file->storeAs('public', $filename));
+    
+    $uploadedFile = fopen($localPath, 'r');
+    
+    app('firebase.storage')->getBucket()->upload($uploadedFile, [
+        'name' => $firebase_storage_path . $filename,
+    ]);
+    
+    $file = $request->file('file');
+    $path = $file->store('public');
+    $url = Storage::url($path);
+    $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
+    
+    $image = new Image;
+    $image->title = $request->title;
+    $image->topics = $request->topics;
+    $image->keywords = $request->keywords;
+    $image->owners = $request->owners;
+    $image->description = $request->description;
+    $image->url = $url;
+    $image->save();
+    
+    return redirect()->back()->with('success', 'File uploaded successfully.');
     }
-
+    
     /**
-     * Save metadata of a file.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function saveMetadata(Request $request)
-    {
-        // Find file by ID
-        $file = Image::find($request->input('id'));
-
-        // Update file metadata
-        $file->subject = $request->input('subject');
-        $file->about = $request->input('about');
-        $file->save();
-
-        return redirect()->back()->with('success', 'Metadata saved successfully!');
-    }
-
-    /**
-     * Delete a file from Firebase Storage and the database.
+     * Delete the file and its metadata.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deleteFile($id)
-    {
-        // Find file by ID
-        $file = Image::find($id);
+    public function delete($id)
+{
+    $image = Image::findOrFail($id);
 
-        // Delete file from Firebase Storage
-        Storage::disk('local')->delete($file->url);
+    // Delete Firebase Storage bucket file
+    $firebase_storage_path = 'images/';
+    $filename = basename(parse_url($image->url, PHP_URL_PATH));
+    app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->delete();
 
-        // Delete file from database
-        $file->delete();
+    // Delete MySQL data
+    $image->delete();
 
-        return redirect()->back()->with('success', 'File deleted successfully!');
-    }
+    return redirect()->back()->with('success', 'File deleted successfully.');
+}
+
 }

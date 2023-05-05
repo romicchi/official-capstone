@@ -9,5 +9,16 @@ class Image extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'subject', 'about', 'url', 'type'];
+    // Define table name
+    protected $table = 'files';
+
+    // Define fillable columns
+    protected $fillable = [
+        'title',
+        'topics',
+        'keywords',
+        'owners',
+        'description',
+        'url'
+    ];
 }

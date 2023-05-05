@@ -19,8 +19,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot()
     {
-        View::share('channels', Channel::all()); //comment if you want to run migrate in a new environment
+ 
+        View::share('channels', Channel::all()); 
+        
+        //comment if you want to run migrate in a new environment
     }
 }

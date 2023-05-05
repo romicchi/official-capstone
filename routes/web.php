@@ -143,29 +143,9 @@ Route::group(['middleware' => ['auth', 'student_teacher']], function () {
     });
 });
 
-// Show the teacher management page
-Route::get('/teachermanage', [ImageController::class, 'index'])->name('teachermanage');
-
-// Upload a file to Firebase Storage
-Route::post('/uploadfile', [ImageController::class, 'uploadFile'])->name('uploadfile');
-
-// Save metadata of a file
-Route::post('/savemetadata', [ImageController::class, 'saveMetadata'])->name('savemetadata');
-
-// Delete a file from Firebase Storage and the database
-Route::get('/deletefile/{id}', [ImageController::class, 'deleteFile'])->name('deletefile');
-
-// Upload a file from Firebase Storage and the database
-Route::post('/uploadfile', [ImageController::class, 'uploadFile'])->name('upload.file');
-
-// Save metadata of a file
-Route::post('/savemetadata', [ImageController::class, 'saveMetadata'])->name('save.metadata');
-
-Route::get('/delete/{id}', [ImageController::class, 'deleteFile'])->name('delete.file');
-
-
-
-
+Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
+Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
+Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
 
 
 
