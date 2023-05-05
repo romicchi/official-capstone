@@ -55,11 +55,11 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
         return view('administrator.adminpage');
     })->name('adminpage');
 
-    Route::get('/adminresourcemanage', function () {
-        return view('administrator.adminresourcemanage');
-    })->name('adminresourcemanage'); 
     Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
-    
+    Route::put('/resources/{resource}/approve', [ResourceController::class, 'adminapprove'])->name('adminresources.approve');
+    Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'admindisapprove'])->name('adminresources.disapprove');
+    Route::get('/resources/search', [ResourceController::class, 'adminsearchResources'])->name('adminresources.search');
+
     Route::get('usermanage',[UsermanageController::class, 'show'])->name('usermanage');
     Route::get('usermanage/verify-users',[UsermanageController::class, 'verifyUsers'])->name('verify-users');
     Route::post('usermanage/verify-users',[UsermanageController::class, 'postVerifyUsers'])->name('verify-users.post');
@@ -117,10 +117,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     });
     
     // SUBJECTS
-    Route::get('/quantitative', function () {
-        return view('subjects.quantitative');
-    });
-
+    Route::get('/quantitative', [ResourceController::class, 'showSubjectResources'])->name('quantitative.index');
 
 
 }); 
@@ -146,10 +143,11 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 
 // -------------------------- VERIFIER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:programcoordinator,departmentchair']], function () {
+    Route::group(['middleware' => ['role:programcoordinator,departmentchair,admin']], function () {
         Route::get('/resourcemanage', 'App\Http\Controllers\ResourceController@showResourceManage')->name('resourcemanage');
         Route::put('/resources/{resource}/approve', [ResourceController::class, 'approve'])->name('resources.approve');
         Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'disapprove'])->name('resources.disapprove');
+        Route::get('/resources/search', [ResourceController::class, 'searchResources'])->name('resources.search');
     });
 });
 

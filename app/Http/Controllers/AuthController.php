@@ -58,13 +58,15 @@ class AuthController extends Controller
 
     function registerPost(Request $request){
         $request->validate([
-            'name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'role' => 'required|in:student,teacher'
         ]);
 
-        $data['name'] = $request->name; //assign the name fron the request variable to data variable
+        $data['firstname'] = $request->firstname; //assign the name from the request variable to data variable
+        $data['lastname'] = $request->lastname;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role'] = $request->input('role');

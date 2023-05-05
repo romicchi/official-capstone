@@ -5,13 +5,19 @@
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
-<div class="dropdown">
-  <input class="form-control-sm" id="myInput" type="text" placeholder="Search..">
+<!-- Search Bar -->
+<div class="d-flex justify-content-end my-1">
+  <form class="form-inline" method="GET" action="{{ route('resources.search') }}">
+    <div class="input-group" style="max-width: 250px;">
+      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
+      <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+    </div>
+  </form>
 </div>
 
 <center>
 
-	<form class="table-responsive table-wrapper">
+	<div class="table-responsive table-wrapper">
 	<table class="table table-bordered table-hover">
 		<thead>
 		<tr>
@@ -37,11 +43,11 @@
                 <td>{{ $resource->subject->subjectName }}</td>
                 <td>{{ $resource->description }}</td>
 				<td>
-            @if ($resource->resourceStatus == 1)
-                <span class="badge badge-success">Approved</span>
-            @else
-                <span class="badge badge-warning">Pending</span>
-            @endif
+					@if ($resource->resourceStatus == 1)
+                    <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+                    @else
+                    <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+					@endif
         </td>
         <td>
 			<form action="{{ route('resources.approve', $resource->id) }}" method="POST" style="display: inline-block">
@@ -59,7 +65,11 @@
 			@endforeach
 		</tbody>
 	</table>
-	</form>
+</div>
+	<!-- Pagination links -->
+	<div class="d-flex justify-content-center">
+    	{{ $resources->links('pagination::bootstrap-4') }}
+	</div>
 </center>
 
 

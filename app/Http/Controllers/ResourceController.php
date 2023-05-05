@@ -8,6 +8,10 @@ use App\Models\Course;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Resource;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
+
+
 
 class ResourceController extends Controller
 {
@@ -16,9 +20,10 @@ class ResourceController extends Controller
         //
     }
 
+    //--------------TEACHER-----------------//
     public function showTeacherManage()
     {
-        $resources = Resource::all();
+        $resources = Resource::paginate(10);
         $colleges = College::all();
         $courses = Course::all();
         $subjects = Subject::all();
@@ -26,26 +31,7 @@ class ResourceController extends Controller
         return view('teacher.teachermanage', compact('resources', 'colleges', 'courses', 'subjects'));
     }
 
-    public function showResourceManage()
-    {
-        $resources = Resource::all();
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
     
-        return view('resourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
-    }
-
-    public function showAdminResourceManage()
-    {
-        $resources = Resource::all();
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
-    
-        return view('administrator.adminresourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
-    }
-
     public function getCoursesByCollege($collegeId)
     {
         $courses = Course::where('college_id', $collegeId)->get();
@@ -65,6 +51,7 @@ class ResourceController extends Controller
         //
     }
 
+    // Store resource function for Teacher
     public function storeResource(Request $request)
     {
     // Validate the form data
@@ -132,6 +119,37 @@ class ResourceController extends Controller
         return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
     }
 
+    //-------DEPARTMENTCHAIR-PROGCOORDINATOR--------------//
+    public function showResourceManage(Request $request)
+    {
+        $resources = Resource::paginate(5);
+        $colleges = College::all();
+        $courses = Course::all();
+        $subjects = Subject::all();
+    
+        return view('resourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
+    }
+    
+    public function searchResources(Request $request)
+    {
+        $query = $request->input('query');
+        $resources = Resource::where('resourceStatus', 0)
+            ->orWhere('resourceStatus', 1)
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where(function ($queryBuilder) use ($query) {
+                    $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
+                        ->orWhere('author', 'LIKE', '%' . $query . '%')
+                        ->orWhere('created_at', 'LIKE', '%' . $query . '%');
+                })
+                ->orWhereHas('subject', function ($queryBuilder) use ($query) {
+                    $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
+                });
+            })
+            ->get();
+
+        return view('resourcemanage', compact('resources'));
+    }
+
     public function approve(Resource $resource)
     {
         $resource->resourceStatus = 1;
@@ -148,6 +166,65 @@ class ResourceController extends Controller
          return redirect()->route('resourcemanage')->with('success', 'Resource has been disapproved.');
      }
 
+     //--------------ADMIN-----------------//
+    public function showAdminResourceManage()
+    {
+        $resources = Resource::paginate(10);
+        $colleges = College::all();
+        $courses = Course::all();
+        $subjects = Subject::all();
+    
+        return view('administrator.adminresourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
+    }
+    public function adminapprove(Resource $resource)
+    {
+        $resource->resourceStatus = 1;
+        $resource->save();
+    
+        return redirect()->route('adminresourcemanage')->with('success', 'Resource has been approved.');
+    }
 
+    public function admindisapprove(Resource $resource)
+     {
+         $resource->resourceStatus = 0;
+         $resource->save();
+
+         return redirect()->route('adminresourcemanage')->with('success', 'Resource has been disapproved.');
+     }
+     public function adminsearchResources(Request $request)
+     {
+         $query = $request->input('query');
+         $resources = Resource::where('resourceStatus', 0)
+             ->orWhere('resourceStatus', 1)
+             ->where(function ($queryBuilder) use ($query) {
+                 $queryBuilder->where(function ($queryBuilder) use ($query) {
+                     $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
+                         ->orWhere('author', 'LIKE', '%' . $query . '%')
+                         ->orWhere('created_at', 'LIKE', '%' . $query . '%');
+                 })
+                 ->orWhereHas('subject', function ($queryBuilder) use ($query) {
+                     $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
+                 });
+             })
+             ->paginate(10);
+     
+         return view('administrator.adminresourcemanage', compact('resources'));
+     }
+    
+     
+
+
+    //---------Subject Resources----------//
+    public function showSubjectResources(Subject $subject)
+    {
+        $resources = Resource::paginate(10);
+        $colleges = College::all();
+        $courses = Course::all();
+        $subjects = Subject::all();
+    
+        return view('subjects.quantitative', compact('resources', 'colleges', 'courses', 'subjects'));
+    }
 }
+
+
 

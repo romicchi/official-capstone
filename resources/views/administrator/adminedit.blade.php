@@ -16,9 +16,16 @@
         <label for="email">Email:</label>
         <input class="form-control border-0 rounded-0" type="text" name="email" value="{{ $users->email }}" required>
       </div>
+
       <div class="form-group">
-        <label for="role">Role:</label>
-        <input class="form-control border-0 rounded-0" type="text" name="role" value="{{ $users->role }}" required>
+        <label for="role">Role of the user:</label>
+        <select class="form-control" id="role" name="role">
+			<option value="student">Student</option>
+			<option value="teacher">Teacher</option>
+			<option value="programcoordinator">Program Coordinator</option>
+			<option value="departmentchair">Department Chair</option>
+      <option value="admin">Admin</option>
+        </select>
       </div>
       <div style="display: flex;">
         <button type="submit" class="btn btn-primary" style="flex: 1;">Update</button>

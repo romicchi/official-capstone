@@ -7,6 +7,8 @@ use App\Models\Discussion;
 use App\Models\Channel; 
 use Illuminate\Support\Str;
 use App\Http\Requests\CreateDiscussionRequest;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class DiscussionsController extends Controller
 {
@@ -22,8 +24,14 @@ class DiscussionsController extends Controller
      */
     public function index()
     {
+        Paginator::useBootstrap(); // Enable Bootstrap pagination style
+    
+        $discussions = Discussion::filterByChannels()->paginate(10); // Change the pagination for each Channel
+        
+        $discussions->withPath(route('discussions.index')); // Set the path for the pagination links
+        
         return view('discussions.index', [
-            'discussions' => Discussion::filterByChannels()->paginate(8) //change the pagination for each Channel
+            'discussions' => $discussions
         ]);
     }
 

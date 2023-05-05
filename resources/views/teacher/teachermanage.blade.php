@@ -73,66 +73,37 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Pending Resources</h4>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>College</th>
-                    <th>Course</th>
-                    <th>Subject</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($resources as $resource)
-                  @if ($resource->resourceStatus == '0')
-                  <tr>
-                    <td>{{ $resource->title }}</td>
-                    <td>{{ $resource->author }}</td>
-                    <td>{{ $resource->college->collegeName }}</td>
-                    <td>{{ $resource->course->courseName }}</td>
-                    <td>{{ $resource->subject->subjectName }}</td>
-                    <td>{{ $resource->description }}</td>
-                    <td>{{ $resource->resourceStatus }}</td>
-                    <td>
-                        <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                     </td>
-                  </tr>
-                  @endif
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Verified Resources</h4>
+              <div class="table-responsive">
                 <table class="table">
                   <thead>
                     <tr>
                       <th>Title</th>
                       <th>Author</th>
+                      <th>College</th>
+                      <th>Course</th>
+                      <th>Subject</th>
                       <th>Description</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($resources as $resource)
-                    @if ($resource->resourceStatus == '1')
+                    @if ($resource->resourceStatus == '0')
                     <tr>
                       <td>{{ $resource->title }}</td>
                       <td>{{ $resource->author }}</td>
+                      <td>{{ $resource->college->collegeName }}</td>
+                      <td>{{ $resource->course->courseName }}</td>
+                      <td>{{ $resource->subject->subjectName }}</td>
                       <td>{{ $resource->description }}</td>
+                      <td>
+                        @if ($resource->resourceStatus == 1)
+                        <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+                        @else
+                        <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+                        @endif
+                      </td>
                       <td>
                         <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
@@ -150,6 +121,55 @@
             </div>
           </div>
         </div>
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Verified Resources</h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Author</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @foreach($resources as $resource)
+                    @if ($resource->resourceStatus == '1')
+                    <tr>
+                      <td>{{ $resource->title }}</td>
+                      <td>{{ $resource->author }}</td>
+                      <td>{{ $resource->description }}</td>
+                      <td>
+                        @if ($resource->resourceStatus == 1)
+                        <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+                        @else
+                        <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+                        @endif
+                      </td>
+                      <td>
+                        <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                    @endif
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <script src="{{ asset('js/fetch.js') }}"></script>
