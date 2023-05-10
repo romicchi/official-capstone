@@ -2,100 +2,136 @@
 
 @yield('usernav')
 
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">{{ __('Teacher Management') }}</div>
 
-    <!-- Teacher Resource Table -->
-    <section class="resource-management">
-  <h2>Management Resources</h2>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Add Resource</h4>
-          <form>
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input type="text" class="form-control" id="title" name="title">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('teachermanage.upload') }}" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
+                            <div class="col-md-9">
+                                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
+                                @error('file')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="title" class="col-md-3 col-form-label text-md-right">{{ __('Title') }}</label>
+                            <div class="col-md-9">
+                                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" required>
+                                @error('title')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="topics" class="col-md-3 col-form-label text-md-right">{{ __('Topics') }}</label>
+                            <div class="col-md-9">
+                                <input id="topics" type="text" class="form-control @error('topics') is-invalid @enderror" name="topics" required>
+                                @error('topics')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="keywords" class="col-md-3 col-form-label text-md-right">{{ __('Keywords') }}</label>
+                            <div class="col-md-9">
+                                <input id="keywords" type="text" class="form-control @error('keywords') is-invalid @enderror" name="keywords" required>
+                                @error('keywords')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="owners" class="col-md-3 col-form-label text-md-right">{{ __('Owners') }}</label>
+                            <div class="col-md-9">
+                                <input id="owners" type="text" class="form-control @error('owners') is-invalid @enderror" name="owners" required>
+                                @error('owners')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="description" class="col-md-3 col-form-label text-md-right">{{ __('Description') }}</label>
+                                </label>
+                            <div class="col-md-9">
+                                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" required></textarea>
+                                @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-9 offset-md-3">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Upload') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('Title') }}</th>
+                                    <th>{{ __('Topics') }}</th>
+                                    <th>{{ __('Keywords') }}</th>
+                                    <th>{{ __('Owners') }}</th>
+                                    <th>{{ __('Description') }}</th>
+                                    <th>{{ __('File URL') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($files as $file)
+                                    <tr>
+                                        <td>{{ $file->title }}</td>
+                                        <td>{{ $file->topics }}</td>
+                                        <td>{{ $file->keywords }}</td>
+                                        <td>{{ $file->owners }}</td>
+                                        <td>{{ $file->description }}</td>
+                                        <td><a href="{{ $file->url }}" target="_blank">{{ Str::limit($file->url, 30) }}</a></td>
+                                        <td>
+                                            <a href="{{ $file->url }}" target="_blank" class="btn btn-primary">&nbsp;View&nbsp;&nbsp;</a>
+                                            <form action="{{ route('file.delete', ['id' => $file->id]) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="topic">Topic(s)</label>
-              <input type="text" class="form-control" id="topic" name="topic">
-            </div>
-            <div class="form-group">
-              <label for="keywords">Keywords</label>
-              <input type="text" class="form-control" id="keywords" name="keywords">
-            </div>
-            <div class="form-group">
-              <label for="author">Owner(s)</label>
-              <input type="text" class="form-control" id="author" name="author">
-            </div>
-            <div class="form-group">
-              <label for="description">Description/Summary</label>
-              <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                 <label for="course">Course</label>
-                 <select class="form-control" id="course" name="course">
-                     <option value="">Select Course</option>
-                     @foreach ($course as $course)
-                         <option value="{{ $course->id }}">{{ $course->subjectName }}</option>
-                     @endforeach
-                 </select>
-             </div>
-             <div class="form-group">
-                 <label for="subject">Subject</label>
-                 <select class="form-control" id="subject" name="subject">
-                     <option value="">Select Subject</option>
-                     @foreach ($subject as $subject)
-                         <option value="{{ $subject->id }}">{{ $subject->subjectName }}</option>
-                     @endforeach
-                 </select>
-             </div>
-            <div class="form-group">
-              <label for="resourceType">File</label>
-              <input type="file" class="form-control-file" id="resourceType" name="resourceType">
-            </div>
-            <button type="submit" class="btn btn-primary">Add</button>
-          </form>
         </div>
-      </div>
     </div>
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">Resource List</h4>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Description</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Resource 1</td>
-                <td>John Doe</td>
-                <td>Lorem ipsum dolor sit amet</td>
-                <td>
-                  <a href="#" class="btn btn-primary">Edit</a>
-                  <a href="#" class="btn btn-danger">Delete</a>
-                </td>
-              </tr>
-              <tr>
-                <td>Resource 2</td>
-                <td>Jane Doe</td>
-                <td>Consectetur adipiscing elit</td>
-                <td>
-                  <a href="#" class="btn btn-primary">Edit</a>
-                  <a href="#" class="btn btn-danger">Delete</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+</div>

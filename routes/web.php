@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UsermanageController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\AuthenticatedController;
 use App\Http\Controllers\ResourceController;
@@ -116,6 +117,11 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         Route::get('/teachermanage', function () {
             return view('teachermanage');
         });
+
+    // -------------------------- TEACHER UPLOAD --------------------------------//
+        Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
+        Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
+        Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
         Route::get('/teachermanage',[ResourceController::class, 'showTeacherManage'])->name('teachermanage');
     });
 });
@@ -128,7 +134,6 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         })->name('resmanage');
     });
 });
-
 
 
 
