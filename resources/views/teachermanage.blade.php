@@ -14,7 +14,7 @@
 
                             <div class="form-group row">
                                 <label for="file" class="col-md-4 col-form-label text-md-right">{{ __('Choose File') }}</label>
-
+                                
                                 <div class="col-md-6">
                                     <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
 
@@ -126,12 +126,12 @@
                                             <td>{{ $file->keywords }}</td>
                                             <td>{{ $file->owners }}</td>
                                             <td>{{ $file->description }}</td>
-                                            <td><a href="{{ $file->url }}" target="_blank">{{ $file->url }}</a></td>
+                                            <td><a href="{{ $file->url }}" target="_blank">{{ Str::limit($file->url, 30) }}</a></td>
                                             <td>
                                             <form action="{{ route('file.delete', ['id' => $file->id]) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                <button type="submit" class="btn btn-danger">Delete</button>
                                                 </form>
                                             </td>>
                                         </tr>

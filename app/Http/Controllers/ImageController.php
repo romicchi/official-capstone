@@ -36,7 +36,7 @@ class ImageController extends Controller
     public function upload(Request $request)
     {
       $request->validate([
-        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:2048',
+        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:8192',
         'title' => 'required|string|max:255',
         'topics' => 'nullable|string|max:255',
         'keywords' => 'nullable|string|max:255',
