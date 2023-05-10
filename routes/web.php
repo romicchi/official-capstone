@@ -117,12 +117,6 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         Route::get('/teachermanage', function () {
             return view('teachermanage');
         });
-
-    // -------------------------- TEACHER UPLOAD --------------------------------//
-        Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
-        Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
-        Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
-        Route::get('/teachermanage',[ResourceController::class, 'showTeacherManage'])->name('teachermanage');
     });
 });
 
@@ -134,6 +128,32 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         })->name('resmanage');
     });
 });
+
+
+
+
+
+
+
+Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
+Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
+Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
+
+
+
+
+
+
+
+
+
+
+Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
+Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
+Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
+
+
+
 
 
 
