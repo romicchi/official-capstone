@@ -33,46 +33,49 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // Upload file to Firebase Storage
     public function upload(Request $request)
     {
-      $request->validate([
-        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:8192',
-        'title' => 'required|string|max:255',
-        'topics' => 'nullable|string|max:255',
-        'keywords' => 'nullable|string|max:255',
-        'owners' => 'nullable|string|max:255',
-        'description' => 'nullable|string|max:255',
-    ]);
-    
-    $firebase_storage_path = 'images/';
-    $file = $request->file('file');
-    $extension = $file->getClientOriginalExtension();
-    $filename = uniqid() . '.' . $extension;
-    $localPath = storage_path('app/' . $file->storeAs('public', $filename));
-    
-    $uploadedFile = fopen($localPath, 'r');
-    
-    app('firebase.storage')->getBucket()->upload($uploadedFile, [
-        'name' => $firebase_storage_path . $filename,
-    ]);
-    
-    $file = $request->file('file');
-    $path = $file->store('public');
-    $url = Storage::url($path);
-    $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
-    
-    $image = new Image;
-    $image->title = $request->title;
-    $image->topics = $request->topics;
-    $image->keywords = $request->keywords;
-    $image->owners = $request->owners;
-    $image->description = $request->description;
-    $image->url = $url;
-    $image->save();
-    
-    return redirect()->back()->with('success', 'File uploaded successfully.');
+        $request->validate([
+            'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:8192',
+            'title' => 'required|string|max:255',
+            'topics' => 'nullable|string|max:255',
+            'keywords' => 'nullable|string|max:255',
+            'owners' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
+        ]);
+
+        $firebase_storage_path = 'images/';
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $filename = uniqid() . '.' . $extension;
+        $localPath = storage_path('app/' . $file->storeAs('public', $filename));
+
+        $uploadedFile = fopen($localPath, 'r');
+
+        app('firebase.storage')->getBucket()->upload($uploadedFile, [
+            'name' => $firebase_storage_path . $filename,
+        ]);
+
+        $file = $request->file('file');
+        $path = $file->store('public');
+        $url = Storage::url($path);
+        $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
+
+        $image = new Image;
+        $image->title = $request->title;
+        $image->topics = $request->topics;
+        $image->keywords = $request->keywords;
+        $image->owners = $request->owners;
+        $image->description = $request->description;
+        $image->url = $url;
+        $image->extension = $extension; // Add extension to the Image model
+        $image->save();
+
+        return redirect()->back()->with('success', 'File uploaded successfully.');
     }
-    
+
     /**
      * Delete the file and its metadata.
      *
@@ -92,6 +95,5 @@ class ImageController extends Controller
     $image->delete();
 
     return redirect()->back()->with('success', 'File deleted successfully.');
-}
-
+    }
 }

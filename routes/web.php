@@ -129,6 +129,11 @@ Route::group(['middleware' => ['auth', 'student_teacher']], function () {
         Route::get('/teachermanage', function () {
             return view('teachermanage');
         });
+
+    // -------------------------- TEACHER UPLOAD --------------------------------//
+        Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
+        Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
+        Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
     });
 });
 
@@ -142,19 +147,6 @@ Route::group(['middleware' => ['auth', 'student_teacher']], function () {
     Route::group(['middleware' => ['role:departmentchair']], function () {
     });
 });
-
-Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
-Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
-Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
-
-
-
-
-
-
-
-
-
 
 //ALWAYS! php artisan optimize when modifying something inside this web.php file
 
