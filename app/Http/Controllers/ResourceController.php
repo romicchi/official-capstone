@@ -145,7 +145,7 @@ class ResourceController extends Controller
                     $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
                 });
             })
-            ->get();
+            ->paginate(10);
 
         return view('resourcemanage', compact('resources'));
     }
