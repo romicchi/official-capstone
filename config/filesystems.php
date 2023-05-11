@@ -30,6 +30,20 @@ return [
 
     'disks' => [
 
+        'firebase' => [
+            'driver' => 'firebase',
+            'project_id' => env('FIREBASE_PROJECT_ID', ''),
+            'key_file' => env('FIREBASE_KEY_FILE', ''),
+            'bucket' => env('FIREBASE_STORAGE_BUCKET', ''),
+            'url' => env('FIREBASE_STORAGE_URL', ''),
+            'path_prefix' => env('FIREBASE_STORAGE_PATH_PREFIX', ''),
+            'cache_control' => env('FIREBASE_STORAGE_CACHE_CONTROL', ''),
+            'gcs' => [
+                'projectId' => env('FIREBASE_GCS_PROJECT_ID', ''),
+            ],
+            'visibility' => 'public',
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
@@ -38,11 +52,10 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'root' => public_path(),
+            'url' => env('APP_URL') . '/public',
             'visibility' => 'public',
-            'throw' => false,
-        ],
+         ],         
 
         's3' => [
             'driver' => 's3',
@@ -72,5 +85,6 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],
+    
 
 ];
