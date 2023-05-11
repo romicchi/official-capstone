@@ -7,6 +7,8 @@ use App\Models\Discussion;
 use App\Models\Channel; 
 use Illuminate\Support\Str;
 use App\Http\Requests\CreateDiscussionRequest;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class DiscussionsController extends Controller
 {
@@ -22,8 +24,14 @@ class DiscussionsController extends Controller
      */
     public function index()
     {
+        Paginator::useBootstrap(); // Enable Bootstrap pagination style
+    
+        $discussions = Discussion::filterByChannels()->paginate(10); // Change the pagination for each Channel
+        
+        $discussions->withPath(route('discussions.index')); // Set the path for the pagination links
+        
         return view('discussions.index', [
-            'discussions' => Discussion::filterByChannels()->paginate(8) //change the pagination for each Channel
+            'discussions' => $discussions
         ]);
     }
 
@@ -58,7 +66,8 @@ class DiscussionsController extends Controller
     public function show(Discussion $discussion) //default: show(string $id)
     {
         return view('discussions.show', [
-            'discussion' => $discussion 
+            'discussion' => $discussion,
+            'userId' => auth()->check() ? auth()->user()->id : null 
         ]);
     }
 
@@ -81,8 +90,16 @@ class DiscussionsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Discussion $discussion)
     {
-        //
+        // Check if the authenticated user is the owner of the discussion
+        if (auth()->user()->id !== $discussion->user_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $discussion->delete();
+
+        session()->flash('success', 'Discussion deleted.');
+        return redirect()->route('discussions.index');
     }
 }

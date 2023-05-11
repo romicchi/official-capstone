@@ -39,8 +39,8 @@
   @endif
                 <h1>Login</h1>
 				<div class="form-group">
-					<label for="email">Username/Email:</label>
-					<input type="text" class="form-control" id="email" name="email" placeholder="Enter Username/Email" required>
+					<label for="email">Email:</label>
+					<input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
 				</div>
 				<div class="form-group">
 					<label for="password">Password:</label>

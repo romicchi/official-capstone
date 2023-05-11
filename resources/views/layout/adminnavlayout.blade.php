@@ -20,7 +20,7 @@
                   <a class="nav-link" href="{{route('usermanage')}}">Manage User</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{{route('resourcemanage')}}">Manage Resources</a>
+                  <a class="nav-link" href="{{route('adminresourcemanage')}}">Manage Resources</a>
                   <li class="nav-item">
                   <a class="nav-link" href="#" onclick="confirmLogout()" style="cursor: pointer;"><img class="images1" src="{{ asset ('assets/img/logout.png') }}" style="width: 1vw;
                     height: 100%;

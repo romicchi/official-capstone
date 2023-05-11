@@ -10,7 +10,7 @@
   <form class="form-inline" type="GET" action="{{ route('search')}}">
     <div class="input-group" style="max-width: 250px;">
       <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
-      <button class="btn btn-success rounded-0" type="submit" id="search-btn">Search</button>
+      <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
     </div>
   </form>
 </div>
@@ -26,7 +26,8 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Username</th>
+        <th>Lastname</th>
+        <th>Firstname</th>
         <th>Email</th>
         <th>Role</th>
         <th>Verified</th>
@@ -45,10 +46,17 @@
         @if ($user->verified == '0')
           <tr>
             <td>{{ $user->id }}</td> 
-            <td>{{ $user->name }}</td>
+            <td>{{ $user->lastname }}</td>
+            <td>{{ $user->firstname }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>
-            <td>{{ $user->verified }}</td> 
+            <td>
+              @if ($user->Verified == 1)
+              <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+              @else
+              <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+              @endif
+            </td>
             <td>
               <button type="submit" name="verified_users[]" value="{{ $user->id }}" class="btn btn-primary">Approve</button>
             </td>
@@ -70,10 +78,10 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Username</th>
+        <th>Lastname</th>
+        <th>Firstname</th>        
         <th>Email</th>
         <th>Role</th>
-        <th>Verified</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
@@ -89,7 +97,8 @@
         @if ($user->verified == '1')
           <tr>
             <td>{{ $user->id }}</td> 
-            <td>{{ $user->name }}</td>
+            <td>{{ $user->lastname }}</td>
+            <td>{{ $user->firstname }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>
             <td>{{ $user->verified }}</td> 

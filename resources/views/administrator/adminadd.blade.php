@@ -32,8 +32,12 @@
       
     <h1>Add User</h1>
       <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Username" required>
+        <label for="firstname">Firstname:</label>
+        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Lastname:</label>
+        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" required>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
@@ -50,7 +54,7 @@
 			<option value="teacher">Teacher</option>
 			<option value="programcoordinator">Program Coordinator</option>
 			<option value="departmentchair">Department Chair</option>
-            <option value="admin">Admin</option>
+      <option value="admin">Admin</option>
         </select>
       </div>
       <div class="form-group">

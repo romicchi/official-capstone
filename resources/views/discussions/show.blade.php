@@ -46,8 +46,9 @@
                             </div>
                         </div>
                     @endforeach
+                    <!-- Paginate for Reply -->
                     <div class="pagination">
-                        {{ $discussion->replies()->paginate(3)->links() }}
+                        {{ $discussion->replies()->paginate(3)->links('pagination::bootstrap-4') }}
                     </div>
                     <div class="card my-4"> 
                         <div class="card-header">

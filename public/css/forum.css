@@ -1,11 +1,7 @@
-html {
-  background-color: yellow;
-}
-
 .btn-style {
     width: 100%;
 }
-
+/* 
 .pagination {
     display: inline-flex;
     list-style: none;
@@ -36,4 +32,4 @@ html {
     background-color: #007bff;
     color: #fff;
     border-color: #007bff;
-  }
+  } */

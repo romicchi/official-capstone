@@ -63,7 +63,7 @@
                     <img class="imgages" src="{{ asset ('assets/img/personal.png') }}"> Personal</a>
                   <div class="dropdown-menu" aria-labelledby="dropdown2">
                     <a class="dropdown-item" href="#">Notes History</a>
-                    <a class="dropdown-item" href="#">Study Journal</a>
+                    <a class="dropdown-item" href="/journals">Study Journal</a>
                     <a class="dropdown-item" href="/favorites">Favorites</a>
                   </div>
                 <li class="nav-item">
@@ -80,7 +80,7 @@
                 <!-- Button available for the following roles only -->
                 @if (auth()->user()->role === 'programcoordinator' || auth()->user()->role === 'departmentchair')
                 <li class="nav-item">
-                  <a class="nav-link" href="{{ route('resmanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Manage</a>
+                  <a class="nav-link" href="{{ route('resourcemanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Manage</a>
                 </li>
                 @endif
 

@@ -18,7 +18,7 @@
   <!-- Content -->
   <header>
 		<div class="dashboard">
-    <h2>Welcome to the User Dashboard, <strong>{{ Auth::user()->name }}</strong></h2>
+    <h2>Welcome to the User Dashboard, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
 			<p>Here you can manage your account, view statistics, history, and more.</p>
 		</div>
 	</header>
@@ -26,7 +26,7 @@
     
     <section class="personal-info">
         <h2>Personal Information</h2>
-        <p>Name: {{ Auth::user()->name }}</p>
+        <p>Name: {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
         <p>Email: {{ Auth::user()->email }}</p>
     </section>
 		

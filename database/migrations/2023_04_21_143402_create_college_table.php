@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subject', function (Blueprint $table) {
+        Schema::create('college', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('course_id'); // Foreign key for subjects table
-            $table->string('subjectName');
+            $table->string('collegeName');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subject');
+        Schema::dropIfExists('college');
     }
 };
