@@ -25,36 +25,52 @@ class AuthController extends Controller
         return view('register');
     }
 
-    function loginPost(Request $request) {
+    function loginPost(Request $request)
+    {
         $request->validate([
             'email' => 'required',
             'password' => 'required'
         ]);
-
+    
         $credentials = $request->only('email', 'password');
-        if(Auth::attempt($credentials)) {
-            // Update user's last activity timestamp
+        if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            // If user is not verified then redirect to login
+            if (!$user->verified) {
+                Auth::logout();
+                return redirect(route('login'))->with("error", "Your account is not yet verified. Please wait for the administrator to verify your user credentials. Thank you for your patience.");
+            }
+            
+            // Update user's last activity timestamp
             $user->last_activity = Carbon::now();
             $user->save();
-            
+    
+            if ($user->role === 'admin') {
+                // Redirect to admin page for admin user
+                return redirect()->intended(route('adminpage'));
+            }
+    
             return redirect()->intended(route('dashboard'));
         }
-        return redirect(route('login'))->with("error", "login credentials are not valid!"); //with("key", "error message") and inside the route is the name in get
+    
+        return redirect(route('login'))->with("error", "Account does not exist.");
     }
 
     function registerPost(Request $request){
         $request->validate([
-            'name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'role' => 'required|in:student,teacher'
         ]);
 
-        $data['name'] = $request->name; //assign the name fron the request variable to data variable
+        $data['firstname'] = $request->firstname; //assign the name from the request variable to data variable
+        $data['lastname'] = $request->lastname;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role'] = $request->input('role');
+        $data['verified'] = false; // Set the verified field to false
         $user = User::create($data); //this will create the user
 
          // update user's role to 'teacher' if the selected role is 'teacher'
@@ -67,7 +83,7 @@ class AuthController extends Controller
         return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get
         }
         // redirect to login after successfully registered
-        return redirect(route('login'))->with("success", "Registration success, you can now Login."); //with("key", "success message") and inside the route is the name in get
+        return redirect(route('login'))->with("success", "Registration successful. Please wait for verification."); //with("key", "success message") and inside the route is the name in get
         
     }
 

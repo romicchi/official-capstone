@@ -1,9 +1,17 @@
 @extends('layout.resourcelayout')
 @include('layout.usernav')
 
+@section('title', 'Quantitative Methods and Simulation')
 
-@yield('usernav')
-<h3 class="title-subject">@section('title','Quantitative Methods and Simulation')</h3>
+@section('usernav')
+    @include('layout.usernav')
+@show
+
+@section('resourcelayout')
+    @parent
+@endsection
+
+
 
 
 

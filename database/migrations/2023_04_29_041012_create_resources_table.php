@@ -18,8 +18,16 @@ return new class extends Migration
             $table->string('keywords');
             $table->string('author');
             $table->text('description');
-            $table->string('file');
+            $table->string('resourceType');
+            $table->unsignedBigInteger('college_id'); // Foreign key for college table
+            $table->unsignedBigInteger('subject_id'); // Foreign key for subjects table
+            $table->unsignedBigInteger('course_id'); // Foreign key for courses table
+            $table->boolean('resourceStatus')->default(false);
             $table->timestamps();
+
+            $table->foreign('college_id')->references('id')->on('college')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subject')->onDelete('cascade');
+            $table->foreign('course_id')->references('id')->on('course')->onDelete('cascade');
         });
     }
 

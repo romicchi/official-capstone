@@ -20,7 +20,8 @@ class UsermanageController extends Controller
     {
         // Validate the form data
         $validatedData = $request->validate([
-            'name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'role' => 'required|in:admin,student,teacher,programcoordinator,departmentchair',
@@ -28,7 +29,8 @@ class UsermanageController extends Controller
 
         // Create the new user
         $user = new User();
-        $user->name = $validatedData['name'];
+        $user->firstname = $validatedData['firstname'];
+        $user->lastname = $validatedData['lastname'];
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
         $user->role = $validatedData['role'];
@@ -44,6 +46,22 @@ class UsermanageController extends Controller
     {
         $userdata = User::all();
         return view('administrator.usermanage',['users'=>$userdata]);
+    }
+
+    function verifyUsers(){
+        $users = User::where('verified', false)->get();
+    
+        return view('administrator.usermanage', ['users' => $users]);
+    }
+    
+    function postVerifyUsers(Request $request){
+        $verifiedUserIds = $request->input('verified_users', []);
+        $rejectedUserIds = $request->input('rejected_users', []);
+    
+        User::whereIn('id', $verifiedUserIds)->update(['verified' => true]);
+        User::whereIn('id', $rejectedUserIds)->delete();
+    
+        return redirect()->route('usermanage')->with('success', 'Users verified successfully.');
     }
 
     //delete user function
@@ -65,7 +83,8 @@ class UsermanageController extends Controller
     public function update(Request $req) 
     {  
         $userdata = User::find($req->id);
-        $userdata->name = $req->name;
+        $userdata->firstname = $req->firstname;
+        $userdata->lastname = $req->lastname;
         $userdata->email = $req->email;
         $userdata->role = $req->role;
         $userdata->save();
@@ -73,11 +92,14 @@ class UsermanageController extends Controller
     }
 
     //search user function
-    public function search() 
+    public function search(Request $request)
     {
-        $search = $_GET['query'];
-        $userdata = User::where('name','like','%'.$search.'%')->get();
-        return view('administrator.usermanage',['users'=>$userdata]);
+        $search = $request->input('query');
+        $users = User::where('firstname', 'like', '%' . $search . '%')
+            ->orWhere('lastname', 'like', '%' . $search . '%')
+            ->get();
+            
+        return view('administrator.usermanage', ['users' => $users]);
     }
 
 }
