@@ -19,6 +19,8 @@
         @endsection
                 <!-- Jumbotron -->
     <div class="jumbotron" style="background-image: url({{ asset('assets/img/Background.png')}}">
+      <img class="lnu" src="{{ asset( 'assets/img/LNU.png') }}" alt="Description of the image">
+      <p class="lead">EDUCATIONAL RESOURCE POOL</p>
       <hr class="my-4">
     </div>
 

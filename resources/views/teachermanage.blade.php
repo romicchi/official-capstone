@@ -34,26 +34,8 @@
               <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
             <div class="form-group">
-                 <label for="course">Course</label>
-                 <select class="form-control" id="course" name="course">
-                     <option value="">Select Course</option>
-                     @foreach ($course as $course)
-                         <option value="{{ $course->id }}">{{ $course->subjectName }}</option>
-                     @endforeach
-                 </select>
-             </div>
-             <div class="form-group">
-                 <label for="subject">Subject</label>
-                 <select class="form-control" id="subject" name="subject">
-                     <option value="">Select Subject</option>
-                     @foreach ($subject as $subject)
-                         <option value="{{ $subject->id }}">{{ $subject->subjectName }}</option>
-                     @endforeach
-                 </select>
-             </div>
-            <div class="form-group">
-              <label for="resourceType">File</label>
-              <input type="file" class="form-control-file" id="resourceType" name="resourceType">
+              <label for="file">File</label>
+              <input type="file" class="form-control-file" id="file" name="file">
             </div>
             <button type="submit" class="btn btn-primary">Add</button>
           </form>

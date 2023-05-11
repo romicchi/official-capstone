@@ -1,50 +1,36 @@
-@include('layout.adminnavlayout')
+@extends('administrator.adminpage')
 
-@yield('adminnavbar')
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/admin.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
 <!-- Search Bar -->
 <div class="dropdown">
   <input class="form-control-sm" id="myInput" type="text" placeholder="Search..">
 </div>
 
-<center>
-
-	<form class="table-responsive table-wrapper">
-	<table class="table table-bordered table-hover">
-		<thead>
-		<tr>
-			<th>Title</th>
-			<th>Author</th>
-			<th>Date</th>
-            <th>Course</th>
-            <th>Subject</th>
-			      <th>Description</th>
-            <th>Status</th>
-		</tr>
-		</thead>
-		<tbody>
-			<!-- If empty this message will display -->
-			<!-- <tr>
-			<td colspan="6"><strong>No departmentchairs inside the table</strong></td>
-			</tr>       -->
-			<tr>
-				<td></td> 
-				<td></td>
-                <td></td>
-				<td></td>
-                <td></td>
-                <td></td>
-				<td><select class="form-control" id="status" name="status">
-          <option value="student">Pending</option>
-          <option value="teacher">Approve</option>
-          <option value="teacher">Disapproved</option>
-        </select></td>
-			</tr>
-		</tbody>
-	</table>
-	</form>
-</center>
-
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>ReID</th>
+          <th>Resources</th>
+          <th>Approve</th>
+          <th>Disapprove</th>
+        </tr>
+      </thead>
+      <tbody>
+      @forelse ($items as $item)
+          <tr>
+            <td>{{ $item.ReID }}</td>
+            <td>{{ $item.resources }}</td>
+            <td><a href="{{ route('update', $item->id) }}">Approve</a></td>
+            <td><a href="{{ route('delete', $item->id) }}">Disapprove</a></td>
+          </tr>
+          @empty 
+          <tr>
+            <td colspan="6">No items found.</td>
+          </tr>
+          @endforelse 
+      </tbody>
+    </table>
+  </div>

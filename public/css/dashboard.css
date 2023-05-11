@@ -29,19 +29,6 @@
   section {
     margin-bottom: 40px;
   }
-
-  .chart {
-
-    padding: 10px;
-    background-color: #fff;
-  }
-
-  #myChart {
-    max-width: 50%;
-    max-height: 50%;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-  }
   
   h2 {
     margin-top: 0;

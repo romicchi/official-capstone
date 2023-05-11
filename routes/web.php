@@ -4,9 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UsermanageController;
-use App\Http\Controllers\ChartController;
-use App\Http\Controllers\AuthenticatedController;
-use App\Http\Controllers\ResourceController;
 
 
 /*
@@ -55,8 +52,6 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     })->name('resourcemanage'); 
     
     Route::get('usermanage',[UsermanageController::class, 'show'])->name('usermanage');
-    Route::get('usermanage/verify-users',[UsermanageController::class, 'verifyUsers'])->name('verify-users');
-    Route::post('usermanage/verify-users',[UsermanageController::class, 'postVerifyUsers'])->name('verify-users.post');
 
     // -------------------------- ADD-UPDATE-DELETE-SEARCH --------------------------------//
     Route::get('delete/{id}',[UsermanageController::class, 'delete'])->name('delete');
@@ -68,7 +63,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 });
 
 // -------------------------- STUDENT-TEACHER-ADMIN --------------------------------//
-Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the user is login only he/she can see this 
+Route::group(['middleware' => 'auth', 'student_teacher'], function() { //if the user is login only he/she can see this 
     
     Route::resource('discussions', 'App\Http\Controllers\DiscussionsController');
     // discussion-discussionid-replies: This means that the replies will depend to discussions
@@ -82,13 +77,29 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
         return view('forum');
     })->name('forum');
 
-    Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');
+    // Route::get('/index', function () {
+    //     return view('discussions.index');
+    // })->name('index');
 
-    Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
+    // Route::get('/show', function () {
+    //     return view('discussions.show');
+    // })->name('show');
 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
     
     Route::get('/favorites', function () {
         return view('favorites');
+    });
+    
+    // LAYOUTS
+    Route::get('/subjectlayout', function () {
+        return view('layout.subjectlayout');
+    });
+    
+    Route::get('/resourcelayout', function () {
+        return view('layout.resourcelayout');
     });
     
     // COURSES
@@ -111,24 +122,30 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 
 // Special Route for Teacher Role only
 // -------------------------- TEACHER ACCESS --------------------------------//
-Route::group(['middleware' => ['auth', 'Authenticated']], function () {
+Route::group(['middleware' => ['auth', 'student_teacher']], function () {
     Route::group(['middleware' => ['role:teacher']], function () {
         Route::get('/teachermanage', function () {
             return view('teachermanage');
         });
-        Route::get('/teachermanage',[ResourceController::class, 'showTeacherManage'])->name('teachermanage');
     });
 });
 
 // -------------------------- VERIFIER ACCESS --------------------------------//
-Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:programcoordinator,departmentchair']], function () {
-        Route::get('/resmanage', function () {
-            return view('resmanage');
-        })->name('resmanage');
+Route::group(['middleware' => ['auth', 'student_teacher']], function () {
+    Route::group(['middleware' => ['role:programcoordinator']], function () {
+        Route::get('/teachermanage', function () {
+            return view('teachermanage');
+        });
     });
 });
 
+Route::group(['middleware' => ['auth', 'student_teacher']], function () {
+    Route::group(['middleware' => ['role:departmentchair']], function () {
+        Route::get('/teachermanage', function () {
+            return view('teachermanage');
+        });
+    });
+});
 
 
 
