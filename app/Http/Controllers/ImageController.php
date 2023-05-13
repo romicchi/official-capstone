@@ -20,12 +20,12 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function manage()
-    {
-        $files = Image::all();
+    // public function manage()
+    // {
+    //     $files = Image::all();
 
-        return view('teachermanage', compact('files'));
-    }
+    //     return view('teacher.teachermanage', compact('files'));
+    // }
 
     /**
      * Handle file upload and save metadata to database.
@@ -37,14 +37,9 @@ class ImageController extends Controller
     {
       $request->validate([
         'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:8192',
-        'title' => 'required|string|max:255',
-        'topics' => 'nullable|string|max:255',
-        'keywords' => 'nullable|string|max:255',
-        'owners' => 'nullable|string|max:255',
-        'description' => 'nullable|string|max:255',
     ]);
     
-    $firebase_storage_path = 'images/';
+    $firebase_storage_path = 'IDs/';
     $file = $request->file('file');
     $extension = $file->getClientOriginalExtension();
     $filename = uniqid() . '.' . $extension;
@@ -62,11 +57,6 @@ class ImageController extends Controller
     $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
     
     $image = new Image;
-    $image->title = $request->title;
-    $image->topics = $request->topics;
-    $image->keywords = $request->keywords;
-    $image->owners = $request->owners;
-    $image->description = $request->description;
     $image->url = $url;
     $image->save();
     

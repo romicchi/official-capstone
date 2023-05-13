@@ -4,21 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+
 
 class Image extends Model
 {
     use HasFactory;
 
     // Define table name
-    protected $table = 'files';
+    protected $table = 'schoolid';
 
     // Define fillable columns
     protected $fillable = [
-        'title',
-        'topics',
-        'keywords',
-        'owners',
-        'description',
-        'url'
+        'school_id'
     ];
 }

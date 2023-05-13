@@ -45,16 +45,16 @@
                     </tr>
                 </thead>
                 <tbody>
-					@foreach($resources as $resource)
+                @foreach ($resources as $resource)
                     <tr>
                         <td>{{ $resource->title }}</td>
                         <td>{{ $resource->author }}</td>
 						<td>{{ $resource->description }}</td>
-						<td></td>
-                        <td><a type="submit" class="btn btn-primary" href="">View</a>
-                        <a type="submit" class="btn btn-danger" href="">Download</a></td>
+                        <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
+                        <td><a class="btn btn-primary" href="/embed/{{ $resource->id }}">View</a>
+                        <a class="btn btn-danger" href="{{ $resource->url }}" target="_blank">Download</a>
                     </tr>
-					@endforeach
+                @endforeach
                 </tbody>
             </table>
         </form>

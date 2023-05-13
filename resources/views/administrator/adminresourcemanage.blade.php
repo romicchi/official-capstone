@@ -26,6 +26,7 @@
 			<th>College</th>
             <th>Course</th>
             <th>Subject</th>
+			<th>URL</th>
             <th>Status</th>
 			<th>Action</th>
 		</tr>
@@ -39,6 +40,7 @@
                 <td>{{ $resource->college->collegeName }}</td>
 				<td>{{ $resource->course->courseName }}</td>
                 <td>{{ $resource->subject->subjectName }}</td>
+				<td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
 				<td>
                     @if ($resource->resourceStatus == 1)
                     <span class="badge badge-success badge-lg" style="color: green;">Approved</span>

@@ -58,10 +58,17 @@
           <option value="teacher">Teacher</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="school_id">School ID:</label>
-        <input type="file" class="form-control-file" id="school_id" name="school_id" accept="image/*" required>
-      </div>
+      <div class="form-group row">
+                            <label for="id" class="col-form-label"></label>
+                            <div class="col-md-9">
+                                <input id="id" type="file" class="form-control @error('id') is-invalid @enderror" name="id" required autofocus>
+                                @error('file')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
       <button type="submit" class="btn btn-primary">Sign Up</button>
       <p><a href="/loginform">Already have an account?</a></p>
     </form>

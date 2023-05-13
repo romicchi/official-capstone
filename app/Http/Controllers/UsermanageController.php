@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use App\Models\Image;
 
 class UsermanageController extends Controller
 {
@@ -102,4 +104,10 @@ class UsermanageController extends Controller
         return view('administrator.usermanage', ['users' => $users]);
     }
 
+    public function index()
+    {
+        $users = User::with('image')->get(); // Retrieve all users with their associated images
+        
+        return view('users.index', compact('users'));
+    }
 }

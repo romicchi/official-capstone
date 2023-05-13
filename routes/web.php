@@ -43,7 +43,7 @@ Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.pos
 
 // -------------------------- REGISTER --------------------------------//
 Route::get('/register', [AuthController::class, 'registration'])->name('register');
-Route::post('/register', [AuthController::class, 'registerPost'])->name('register.post');
+Route::post('/register/upload', [AuthController::class, 'registerPost'])->name('register.post');
 
 // -------------------------- LOG-OUT --------------------------------//
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -130,11 +130,9 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
 
     // -------------------------- TEACHER UPLOAD --------------------------------//
-        Route::get('/teachermanage', [ImageController::class, 'manage'])->name('teachermanage');
-        Route::post('/teachermanage/upload', [ImageController::class, 'upload'])->name('teachermanage.upload');
-        Route::delete('/delete/{id}', [ImageController::class, 'delete'])->name('file.delete');
+   
     });
-    Route::post('/resources', [ResourceController::class, 'storeResource'])->name('resources.store');
+    Route::post('/teachermanage/upload', [ResourceController::class, 'storeResource'])->name('resources.store');
 
     // Route to get subjects by course ID
     Route::get('/api/subjects/{courseId}', [SubjectController::class, 'getSubjectsByCourse']);
@@ -157,7 +155,7 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     });
 });
 
-
+Route::get('/embed/{resource}', [ResourceController::class, 'showEmbed'])->name('embed');
 
 
 

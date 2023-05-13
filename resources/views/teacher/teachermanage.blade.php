@@ -58,11 +58,25 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="resourceType">File</label>
-              <input type="file" class="form-control-file" id="resourceType" name="resourceType" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <div class="form-group row">
+                            <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
+                            <div class="col-md-9">
+                                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
+                                @error('file')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+           
+                        <div class="form-group row mb-0">
+                            <div class="col-md-9 offset-md-3">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Upload') }}
+                                </button>
+                            </div>
+                        </div>
           </form>
         </div>
       </div>
@@ -83,6 +97,7 @@
                       <th>Course</th>
                       <th>Subject</th>
                       <th>Description</th>
+                      <th>URL</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -97,6 +112,7 @@
                       <td>{{ $resource->course->courseName }}</td>
                       <td>{{ $resource->subject->subjectName }}</td>
                       <td>{{ $resource->description }}</td>
+                      <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                       <td>
                         @if ($resource->resourceStatus == 1)
                         <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
@@ -132,6 +148,7 @@
                       <th>Title</th>
                       <th>Author</th>
                       <th>Description</th>
+                      <th>URL</th>
                       <th>Status</th>
                       <th>Action</th>
                     </tr>
@@ -143,6 +160,7 @@
                       <td>{{ $resource->title }}</td>
                       <td>{{ $resource->author }}</td>
                       <td>{{ $resource->description }}</td>
+                      <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                       <td>
                         @if ($resource->resourceStatus == 1)
                         <span class="badge badge-success badge-lg" style="color: green;">Approved</span>

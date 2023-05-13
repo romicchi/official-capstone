@@ -4,6 +4,31 @@
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
+<style>
+  /* Style for the overlay */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px); /* Apply the blur effect */
+  }
+
+  /* Style for the image */
+  .overlay img {
+    max-width: 80%;
+    max-height: 80%;
+    border: 2px solid #fff;
+    border-radius: 5px;
+  }
+</style>
+
 @if (is_countable($users) && count($users) > 0)
 <!-- Search Bar -->
 <div class="d-flex justify-content-end my-1">
@@ -30,6 +55,7 @@
         <th>Firstname</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Uploaded ID</th>
         <th>Verified</th>
         <th>Approve</th>
         <th>Reject</th>
@@ -39,7 +65,7 @@
       <!-- If empty this message will display -->
       @if ($users->where('verified', false)->isEmpty())
         <tr>
-          <td colspan="6"><strong>No unverified users inside the table</strong></td>
+          <td colspan="8"><strong>No unverified users inside the table</strong></td>
         </tr>
       @else     
       @foreach ($users as $user)
@@ -49,12 +75,17 @@
             <td>{{ $user->lastname }}</td>
             <td>{{ $user->firstname }}</td>
             <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
+            <td>{{ $user->role }}</td>    
+            <td>
+              <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
+                <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
+              </a>
+            </td>
             <td>
               @if ($user->Verified == 1)
-              <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+                <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
               @else
-              <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+                <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
               @endif
             </td>
             <td>
@@ -82,17 +113,18 @@
         <th>Firstname</th>        
         <th>Email</th>
         <th>Role</th>
+        <th>Uploaded ID</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
     </thead>
     <tbody>
-        <!-- If empty this message will display -->
-        @if (\App\Models\User::count() === 0)
+      <!-- If empty this message will display -->
+      @if (\App\Models\User::count() === 0)
         <tr>
-          <td colspan="6"><strong>No verified users inside the table</strong></td>
+          <td colspan="7"><strong>No verified users inside the table</strong></td>
         </tr>
-        @else      
+      @else      
       @foreach ($users as $user)
         @if ($user->verified == '1')
           <tr>
@@ -101,6 +133,12 @@
             <td>{{ $user->firstname }}</td>
             <td>{{ $user->email }}</td>
             <td>{{ $user->role }}</td>
+            <td>
+              <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
+                <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
+              </a>
+            </td>
+            <td>
             <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
             <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
           </tr>
@@ -123,6 +161,34 @@
 </div>
   <p>No users found</p>
 @endif
+
+<div class="overlay" id="image-overlay" onclick="closeImage()">
+  <img src="" alt="Uploaded ID" id="overlay-image">
+</div>
+
+<!-- JavaScript functions -->
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    var overlay = document.getElementById("image-overlay");
+    var image = document.getElementById("overlay-image");
+    
+    overlay.style.display = "none"; // Hide the overlay initially
+    image.src = ""; // Set the initial image source to an empty string
+  });
+
+  function showImage(url) {
+    var overlay = document.getElementById("image-overlay");
+    var image = document.getElementById("overlay-image");
+    image.src = url;
+    overlay.style.display = "flex";
+  }
+
+  function closeImage() {
+    var overlay = document.getElementById("image-overlay");
+    overlay.style.display = "none";
+  }
+</script>
+
 
 
 

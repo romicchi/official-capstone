@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('keywords');
             $table->string('author');
             $table->text('description');
-            $table->string('resourceType');
+            $table->string('url', 1000);
             $table->unsignedBigInteger('college_id'); // Foreign key for college table
             $table->unsignedBigInteger('subject_id'); // Foreign key for subjects table
             $table->unsignedBigInteger('course_id'); // Foreign key for courses table

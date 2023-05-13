@@ -13,6 +13,7 @@ class Resource extends Model
         'keywords',
         'author',
         'description',
+        'url',
         'college_id',
         'course_id',
         'subject_id',

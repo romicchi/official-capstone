@@ -10,6 +10,14 @@ use App\Models\User;
 use App\Models\Resource;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Auth as FirebaseAuth;
+use Kreait\Firebase\Auth\SignInResult\SignInResult;
+use Kreait\Firebase\Exception\FirebaseException;
+use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Storage\StorageClient;
+use Session;
 
 
 
@@ -56,6 +64,7 @@ class ResourceController extends Controller
     {
     // Validate the form data
     $validatedData = $request->validate([
+        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:8192',
         'title' => 'required',
         'topic' => 'required',
         'keywords' => 'required',
@@ -64,17 +73,33 @@ class ResourceController extends Controller
         'college' => 'required',
         'course' => 'required',
         'subject' => 'required',
-        'resourceType' => 'required|file',
+
     ]);
 
-    // Handle file upload
-    if ($request->hasFile('resourceType')) {
-        $file = $request->file('resourceType');
-        $fileName = $file->getClientOriginalName();
-        $file->storeAs('resources', $fileName); 
-    } else {
-        // Handle file not found error
-    }
+    $firebase_storage_path = 'images/';
+    $file = $request->file('file');
+    $extension = $file->getClientOriginalExtension();
+    $filename = uniqid() . '.' . $extension;
+    $localPath = storage_path('app/' . $file->storeAs('public', $filename));
+    
+    $uploadedFile = fopen($localPath, 'r');
+    
+    app('firebase.storage')->getBucket()->upload($uploadedFile, [
+        'name' => $firebase_storage_path . $filename,
+    ]);
+
+    $file = $request->file('file');
+    $path = $file->store('public');
+    $url = Storage::url($path);
+    $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
+ //Handle file upload
+   if ($request->hasFile('resourceType')) {
+       $file = $request->file('resourceType');
+       $fileName = $file->getClientOriginalName();
+       $file->storeAs('resources', $fileName); 
+   } else {
+       // Handle file not found error
+   }
 
     // Create a new resource instance
     $resource = new Resource();
@@ -83,19 +108,32 @@ class ResourceController extends Controller
     $resource->keywords = $validatedData['keywords'];
     $resource->author = $validatedData['author'];
     $resource->description = $validatedData['description'];
+    $resource->url = $url;
     $resource->college_id = $validatedData['college'];
     $resource->course_id = $validatedData['course'];
     $resource->subject_id = $validatedData['subject'];
-    $resource->resourceType = $fileName; // Assuming 'file_path' is the column to store the file path
     $resource->save();
 
     // Redirect or perform additional actions as needed
     return redirect()->back()->with('success', 'Resource added successfully.');
     }
 
+        /**
+     * Delete the file and its metadata.
+     *
+     * @param  int  $resource
+     * @return \Illuminate\Http\Response
+     */
     // Delete resource function
-    public function destroy(Resource $resource)
+    public function destroy($resource)
     {
+
+        $resource = Resource::findOrFail($resource);
+        // Delete Firebase Storage bucket file
+        $firebase_storage_path = 'images/';
+        $filename = basename(parse_url($resource->url, PHP_URL_PATH));
+        app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->delete();
+
         $resource->delete();
 
         return redirect()->back()->with('success', 'Resource deleted successfully.');
@@ -224,6 +262,16 @@ class ResourceController extends Controller
     
         return view('subjects.quantitative', compact('resources', 'colleges', 'courses', 'subjects'));
     }
+
+    public function showEmbed(Request $request, $id)
+    {
+        // Retrieve the resource based on the given ID
+        $resource = Resource::find($id);
+    
+        // Pass the resource to the 'embed' view
+        return view('embed', compact('resource'));
+    }
+
 }
 
 

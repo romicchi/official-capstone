@@ -5,7 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;     
+use Illuminate\Support\Facades\Session;  
+use Illuminate\Support\Facades\Storage;
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Auth as FirebaseAuth;
+use Kreait\Firebase\Auth\SignInResult\SignInResult;
+use Kreait\Firebase\Exception\FirebaseException;
+use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Storage\StorageClient;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -58,6 +65,7 @@ class AuthController extends Controller
 
     function registerPost(Request $request){
         $request->validate([
+            'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email|unique:users',
@@ -72,6 +80,24 @@ class AuthController extends Controller
         $data['role'] = $request->input('role');
         $data['verified'] = false; // Set the verified field to false
         $user = User::create($data); //this will create the user
+
+        $firebase_storage_path = 'IDs/';
+        $file = $request->file('id');
+        $extension = $file->getClientOriginalExtension();
+        $filename = uniqid() . '.' . $extension;
+        $localPath = storage_path('app/' . $file->storeAs('public', $filename));
+                    $uploadedFile = fopen($localPath, 'r');
+                    app('firebase.storage')->getBucket()->upload($uploadedFile, [
+            'name' => $firebase_storage_path . $filename,
+        ]);
+        
+        $file = $request->file('id');
+        $path = $file->store('public');
+        $url = Storage::url($path);
+        $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
+        
+        $user->url = $url;
+        $user->save();
 
          // update user's role to 'teacher' if the selected role is 'teacher'
         if ($data['role'] === 'teacher') {

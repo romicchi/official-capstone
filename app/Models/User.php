@@ -28,6 +28,7 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'email',
+        'url',
         'password',
     ];
 
@@ -65,6 +66,12 @@ class User extends Authenticatable
     public function journals()
     {
         return $this->hasMany(Journal::class);
+    }
+
+    // Define the relationship with the Image model
+    public function image()
+    {
+        return $this->hasOne(Image::class);
     }
 
     // ...
