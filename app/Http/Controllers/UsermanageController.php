@@ -7,6 +7,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;  
+use Kreait\Firebase\ServiceAccount;
+use Kreait\Firebase\Auth as FirebaseAuth;
+use Kreait\Firebase\Auth\SignInResult\SignInResult;
+use Kreait\Firebase\Exception\FirebaseException;
+use Google\Cloud\Firestore\FirestoreClient;
+use Google\Cloud\Storage\StorageClient;
 
 class UsermanageController extends Controller
 {
@@ -29,6 +37,23 @@ class UsermanageController extends Controller
             'role' => 'required|in:admin,student,teacher,programcoordinator,departmentchair',
         ]);
 
+        
+        $firebase_storage_path = 'IDs/';
+        $file = $request->file('id');
+        $extension = $file->getClientOriginalExtension();
+        $filename = uniqid() . '.' . $extension;
+        $localPath = storage_path('app/' . $file->storeAs('public', $filename));
+                    $uploadedFile = fopen($localPath, 'r');
+                    app('firebase.storage')->getBucket()->upload($uploadedFile, [
+            'name' => $firebase_storage_path . $filename,
+        ]);
+
+        $file = $request->file('id');
+        $path = $file->store('public');
+        $url = Storage::url($path);
+        $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
+    
+
         // Create the new user
         $user = new User();
         $user->firstname = $validatedData['firstname'];
@@ -36,6 +61,8 @@ class UsermanageController extends Controller
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
         $user->role = $validatedData['role'];
+
+        $user->url = $url;
         $user->save();
 
         // Redirect the user back to the manage user page with a success message

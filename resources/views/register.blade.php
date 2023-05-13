@@ -52,6 +52,10 @@
         <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
       </div>
       <div class="form-group">
+        <label for="password_confirmation">Confirm Password:</label>
+        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+      </div>
+      <div class="form-group">
         <label for="role">I am a:</label>
         <select class="form-control" id="role" name="role">
           <option value="student">Student</option>
@@ -59,7 +63,7 @@
         </select>
       </div>
       <div class="form-group row">
-                            <label for="id" class="col-form-label"></label>
+                            <label for="id" class="col-form-label">School ID: </label>
                             <div class="col-md-9">
                                 <input id="id" type="file" class="form-control @error('id') is-invalid @enderror" name="id" required autofocus>
                                 @error('file')

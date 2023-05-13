@@ -46,6 +46,7 @@
                 </thead>
                 <tbody>
                 @foreach ($resources as $resource)
+                @if ($resource->college_id == 2 && $resource->course_id == 1 && $resource->subject_id == 1)
                     <tr>
                         <td>{{ $resource->title }}</td>
                         <td>{{ $resource->author }}</td>
@@ -54,6 +55,7 @@
                         <td><a class="btn btn-primary" href="/embed/{{ $resource->id }}">View</a>
                         <a class="btn btn-danger" href="{{ $resource->url }}" target="_blank">Download</a>
                     </tr>
+                @endif
                 @endforeach
                 </tbody>
             </table>

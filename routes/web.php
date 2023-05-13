@@ -12,6 +12,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\DiscussionsController;
+use App\Http\Controllers\SettingsController;
 
 
 
@@ -107,6 +108,12 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
     Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
     Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
+
+    // SETTINGS
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings/update-profile', [SettingsController::class, 'updateProfile'])->name('update-profile');
+    Route::post('/settings/change-password', [SettingsController::class, 'changePassword'])->name('changePassword');
+    Route::get('/settings/password', [SettingsController::class, 'updatePassword'])->name('user.updatePassword');
     
     // COURSES
     Route::get('/bsit', function () {

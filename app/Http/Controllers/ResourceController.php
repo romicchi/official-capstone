@@ -64,7 +64,7 @@ class ResourceController extends Controller
     {
     // Validate the form data
     $validatedData = $request->validate([
-        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,doc,pdf,pptx|max:8192',
+        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
         'title' => 'required',
         'topic' => 'required',
         'keywords' => 'required',

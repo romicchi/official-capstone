@@ -138,7 +138,6 @@
                 <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
               </a>
             </td>
-            <td>
             <td><a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a></td>
             <td><a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a></td>
           </tr>

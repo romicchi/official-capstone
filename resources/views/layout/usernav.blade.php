@@ -85,7 +85,7 @@
                 @endif
 
                 <li class="nav-item">
-                  <a class="nav-link" href="#"><img class="images1" src="{{ asset ('assets/img/setting.png') }}"> Settings</a>
+                  <a class="nav-link" href="{{route('settings')}}"><img class="images1" src="{{ asset ('assets/img/setting.png') }}"> Settings</a>
                 </li>
 
                 <li class="nav-item">
