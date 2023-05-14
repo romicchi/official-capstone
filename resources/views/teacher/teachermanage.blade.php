@@ -106,7 +106,7 @@
                     @foreach($resources as $resource)
                     @if ($resource->resourceStatus == '0')
                     <tr>
-                      <td>{{ $resource->title }}</td>
+                      <td><strong>{{ $resource->title }}<strong></td>
                       <td>{{ $resource->author }}</td>
                       <td>{{ $resource->college->collegeName }}</td>
                       <td>{{ $resource->course->courseName }}</td>
@@ -157,7 +157,7 @@
                     @foreach($resources as $resource)
                     @if ($resource->resourceStatus == '1')
                     <tr>
-                      <td>{{ $resource->title }}</td>
+                      <td><strong>{{ $resource->title }}<strong></td>
                       <td>{{ $resource->author }}</td>
                       <td>{{ $resource->description }}</td>
                       <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>

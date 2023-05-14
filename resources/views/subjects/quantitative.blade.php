@@ -1,11 +1,15 @@
 @extends('layout.resourcelayout')
-@include('layout.usernav')
+
 
 @section('title', 'Quantitative Methods and Simulation')
 
-@section('usernav')
+@if(auth()->user()->role == 'admin')
+    @include('layout.adminnavlayout')
+    @yield('adminnavbar')
+@else
     @include('layout.usernav')
-@show
+    @yield('usernav')
+@endif
 
 @section('resourcelayout')
     @parent

@@ -34,7 +34,7 @@
 		<tbody>
 		    @foreach($resources as $resource)
 			<tr>
-				<td>{{ $resource->title }}</td> 
+				<td><strong>{{ $resource->title }}<strong></td> 
 				<td>{{ $resource->author }}</td> 
 				<td>{{ $resource->created_at }}</td>
                 <td>{{ $resource->college->collegeName }}</td>

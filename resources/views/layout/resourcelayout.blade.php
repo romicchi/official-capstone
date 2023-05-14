@@ -4,7 +4,7 @@
 
     <h3 class="title-subject">@yield('title')</h3>
 
-    <div class="dropdown style">
+    <!-- <div class="dropdown style">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Filter
         </button>
@@ -30,8 +30,8 @@
         <input class="form-control" id="myInput" type="text" placeholder="Search..">
     </div>
 
+     -->
     <br><br>
-
     <center>
         <form class="table-responsive table-wrapper">
             <table class="table table-bordered table-hover">
@@ -48,7 +48,7 @@
                 @foreach ($resources as $resource)
                 @if ($resource->college_id == 2 && $resource->course_id == 1 && $resource->subject_id == 1)
                     <tr>
-                        <td>{{ $resource->title }}</td>
+                        <td><strong>{{ $resource->title }}<strong></td>
                         <td>{{ $resource->author }}</td>
 						<td>{{ $resource->description }}</td>
                         <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>

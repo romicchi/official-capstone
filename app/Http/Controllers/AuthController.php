@@ -60,7 +60,7 @@ class AuthController extends Controller
             return redirect()->intended(route('dashboard'));
         }
     
-        return redirect(route('login'))->with("error", "Account does not exist.");
+        return redirect(route('login'))->with("error", "Your email and password do not match. Please try again.");
     }
 
     function registerPost(Request $request){
