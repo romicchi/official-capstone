@@ -71,7 +71,7 @@
                 </li>
                 
                 <!-- Button available for the following role only -->
-                @if (auth()->user()->role === 'teacher')
+                @if (auth()->user()->role === 'teacher' || auth()->user()->role === 'departmentchair' || auth()->user()->role === 'programcoordinator')
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url ('teachermanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Resources</a>
                 </li>

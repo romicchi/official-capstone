@@ -160,7 +160,7 @@ class ResourceController extends Controller
     //-------DEPARTMENTCHAIR-PROGCOORDINATOR--------------//
     public function showResourceManage(Request $request)
     {
-        $resources = Resource::paginate(5);
+        $resources = Resource::paginate(10);
         $colleges = College::all();
         $courses = Course::all();
         $subjects = Subject::all();

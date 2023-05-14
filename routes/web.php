@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 // Special Route for Teacher Role only
 // -------------------------- TEACHER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:teacher']], function () {
+    Route::group(['middleware' => ['role:teacher,programcoordinator,departmentchair']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
 
     // -------------------------- TEACHER UPLOAD --------------------------------//
