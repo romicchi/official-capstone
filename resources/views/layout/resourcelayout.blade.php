@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                 @foreach ($resources as $resource)
-                @if ($resource->college_id == 2 && $resource->course_id == 1 && $resource->subject_id == 1)
+                @if ($resource->resourceStatus == 1 && $resource->college_id == 2 && $resource->course_id == 1 && $resource->subject_id == 1)
                     <tr>
                         <td><strong>{{ $resource->title }}<strong></td>
                         <td>{{ $resource->author }}</td>
