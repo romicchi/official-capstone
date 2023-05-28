@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@section('title', 'Librar-e')</title>
+        <title>@section('title', 'LNU-RPS')</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
@@ -61,7 +61,7 @@
         <div class="col-lg-4 mb-4">
           <div class="card">
             <div class="card-body">
-              <p class="card-text">"At Libar-e, we believe that every LNU student deserves access to centralized educational resources that can help them succeed academically."</p>
+              <p class="card-text">"At LNU-RPS, we believe that every LNU student deserves to succeed academically."</p>
               <p class="card-title">- Justine</p>
             </div>
           </div>
@@ -69,7 +69,7 @@
         <div class="col-lg-4 mb-4">
           <div class="card">
             <div class="card-body">
-              <p class="card-text">"Our platform is designed to be a comprehensive resource pool that offers various resources from textbooks, modules, online materials, lectures, notes, and much more."</p>
+              <p class="card-text">"Our platform is designed to offer various resources from textbooks, modules, online materials, lectures, notes, and much more."</p>
               <p class="card-title">- Challen</p>
             </div>
           </div>
@@ -77,7 +77,7 @@
         <div class="col-lg-4 mb-4">
           <div class="card">
             <div class="card-body">
-              <p class="card-text">"Librar-e serves as an educational resource pool specifically designed for students  LNU students by supporting their academic research and enhancing their learning experience."</p>
+              <p class="card-text">"LNU-RPS serves as an educational resource pool specifically designed for students  LNU students by supporting their academic research and enhancing their learning experience."</p>
               <p class="card-title">- Justin</p>
             </div>
           </div>
@@ -91,7 +91,7 @@
       <div class="row">
         <div class="col-lg-6 mb-2 mb-lg-0">
           <h5>About Us</h5>
-          <p class="mb-0">Librar-e is an Educational Resource Pool for LNU Students.</p>
+          <p class="mb-0">LNU-RPS is a Resource Pool system for LNU Students.</p>
         </div>
         <div class="col-lg-3">
           <h5>Links</h5>

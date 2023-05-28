@@ -8,7 +8,7 @@
 <div class="container-fluid">
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top col-12 col-lg-2">
-            <a class="navbar-brand" href="#">Librar-e</a>
+            <a class="navbar-brand" href="{{route('adminpage')}}">{{config('app.name')}}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>

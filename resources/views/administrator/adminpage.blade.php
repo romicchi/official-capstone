@@ -19,13 +19,13 @@
       <!-- Content -->
       <header>
 		<div class="logo">
-    <h2>Welcome to the Librar-e Admin Dashboard</h2>
+    <h2>Welcome to the {{config('app.name')}} Admin Dashboard</h2>
 			<p>Here you can manage user accounts, add or edit resources, generate reports and more.</p>
 		</div>
 	</header>
 	<main>
 		<section class="dashboard">
-			<h2>Welcome to the Librar-e Admin Dashboard</h2>
+			<h2>Welcome to the {{config('app.name')}} Admin Dashboard</h2>
 			<p>Here you can manage user accounts, add or edit resources, generate reports and more.</p>
 		</section>
 		
@@ -95,7 +95,7 @@
 
 </main>
 <footer>
-	<p>Copyright &copy; 2023 Librar-e. All rights reserved.</p>
+	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
 </footer>
     </body>
 </html>

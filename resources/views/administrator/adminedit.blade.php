@@ -25,8 +25,6 @@
     <select class="form-control" id="role" name="role">
         <option value="student" {{ $users->role == 'student' ? 'selected' : '' }}>Student</option>
         <option value="teacher" {{ $users->role == 'teacher' ? 'selected' : '' }}>Teacher</option>
-        <option value="programcoordinator" {{ $users->role == 'programcoordinator' ? 'selected' : '' }}>Program Coordinator</option>
-        <option value="departmentchair" {{ $users->role == 'departmentchair' ? 'selected' : '' }}>Department Chair</option>
         <option value="admin" {{ $users->role == 'admin' ? 'selected' : '' }}>Admin</option>
     </select>
 </div>

@@ -1,7 +1,13 @@
-<div class="container" style="width: 80vw; height: 80vh;">
+@if(auth()->user()->role == 'admin')
+    @include('layout.adminnavlayout')
+    @yield('adminnavbar')
+@else
     @include('layout.usernav')
+    @yield('usernav')
+@endif
+
+<div class="container" style="width: 80vw; height: 80vh;">
     <div class="content">
-        @yield('usernav')
         <!DOCTYPE html>
         <html>
         <head>
