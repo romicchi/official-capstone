@@ -41,7 +41,7 @@
 
 </main>
 <footer>
-	<p>Copyright &copy; 2023 LNU-RPS. All rights reserved.</p>
+	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script>

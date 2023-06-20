@@ -91,7 +91,7 @@
       <div class="row">
         <div class="col-lg-6 mb-2 mb-lg-0">
           <h5>About Us</h5>
-          <p class="mb-0">LNU-RPS is a Resource Pool system for LNU Students.</p>
+          <p class="mb-0">{{config('app.name')}} is a Resource Pool system for LNU Students.</p>
         </div>
         <div class="col-lg-3">
           <h5>Links</h5>
