@@ -16,17 +16,18 @@ class AuthenticatedMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::check()){
-            if(Auth::user()->role == 'student' || Auth::user()->role == 'teacher' || Auth::user()->role == 'departmentchair' || Auth::user()->role == 'programcoordinator'){
+        if (Auth::check()) {
+            $allowedRoles = [1, 2, 3, 4]; // Adjust the allowed role IDs according to your role hierarchy
+
+            if (in_array(Auth::user()->role_id, $allowedRoles)) {
                 return $next($request);
-                
             } else {
                 return redirect('/dashboard')->with('message', 'You do not have permission to access this page');
             }
         } else {
             return redirect('login')->with('message', 'Login first');
         }
-
     }
 }
+
 

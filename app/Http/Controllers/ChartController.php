@@ -9,10 +9,8 @@ class ChartController extends Controller
 {
     public function showDashboard()
     {
-        $studentsCount = User::where('role', 'student')->count();
-        $teachersCount = User::where('role', 'teacher')->count();
+        $studentsCount = User::where('role_id', 1)->count();
+        $teachersCount = User::where('role_id', 2)->count();
         return view('dashboard', compact('studentsCount', 'teachersCount'));
     }
-
-    
 }

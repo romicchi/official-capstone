@@ -37,7 +37,6 @@ Route::get('/homenav', function () {
     return view('layout.homenav');
 });
 
-// LOGIN/REGISTER/ADMIN/MAIN PAGE
 // -------------------------- LOGIN --------------------------------//
 Route::get('/loginform', [AuthController::class, 'login'])->name('login'); //second 'login' -> function
 Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.post');
@@ -100,6 +99,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/favorites', function () {
         return view('favorites');
     });
+    
     // JOURNAL
     Route::get('/journals', [JournalController::class, 'index'])->name('journals.index');
     Route::get('/journals/create', [JournalController::class, 'create'])->name('journals.create');
@@ -133,7 +133,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 // Special Route for Teacher Role only
 // -------------------------- TEACHER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:teacher,programcoordinator,departmentchair']], function () {
+    Route::group(['middleware' => ['role:2']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
 
     // -------------------------- TEACHER UPLOAD --------------------------------//
@@ -154,7 +154,7 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 
 // -------------------------- VERIFIER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:programcoordinator,departmentchair,admin']], function () {
+    Route::group(['middleware' => ['role:3']], function () {
         Route::get('/resourcemanage', 'App\Http\Controllers\ResourceController@showResourceManage')->name('resourcemanage');
         Route::put('/resources/{resource}/approve', [ResourceController::class, 'approve'])->name('resources.approve');
         Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'disapprove'])->name('resources.disapprove');

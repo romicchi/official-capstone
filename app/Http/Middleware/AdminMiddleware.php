@@ -20,7 +20,7 @@ class AdminMiddleware
         if(Auth::check()){
             
             // Roles: student, teacher, and admin.
-            if(Auth::user()->role == 'admin'){
+            if(Auth::user()->role_id == 3){
                 return $next($request);
             } else {
                 return redirect('/dashboard')->with('message', 'You are not Admin');

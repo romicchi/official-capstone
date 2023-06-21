@@ -50,7 +50,6 @@
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Lastname</th>
         <th>Firstname</th>
         <th>Email</th>
@@ -71,11 +70,10 @@
       @foreach ($users as $user)
         @if ($user->verified == '0')
           <tr>
-            <td>{{ $user->id }}</td> 
-            <td>{{ $user->lastname }}</td>
-            <td>{{ $user->firstname }}</td>
+            <td><strong>{{ $user->lastname }}</strong></td>
+            <td><strong>{{ $user->firstname }}</strong></td>
             <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>    
+            <td>{{ $user->role->role }}</td>    
             <td>
               <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
                 <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
@@ -108,7 +106,6 @@
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Lastname</th>
         <th>Firstname</th>        
         <th>Email</th>
@@ -128,11 +125,10 @@
       @foreach ($users as $user)
         @if ($user->verified == '1')
           <tr>
-            <td>{{ $user->id }}</td> 
-            <td>{{ $user->lastname }}</td>
-            <td>{{ $user->firstname }}</td>
+            <td><strong>{{ $user->lastname }}</strong></td>
+            <td><strong>{{ $user->firstname }}</strong></td>
             <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
+            <td>{{ $user->role->role }}</td>
             <td>
               <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
                 <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">

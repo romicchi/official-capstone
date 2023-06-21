@@ -71,16 +71,9 @@
                 </li>
                 
                 <!-- Button available for the following role only -->
-                @if (auth()->user()->role === 'teacher' || auth()->user()->role === 'departmentchair' || auth()->user()->role === 'programcoordinator')
+                @if (auth()->user()->role_id === 2)
                 <li class="nav-item">
                   <a class="nav-link" href="{{ url ('teachermanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Resources</a>
-                </li>
-                @endif
-
-                <!-- Button available for the following roles only -->
-                @if (auth()->user()->role === 'programcoordinator' || auth()->user()->role === 'departmentchair')
-                <li class="nav-item">
-                  <a class="nav-link" href="{{ route('resourcemanage') }}"><img class="images1" src="{{ asset ('assets/img/forum.png') }}"> Manage</a>
                 </li>
                 @endif
 
@@ -105,7 +98,7 @@
             window.location.href = '{{ route('logout') }}';
         }
     }
-</script>
+      </script>
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
           <script>
@@ -117,7 +110,5 @@
             });
           });
           </script>
-          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 @endsection

@@ -3,7 +3,7 @@
 
 @section('title', 'Quantitative Methods and Simulation')
 
-@if(auth()->user()->role == 'admin')
+@if(auth()->user()->role_id == 3)
     @include('layout.adminnavlayout')
     @yield('adminnavbar')
 @else

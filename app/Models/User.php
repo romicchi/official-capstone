@@ -51,6 +51,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
     //This part is for the DiscussionsController. Means that user can have many discussions
     public function discussions()
     {

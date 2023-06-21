@@ -52,7 +52,7 @@ class AuthController extends Controller
             $user->last_activity = Carbon::now();
             $user->save();
     
-            if ($user->role === 'admin') {
+            if ($user->role_id === 3) {
                 // Redirect to admin page for admin user
                 return redirect()->intended(route('adminpage'));
             }
@@ -70,14 +70,14 @@ class AuthController extends Controller
             'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
-            'role' => 'required|in:student,teacher'
+            'role' => 'required|in:1,2'
         ]);
 
         $data['firstname'] = $request->firstname; //assign the name from the request variable to data variable
         $data['lastname'] = $request->lastname;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
-        $data['role'] = $request->input('role');
+        $data['role_id'] = $request->input('role');
         $data['verified'] = false; // Set the verified field to false
         $user = User::create($data); //this will create the user
 
@@ -100,8 +100,8 @@ class AuthController extends Controller
         $user->save();
 
          // update user's role to 'teacher' if the selected role is 'teacher'
-        if ($data['role'] === 'teacher') {
-            $user->role = 'teacher';
+         if ($data['role_id'] === 2) {
+            $user->role_id = 2;
             $user->save();
         }
 

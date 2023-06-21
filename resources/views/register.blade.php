@@ -58,8 +58,8 @@
       <div class="form-group">
         <label for="role">I am a:</label>
         <select class="form-control" id="role" name="role">
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
+          <option value="1">Student</option>
+          <option value="2">Teacher</option>
         </select>
       </div>
       <div class="form-group row">

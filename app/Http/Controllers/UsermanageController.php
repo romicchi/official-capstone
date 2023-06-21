@@ -34,7 +34,7 @@ class UsermanageController extends Controller
             'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'role' => 'required|in:admin,student,teacher,programcoordinator,departmentchair',
+            'role' => 'required|in:1,2,3',
         ]);
 
         
@@ -60,7 +60,7 @@ class UsermanageController extends Controller
         $user->lastname = $validatedData['lastname'];
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
-        $user->role = $validatedData['role'];
+        $user->role_id = $validatedData['role'];
 
         $user->url = $url;
         $user->save();
@@ -115,7 +115,7 @@ class UsermanageController extends Controller
         $userdata->firstname = $req->firstname;
         $userdata->lastname = $req->lastname;
         $userdata->email = $req->email;
-        $userdata->role = $req->role;
+        $userdata->role_id = $req->role;
         $userdata->save();
         return redirect()->route('usermanage');
     }

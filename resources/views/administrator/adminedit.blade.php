@@ -23,9 +23,9 @@
       <div class="form-group">
     <label for="role">Role of the user:</label>
     <select class="form-control" id="role" name="role">
-        <option value="student" {{ $users->role == 'student' ? 'selected' : '' }}>Student</option>
-        <option value="teacher" {{ $users->role == 'teacher' ? 'selected' : '' }}>Teacher</option>
-        <option value="admin" {{ $users->role == 'admin' ? 'selected' : '' }}>Admin</option>
+        <option value="1" {{ $users->role_id == 1 ? 'selected' : '' }}>Student</option>
+        <option value="2" {{ $users->role_id == 2 ? 'selected' : '' }}>Teacher</option>
+        <option value="3" {{ $users->role_id == 3 ? 'selected' : '' }}>Admin</option>
     </select>
 </div>
       <div style="display: flex;">

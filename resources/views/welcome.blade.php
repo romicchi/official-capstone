@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@section('title', 'LNU-RPS')</title>
+        <title>@section('title', 'GENER')</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
@@ -61,7 +61,7 @@
         <div class="col-lg-4 mb-4">
           <div class="card">
             <div class="card-body">
-              <p class="card-text">"At LNU-RPS, we believe that every LNU student deserves to succeed academically."</p>
+              <p class="card-text">"At GENER, we believe that every LNU student deserves to succeed academically."</p>
               <p class="card-title">- Justine</p>
             </div>
           </div>
@@ -77,7 +77,7 @@
         <div class="col-lg-4 mb-4">
           <div class="card">
             <div class="card-body">
-              <p class="card-text">"LNU-RPS serves as an educational resource pool specifically designed for students  LNU students by supporting their academic research and enhancing their learning experience."</p>
+              <p class="card-text">"GENER serves as an educational resource pool specifically designed for students  LNU students by supporting their academic research and enhancing their learning experience."</p>
               <p class="card-title">- Justin</p>
             </div>
           </div>

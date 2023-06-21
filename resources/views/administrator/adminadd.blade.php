@@ -50,11 +50,9 @@
       <div class="form-group">
         <label for="role">Role of the user:</label>
         <select class="form-control" id="role" name="role">
-			<option value="student">Student</option>
-			<option value="teacher">Teacher</option>
-			<option value="programcoordinator">Program Coordinator</option>
-			<option value="departmentchair">Department Chair</option>
-      <option value="admin">Admin</option>
+			<option value="1">Student</option>
+			<option value="2">Teacher</option>
+      <option value="3">Admin</option>
         </select>
       </div>
       <div class="form-group row">
