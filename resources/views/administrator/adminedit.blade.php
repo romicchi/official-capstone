@@ -1,6 +1,4 @@
-@include('layout.adminnavlayout')
-
-@yield('adminnavbar')
+@extends('layout.adminnavlayout')
 
 <div class="col p-5">
   <div class="border p-3">

@@ -13,4 +13,9 @@ class Subject extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class, 'subject_id');
+    }
 }

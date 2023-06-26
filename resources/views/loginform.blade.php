@@ -47,7 +47,7 @@
 					<input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
 				</div>
 
-				<button type="submit" class="btn btn-primary"<a href="{{ route('dashboard') }}">Login</a></button>
+				<button type="submit" class="btn btn-primary my-2"<a href="{{ route('dashboard') }}">Login</a></button>
 			
 
 			<p>Don't have an account yet? <a href="/register">Sign Up</a></p>

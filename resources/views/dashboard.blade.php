@@ -1,4 +1,4 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 <!DOCTYPE html>
 <html>
     <head>

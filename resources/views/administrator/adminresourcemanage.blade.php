@@ -1,23 +1,23 @@
-@include('layout.adminnavlayout')
-
-@yield('adminnavbar')
+@extends('layout.adminnavlayout')
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
 <!-- Search Bar -->
-<div class="d-flex justify-content-end my-1">
+<!-- <div class="d-flex justify-content-end my-1">
   <form class="form-inline" method="GET" action="{{ route('adminresources.search') }}">
     <div class="input-group" style="max-width: 250px;">
       <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
       <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
     </div>
-  </form>
-</div>
+  </form> -->
+
 
 <center>
+<input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
 
-	<div class="table-responsive table-wrapper">
-	<table class="table table-bordered table-hover">
+
+	<div class="table-wrapper py-2">
+	<table class="table table-bordered table-hover" id="resourceTable">
 		<thead>
 		<tr>
 			<th>Title</th>
@@ -71,5 +71,6 @@
 	</div>
 </center>
 
+<script src="{{ asset('js/resourceManagesearch.js') }}"></script>
 
 

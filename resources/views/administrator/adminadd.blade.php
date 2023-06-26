@@ -1,6 +1,4 @@
-@include('layout.adminnavlayout')
-
-@yield('adminnavbar')
+@extends('layout.adminnavlayout')
 
 	<title>Add User</title>
 	<link rel="stylesheet" type="text/css" href="{{ asset ('css/register.css') }}">

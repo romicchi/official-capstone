@@ -17,7 +17,7 @@
 
 <center>
 
-	<div class="table-responsive table-wrapper">
+	<div class="table-wrapper">
 	<table class="table table-bordered table-hover">
 		<thead>
 		<tr>

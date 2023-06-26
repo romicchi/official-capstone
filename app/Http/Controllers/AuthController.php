@@ -100,7 +100,7 @@ class AuthController extends Controller
         $user->save();
 
          // update user's role to 'teacher' if the selected role is 'teacher'
-         if ($data['role_id'] === 2) {
+         if ($data['role_id'] == 2) {
             $user->role_id = 2;
             $user->save();
         }

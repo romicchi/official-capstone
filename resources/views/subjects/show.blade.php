@@ -4,6 +4,7 @@
     @include('layout.usernav')
 @endif
 
+@section('content')
 <div class="container" style="width: 80vw; height: 80vh;">
     <div class="content">
         <!DOCTYPE html>
@@ -55,3 +56,4 @@
         </html>
     </div>
 </div>
+@show

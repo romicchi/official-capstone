@@ -1,4 +1,4 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 @include('layout.forumlayout')
 
 <!DOCTYPE html>
@@ -15,9 +15,8 @@
         @yield('css')
     </head>
     <body>
-        <!-- Nav Bar -->
-        @yield('usernav')
-        <br>
+
+    <br>
         <div class="container card">
             <div class="card-header">Add Discussion</div>
             <div class="card-body">

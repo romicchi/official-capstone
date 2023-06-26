@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AcademicsController;
 use App\Http\Controllers\UsermanageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ChartController;
@@ -13,8 +15,6 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\SettingsController;
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -48,13 +48,15 @@ Route::post('/register/upload', [AuthController::class, 'registerPost'])->name('
 // -------------------------- LOG-OUT --------------------------------//
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
+
 // If you are admin then only you can access this page
 // -------------------------- ADMIN ACCESS --------------------------------//
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     // -------------------------- ADMIN PAGES --------------------------------//
-    Route::get('/adminpage', function () {
-        return view('administrator.adminpage');
-    })->name('adminpage');
+
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminpage');
+    Route::get('/adminnavlayout', [AdminController::class, 'adminnav'])->name('adminnavlayout');
 
     Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
     Route::put('/resources/{resource}/approve', [ResourceController::class, 'adminapprove'])->name('adminresources.approve');
@@ -65,18 +67,44 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('usermanage/verify-users',[UsermanageController::class, 'verifyUsers'])->name('verify-users');
     Route::post('usermanage/verify-users',[UsermanageController::class, 'postVerifyUsers'])->name('verify-users.post');
 
-    // -------------------------- ADD-UPDATE-DELETE-SEARCH --------------------------------//
+    // -------------------------- USER: ADD-UPDATE-DELETE-SEARCH --------------------------------//
     Route::get('delete/{id}',[UsermanageController::class, 'delete'])->name('delete');
     Route::get('adminedit/{id}',[UsermanageController::class, 'showadminedit'])->name('adminedit');
     Route::post('adminedit',[UsermanageController::class, 'update'])->name('update');
     Route::get('search',[UsermanageController::class, 'search'])->name('search');
     Route::get('adminadd',[UsermanageController::class, 'showadminadd'])->name('adminadd');
     Route::post('/add.user', [UsermanageController::class, 'addUser'])->name('add.user');
+
+
+    // -------------------------- ACADEMICS: ADD-UPDATE-DELETE-SEARCH --------------------------------//
+    Route::get('/academics', [AcademicsController::class, 'index'])->name('academics.index');
+    Route::get('/academics/create/college', [AcademicsController::class, 'createCollege'])->name('academics.createCollege');
+    Route::post('/academics/store/college', [AcademicsController::class, 'storeCollege'])->name('academics.storeCollege');
+    Route::get('/academics/edit/college/{id}', [AcademicsController::class, 'editCollege'])->name('academics.editCollege');
+    Route::put('/academics/update/college/{id}', [AcademicsController::class, 'updateCollege'])->name('academics.updateCollege');
+    Route::delete('/academics/delete/college/{id}', [AcademicsController::class, 'destroyCollege'])->name('academics.destroyCollege');
+    
+    Route::get('/academics/create/course', [AcademicsController::class, 'createCourse'])->name('academics.createCourse');
+    Route::post('/academics/store/course', [AcademicsController::class, 'storeCourse'])->name('academics.storeCourse');
+    Route::get('/academics/edit/course/{id}', [AcademicsController::class, 'editCourse'])->name('academics.editCourse');
+    Route::put('/academics/update/course/{id}', [AcademicsController::class, 'updateCourse'])->name('academics.updateCourse');
+    Route::delete('/academics/delete/course/{id}', [AcademicsController::class, 'destroyCourse'])->name('academics.destroyCourse');
+    
+    Route::get('/academics/create/subject', [AcademicsController::class, 'createSubject'])->name('academics.createSubject');
+    Route::post('/academics/store/subject', [AcademicsController::class, 'storeSubject'])->name('academics.storeSubject');
+    Route::get('/academics/edit/subject/{id}', [AcademicsController::class, 'editSubject'])->name('academics.editSubject');
+    Route::put('/academics/update/subject/{id}', [AcademicsController::class, 'updateSubject'])->name('academics.updateSubject');
+    Route::delete('/academics/delete/subject/{id}', [AcademicsController::class, 'destroySubject'])->name('academics.destroySubject');
+
+    Route::get('/academics/search/course', [AcademicsController::class, 'searchCourse'])->name('academics.searchCourse');
+    Route::get('/academics/search/subject', [AcademicsController::class, 'searchSubject'])->name('academics.searchSubject');
 });
 
-// -------------------------- STUDENT-TEACHER-PROGRAMCOORDINATOR-DEPARTMENTCHAIR-ADMIN --------------------------------//
+// -------------------------- STUDENT-TEACHER-ADMIN --------------------------------//
 Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the user is login only he/she can see this 
-    
+
+    Route::get('/usernav', [AdminController::class, 'usernav'])->name('usernav');
+
     Route::resource('discussions', 'App\Http\Controllers\DiscussionsController');
     // discussion-discussionid-replies: This means that the replies will depend to discussions
     Route::resource('discussions/{discussion}/replies', 'App\Http\Controllers\RepliesController');
@@ -93,9 +121,6 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 
     Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');
 
-    Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
-
-    
     Route::get('/favorites', function () {
         return view('favorites');
     });
@@ -124,10 +149,13 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
         return view('courses.bacomm');
     });
     
-    // SUBJECTS
+    // SUBJECTS & RESOURCES
     Route::get('/quantitative', [ResourceController::class, 'showSubjectResources'])->name('quantitative.index');
-
-
+    Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
+    Route::get('/resources', [ResourceController::class, 'resources'])->name('show.resources');
+    
+    Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
+    Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
 }); 
 
 // Special Route for Teacher Role only

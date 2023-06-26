@@ -1,6 +1,5 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 
-@yield('usernav')
 <div class="container">
         <div class="card mb-3">
             <div class="card-header">

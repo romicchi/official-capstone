@@ -1,6 +1,5 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 
-@yield('usernav')
 <div class="container">
         <h1>Study Journal</h1>
         <a href="{{ route('journals.create') }}" class="btn btn-primary">Create Journal</a>

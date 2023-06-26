@@ -1,6 +1,5 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 
-@yield('usernav')
 <div class="container">
     <h1>Edit Note</h1>
     <form action="{{ route('journals.update', $journal) }}" method="post">

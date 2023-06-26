@@ -23,10 +23,6 @@ use Session;
 
 class ResourceController extends Controller
 {
-    public function store()
-    {
-        //
-    }
 
     //--------------TEACHER-----------------//
     public function showTeacherManage()
@@ -52,11 +48,6 @@ class ResourceController extends Controller
         $subjects = Subject::where('course_id', $courseId)->get();  
 
         return response()->json($subjects);
-    }
-
-    public function download($Request ) 
-    {
-        //
     }
 
     // Store resource function for Teacher
@@ -157,7 +148,7 @@ class ResourceController extends Controller
         return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
     }
 
-    //-------DEPARTMENTCHAIR-PROGCOORDINATOR--------------//
+    //---------DEPARTMENTCHAIR-PROGCOORDINATOR-ADMIN----------------//
     public function showResourceManage(Request $request)
     {
         $resources = Resource::paginate(10);
@@ -270,6 +261,34 @@ class ResourceController extends Controller
     
         // Pass the resource to the 'embed' view
         return view('embed', compact('resource'));
+    }
+
+    public function subjects(Request $request)
+    {
+        $courseId = $request->query('course_id');
+        $course = Course::findOrFail($courseId);
+        $subjects = $course->subjects;
+
+        return view('subjects.subjects', compact('subjects', 'course'));
+    }
+
+    public function resources(Request $request)
+    {
+        $subjectId = $request->query('subject_id');
+        $subject = Subject::findOrFail($subjectId);
+        $resources = $subject->resources;
+    
+        return view('subjects.resources', compact('resources', 'subject'));
+    }
+
+    public function download(Resource $resource) 
+    {
+        return response()->download(public_path($resource->url));
+    }
+
+    public function show(Resource $resource)
+    {
+        return view('subjects.show', compact('resource'));
     }
 
 }

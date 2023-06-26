@@ -24,42 +24,25 @@
                             <img class="images" src="{{ asset ('assets/img/courses.png') }}"> Resources
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown01">
-                            <li class="dropdown dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" id="dropdown02"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CME</a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown02">
-                                    <li><a class="dropdown-item" href="#">course item 1</a></li>
-                                    <li><a class="dropdown-item" href="#">course item 2</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#" id="dropdown03"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">CAS</a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                                    <li><a class="dropdown-item" href="/bsit">BSIT</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BACOMM</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BAEL</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BAPOS</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BLIS</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BMME</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BS BIOLOGY</a></li>
-                                    <li><a class="dropdown-item" href="/bacomm">BSSW</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="#" id="dropdown04"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">COE</a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdown04">
-                                    <li><a class="dropdown-item" href="#">course item 1</a></li>
-                                    <li><a class="dropdown-item" href="#">course item 2</a></li>
-                                </ul>
-                            </li>
+                            @foreach ($colleges as $college)
+                                <li class="dropdown dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" id="dropdown{{ $college->id }}"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $college->collegeName }}
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdown{{ $college->id }}">
+                                        @foreach ($college->courses as $course)
+                                            <li><a class="dropdown-item" href="{{ route('show.subjects', ['course_id' => $course->id]) }}">{{ $course->courseName }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @endforeach
                         </ul>
                     </li>
                 
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" id="dropdown2"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="imgages" src="{{ asset ('assets/img/personal.png') }}"> Personal</a>
                   <div class="dropdown-menu" aria-labelledby="dropdown2">
                     <a class="dropdown-item" href="#">Notes History</a>
@@ -99,7 +82,7 @@
         }
     }
       </script>
-          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
           <script>
               $(document).ready(function() {
@@ -111,4 +94,4 @@
           });
           </script>
 
-@endsection
+@show

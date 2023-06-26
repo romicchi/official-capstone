@@ -73,7 +73,7 @@
                                 @enderror
                             </div>
                         </div>
-      <button type="submit" class="btn btn-primary">Sign Up</button>
+      <button type="submit" class="btn btn-primary my-2">Sign Up</button>
       <p><a href="/loginform">Already have an account?</a></p>
     </form>
   </div>

@@ -14,10 +14,10 @@ class DiscussionsController extends Controller
 {
 
 
-    public function __construct()
-    {
-        $this->middleware('auth')->only(['create', 'store']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth')->only(['create', 'store']);
+    // }
 
     /**
      * Display a listing of the resource.

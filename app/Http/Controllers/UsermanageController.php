@@ -15,6 +15,8 @@ use Kreait\Firebase\Auth\SignInResult\SignInResult;
 use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class UsermanageController extends Controller
 {
@@ -71,10 +73,12 @@ class UsermanageController extends Controller
 
 
     //display all users in the database
-    public function show() 
+    public function show()
     {
-        $userdata = User::all();
-        return view('administrator.usermanage',['users'=>$userdata]);
+        $pendingUsers = User::where('verified', false)->paginate(10, ['*'], 'pending_page');
+        $existingUsers = User::where('verified', true)->paginate(10, ['*'], 'existing_page');
+    
+        return view('administrator.usermanage', ['pendingUsers' => $pendingUsers, 'existingUsers' => $existingUsers]);
     }
 
     function verifyUsers(){
@@ -86,6 +90,7 @@ class UsermanageController extends Controller
     function postVerifyUsers(Request $request){
         $verifiedUserIds = $request->input('verified_users', []);
         $rejectedUserIds = $request->input('rejected_users', []);
+        Paginator::useBootstrap();
     
         User::whereIn('id', $verifiedUserIds)->update(['verified' => true]);
         User::whereIn('id', $rejectedUserIds)->delete();

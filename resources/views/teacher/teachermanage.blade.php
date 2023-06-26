@@ -1,6 +1,5 @@
 @include('layout.usernav')
 
-@yield('usernav')
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
@@ -58,7 +57,7 @@
               </select>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row my-3">
                             <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
                             <div class="col-md-9">
                                 <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
@@ -70,7 +69,7 @@
                             </div>
                         </div>
            
-                        <div class="form-group row mb-0">
+                        <div class="form-group row">
                             <div class="col-md-9 offset-md-3">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Upload') }}
@@ -138,7 +137,7 @@
           </div>
         </div>
         <div class="col-md-12">
-          <div class="card">
+          <div class="card my-5">
             <div class="card-body">
               <h4 class="card-title">Verified Resources</h4>
               <div class="table-responsive">

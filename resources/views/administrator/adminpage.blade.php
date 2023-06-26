@@ -1,4 +1,4 @@
-@include('layout.adminnavlayout')
+@extends('layout.adminnavlayout')
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,8 +13,6 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
       </head>
     <body>
-      <!-- Nav Bar -->
-      @yield('adminnavbar')
 
       <!-- Content -->
       <header>

@@ -1,4 +1,4 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 @include('layout.forumlayout')
 
 <!DOCTYPE html>
@@ -13,10 +13,8 @@
         @yield('css')
     </head>
     <body>
-        <!-- Nav Bar -->
-        @yield('usernav')
-        
-        <!-- This will display the Channels in the Providers/AppServiceProvider -->
+
+    <!-- This will display the Channels in the Providers/AppServiceProvider -->
         @auth
         <main class="container py-4">
             <div class="row">
