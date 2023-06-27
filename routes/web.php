@@ -38,7 +38,7 @@ Route::get('/homenav', function () {
 });
 
 // -------------------------- LOGIN --------------------------------//
-Route::get('/loginform', [AuthController::class, 'login'])->name('login'); //second 'login' -> function
+Route::get('/login', [AuthController::class, 'login'])->name('login'); //second 'login' -> function
 Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.post');
 
 // -------------------------- REGISTER --------------------------------//

@@ -13,6 +13,8 @@ use Kreait\Firebase\Auth\SignInResult\SignInResult;
 use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationEmail;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -99,6 +101,9 @@ class AuthController extends Controller
         $user->url = $url;
         $user->save();
 
+        // Send verification email
+        Mail::to($data['email'])->send(new RegistrationEmail($user));
+
          // update user's role to 'teacher' if the selected role is 'teacher'
          if ($data['role_id'] == 2) {
             $user->role_id = 2;
@@ -109,7 +114,7 @@ class AuthController extends Controller
         return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get
         }
         // redirect to login after successfully registered
-        return redirect(route('login'))->with("success", "Registration successful. Please wait for verification."); //with("key", "success message") and inside the route is the name in get
+        return redirect(route('login'))->with("success", "Registration successful. Check your email and wait for verification."); //with("key", "success message") and inside the route is the name in get
         
     }
 
