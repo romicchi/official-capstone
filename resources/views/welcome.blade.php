@@ -18,7 +18,7 @@
         @section('navbar')
         @endsection
                 <!-- Jumbotron -->
-    <div class="jumbotron" style="background-image: url({{ asset('assets/img/Background.png')}}">
+    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}">
       <hr class="my-4">
     </div>
 
@@ -58,25 +58,25 @@
     <div class="container">
       <h2 class="mb-5">Testimonials</h2>
       <div class="row">
-        <div class="col-lg-4 mb-4">
+        <div class="col-lg-4 mb-4" data-aos="fade-down">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" data-aos="fade-down">
               <p class="card-text">"At GENER, we believe that every LNU student deserves to succeed academically."</p>
               <p class="card-title">- Justine</p>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 mb-4">
+        <div class="col-lg-4 mb-4" data-aos="fade-up">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" data-aos="fade-up">
               <p class="card-text">"Our platform is designed to offer various resources from textbooks, modules, online materials, lectures, notes, and much more."</p>
               <p class="card-title">- Challen</p>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 mb-4">
+        <div class="col-lg-4 mb-4" data-aos="fade-down">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" data-aos="fade-down">
               <p class="card-text">"GENER serves as an educational resource pool specifically designed for students  LNU students by supporting their academic research and enhancing their learning experience."</p>
               <p class="card-title">- Justin</p>
             </div>
@@ -123,3 +123,8 @@
     </body>
 </html>
 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script>
+  AOS.init();
+</script>

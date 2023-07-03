@@ -1,14 +1,22 @@
-html {
-    background-color: #858585;
+.background {
+	background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
-/* Position the form in the middle-right of the screen */
+
+.container {
+	display: flex;
+	justify-content: center;
+	height: 100vh;
+  width: 100vw;
+}
+
 form {
     border: 2px solid black;
     border-radius: 20px;
     position: absolute;
     top: 350px;
-    right: 35%;
-    left: 35%;
+    right: 15%;
+    left: 60%;
     padding: 10vh 2vw;
     transform: translateY(-50%);
     background-color: #F0F0F0;
