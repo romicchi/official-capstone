@@ -109,6 +109,7 @@
       </div>
     </form>
   </div>
+  <a href="{{ route('adminadd') }}" class="btn btn-primary">ADD USER</a>
   <p>No users found</p>
 @endif
 

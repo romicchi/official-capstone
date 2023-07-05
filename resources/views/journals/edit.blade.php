@@ -1,7 +1,18 @@
 @extends('layout.usernav')
 
-<div class="container">
-    <h1>Edit Note</h1>
+<link rel="stylesheet" type="text/css" href="{{ asset ('css/journal.css') }}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.css">
+    
+    @error('title')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
+    @error('content')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
+<div class="container card">
+    <h3>Edit Note</h3>
     <form action="{{ route('journals.update', $journal) }}" method="post">
         @csrf
         @method('PUT')
@@ -10,9 +21,13 @@
             <input type="text" name="title" id="title" class="form-control" value="{{ $journal->title }}">
         </div>
         <div class="form-group">
-            <label for="content">Content:</label>
-            <textarea name="content" id="content" class="form-control">{{ $journal->content }}</textarea>
+        <label for="content">Content:</label>
+            <input id="content" type="hidden" name="content" value="{{ $journal->content }}">
+            <trix-editor class="content-scroll" input="content"></trix-editor>
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary my-2">Save</button>
+        <a href="{{ route('journals.show', $journal) }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.js"></script>

@@ -1,0 +1,101 @@
+html {
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.trix-container {
+  max-width: 100%;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card-body {
+  background-color: aliceblue;
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.content-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.back-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.back-button:hover {
+  background-color: #0069d9;
+  color: #fff;
+}
+
+.dots-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 15px;
+  margin-right: 12px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  background-color: #000;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+}
+
+.pagination .page-item {
+  margin: 0 10px;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 576px) {
+  /* Adjust styles for small screens */
+  html {
+    padding: 2rem;
+  }
+
+  .dots-container {
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Adjust styles for medium screens */
+  .dots-container {
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  /* Adjust styles for large screens */
+  .dots-container {
+    margin-right: 15px;
+  }
+}
+
+@media (max-width: 1200px) {
+  /* Adjust styles for extra-large screens */
+}
