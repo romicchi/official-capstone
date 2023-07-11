@@ -5,6 +5,16 @@ body {
     font-family: 'Roboto', sans-serif;
   }
 
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    width: 9rem; /* adjust the width to your desired size */
+    height: auto; /* maintain aspect ratio */
+}
+
   /* Global Styles */
   header {
     background-color: #364F6B;
@@ -122,8 +132,15 @@ body {
     width: 100%; /* make footer span the entire width */
   }
 
+  @media screen and (max-width: 993px) {
+    .logo-image {
+      width: 6.3rem; /* adjust the width to your desired size */
+      height: auto; /* maintain aspect ratio */
+  }
+  }
+
   @media (min-width: 992px) {
-    
+
     .navbar {
       flex-direction: column;
       width: 250px;
@@ -139,7 +156,7 @@ body {
       width: 100%;
       padding: 20px;
       position: absolute;
-      top: 50px;
+      top: 75px;
       left: 0;
     }
     
@@ -188,4 +205,22 @@ body {
     padding-left: 2rem;
     padding-right: 2rem;
   }    
+}
+
+@media screen and (max-width: 1176px) {
+
+  .nav-link {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    margin-top: 10px;
+    margin-left: 10%;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 12px;
+    padding-left: 15px;
+    color: #fff;
+   
+  }
 }
