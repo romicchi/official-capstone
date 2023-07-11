@@ -3,6 +3,16 @@ body {
     height: 0;
   }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    width: 6rem; /* adjust the width to your desired size */
+    height: auto; /* maintain aspect ratio */
+    margin-right: 10px; /* add optional margin for spacing */
+}
 
 .navbar {
     background-color: #e9ecef; /* set the background color */
@@ -22,7 +32,7 @@ body {
   }
   
   .navbar a:hover {
-    background-color: #ddd; /* change background color on hover */
+    background-color: #e7e7e7; /* change background color on hover */
     color: black; /* change text color on hover */
   }
   
