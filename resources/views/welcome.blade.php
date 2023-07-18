@@ -1,5 +1,6 @@
 @include('layout.homenav')
-@include('layout.chatbotlayout')
+@extends('layout.chatbotlayout')
+@yield('chatbot')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -9,84 +10,93 @@
         <title>@section('title', 'GENER')</title>
 
         <!-- Fonts -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset ('css/landingpage.css') }}">
 
     </head>
-    @yield('chatbot')
     <body class="antialiased">
         @section('navbar')
         @endsection
                 <!-- Jumbotron -->
     <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}">
-      <hr class="my-4">
     </div>
+    <!-- About Section -->
+    <section class="about" id="about-container">
+        <div class="container">
+            <div class="row m-a-0">
+            <h2 class="mb-5 text-center">About</h2>
+                <!-- Image Block -->
+                <div class="col-md-6 p-a-0">
+                    <div class="img-wrap" style="background-image: url({{ asset('assets/img/learning.jpg')}}"></div>
+                </div>
+                <!-- Text Block -->
+                <div class="col-md-6 bg-edit bg-blue text-white spotlight-text center-md">
+                    <div class="vertical-center-rel">
+                        <h6 class="text-uppercase f-w-900" style="visibility: visible;">Why Use GENER?</h6>
+                        <h3 class="f-w-900 m-b-md" style="visibility: visible;">We're transforming the way people learn.</h3>
+                        <p class="m-b-md">Democritum inciderint nam ut, duo ne rebum tibique molestiae, mediocrem incorrupte dissentiunt has in. Vidisse gloriatur eum in, alia docendi molestie est te. Nam facer erant aeterno te, sed no utamur perfecto.</p>
+                        <a href="{{ route('register') }}" class="btn btn-ghost smooth-scroll text-uppercase">Register Now!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
-    <section class="features">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4">
-            <div class="card mb-5 mb-lg-0">
-              <div class="card-body">
-                <h5 class="card-title">Feature 1</h5>
-                <p class="card-text">Provide students with easy access to information about all the courses offered at LNU.</p>
-              </div>
+    <section class="features" id="features-container">
+        <div class="container">
+            <h2 class="mb-5 text-center">Features</h2>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-5 mb-lg-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Easy Access</h5>
+                            <p class="card-text text-center">Provide students with easy access to information about all the courses offered at LNU.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-5 mb-lg-0">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Sharing</h5>
+                            <p class="card-text text-center">The platform enables teachers to easily share educational materials with their students, such as lecture notes, study guides, and reading assignments.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Discovery</h5>
+                            <p class="card-text text-center">Enables students to quickly find the learning resources they need. Students can search by keyword, subject, or topic to locate relevant materials.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card mb-5 mb-lg-0">
-              <div class="card-body">
-                <h5 class="card-title">Feature 2</h5>
-                <p class="card-text">The platform enables teachers to easily share educational materials with their students, such as lecture notes, study guides, and reading assignments.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Feature 3</h5>
-                <p class="card-text">Enables students to quickly find the learning resources they need. Students can search by keyword, subject, or topic to locate relevant materials.</p>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </section>
-    <!-- Testimonials Section -->
-<section class="testimonials">
-    <div class="container">
-      <h2 class="mb-5">Testimonials</h2>
-      <div class="row">
-        <div class="col-lg-4 mb-4" data-aos="fade-down">
-          <div class="card">
-            <div class="card-body" data-aos="fade-down">
-              <p class="card-text">"At GENER, we believe that every LNU student deserves to succeed academically."</p>
-              <p class="card-title">- Justine</p>
+
+  <!-- Chatbot Section -->
+    <section class="chatbot">
+        <div class="container" id="chatbot-container">
+        <h2 class="mb-5 text-center">ChatBot</h2>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Chatbot Assistance</h5>
+                            <p class="card-text text-center">Our chatbot is here to help you with any questions or concerns you may have. Simply type in your query, and the chatbot will provide you with relevant information and assistance.</p>
+                            <div class="text-center">
+                                <a href="{{ route('login') }}" class="btn btn-primary" id="try-now-btn">Try Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="col-lg-4 mb-4" data-aos="fade-up">
-          <div class="card">
-            <div class="card-body" data-aos="fade-up">
-              <p class="card-text">"Our platform is designed to offer various resources from textbooks, modules, online materials, lectures, notes, and much more."</p>
-              <p class="card-title">- Challen</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 mb-4" data-aos="fade-down">
-          <div class="card">
-            <div class="card-body" data-aos="fade-down">
-              <p class="card-text">"GENER serves as an educational resource pool specifically designed for students  LNU students by supporting their academic research and enhancing their learning experience."</p>
-              <p class="card-title">- Justin</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+
   <!-- Footer -->
-  <footer class="bg-dark text-white py-3">
+  <footer class="bg-dark text-white py-3" id="footer-container">
     <div class="container">
       <div class="row">
         <div class="col-lg-6 mb-2 mb-lg-0">
@@ -97,18 +107,15 @@
           <h5>Links</h5>
           <ul class="list-unstyled">
             <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#about-container">About</a></li>
+            <li><a href="#features-container">Features</a></li>
+            <li><a href="#chatbot-container">Chatbot</a></li>
+            <li><a href="#footer-container">Address</a></li>
           </ul>
         </div>
         <div class="col-lg-3">
-          <h5>GET NOTIFIED FOR LATEST UPDATE</h5>
-          <p>Subscribe to our mailing list to receive updates on new resources:</p>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Email">
-            <button class="btn btn-primary" type="button">Submit</button>
-          </div>
+          <h5>Address</h5>
+          <p>Leyte Normal University <br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
         </div>
       </div>
       <div class="row">

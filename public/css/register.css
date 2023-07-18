@@ -1,5 +1,5 @@
 .background {
-	background-size: 100% 100%;
+	background-size: cover;
 	background-repeat: no-repeat;
 }
 
@@ -7,39 +7,39 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	min-height: 100vh;
   	width: 100vw;
 }
 
 form {
 	border: 2px solid black;
 	border-radius: 20px;
-	padding: 50px 30px;
+	padding: 5% 3%;
 	background-color: #F0F0F0;
 }
 
 @media (min-width: 576px) {
 	form {
-		width: 400px;
+		width: 80%;
 		margin: 0 auto;
 	}
 }
 
 @media (min-width: 768px) {
 	form {
-		width: 500px;
+		width: 70%;
 	}
 }
 
 @media (min-width: 992px) {
 	form {
-		width: 600px;
+		width: 60%;
 	}
 }
 
 @media (min-width: 1200px) {
 	form {
-		width: 700px;
+		width: 50%;
 	}
 }
 

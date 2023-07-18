@@ -1,42 +1,75 @@
 body {
-    font-family: Arial, sans-serif;
-    height: 0;
-  }
+  font-family: Arial, sans-serif;
+  height: 0;
+}
 
 .navbar-brand {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .logo-image {
-    width: 6rem; /* adjust the width to your desired size */
-    height: auto; /* maintain aspect ratio */
-    margin-right: 10px; /* add optional margin for spacing */
+  width: 6rem;
+  height: auto;
+  margin-right: 10px;
 }
 
 .navbar {
-    background-color: #e9ecef; /* set the background color */
-    overflow: hidden; /* hide any overflowing elements */
-    z-index: 1;
-    height: 60px;
+  background-color: #e9ecef;
+  overflow: hidden;
+  z-index: 1;
+  height: 60px;
+  position: relative;
+}
+
+.navbar a {
+  display: block;
+  font-weight: bold;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar a:hover {
+  background-color: #e7e7e7;
+  color: black;
+}
+
+.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.navbar a.nav-link {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 8px;
+  z-index: 999;
+}
+
+@media (max-width: 767px) {
+  .navbar-collapse {
+      position: relative;
+      height: auto;
+      overflow: visible !important;
   }
+
+  .navbar-nav {
+      flex-direction: row;
+      padding-right: 0;
+      margin-bottom: 0;
+  }
+
+  .navbar-nav .nav-item {
+      margin-bottom: 0;
+  }
+
+  .navbar-nav .nav-link {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+  }
+}
   
-  .navbar a {
-    float: left; /* align links horizontally */
-    display: block; /* make links take up full width of container */
-    font-weight: bold;
-    /* color: white; set text color */
-    text-align: center; /* center text within links */
-    padding: 14px 16px; /* add padding to links */
-    text-decoration: none; /* remove underlines from links */
-  }
-  
-  .navbar a:hover {
-    background-color: #e7e7e7; /* change background color on hover */
-    color: black; /* change text color on hover */
-  }
-  
-  .active {
-    background-color: #4CAF50; /* set active link background color */
-    color: white; /* set active link text color */
-  }

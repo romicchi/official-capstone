@@ -6,9 +6,8 @@ const inputField = document.getElementById('input-field');
 const chatbotWrapper = document.querySelector('.chatbot-wrapper');
 const toggleChatbotButton = document.getElementById('toggle-chatbot');
 
-
 // Add event listener to input form
-inputForm.addEventListener('submit', function(event) {
+inputForm.addEventListener('submit', function (event) {
   // Prevent form submission
   event.preventDefault();
 
@@ -17,7 +16,7 @@ inputForm.addEventListener('submit', function(event) {
 
   // Clear input field
   inputField.value = '';
-  const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit" });
+  const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   // Add user input to conversation
   let message = document.createElement('div');
@@ -30,51 +29,97 @@ inputForm.addEventListener('submit', function(event) {
 
   // Add chatbot response to conversation
   message = document.createElement('div');
-  message.classList.add('chatbot-message','chatbot');
+  message.classList.add('chatbot-message', 'chatbot');
   message.innerHTML = `<p class="chatbot-text" sentTime="${currentTime}">${response}</p>`;
   conversation.appendChild(message);
-  message.scrollIntoView({behavior: "smooth"});
+  message.scrollIntoView({ behavior: 'smooth' });
 });
 
 // Generate chatbot response function
 function generateResponse(input) {
-    // Add chatbot logic here
-    const responses = [
-      "Hello, how can I help you today? 😊",
-      "I'm sorry, I didn't understand your question. Could you please rephrase it? 😕",
-      "I'm here to assist you with any questions or concerns you may have. 📩",
-      "I'm sorry, I'm not able to browse the internet or access external information. Is there anything else I can help with? 💻",
-      "What would you like to know? 🤔",
-      "I'm sorry, I'm not programmed to handle offensive or inappropriate language. Please refrain from using such language in our conversation. 🚫",
-      "I'm here to assist you with any questions or problems you may have. How can I help you today? 🚀",
-      "Is there anything specific you'd like to talk about? 💬",
-      "I'm happy to help with any questions or concerns you may have. Just let me know how I can assist you. 😊",
-      "I'm here to assist you with any questions or problems you may have. What can I help you with today? 🤗",
-      "Is there anything specific you'd like to ask or talk about? I'm here to help with any questions or concerns you may have. 💬",
-      "I'm here to assist you with any questions or problems you may have. How can I help you today? 💡",
-    ];
-    
-    // Return a random response
-    return responses[Math.floor(Math.random() * responses.length)];
+  // Parse the datasets JSON
+  const datasets = [
+    {
+      "keywords": ["resources", "educational resources", "textbooks", "research"],
+      "response": "Our web application provides a wide range of educational resources, including textbooks, lecture notes, video lectures, research papers, and more. You can explore resources from various colleges, courses, and subjects to support your learning."
+    },
+    {
+      "keywords": ["open educational resources", "OER"],
+      "response": "We offer a collection of open educational resources (OER) that are freely available for anyone to access. These resources are created by professors and experts, ensuring credibility and relevance for your studies."
+    },
+    {
+      "keywords": ["professors", "contributors"],
+      "response": "Our web application features resources contributed by professors and experts from different educational institutions. Their expertise ensures the quality and credibility of the materials available on our platform."
+    },
+    {
+      "keywords": ["safety", "credibility"],
+      "response": "We prioritize the safety and credibility of our educational resources. Our team carefully reviews and curates the content to ensure it meets high standards of accuracy, reliability, and relevance for learners."
+    },
+    {
+      "keywords": ["colleges", "institutions"],
+      "response": "You can find resources from various colleges and educational institutions on our platform. We aim to provide a diverse collection that covers a wide range of subjects and courses to meet your learning needs."
+    },
+    {
+      "keywords": ["courses", "subjects"],
+      "response": "Our web application offers resources for a wide variety of courses and subjects. Whether you're studying mathematics, history, information technology, or any other discipline, you can find relevant resources to support your learning journey."
+    },
+    {
+      "keywords": ["discussion forum", "community"],
+      "response": "We provide a discussion forum where you can connect with fellow learners, ask questions, share insights, and engage in educational discussions. It's a great way to collaborate and learn from a community of like-minded individuals."
+    },
+    {
+      "keywords": ["personal notes", "note-taking"],
+      "response": "Our web application allows you to take personal notes while accessing educational resources. You can create, organize, and save your notes, making it easier to review and consolidate your learning."
+    },
+    {
+      "keywords": ["history", "search history"],
+      "response": "We maintain a search history feature that allows you to track and revisit your previous searches. It helps you keep a record of the resources you have explored and simplifies navigation within the web application."
+    },
+    {
+      "keywords": ["dashboard", "user dashboard"],
+      "response": "Our user-friendly dashboard provides a personalized and centralized hub for your educational journey. You can access your saved resources, view progress, manage your profile, and discover new materials from the dashboard."
+    }
+  ];
+
+  // Iterate over the datasets and check for matching keywords
+  for (const data of datasets) {
+    for (const keyword of data.keywords) {
+      if (input.toLowerCase().includes(keyword.toLowerCase())) {
+        return data.response;
+      }
+    }
   }
-  
+
+  // If no matching keywords are found, return a default response
+  const responses = [
+    "Hello, how can I help you today? 😊",
+    "Is there anything you like to ask? 😊",
+    "How can I help you today? 😊",
+    "What can I do for you today? 😊",
+    "How can I assist you today? 😊",
+    "What can I help you with today? 😊",
+  ];
+
+  // Return a random default response
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
 toggleChatbotButton.addEventListener('click', () => {
   chatbotWrapper.style.display = chatbotWrapper.style.display === 'none' ? 'block' : 'none';
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
   // Define the suggestion button click event
-  $('.suggestion').on('click', function() {
+  $('.suggestion').on('click', function () {
     var message = $(this).text(); // Get the text of the clicked button
     $('#input-field').val(message); // Set the input field value to the button text
     $('#submit-button').click(); // Trigger the send button click event
   });
 });
 
-
 // -------------------CLOSE CHATBOT------------------------ //
-$(document).ready(function(){
-  $('#close-chatbot').click(function(){
+$(document).ready(function () {
+  $('#close-chatbot').click(function () {
     $('.chatbot-wrapper').hide();
   });
 });
