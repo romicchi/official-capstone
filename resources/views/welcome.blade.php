@@ -32,8 +32,8 @@
                 <!-- Text Block -->
                 <div class="col-md-6 bg-edit bg-blue text-white spotlight-text center-md">
                     <div class="vertical-center-rel">
-                        <h6 class="text-uppercase f-w-900" style="visibility: visible;">Why Use GENER?</h6>
-                        <h3 class="f-w-900 m-b-md" style="visibility: visible;">We're transforming the way people learn.</h3>
+                        <h6 class="text-uppercase f-w-900" style="visibility: visible;" data-aos="fade-left">Why Use GENER?</h6>
+                        <h3 class="f-w-900 m-b-md" style="visibility: visible;" data-aos="fade-left">We're transforming the way people learn.</h3>
                         <p class="m-b-md">Democritum inciderint nam ut, duo ne rebum tibique molestiae, mediocrem incorrupte dissentiunt has in. Vidisse gloriatur eum in, alia docendi molestie est te. Nam facer erant aeterno te, sed no utamur perfecto.</p>
                         <a href="{{ route('register') }}" class="btn btn-ghost smooth-scroll text-uppercase">Register Now!</a>
                     </div>
@@ -49,7 +49,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <div class="card mb-5 mb-lg-0">
-                        <div class="card-body">
+                        <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Easy Access</h5>
                             <p class="card-text text-center">Provide students with easy access to information about all the courses offered at LNU.</p>
                         </div>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="card mb-5 mb-lg-0">
-                        <div class="card-body">
+                        <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Sharing</h5>
                             <p class="card-text text-center">The platform enables teachers to easily share educational materials with their students, such as lecture notes, study guides, and reading assignments.</p>
                         </div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Discovery</h5>
                             <p class="card-text text-center">Enables students to quickly find the learning resources they need. Students can search by keyword, subject, or topic to locate relevant materials.</p>
                         </div>
@@ -86,7 +86,7 @@
                             <h5 class="card-title text-center">Chatbot Assistance</h5>
                             <p class="card-text text-center">Our chatbot is here to help you with any questions or concerns you may have. Simply type in your query, and the chatbot will provide you with relevant information and assistance.</p>
                             <div class="text-center">
-                                <a href="{{ route('login') }}" class="btn btn-primary" id="try-now-btn">Try Now</a>
+                                <a href="{{ route('login') }}" class="btn btn-primary" id="try-now-btn" data-aos="zoom-in">Try Now</a>
                             </div>
                         </div>
                     </div>

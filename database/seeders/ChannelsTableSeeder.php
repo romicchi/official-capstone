@@ -17,21 +17,17 @@ class ChannelsTableSeeder extends Seeder
     {
         DB::table('channels')->insert([
             [
-                'name' => 'BSIT Channel',
-                'slug' => Str::slug('BSIT Channel')
+                'name' => 'CME Channel',
+                'slug' => Str::slug('CME Channel')
             ],
             [
-                'name' => 'BACOMM Channel',
-                'slug' => Str::slug('BACOMM Channel')
+                'name' => 'CAS Channel',
+                'slug' => Str::slug('CAS Channel')
             ],
             [
-                'name' => 'BEED Channel',
-                'slug' => Str::slug('BEED Channel')
+                'name' => 'COE Channel',
+                'slug' => Str::slug('COE Channel')
             ],
-            [
-                'name' => 'TM Channel',
-                'slug' => Str::slug('TM Channel')
-            ]
         ]);
     }
 }

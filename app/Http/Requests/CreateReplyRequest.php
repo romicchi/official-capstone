@@ -23,7 +23,7 @@ class CreateReplyRequest extends FormRequest
     {
         return [
             //content must be provided or available to comment
-            'content' => 'required'
+            'content' => 'required|max:5000'
         ];
     }
 }

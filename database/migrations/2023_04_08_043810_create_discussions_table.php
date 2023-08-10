@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('discussions', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('title');
-            $table->text('content');
+            $table->string('title', 255);
+            $table->text('content', 20000);
             $table->string('slug')->unique();
             $table->integer('channel_id');
+            $table->integer('course_id');
             $table->timestamps();
         });
     }

@@ -3,10 +3,23 @@
 namespace App\Models;
 
 // use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Discussion extends Model
 {
+
+    protected $fillable = [
+        'user_id',
+        'title',
+        'content',
+        'slug',
+        'channel_id',
+        'course_id',
+        'likes_count',
+        'dislikes_count',
+    ];
+
     public function author() 
     {
         return $this->belongsTo(User::class, 'user_id'); 
@@ -34,4 +47,10 @@ class Discussion extends Model
         }
         return $builder;
     }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
 }

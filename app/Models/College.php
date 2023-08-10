@@ -18,5 +18,10 @@ class College extends Model
     {
         return $this->hasMany(Resource::class, 'college_id');
     }
+
+    public function college()
+    {
+        return $this->belongsTo(College::class, 'name', 'collegeName');
+    }
 }
 

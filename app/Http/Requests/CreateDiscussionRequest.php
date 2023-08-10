@@ -22,9 +22,10 @@ class CreateDiscussionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
-            'content' => 'required',
+            'title' => 'required|max:255',
+            'content' => 'required|max:20000',
             'channel' => 'required',
+            'course' => 'required|exists:course,id',
         ];
     }
 }

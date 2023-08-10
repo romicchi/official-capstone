@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateReplyRequest;
 use App\Models\Discussion;
+use App\Models\Reply;
+use Illuminate\Support\Facades\Auth;
 
 
 class RepliesController extends Controller
@@ -66,8 +68,15 @@ class RepliesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Discussion $discussion, Reply $reply)
     {
-        //
+        if (Auth::user()->id === $reply->owner->id) {
+            $reply->delete();
+            session()->flash('success', 'Reply deleted successfully.');
+        } else {
+            session()->flash('error', 'You are not authorized to delete this reply.');
+        }
+
+        return redirect()->back();
     }
 }

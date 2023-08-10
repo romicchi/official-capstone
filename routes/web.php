@@ -15,6 +15,8 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\LikeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -104,21 +106,24 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the user is login only he/she can see this 
 
     Route::get('/usernav', [AdminController::class, 'usernav'])->name('usernav');
-
-    Route::resource('discussions', 'App\Http\Controllers\DiscussionsController');
-    // discussion-discussionid-replies: This means that the replies will depend to discussions
-    Route::resource('discussions/{discussion}/replies', 'App\Http\Controllers\RepliesController');
     
+    //FORUM/DISCUSSION
     Route::get('/create', function () {
         return view('discussions.create');
     })->name('create');
-
-    Route::get('/forum', function () {
-        return view('forum');
-    })->name('forum');
+    
     Route::resource('discussions', 'App\Http\Controllers\DiscussionsController');
     Route::delete('/discussions/{discussion}', [DiscussionsController::class, 'destroy'])->name('discussions.destroy');
 
+    // Add the route for updating discussions
+    Route::get('/discussions/{discussion}/edit', [DiscussionsController::class, 'edit'])->name('discussions.edit');
+    Route::patch('/discussions/{discussion}', [DiscussionsController::class, 'update'])->name('discussions.update');    
+
+    // discussion-discussionid-replies: This means that the replies will depend to discussions
+    Route::resource('discussions/{discussion}/replies', 'App\Http\Controllers\RepliesController');
+    Route::get('/get-courses/{channel}', [DiscussionsController::class, 'getCoursesByChannel'])->name('get-courses');
+
+    
     Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');
 
     Route::get('/favorites', function () {
@@ -150,7 +155,6 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     });
     
     // SUBJECTS & RESOURCES
-    Route::get('/quantitative', [ResourceController::class, 'showSubjectResources'])->name('quantitative.index');
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
     Route::get('/resources', [ResourceController::class, 'resources'])->name('show.resources');
     

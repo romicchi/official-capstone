@@ -244,16 +244,6 @@ class ResourceController extends Controller
 
 
     //---------Subject Resources----------//
-    public function showSubjectResources(Subject $subject)
-    {
-        $resources = Resource::paginate(10);
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
-    
-        return view('subjects.quantitative', compact('resources', 'colleges', 'courses', 'subjects'));
-    }
-
     public function showEmbed(Request $request, $id)
     {
         // Retrieve the resource based on the given ID

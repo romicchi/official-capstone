@@ -1,35 +1,91 @@
 .btn-style {
     width: 100%;
 }
-/* 
+
+.content-scroll {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.channel-a{
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .pagination {
-    display: inline-flex;
-    list-style: none;
-    padding: 0;
-    justify-content: center;
-  }
-  
-  .pagination li {
-    margin: 0 5px;
-  }
-  
-  .pagination a,
-  .pagination span {
-    display: inline-flex;
-    font-size: 16px;
-    font-weight: 600;   
-    background-color: #fff;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .pagination a:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .pagination .active a,
-  .pagination .active span {
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
-  } */
+  justify-content: center;
+}
+
+.dots-container {
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-top: 5px;
+  margin-right: 12px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  background-color: #000;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+/* disccusion-layout */
+.card-header {
+  background-color: rgb(255, 255, 255) !important;
+}
+
+.layout-header {
+  background-color: rgb(184, 184, 184) !important;
+}
+
+.card-body {
+  background-color: rgb(255, 255, 255);
+}
+
+.layout-body {
+  background-color: rgb(235, 235, 235);
+}
+
+.reply-header.green {
+  background-color: rgb(207, 255, 220) !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+.reply-header.yellow {
+  background-color: yellow !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.btn {
+  font-weight: bolder !important;
+}
+
+.trix-container {
+  max-width: 100%;
+}
