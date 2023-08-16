@@ -12,10 +12,7 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
-        return view('administrator.adminpage', compact('colleges', 'courses', 'subjects'));
+        return view('administrator.adminpage');
     }
 
 

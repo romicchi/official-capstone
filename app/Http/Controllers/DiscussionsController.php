@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Models\Discussion;
+use App\Models\Reply;
 use App\Models\Channel; 
 use App\Models\Course;
 use Illuminate\Support\Str;
@@ -36,9 +37,12 @@ class DiscussionsController extends Controller
 
     public function index(Request $request)
     {
-        Paginator::useBootstrap(); // Enable Bootstrap pagination style
+        Paginator::useBootstrap();
     
         $query = Discussion::query();
+
+        // Eager load author and course relationships
+        $query->with(['author', 'course']);
     
         // Filter by channel
         $channelSlug = $request->query('channel');
@@ -110,8 +114,12 @@ class DiscussionsController extends Controller
     //Note: $discussion is found at the database
     public function show(Discussion $discussion) //default: show(string $id)
     {
+        $replies = $discussion->replies()->paginate(3); // Fetch replies and paginate
+
         return view('discussions.show', [
             'discussion' => $discussion,
+            'replies' => $replies, // Pass the paginated replies to the view
+
             'userId' => auth()->check() ? auth()->user()->id : null 
         ]);
     }

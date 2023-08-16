@@ -16,9 +16,10 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $colleges = College::all();
+        $colleges = College::with('courses')->get();
         $courses = Course::all();
         $subjects = Subject::all();
+        
         view()->share('colleges', $colleges);
         view()->share('courses', $courses);
         view()->share('subjects', $subjects);

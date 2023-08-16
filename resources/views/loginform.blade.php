@@ -14,7 +14,7 @@
   </head>
   <body>
 
-  <div class="background" style="background-image: url({{ asset('assets/img/background-image.png')}}">
+  <div class="background" style="background-image: url({{ asset('assets/img/background-image.png')}}" loading="lazy">
     <div class="container"> 
       <div class="mt-5 message">
         @if($errors->any())

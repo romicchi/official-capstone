@@ -15,7 +15,7 @@
                 <div class="dot"></div>
                 <div class="dot"></div>
                 <div class="dot"></div>
-                <div class="dropdown-menu" id="dropdownMenu_{{ $discussion->id }}">
+                <div class="dropdown-menu menu" id="dropdownMenu_{{ $discussion->id }}">
                     <a class="dropdown-item" href="{{ route('discussions.edit', ['discussion' => $discussion->id]) }}">Edit</a>
                     <button type="button" class="dropdown-item delete-discussion">Delete</button>
                 </div>
@@ -40,7 +40,7 @@
         // Check if the clicked element is not part of the dropdown or its toggle button
         if (!$('.dots-container').is(event.target) && $('.dots-container').has(event.target).length === 0) {
             // Close any open dropdowns
-            $('.dropdown-menu').removeClass('show');
+            $('.menu').removeClass('show');
         }
     });
         

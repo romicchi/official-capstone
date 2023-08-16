@@ -8,6 +8,11 @@ class Course extends Model
 {
     protected $table = 'course'; // Name of the courses table in the database
 
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
     // Relationship with college
     public function college()
     {

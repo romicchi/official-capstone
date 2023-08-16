@@ -16,8 +16,6 @@ class Discussion extends Model
         'slug',
         'channel_id',
         'course_id',
-        'likes_count',
-        'dislikes_count',
     ];
 
     public function author() 
@@ -25,9 +23,9 @@ class Discussion extends Model
         return $this->belongsTo(User::class, 'user_id'); 
     }
 
-    public function replies() 
+    public function replies()
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->with('owner');
     }
 
     // Laravel will find the discussion using the slug in the database

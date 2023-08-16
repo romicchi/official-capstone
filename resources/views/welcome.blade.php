@@ -18,7 +18,7 @@
         @section('navbar')
         @endsection
                 <!-- Jumbotron -->
-    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}">
+    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}" loading="lazy">
     </div>
     <!-- About Section -->
     <section class="about" id="about-container">
@@ -27,7 +27,7 @@
             <h2 class="mb-5 text-center">About</h2>
                 <!-- Image Block -->
                 <div class="col-md-6 p-a-0">
-                    <div class="img-wrap" style="background-image: url({{ asset('assets/img/learning.jpg')}}"></div>
+                    <div class="img-wrap" style="background-image: url({{ asset('assets/img/learning.jpg')}}" loading="lazy"></div>
                 </div>
                 <!-- Text Block -->
                 <div class="col-md-6 bg-edit bg-blue text-white spotlight-text center-md">

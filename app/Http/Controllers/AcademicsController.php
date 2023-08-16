@@ -13,9 +13,9 @@ class AcademicsController extends Controller
 {
     public function index()
     {
-        $colleges = College::paginate(5, ['*'], 'college_page');
-        $courses = Course::paginate(10, ['*'], 'course_page');
-        $subjects = Subject::paginate(2, ['*'], 'subject_page');
+        $colleges = College::with('courses')->paginate(5, ['*'], 'college_page');
+        $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
+        $subjects = Subject::with('course')->paginate(2, ['*'], 'subject_page');
         Paginator::useBootstrap();
     
         return view('academics.index', compact('colleges', 'courses', 'subjects'));
@@ -87,8 +87,7 @@ class AcademicsController extends Controller
 
     public function createCourse()
     {
-        $colleges = College::all();
-        return view('academics.create_course', compact('colleges'));
+        return view('academics.create_course');
     }
 
     public function storeCourse(Request $request)
@@ -109,8 +108,7 @@ class AcademicsController extends Controller
     public function editCourse($id)
     {
         $course = Course::findOrFail($id);
-        $colleges = College::all();
-        return view('academics.edit_course', compact('course', 'colleges'));
+        return view('academics.edit_course', compact('course'));
     }
 
     public function updateCourse(Request $request, $id)
@@ -163,8 +161,7 @@ class AcademicsController extends Controller
     public function editSubject($id)
     {
         $subject = Subject::findOrFail($id);
-        $courses = Course::all();
-        return view('academics.edit_subject', compact('subject', 'courses'));
+        return view('academics.edit_subject', compact('subject'));
     }
 
     public function updateSubject(Request $request, $id)
@@ -197,8 +194,8 @@ class AcademicsController extends Controller
         $searchQuery = $request->input('course_search');
 
         $courses = Course::where('courseName', 'LIKE', "%$searchQuery%")->paginate(10, ['*'], 'course_page');
-        $colleges = College::paginate(5, ['*'], 'college_page');
-        $subjects = Subject::paginate(5, ['*'], 'subject_page');
+        $colleges = College::with('courses')->paginate(5, ['*'], 'college_page');
+        $subjects = Subject::with('course')->paginate(5, ['*'], 'subject_page');
         Paginator::useBootstrap();
 
         return view('academics.index', compact('colleges', 'courses', 'subjects'));

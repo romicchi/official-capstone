@@ -42,7 +42,7 @@
 
 
                     <h4 class="mt-4">Comments</h4>
-                    @foreach($discussion->replies()->paginate(3) as $reply)
+                    @foreach($replies as $reply)
                     <div class="card my-2">
                         @php
                         $replyHeaderClass = auth()->check() && auth()->user()->id == $reply->owner->id ? 'yellow' : 'green';
@@ -69,7 +69,7 @@
                     @endforeach
                     <!-- Paginate for Reply -->
                     <div class="pagination">
-                        {{ $discussion->replies()->paginate(3)->links('pagination::bootstrap-4') }}
+                    {{ $replies->links('pagination::bootstrap-4') }}
                     </div>
                     
                     <div class="card my-4"> 

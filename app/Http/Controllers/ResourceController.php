@@ -28,11 +28,8 @@ class ResourceController extends Controller
     public function showTeacherManage()
     {
         $resources = Resource::paginate(10);
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
     
-        return view('teacher.teachermanage', compact('resources', 'colleges', 'courses', 'subjects'));
+        return view('teacher.teachermanage', compact('resources'));
     }
 
     

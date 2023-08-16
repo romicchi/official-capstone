@@ -75,8 +75,8 @@ class UsermanageController extends Controller
     //display all users in the database
     public function show()
     {
-        $pendingUsers = User::where('verified', false)->paginate(10, ['*'], 'pending_page');
-        $existingUsers = User::where('verified', true)->paginate(10, ['*'], 'existing_page');
+        $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
+        $existingUsers = User::with('role')->where('verified', true)->paginate(10, ['*'], 'existing_page');
     
         return view('administrator.usermanage', ['pendingUsers' => $pendingUsers, 'existingUsers' => $existingUsers]);
     }

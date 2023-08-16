@@ -9,7 +9,7 @@
 </head>
 <body>
   
-  <div class="background" style="background-image: url({{ asset('assets/img/background-image.png')}}">
+  <div class="background" style="background-image: url({{ asset('assets/img/background-image.png')}}" loading="lazy">
     <div class="container">
       <div class="col">
         <form action="{{ route('register.post') }}" method="post" enctype="multipart/form-data">
