@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Image;
@@ -45,11 +46,11 @@ class UsermanageController extends Controller
         // Validate the form data
         $request->validate([
             'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
-            'firstname' => 'required',
-            'lastname' => 'required',
+            'firstname' => 'required|max:255',
+            'lastname' => 'required|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'role' => 'required|in:1,2'
+            'password' => 'required|min:8|confirmed',
+            'role' => 'required|in:1,2,3',
         ]);
 
         $data['firstname'] = $request->firstname;
@@ -89,6 +90,17 @@ class UsermanageController extends Controller
         $previewLink = "http://drive.google.com/uc?export=view&id=$fileId";
         
         $user->url = $previewLink;
+
+        // // Create the new user
+        // $user = new User();
+        // $user->firstname = $validatedData['firstname'];
+        // $user->lastname = $validatedData['lastname'];
+        // $user->email = $validatedData['email'];
+        // $user->password = Hash::make($validatedData['password']);
+        // $user->role_id = $validatedData['role'];
+        // $user->verified = true;
+
+        // $user->url = $url;
         $user->save();
         
         function getGoogleDriveAccessToken()
@@ -96,20 +108,35 @@ class UsermanageController extends Controller
             return 'your_access_token';
         }
 
-        if(!$user) {
-        return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get
-        }
+        // if(!$user) {
+        // return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get
+        // }
         // redirect to login after successfully registered
-        return redirect()->route('usermanage')->with('success', 'User created successfully.');
-    }
+
+        $activeTab = 'existing';
+
+        // Redirect the user back to the manage user page with a success message
+        return redirect()->route('usermanage', compact('activeTab'))->with('success', 'User created successfully.');
+    }    
+
 
     //display all users in the database
-    public function show()
+    public function show(Request $request)
     {
         $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
         $existingUsers = User::with('role')->where('verified', true)->paginate(10, ['*'], 'existing_page');
-    
-        return view('administrator.usermanage', ['pendingUsers' => $pendingUsers, 'existingUsers' => $existingUsers]);
+
+        $existingUsersQuery = User::with('role')->where('verified', true);
+
+        // Sorting
+        $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
+        $existingUsersQuery->orderBy('lastname', $sortOrder);
+        $existingUsers = $existingUsersQuery->paginate(10);
+
+        $activeTab = 'existing';
+        $roles = Role::all();
+        
+        return view('administrator.usermanage', ['pendingUsers' => $pendingUsers, 'existingUsers' => $existingUsers, 'activeTab' => $activeTab, 'roles' => $roles]);
     }
 
     function verifyUsers(){
@@ -125,8 +152,10 @@ class UsermanageController extends Controller
     
         User::whereIn('id', $verifiedUserIds)->update(['verified' => true]);
         User::whereIn('id', $rejectedUserIds)->delete();
+
+        $activeTab = 'pending';
     
-        return redirect()->route('usermanage')->with('success', 'Users verified successfully.');
+        return redirect()->route('usermanage', compact('activeTab'))->with('success', 'Users verified successfully.');
     }
 
     //delete user function
@@ -134,7 +163,10 @@ class UsermanageController extends Controller
     {  
         $userdata = User::findOrFail($id);
         $userdata->delete();
-        return redirect()->route('usermanage');
+
+        $activeTab = 'existing';
+
+        return redirect()->route('usermanage', compact('activeTab'))->with('success', 'User deleted successfully.');
     }
 
     //show adminedit user function
@@ -153,19 +185,99 @@ class UsermanageController extends Controller
         $userdata->email = $req->email;
         $userdata->role_id = $req->role;
         $userdata->save();
-        return redirect()->route('usermanage');
+
+        $activeTab = 'existing';
+
+        return redirect()->route('usermanage', compact('activeTab'))->with('success', 'User updated successfully.');
+
     }
 
-    //search user function
     public function search(Request $request)
     {
-        $search = $request->input('query');
-        $users = User::where('firstname', 'like', '%' . $search . '%')
-            ->orWhere('lastname', 'like', '%' . $search . '%')
-            ->get();
-            
-        return view('administrator.usermanage', ['users' => $users]);
+        $query = $request->input('query');
+    
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('firstname', 'like', '%' . $query . '%')
+                    ->orWhere('lastname', 'like', '%' . $query . '%')
+                    ->orWhere('email', 'like', '%' . $query . '%');
+            })
+            ->paginate(10);
+    
+        $pendingUsers = User::with('role')
+            ->where('verified', false)
+            ->paginate(10);
+    
+        // Set the active tab to 'existing' since the search only affects existing users
+        $activeTab = 'existing';
+        $roles = Role::all();
+    
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'activeTab' => $activeTab, //
+            'roles' => $roles,
+        ]);
     }
+    
+    public function filterByRole(Request $request)
+    {
+        $roleFilter = $request->input('role');
+        
+        $existingUsersQuery = User::with('role')->where('verified', true);
+        
+        if ($roleFilter != 'all') {
+            $existingUsersQuery->where('role_id', $roleFilter);
+        }
+        
+        $existingUsers = $existingUsersQuery->paginate(10);
+        
+        $pendingUsers = User::with('role')
+        ->where('verified', false)
+        ->paginate(10);
+        
+        $roles = Role::all();
+        
+        $activeTab = 'existing';
+        
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'roles' => $roles,
+            'activeTab' => $activeTab,
+        ]);
+    }
+    
+    public function filterPendingByRole(Request $request)
+    {
+        $roleFilter = $request->input('role');
+
+        $pendingUsersQuery = User::with('role')
+            ->where('verified', false);
+
+        if ($roleFilter != 'all') {
+            $pendingUsersQuery->where('role_id', $roleFilter);
+        }
+
+        $pendingUsers = $pendingUsersQuery->paginate(10);
+
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->paginate(10);
+
+        $roles = Role::all();
+
+        $activeTab = 'pending';
+
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'roles' => $roles,
+            'activeTab' => $activeTab,
+        ]);
+    }
+
 
     public function index()
     {

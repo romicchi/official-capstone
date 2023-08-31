@@ -27,10 +27,10 @@
             <h2 class="mb-5 text-center">About</h2>
                 <!-- Image Block -->
                 <div class="col-md-6 p-a-0">
-                    <div class="img-wrap" style="background-image: url({{ asset('assets/img/learning.jpg')}}" loading="lazy"></div>
+                    <div class="img-wrap shadow" style="background-image: url({{ asset('assets/img/learning.jpg')}}" loading="lazy"></div>
                 </div>
                 <!-- Text Block -->
-                <div class="col-md-6 bg-edit bg-blue text-white spotlight-text center-md">
+                <div class="col-md-6 shadow bg-edit bg-blue text-white spotlight-text center-md">
                     <div class="vertical-center-rel">
                         <h6 class="text-uppercase f-w-900" style="visibility: visible;" data-aos="fade-left">Why Use GENER?</h6>
                         <h3 class="f-w-900 m-b-md" style="visibility: visible;" data-aos="fade-left">We're transforming the way people learn.</h3>
@@ -48,7 +48,7 @@
             <h2 class="mb-5 text-center">Features</h2>
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="card mb-5 mb-lg-0">
+                    <div class="card mb-5 mb-lg-0 shadow">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Easy Access</h5>
                             <p class="card-text text-center">Provide students with easy access to information about all the courses offered at LNU.</p>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card mb-5 mb-lg-0">
+                    <div class="card mb-5 mb-lg-0 shadow">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Sharing</h5>
                             <p class="card-text text-center">The platform enables teachers to easily share educational materials with their students, such as lecture notes, study guides, and reading assignments.</p>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card">
+                    <div class="card shadow">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Discovery</h5>
                             <p class="card-text text-center">Enables students to quickly find the learning resources they need. Students can search by keyword, subject, or topic to locate relevant materials.</p>

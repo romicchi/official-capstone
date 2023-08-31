@@ -31,19 +31,23 @@
     <h1>Add User</h1>
       <div class="form-group">
         <label for="firstname">Firstname:</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" required>
+        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" autocomplete="off" required>
       </div>
       <div class="form-group">
         <label for="lastname">Lastname:</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" required>
+        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" autocomplete="off" required>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" autocomplete="off" required>
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
         <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+      </div>
+      <div class="form-group">
+        <label for="password_confirmation">Confirm Password:</label>
+        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
       </div>
       <div class="form-group">
         <label for="role">Role of the user:</label>
@@ -64,8 +68,8 @@
                                 @enderror
                             </div>
                         </div>
-      <button type="submit" class="btn btn-primary">Add User</button>
-      <a href="{{route('usermanage')}}" class="btn btn-danger" style="flex: 1;">Cancel</a>
+      <button type="submit" class="btn btn-primary my-2">Add User</button>
+      <a href="{{route('usermanage')}}?activeTab=existing" class="btn btn-danger" style="flex: 1;">Cancel</a>
     </form>
   </div>
 </div>

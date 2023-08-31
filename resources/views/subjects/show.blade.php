@@ -1,4 +1,4 @@
-@if(auth()->user()->role_id == 3)
+@if(auth()->user()->role_id == 3 || auth()->user()->role_id == 4)
     @include('layout.adminnavlayout')
 @else
     @include('layout.usernav')

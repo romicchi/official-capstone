@@ -39,19 +39,27 @@ class AuthController extends Controller
         ]);
     
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        $remember = $request->has('remember'); // Check if "Remember Me" is checked
+
+        if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
             // If user is not verified then redirect to login
             if (!$user->verified) {
                 Auth::logout();
                 return redirect(route('login'))->with("error", "Your account is not yet verified. Please wait for the administrator to verify your user credentials. Thank you for your patience.");
             }
+
+            // Rotate the remember token if user is logged in and "Remember Me" is checked
+            if ($remember && $user instanceof Authenticatable) {
+                $user->setRememberToken(Str::random(60));
+                $user->save();
+            }
             
             // Update user's last activity timestamp
             $user->last_activity = Carbon::now();
             $user->save();
     
-            if ($user->role_id === 3) {
+            if ($user->role_id == 3 || $user->role_id == 4) {
                 // Redirect to admin page for admin user
                 return redirect()->intended(route('adminpage'));
             }
@@ -82,7 +90,7 @@ class AuthController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required|min:8|confirmed',
             'role' => 'required|in:1,2'
         ]);
 

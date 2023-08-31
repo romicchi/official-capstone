@@ -16,6 +16,7 @@ use App\Http\Controllers\JournalController;
 use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\BackupRestoreController;
 
 
 /*
@@ -68,6 +69,10 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('usermanage',[UsermanageController::class, 'show'])->name('usermanage');
     Route::get('usermanage/verify-users',[UsermanageController::class, 'verifyUsers'])->name('verify-users');
     Route::post('usermanage/verify-users',[UsermanageController::class, 'postVerifyUsers'])->name('verify-users.post');
+    Route::get('/usermanage/filterByRole',[UsermanageController::class, 'filterByRole'])->name('filterByRole');
+    Route::get('/usermanage/filterPendingByRole', [UsermanageController::class, 'filterPendingByRole'])->name('filterPendingByRole');
+
+
 
     // -------------------------- USER: ADD-UPDATE-DELETE-SEARCH --------------------------------//
     Route::get('delete/{id}',[UsermanageController::class, 'delete'])->name('delete');
@@ -100,6 +105,22 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 
     Route::get('/academics/search/course', [AcademicsController::class, 'searchCourse'])->name('academics.searchCourse');
     Route::get('/academics/search/subject', [AcademicsController::class, 'searchSubject'])->name('academics.searchSubject');
+
+    Route::get('academics/filter-courses', [AcademicsController::class, 'filterCourses'])->name('academics.filterCourses');
+    Route::get('academics/filter-subjects', [AcademicsController::class, 'filterSubjects'])->name('academics.filterSubjects');
+
+    Route::get('/backup-restore/login', [BackupRestoreController::class, 'showLoginForm'])->name('administrator.login');
+    Route::post('/backup-restore/login', [BackupRestoreController::class, 'login'])->name('administrator.login.submit');
+    Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
+    Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
+    
+    Route::middleware(['auth', 'role:super-admin'])->group(function () {
+        Route::get('backup-restore/dashboard', [BackupRestoreController::class, 'dashboard'])->name('administrator.dashboard');
+    });
+
+    Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
+    Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
+
 });
 
 // -------------------------- STUDENT-TEACHER-ADMIN --------------------------------//
@@ -144,15 +165,6 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::post('/settings/update-profile', [SettingsController::class, 'updateProfile'])->name('update-profile');
     Route::post('/settings/change-password', [SettingsController::class, 'changePassword'])->name('changePassword');
     Route::get('/settings/password', [SettingsController::class, 'updatePassword'])->name('user.updatePassword');
-    
-    // COURSES
-    Route::get('/bsit', function () {
-        return view('courses.bsit');
-    });
-    
-    Route::get('/bacomm', function () {
-        return view('courses.bacomm');
-    });
     
     // SUBJECTS & RESOURCES
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');

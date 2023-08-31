@@ -1,0 +1,41 @@
+.tab {
+    overflow: hidden;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-radius: 5px 0 0 0;
+}
+
+.tab button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+    border-radius: 5px 5px 0 0;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tabcontent {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Additional styles for the table container */
+.table-container {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+/* Add this CSS to highlight the active tab */
+.tablinks.active {
+    background-color: gray;
+    color: white;
+}

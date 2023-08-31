@@ -40,6 +40,7 @@ return new class extends Migration
             ['role' => 'student'],
             ['role' => 'teacher'],
             ['role' => 'admin'],
+            ['role' => 'super-admin'],
         ]);
     }
 

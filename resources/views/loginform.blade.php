@@ -48,7 +48,16 @@
             <label for="password">Password:</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
           </div>
-          
+
+          <div class="form-group">
+            <div class="custom-control custom-checkbox">
+              <input class="form-check-input" type="checkbox" name="remember" id="remember">
+              <label class="form-check-label" for="remember">
+                Remember Me
+              </label>
+            </div>
+          </div>
+
           <button type="submit" class="btn btn-primary my-2"<a href="{{ route('dashboard') }}">Login</a></button>
           
           

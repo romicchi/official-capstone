@@ -13,7 +13,8 @@
                     <label for="collegeName">College Name</label>
                     <input type="text" class="form-control" id="collegeName" name="collegeName" autocomplete="off" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary my-3">Create</button>
+                <a href="{{ route('academics.index') }}?activeTab=colleges" class="btn btn-secondary m-1">Cancel</a>
             </form>
         </div>
     </div>

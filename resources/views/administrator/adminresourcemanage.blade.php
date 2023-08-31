@@ -2,75 +2,50 @@
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
-<!-- Search Bar -->
-<!-- <div class="d-flex justify-content-end my-1">
-  <form class="form-inline" method="GET" action="{{ route('adminresources.search') }}">
-    <div class="input-group" style="max-width: 250px;">
-      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
-      <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+<div class="card">
+    <div class="card-header">
+        Resource Management
     </div>
-  </form> -->
+    <div class="card-body">
+        <center>
+            <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
 
-
-<center>
-<input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
-
-
-	<div class="table-wrapper py-2">
-	<table class="table table-bordered table-hover" id="resourceTable">
-		<thead>
-		<tr>
-			<th>Title</th>
-			<th>Author</th>
-			<th>Date</th>
-			<th>College</th>
-            <th>Course</th>
-            <th>Subject</th>
-			<th>URL</th>
-            <th>Status</th>
-			<th>Action</th>
-		</tr>
-		</thead>
-		<tbody>
-		    @foreach($resources as $resource)
-			<tr>
-				<td><strong>{{ $resource->title }}<strong></td> 
-				<td>{{ $resource->author }}</td> 
-				<td>{{ $resource->created_at }}</td>
-                <td>{{ $resource->college->collegeName }}</td>
-				<td>{{ $resource->course->courseName }}</td>
-                <td>{{ $resource->subject->subjectName }}</td>
-				<td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
-				<td>
-                    @if ($resource->resourceStatus == 1)
-                    <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+            <div class="table-wrapper py-2">
+                <table class="table table-bordered table-hover" id="resourceTable">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Date</th>
+                        <th>College</th>
+                        <th>Course</th>
+                        <th>Subject</th>
+                        <th>URL</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if(count($resources) === 0)
+                        <tr>
+                            <td colspan="9" class="text-center">No resource available</td>
+                        </tr>
                     @else
-                    <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+                        @foreach($resources as $resource)
+                            <tr>
+                                <!-- ... your existing code for displaying resource details ... -->
+                            </tr>
+                        @endforeach
                     @endif
-        </td>
-        <td>
-			<form action="{{ route('adminresources.approve', $resource->id) }}" method="POST" style="display: inline-block">
-				@csrf
-				@method('PUT')
-				<button type="submit" class="btn btn-success">Approve</button>
-			</form>
-			<form action="{{ route('adminresources.disapprove', $resource->id) }}" method="POST" style="display: inline-block">
-				@csrf
-				@method('PUT')
-				<button type="submit" class="btn btn-danger">Disapprove</button>
-			</form>
-        </td>
-			</tr>
-			@endforeach
-		</tbody>
-	</table>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination links -->
+            <div class="d-flex justify-content-center">
+                {{ $resources->links('pagination::bootstrap-4') }}
+            </div>
+        </center>
+    </div>
 </div>
-	<!-- Pagination links -->
-	<div class="d-flex justify-content-center">
-    	{{ $resources->links('pagination::bootstrap-4') }}
-	</div>
-</center>
 
 <script src="{{ asset('js/resourceManagesearch.js') }}"></script>
-
-

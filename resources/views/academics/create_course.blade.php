@@ -22,6 +22,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary my-3">Create</button>
+                <a href="{{ route('academics.index') }}?activeTab=courses" class="btn btn-secondary m-1">Cancel</a>
             </form>
         </div>
     </div>

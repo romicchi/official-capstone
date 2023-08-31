@@ -1,7 +1,23 @@
-        
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
+        <head>            
+            <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        </head>
+        <style>
+            .sidebar-divider {
+                border-top: 2px solid white;
+                margin: 0 1rem 1rem;
+            }
+
+            .nav-link.inactive {
+                color: grey !important;
+            }
+
+            .nav-link:hover {
+                color: white !important;
+            }
+        </style>
 
 <!-- NAV BAR -->
 @section('adminnavbar')
@@ -15,15 +31,25 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            @php
+            $currentRoute = \Illuminate\Support\Facades\Request::route()->getName();
+            @endphp
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('adminpage') }}">Dashboard</a>
+                        <a class="nav-link {{ $currentRoute === 'adminpage' ? 'active' : 'inactive' }}" href="{{ route('adminpage') }}">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="dropdown01" data-bs-toggle="dropdown"
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+
+                    <li class="nav-item dropend">
+
+                            <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.subjects' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
+
                             <img class="images" src="">Resources
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown01">
@@ -44,42 +70,63 @@
                     </li>                    
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('usermanage') }}">Manage User</a>
+                    <a class="nav-link {{ $currentRoute === 'usermanage' ? 'active' : 'inactive' }}" href="{{ route('usermanage') }}?activeTab=existing">Manage User</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('adminresourcemanage') }}">Manage Resources</a>
+                    <a class="nav-link {{ $currentRoute === 'adminresourcemanage' ? 'active' : 'inactive' }}" href="{{ route('adminresourcemanage') }}">Manage Resources</a>
                     <li class="nav-item">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('academics.index') }}">Academics</a>
+                        <a class="nav-link {{ $currentRoute === 'academics.index' ? 'active' : 'inactive' }}" href="{{ route('academics.index') }}?activeTab=colleges">Academics</a>
                     <li class="nav-item">
 
-                    <a class="nav-link" href="#"
-                        onclick="confirmLogout()">Logout</a>
+                    <li class="nav-item">
+                        <a class="nav-link {{ $currentRoute === 'administrator.login' ? 'active' : 'inactive' }}" href="{{ route('administrator.login') }}">Backup & Restore</a>
                     </li>
+
+                    <!-- Divider -->
+                    <hr class="sidebar-divider my-0">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                    
+                    <!-- Sidebar Toggler (Sidebar) -->
+                    <div class="text-center d-none d-md-inline">
+                        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                    </div>
                 </ul>
             </div>
         </nav>
     </div>
 </div>
-<script>
-    function confirmLogout() {
-        if (confirm('Are you sure you want to logout?')) {
-            window.location.href = '{{ route('logout') }}';
-        }
-    }
-</script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+
 <script>
+
     $(document).ready(function () {
         $('.dropdown-submenu a.dropdown-toggle').on("click", function (e) {
             $(this).next('ul').toggle();
             e.stopPropagation();
             e.preventDefault();
         });
+    });
+
+    // Academics -> Direct display the College table instead of displaying the three table.
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = urlParams.get('activeTab') || '{{ $activeTab ?? '' }}';
+        if (activeTab) {
+            openTab(event, activeTab);
+        } else {
+            openTab(event, 'colleges'); // Default to 'colleges' tab
+        }
     });
 </script>
 @show

@@ -13,12 +13,13 @@ class AcademicsController extends Controller
 {
     public function index()
     {
-        $colleges = College::with('courses')->paginate(5, ['*'], 'college_page');
+        $allCourses = Course::paginate(50);
+        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
         $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
-        $subjects = Subject::with('course')->paginate(2, ['*'], 'subject_page');
+        $subjects = Subject::with('course')->paginate(10, ['*'], 'subject_page');
         Paginator::useBootstrap();
     
-        return view('academics.index', compact('colleges', 'courses', 'subjects'));
+        return view('academics.index', compact('colleges', 'allCourses', 'courses', 'subjects'));
     }
 
     // College
@@ -38,7 +39,7 @@ class AcademicsController extends Controller
         $college->collegeName = $request->input('collegeName');
         $college->save();
 
-        return redirect()->route('academics.createCollege')->with('success', 'Successfully added college.');
+        return redirect()->route('academics.index')->with('success', 'Successfully added college.');
     }
 
     public function editCollege($id)
@@ -102,7 +103,10 @@ class AcademicsController extends Controller
         $course->college_id = $request->input('college_id');
         $course->save();
 
-        return redirect()->route('academics.createCourse')->with('success', 'Successfully added course.');
+        // Set active tab to "courses"
+        $activeTab = 'courses';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully added course.');
     }
 
     public function editCourse($id)
@@ -123,7 +127,9 @@ class AcademicsController extends Controller
         $course->college_id = $request->input('college_id');
         $course->save();
 
-        return redirect()->route('academics.index')->with('success', 'Successfully updated course.');
+        $activeTab = 'courses';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully updated course.');
     }
 
     public function destroyCourse($id)
@@ -132,7 +138,54 @@ class AcademicsController extends Controller
         $course->subjects()->delete(); // Delete associated subjects
         $course->delete();
 
-        return redirect()->route('academics.index')->with('success', 'Successfully deleted course.');
+        // Set active tab to "courses"
+        $activeTab = 'courses';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully deleted course.');
+    }
+
+    public function filterCourses(Request $request)
+    {
+        $collegeId = $request->input('college_filter');
+        
+        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
+        $allCourses = Course::paginate(50, ['*'], 'course_page');
+        
+        if ($collegeId) {
+            $courses = Course::where('college_id', $collegeId)->paginate(10, ['*'], 'course_page');
+        } else {
+            $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
+        }
+        
+        $subjects = Subject::with('course')->paginate(10, ['*'], 'subject_page');
+        Paginator::useBootstrap();
+
+        $activeTab = 'courses';
+        
+        return view('academics.index', compact('colleges', 'courses', 'allCourses', 'subjects', 'activeTab'));
+    }
+
+    public function filterSubjects(Request $request)
+    {
+        $courseId = $request->input('course_filter');
+        
+        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
+        $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
+        $allCourses = Course::paginate(50, ['*'], 'course_page');
+        
+        if ($courseId) {
+            $subjects = Subject::whereHas('course', function ($query) use ($courseId) {
+                $query->where('id', $courseId);
+            })->paginate(10, ['*'], 'subject_page');
+        } else {
+            $subjects = Subject::with('course')->paginate(10, ['*'], 'subject_page');
+        }
+        
+        Paginator::useBootstrap();
+
+        $activeTab = 'subjects';
+        
+        return view('academics.index', compact('colleges', 'courses', 'allCourses', 'subjects', 'activeTab'));
     }
 
     // Subject
@@ -155,7 +208,9 @@ class AcademicsController extends Controller
         $subject->course_id = $request->input('course_id');
         $subject->save();
 
-        return redirect()->route('academics.createSubject')->with('success', 'Successfully added subject.');
+        $activeTab = 'subjects';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully added subject.');
     }
 
     public function editSubject($id)
@@ -176,7 +231,9 @@ class AcademicsController extends Controller
         $subject->course_id = $request->input('course_id');
         $subject->save();
 
-        return redirect()->route('academics.index')->with('success', 'Successfully updated subject.');
+        $activeTab = 'subjects';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully updated subject.');
     }
 
     public function destroySubject($id)
@@ -184,7 +241,9 @@ class AcademicsController extends Controller
         $subject = Subject::findOrFail($id);
         $subject->delete();
 
-        return redirect()->route('academics.index')->with('success', 'Successfully deleted subject.');
+        $activeTab = 'subjects';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully deleted subject.');
     }
 
 
@@ -194,11 +253,14 @@ class AcademicsController extends Controller
         $searchQuery = $request->input('course_search');
 
         $courses = Course::where('courseName', 'LIKE', "%$searchQuery%")->paginate(10, ['*'], 'course_page');
-        $colleges = College::with('courses')->paginate(5, ['*'], 'college_page');
-        $subjects = Subject::with('course')->paginate(5, ['*'], 'subject_page');
+        $allCourses = Course::paginate(50, ['*'], 'course_page');
+        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
+        $subjects = Subject::with('course')->paginate(10, ['*'], 'subject_page');
         Paginator::useBootstrap();
 
-        return view('academics.index', compact('colleges', 'courses', 'subjects'));
+        $activeTab = 'courses';
+
+        return view('academics.index', compact('colleges', 'courses', 'allCourses', 'subjects', 'activeTab'));
     }
 
     public function searchSubject(Request $request)
@@ -206,10 +268,13 @@ class AcademicsController extends Controller
         $searchQuery = $request->input('subject_search');
 
         $courses = Course::paginate(10, ['*'], 'course_page');
+        $allCourses = Course::paginate(50, ['*'], 'course_page');
         $colleges = College::paginate(10, ['*'], 'college_page');
-        $subjects = Subject::where('subjectName', 'LIKE', "%$searchQuery%")->paginate(2, ['*'], 'subject_page');
+        $subjects = Subject::where('subjectName', 'LIKE', "%$searchQuery%")->paginate(10, ['*'], 'subject_page');
         Paginator::useBootstrap();
 
-        return view('academics.index', compact('colleges', 'courses', 'subjects'));
+        $activeTab = 'subjects';
+
+        return view('academics.index', compact('colleges', 'courses', 'allCourses', 'subjects', 'activeTab'));
     }
 }
