@@ -15,9 +15,9 @@
         "kreait/laravel-firebase": "^5.2",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
+        "laravel/slack-notification-channel": "^3.0",
         "laravel/tinker": "^2.8",
         "league/flysystem-google-cloud-storage": "^3.15",
-        "laravel/slack-notification-channel": "^3.0",
         "spatie/laravel-backup": "^8.0"
     },
     "require-dev": {
