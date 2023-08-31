@@ -1,50 +1,48 @@
 @extends('layout.adminnavlayout')
 
 <link rel="stylesheet" type="text/css" href="{{ asset('css/table.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/usermanage.css') }}">
 
-<style>
-  /* Style for the overlay */
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px); /* Apply the blur effect */
-  }
+<div class="tab">
+  <button class="tablinks" onclick="openTab(event, 'existing')">Existing Users</button>
+  <button class="tablinks" onclick="openTab(event, 'pending')">Pending Users</button>
+</div>
 
-  /* Style for the image */
-  .overlay img {
-    max-width: 80%;
-    max-height: 80%;
-    border: 2px solid #fff;
-    border-radius: 5px;
-  }
-</style>
+<!-- Pending Users Tab -->
+<div id="pending" class="tabcontent">
 
-@if ($pendingUsers->count() > 0)
-  <!-- Search Bar -->
-  <div class="d-flex justify-content-end my-1">
-    <form class="form-inline" type="GET" action="{{ route('search') }}">
-      <div class="input-group" style="max-width: 250px;">
-        <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
-        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
-      </div>
+<div class="d-flex justify-content-between align-items-center">
+<div class="d-flex align-items-center">
+    <!-- Role Filter Dropdown -->
+    <form class="form-inline" type="GET" action="{{ route('filterPendingByRole') }}">
+        <div class="input-group mx-3" style="max-width: 250px;">
+            <select class="form-control rounded-0" name="role">
+                <option value="all">All Roles</option>
+                @foreach($roles as $role)
+                    <option value="{{ $role->id }}">{{ $role->role }}</option>
+                @endforeach
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-primary rounded-0" type="submit" id="filter-btn">Filter</button>
+            </div>
+        </div>
     </form>
-  </div>
 
-  <!-- Add User Button -->
-  <a href="{{ route('adminadd') }}" class="btn btn-primary">ADD USER</a>
+    <!-- Sorting Links -->
+    <div class="ml-auto px-5">
+      <span>Sort By:</span>
+      <a href="{{ route('usermanage', ['sort_order' => 'asc']) }}" class="btn btn-link ">Name A-Z</a> |
+      <a href="{{ route('usermanage', ['sort_order' => 'desc']) }}" class="btn btn-link">Name Z-A</a>
+    </div>
+</div>
+</div>
+@if ($pendingUsers->count() > 0)
 
   <!-- Unverified Users Table -->
-  <h2>Pending Users</h2>
   <form class="table-wrapper" id="admin-table" method="post" action="{{ route('verify-users.post') }}">
     @csrf
+    <div class="card shadow mb-4">
+    <div class="card-body">
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
@@ -54,8 +52,7 @@
           <th>Role</th>
           <th>Uploaded ID</th>
           <th>Verified</th>
-          <th>Approve</th>
-          <th>Reject</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -85,8 +82,6 @@
               </td>
               <td>
                 <button type="submit" name="verified_users[]" value="{{ $user->id }}" class="btn btn-primary">Approve</button>
-              </td>
-              <td>
                 <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
               </td>
             </tr>
@@ -98,26 +93,121 @@
     <div class="d-flex justify-content-center">
       {{ $pendingUsers->links('pagination::bootstrap-4') }}
     </div>
+  </div>
+</div>
   </form>
 
 @else
-  <div class="d-flex justify-content-end my-1">
-    <form class="form-inline" type="GET" action="{{ route('search') }}">
-      <div class="input-group" style="max-width: 250px;">
-        <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
-        <button class="btn btn-success rounded-0" type="submit" id="search-btn">Search</button>
-      </div>
-    </form>
-  </div>
-  <a href="{{ route('adminadd') }}" class="btn btn-primary">ADD USER</a>
-  <p>No users found</p>
+<table class="table table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Lastname</th>
+      <th>Firstname</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Uploaded ID</th>
+      <th>Verified</th>
+      <th>Approve</th>
+      <th>Reject</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<center>
+    <p>No pending users inside the table</p>
+</center>
 @endif
+</div>
+
+<div id="existing" class="tabcontent">
+
+<div class="d-flex justify-content-between align-items-center">
+<div class="d-flex align-items-center">
+  <!-- Add User Button -->
+  <a href="{{ route('adminadd') }}" class="btn btn-success mb-3">+Add User</a>
+
+<!-- Role Filter Dropdown -->
+<form class="form-inline" type="GET" action="{{ route('filterByRole') }}">
+  <div class="input-group mx-3" style="max-width: 250px;">
+    <select class="form-control rounded-0" name="role">
+      <option value="all">All Roles</option>
+      @foreach($roles as $role)
+        <option value="{{ $role->id }}">{{ $role->role }}</option>
+      @endforeach
+    </select>
+    <div class="input-group-append">
+      <button class="btn btn-primary rounded-0" type="submit" id="filter-btn">Filter</button>
+    </div>
+  </div>
+</form>
+</div>
+
+    <!-- Sorting Links -->
+    <div class="ml-auto">
+      <span>Sort By:</span>
+      <a href="{{ route('usermanage', ['sort_order' => 'asc']) }}" class="btn btn-link ">Name A-Z</a> |
+      <a href="{{ route('usermanage', ['sort_order' => 'desc']) }}" class="btn btn-link">Name Z-A</a>
+    </div>
+
+  <!-- Search Bar -->
+  <form class="form-inline" type="GET" action="{{ route('search') }}">
+    <div class="input-group" style="max-width: 250px;">
+      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+      <div class="input-group-append">
+        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+      </div>
+    </div>
+  </form>
+</div>
 
 @if ($existingUsers->count() > 0)
-  <!-- Verified Users Table -->
-  <h2>Existing Users</h2>
-  <form class="table-wrapper" id="admin-table">
-    <table class="table table-bordered table-hover">
+    <!-- Verified Users Table -->
+    <div class="card shadow mb-4">
+    <div class="card-body">
+    <form class="table-wrapper" id="admin-table">
+        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Lastname</th>
+                    <th>Firstname</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Uploaded ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($existingUsers as $user)
+                    <tr>
+                        <td><strong>{{ $user->lastname }}</strong></td>
+                        <td><strong>{{ $user->firstname }}</strong></td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->role->role }}</td>
+                        <td>
+                            <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
+                                <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
+                            </a>
+                        </td>
+                        <td>
+                        <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">Edit</a>
+                        <a type="submit" class="btn btn-danger" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <!-- Pagination links for Existing Users -->
+        <div class="d-flex justify-content-center">
+            {{ $existingUsers->links('pagination::bootstrap-4') }}
+        </div>
+    </form>
+</div>
+</div>
+@else
+<div class="card shadow mb-4">
+  <div class="card-body">
+    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
       <thead>
         <tr>
           <th>Lastname</th>
@@ -129,38 +219,16 @@
         </tr>
       </thead>
       <tbody>
-        <!-- If empty this message will display -->
-        @if ($existingUsers->isEmpty())
-          <tr>
-            <td colspan="6"><strong>No verified users inside the table</strong></td>
-          </tr>
-        @else
-          @foreach ($existingUsers as $user)
-            <tr>
-              <td><strong>{{ $user->lastname }}</strong></td>
-              <td><strong>{{ $user->firstname }}</strong></td>
-              <td>{{ $user->email }}</td>
-              <td>{{ $user->role->role }}</td>
-              <td>
-                <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
-                  <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
-                </a>
-              </td>
-              <td>
-                <a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a>
-                <a type="submit" class="btn btn-danger" href="{{ 'delete/' . $user->id }}">Delete</a>
-              </td>
-            </tr>
-          @endforeach
-        @endif
+        <tr>
+          <td class="center" colspan="6"><strong>No users found</strong></td>
+        </tr>
       </tbody>
     </table>
-    <!-- Pagination links for Existing Users -->
-    <div class="d-flex justify-content-center">
-      {{ $existingUsers->links('pagination::bootstrap-4') }}
-    </div>
-  </form>
-@endif
+    @endif
+  </div>
+</div>
+</div>
+
 
 <div class="overlay" id="image-overlay" onclick="closeImage()">
   <img src="" alt="Uploaded ID" id="overlay-image">
@@ -172,7 +240,7 @@
     var overlay = document.getElementById("image-overlay");
     var image = document.getElementById("overlay-image");
     overlay.style.display = "none"; // Hide the overlay initially
-    image.src = ""; // Set the initial image source to an empty string
+    image.src = "none"; // Set the initial image source to an empty string
   });
 
   function showImage(url) {
@@ -186,4 +254,19 @@
     var overlay = document.getElementById("image-overlay");
     overlay.style.display = "none";
   }
+
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
 </script>
