@@ -11,18 +11,27 @@ use App\Models\Resource;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Kreait\Firebase\ServiceAccount;
-use Kreait\Firebase\Auth as FirebaseAuth;
-use Kreait\Firebase\Auth\SignInResult\SignInResult;
-use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Session;
-
+use Google\Client as GoogleClient;
+use Google\Service\Drive as GoogleDriveService;
 
 
 class ResourceController extends Controller
 {
+    private static function getGoogleDriveAccessToken()
+    {
+        $jsonKeyFilePath = base_path('resources/credentials/generapp-c64fbc26723c.json'); // Replace with the path to your JSON key file
+        $jsonKey = file_get_contents($jsonKeyFilePath);
+
+        $googleClient = new GoogleClient();
+        $googleClient->setAuthConfig(json_decode($jsonKey, true));
+        $googleClient->setScopes([\Google_Service_Drive::DRIVE]);
+        $googleClient->fetchAccessTokenWithAssertion();
+
+        return $googleClient->getAccessToken()['access_token'];
+    }
 
     //--------------TEACHER-----------------//
     public function showTeacherManage()
@@ -49,7 +58,7 @@ class ResourceController extends Controller
 
     // Store resource function for Teacher
     public function storeResource(Request $request)
-    {
+{
     // Validate the form data
     $validatedData = $request->validate([
         'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
@@ -61,33 +70,35 @@ class ResourceController extends Controller
         'college' => 'required',
         'course' => 'required',
         'subject' => 'required',
-
     ]);
 
-    $firebase_storage_path = 'images/';
+    // Upload the file to Google Drive
     $file = $request->file('file');
     $extension = $file->getClientOriginalExtension();
     $filename = uniqid() . '.' . $extension;
-    $localPath = storage_path('app/' . $file->storeAs('public', $filename));
-    
-    $uploadedFile = fopen($localPath, 'r');
-    
-    app('firebase.storage')->getBucket()->upload($uploadedFile, [
-        'name' => $firebase_storage_path . $filename,
+
+    // Set access token for the Google client
+    $googleClient = new GoogleClient();
+    $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+
+    // Initialize the Google Drive service
+    $googleDrive = new GoogleDriveService($googleClient);
+
+    // File metadata
+    $fileMetadata = new \Google_Service_Drive_DriveFile([
+        'name' => $filename,
+        'parents' => ['1rB94wMkHFoUvZbkTUC8TqHJEWGCMBS2U'], // Replace with the folder ID where you want to upload the file
     ]);
 
-    $file = $request->file('file');
-    $path = $file->store('public');
-    $url = Storage::url($path);
-    $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
- //Handle file upload
-   if ($request->hasFile('resourceType')) {
-       $file = $request->file('resourceType');
-       $fileName = $file->getClientOriginalName();
-       $file->storeAs('resources', $fileName); 
-   } else {
-       // Handle file not found error
-   }
+    // Upload the file and get the file ID
+    $uploadedFile = $googleDrive->files->create($fileMetadata, [
+        'data' => file_get_contents($file->getPathname()),
+        'uploadType' => 'multipart',
+        'fields' => 'id, webViewLink',
+    ]);
+
+    // Get the file URL from the file ID
+    $fileUrl = 'https://drive.google.com/uc?id=' . $uploadedFile->id;
 
     // Create a new resource instance
     $resource = new Resource();
@@ -96,7 +107,7 @@ class ResourceController extends Controller
     $resource->keywords = $validatedData['keywords'];
     $resource->author = $validatedData['author'];
     $resource->description = $validatedData['description'];
-    $resource->url = $url;
+    $resource->url = $fileUrl;
     $resource->college_id = $validatedData['college'];
     $resource->course_id = $validatedData['course'];
     $resource->subject_id = $validatedData['subject'];
@@ -104,7 +115,8 @@ class ResourceController extends Controller
 
     // Redirect or perform additional actions as needed
     return redirect()->back()->with('success', 'Resource added successfully.');
-    }
+}
+
 
         /**
      * Delete the file and its metadata.
@@ -115,15 +127,31 @@ class ResourceController extends Controller
     // Delete resource function
     public function destroy($resource)
     {
-
         $resource = Resource::findOrFail($resource);
-        // Delete Firebase Storage bucket file
-        $firebase_storage_path = 'images/';
-        $filename = basename(parse_url($resource->url, PHP_URL_PATH));
-        app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->delete();
+    
+        // Extract the file ID from the Google Drive URL
+        $urlParts = parse_url($resource->url);
+        parse_str($urlParts['query'], $queryParameters);
+        $fileId = $queryParameters['id'];
+    
+          // Set access token for the Google client
+         $googleClient = new GoogleClient();
+         $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
 
+         // Initialize the Google Drive service
+         $googleDrive = new GoogleDriveService($googleClient);
+    
+        try {
+            // Delete the file from Google Drive
+            $googleDrive->files->delete($fileId);
+        } catch (\Exception $e) {
+            // Handle any errors that occur during file deletion from Google Drive
+            return redirect()->back()->with('error', 'Failed to delete the file from Google Drive.');
+        }
+    
+        // Delete the resource from the database
         $resource->delete();
-
+    
         return redirect()->back()->with('success', 'Resource deleted successfully.');
     }
 

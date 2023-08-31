@@ -72,9 +72,8 @@
               <td>{{ $user->email }}</td>
               <td>{{ $user->role->role }}</td>
               <td>
-                <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
-                  <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
-                </a>
+                  <!-- Clickable preview image -->
+                  <img src="{{ $user->url }}" alt="Uploaded ID" height="50" width="50" class="clickable-preview" onclick="showImage('{{ $user->url }}')">
               </td>
               <td>
                 @if ($user->Verified == 1)
@@ -142,9 +141,8 @@
               <td>{{ $user->email }}</td>
               <td>{{ $user->role->role }}</td>
               <td>
-                <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
-                  <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
-                </a>
+                  <!-- Clickable preview image -->
+                  <img src="{{ $user->url }}" alt="Uploaded ID" height="50" width="50" class="clickable-preview" onclick="showImage('{{ $user->url }}')">
               </td>
               <td>
                 <a type="submit" class="btn btn-primary" href="{{ 'adminedit/' . $user->id }}">Edit</a>
@@ -162,28 +160,27 @@
   </form>
 @endif
 
-<div class="overlay" id="image-overlay" onclick="closeImage()">
-  <img src="" alt="Uploaded ID" id="overlay-image">
-</div>
-
-<!-- JavaScript functions -->
 <script>
-  window.addEventListener('DOMContentLoaded', function() {
-    var overlay = document.getElementById("image-overlay");
-    var image = document.getElementById("overlay-image");
-    overlay.style.display = "none"; // Hide the overlay initially
-    image.src = ""; // Set the initial image source to an empty string
-  });
-
-  function showImage(url) {
-    var overlay = document.getElementById("image-overlay");
-    var image = document.getElementById("overlay-image");
-    image.src = url;
-    overlay.style.display = "flex";
-  }
-
-  function closeImage() {
-    var overlay = document.getElementById("image-overlay");
-    overlay.style.display = "none";
-  }
+    function showImage(url) {
+        // Create an overlay
+        var overlay = document.createElement("div");
+        overlay.className = "overlay";
+        
+        // Create an image element
+        var image = document.createElement("img");
+        image.src = url;
+        image.alt = "Uploaded ID";
+        image.className = "overlay-image";
+        
+        // Append the image to the overlay
+        overlay.appendChild(image);
+        
+        // Append the overlay to the body
+        document.body.appendChild(overlay);
+        
+        // Add a click event listener to close the overlay when clicked
+        overlay.addEventListener("click", function() {
+            document.body.removeChild(overlay);
+        });
+    }
 </script>

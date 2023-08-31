@@ -7,16 +7,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;  
 use Illuminate\Support\Facades\Storage;
-use Kreait\Firebase\ServiceAccount;
-use Kreait\Firebase\Auth as FirebaseAuth;
-use Kreait\Firebase\Auth\SignInResult\SignInResult;
-use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationEmail;
 use App\Models\User;
 use Carbon\Carbon;
+use Google\Client as GoogleClient;
 
 class AuthController extends Controller
 {
@@ -65,7 +62,21 @@ class AuthController extends Controller
         return redirect(route('login'))->with("error", "Your email and password do not match. Please try again.");
     }
 
-    function registerPost(Request $request){
+    private function getGoogleDriveAccessToken()
+    {
+        $jsonKeyFilePath = base_path('resources/credentials/generapp-c64fbc26723c.json'); // Replace with the path to your JSON key file
+        $jsonKey = file_get_contents($jsonKeyFilePath);
+
+        $googleClient = new GoogleClient();
+        $googleClient->setAuthConfig(json_decode($jsonKey, true));
+        $googleClient->setScopes([\Google_Service_Drive::DRIVE]);
+        $googleClient->fetchAccessTokenWithAssertion();
+
+        return $googleClient->getAccessToken()['access_token'];
+    }
+
+    function registerPost(Request $request)
+    {
         $request->validate([
             'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
             'firstname' => 'required',
@@ -75,31 +86,53 @@ class AuthController extends Controller
             'role' => 'required|in:1,2'
         ]);
 
-        $data['firstname'] = $request->firstname; //assign the name from the request variable to data variable
+        $data['firstname'] = $request->firstname;
         $data['lastname'] = $request->lastname;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role_id'] = $request->input('role');
-        $data['verified'] = false; // Set the verified field to false
-        $user = User::create($data); //this will create the user
+        $data['verified'] = false;
 
-        $firebase_storage_path = 'IDs/';
+        // Create the user record in the database
+        $user = User::create($data);
+
+        // Upload the file to Google Drive
         $file = $request->file('id');
         $extension = $file->getClientOriginalExtension();
         $filename = uniqid() . '.' . $extension;
-        $localPath = storage_path('app/' . $file->storeAs('public', $filename));
-                    $uploadedFile = fopen($localPath, 'r');
-                    app('firebase.storage')->getBucket()->upload($uploadedFile, [
-            'name' => $firebase_storage_path . $filename,
+
+        // Create a new Google client
+        $googleClient = new GoogleClient();
+        $googleClient->setAccessToken($this->getGoogleDriveAccessToken()); // Set access token for the Google client
+        $googleDrive = new \Google_Service_Drive($googleClient);
+
+        // Upload the file to Google Drive
+        $fileMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $filename,
+            'parents' => ['1ttNLNF6X2fsjgvRr4jFfd4-1_HxRETW6'], // Replace with the folder ID of your Google Drive folder
         ]);
+
+        $uploadedFile = $googleDrive->files->create($fileMetadata, [
+            'data' => file_get_contents($file->getPathname()),
+            'uploadType' => 'multipart',
+            'fields' => 'id, webViewLink',
+        ]);
+
+        // Get the file ID and generate the preview link
+        $fileId = $uploadedFile->id;
+        $previewLink = "http://drive.google.com/uc?export=view&id=$fileId";
         
-        $file = $request->file('id');
-        $path = $file->store('public');
-        $url = Storage::url($path);
-        $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
-        
-        $user->url = $url;
+        $user->url = $previewLink;
         $user->save();
+        
+        // Send verification email
+        Mail::to($data['email'])->send(new RegistrationEmail($user));
+
+        // Update user's role to 'teacher' if the selected role is 'teacher'
+        if ($data['role_id'] == 2) {
+            $user->role_id = 2;
+            $user->save();
+        }
 
         // Send verification email
         Mail::to($data['email'])->send(new RegistrationEmail($user));
@@ -108,6 +141,11 @@ class AuthController extends Controller
          if ($data['role_id'] == 2) {
             $user->role_id = 2;
             $user->save();
+        }
+
+        function getGoogleDriveAccessToken()
+        {
+            return 'your_access_token';
         }
 
         if(!$user) {

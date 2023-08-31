@@ -9,14 +9,13 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;  
-use Kreait\Firebase\ServiceAccount;
-use Kreait\Firebase\Auth as FirebaseAuth;
-use Kreait\Firebase\Auth\SignInResult\SignInResult;
-use Kreait\Firebase\Exception\FirebaseException;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationEmail;
+use Google\Client as GoogleClient;
 
 class UsermanageController extends Controller
 {
@@ -26,51 +25,83 @@ class UsermanageController extends Controller
     {  
         return view('administrator.adminadd');
     }
+    
+    private function getGoogleDriveAccessToken()
+    {
+        $jsonKeyFilePath = base_path('resources/credentials/generapp-c64fbc26723c.json'); // Replace with the path to your JSON key file
+        $jsonKey = file_get_contents($jsonKeyFilePath);
+
+        $googleClient = new GoogleClient();
+        $googleClient->setAuthConfig(json_decode($jsonKey, true));
+        $googleClient->setScopes([\Google_Service_Drive::DRIVE]);
+        $googleClient->fetchAccessTokenWithAssertion();
+
+        return $googleClient->getAccessToken()['access_token'];
+    }
 
     // Method to create a new user
     public function addUser(Request $request)
     {
         // Validate the form data
-        $validatedData = $request->validate([
+        $request->validate([
+            'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
-            'role' => 'required|in:1,2,3',
+            'role' => 'required|in:1,2'
         ]);
 
-        
-        $firebase_storage_path = 'IDs/';
+        $data['firstname'] = $request->firstname;
+        $data['lastname'] = $request->lastname;
+        $data['email'] = $request->email;
+        $data['password'] = Hash::make($request->password);
+        $data['role_id'] = $request->input('role');
+        $data['verified'] = false;
+
+        // Create the user record in the database
+        $user = User::create($data);
+
+        // Upload the file to Google Drive
         $file = $request->file('id');
         $extension = $file->getClientOriginalExtension();
         $filename = uniqid() . '.' . $extension;
-        $localPath = storage_path('app/' . $file->storeAs('public', $filename));
-                    $uploadedFile = fopen($localPath, 'r');
-                    app('firebase.storage')->getBucket()->upload($uploadedFile, [
-            'name' => $firebase_storage_path . $filename,
+
+        // Create a new Google client
+        $googleClient = new GoogleClient();
+        $googleClient->setAccessToken($this->getGoogleDriveAccessToken()); // Set access token for the Google client
+        $googleDrive = new \Google_Service_Drive($googleClient);
+
+        // Upload the file to Google Drive
+        $fileMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $filename,
+            'parents' => ['1ttNLNF6X2fsjgvRr4jFfd4-1_HxRETW6'], // Replace with the folder ID of your Google Drive folder
         ]);
 
-        $file = $request->file('id');
-        $path = $file->store('public');
-        $url = Storage::url($path);
-        $url = app('firebase.storage')->getBucket()->object($firebase_storage_path . $filename)->signedUrl(new \DateTime('tomorrow'));
-    
-
-        // Create the new user
-        $user = new User();
-        $user->firstname = $validatedData['firstname'];
-        $user->lastname = $validatedData['lastname'];
-        $user->email = $validatedData['email'];
-        $user->password = Hash::make($validatedData['password']);
-        $user->role_id = $validatedData['role'];
-
-        $user->url = $url;
+        $uploadedFile = $googleDrive->files->create($fileMetadata, [
+            'data' => file_get_contents($file->getPathname()),
+            'uploadType' => 'multipart',
+            'fields' => 'id, webViewLink',
+        ]);
+        
+        // Get the file ID and generate the preview link
+        $fileId = $uploadedFile->id;
+        $previewLink = "http://drive.google.com/uc?export=view&id=$fileId";
+        
+        $user->url = $previewLink;
         $user->save();
+        
+        function getGoogleDriveAccessToken()
+        {
+            return 'your_access_token';
+        }
 
-        // Redirect the user back to the manage user page with a success message
+        if(!$user) {
+        return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get
+        }
+        // redirect to login after successfully registered
         return redirect()->route('usermanage')->with('success', 'User created successfully.');
-    }    
-
+    }
 
     //display all users in the database
     public function show()
