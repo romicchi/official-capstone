@@ -301,6 +301,32 @@ class ResourceController extends Controller
         return response()->download(public_path($resource->url));
     }
 
+    public function toggleFavorite(Request $request)
+    {
+        $resourceId = $request->input('resourceId');
+        $user = auth()->user();
+        $resource = Resource::find($resourceId);
+    
+        if (!$resource) {
+            return response()->json(['error' => 'Resource not found']);
+        }
+    
+        if ($user->favorites->contains($resource)) {
+            // User has already favorited this resource, remove it from favorites
+            $user->favorites()->detach($resource);
+            $isFavorite = false;
+        } else {
+            // User is adding this resource to favorites
+            $user->favorites()->attach($resource);
+            $isFavorite = true;
+        }
+    
+        // Return the updated favorite status
+        return response()->json(['isFavorite' => $isFavorite]);
+    }
+    
+    
+
     public function show(Resource $resource)
     {
         return view('subjects.show', compact('resource'));

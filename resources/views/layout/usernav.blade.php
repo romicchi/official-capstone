@@ -79,7 +79,7 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown2">
             <a class="dropdown-item" href="#">Notes History</a>
             <a class="dropdown-item" href="{{ route('journals.index') }}">Study Journal</a>
-            <a class="dropdown-item" href="/favorites">Favorites</a>
+            <a class="dropdown-item" href="{{ route ('favorites') }}">Favorites</a>
           </ul>
         </li>
                 <li class="nav-item">

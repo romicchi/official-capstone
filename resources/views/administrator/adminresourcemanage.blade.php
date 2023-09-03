@@ -21,7 +21,6 @@
                         <th>Course</th>
                         <th>Subject</th>
                         <th>URL</th>
-                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -33,7 +32,15 @@
                     @else
                         @foreach($resources as $resource)
                             <tr>
-                                <!-- ... your existing code for displaying resource details ... -->
+                                <td><strong>{{ $resource->title }}<strong></td> 
+                                <td>{{ $resource->author }}</td> 
+                                <td>{{ $resource->created_at }}</td>
+                                <td>{{ $resource->college->collegeName }}</td>
+                                <td>{{ $resource->course->courseName }}</td>
+                                <td>{{ $resource->subject->subjectName }}</td>
+                            <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
+                            <td>
+                            <a href="{{ route('resource.show', $resource->id) }}">View</a> |
                             </tr>
                         @endforeach
                     @endif

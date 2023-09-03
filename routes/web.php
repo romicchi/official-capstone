@@ -17,6 +17,7 @@ use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BackupRestoreController;
+use App\Http\Controllers\FavoriteController;
 
 
 /*
@@ -146,10 +147,6 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 
     
     Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');
-
-    Route::get('/favorites', function () {
-        return view('favorites');
-    });
     
     // JOURNAL
     Route::get('/journals', [JournalController::class, 'index'])->name('journals.index');
@@ -159,6 +156,10 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
     Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
     Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
+
+    // FAVORITES
+    Route::get('/favorites',[FavoriteController::class, 'showFavorites'])->name('favorites');
+    Route::post('resource/toggle-favorite', [ResourceController::class, 'toggleFavorite'])->name('resource.toggleFavorite');
 
     // SETTINGS
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');

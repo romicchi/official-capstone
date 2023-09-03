@@ -78,6 +78,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Image::class);
     }
+    
+    public function favorites()
+    {
+        return $this->belongsToMany(Resource::class, 'favorites', 'user_id', 'resource_id');
+    }
+
 
     // ...
 
