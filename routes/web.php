@@ -200,8 +200,6 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:3']], function () {
         Route::get('/resourcemanage', 'App\Http\Controllers\ResourceController@showResourceManage')->name('resourcemanage');
-        Route::put('/resources/{resource}/approve', [ResourceController::class, 'approve'])->name('resources.approve');
-        Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'disapprove'])->name('resources.disapprove');
         Route::get('/resources/search', [ResourceController::class, 'searchResources'])->name('resources.search');
     });
 });

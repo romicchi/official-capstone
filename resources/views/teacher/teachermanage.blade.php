@@ -85,7 +85,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Pending Resources</h4>
+              <h4 class="card-title">Your File Uploads</h4>
               <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -97,13 +97,11 @@
                       <th>Subject</th>
                       <th>Description</th>
                       <th>URL</th>
-                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($resources as $resource)
-                    @if ($resource->resourceStatus == '0')
                     <tr>
                       <td><strong>{{ $resource->title }}<strong></td>
                       <td>{{ $resource->author }}</td>
@@ -113,13 +111,6 @@
                       <td>{{ $resource->description }}</td>
                       <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                       <td>
-                        @if ($resource->resourceStatus == 1)
-                        <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
-                        @else
-                        <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
-                        @endif
-                      </td>
-                      <td>
                         <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                           @csrf
@@ -128,55 +119,6 @@
                         </form>
                       </td>
                     </tr>
-                    @endif
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="card my-5">
-            <div class="card-body">
-              <h4 class="card-title">Verified Resources</h4>
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Author</th>
-                      <th>Description</th>
-                      <th>URL</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($resources as $resource)
-                    @if ($resource->resourceStatus == '1')
-                    <tr>
-                      <td><strong>{{ $resource->title }}<strong></td>
-                      <td>{{ $resource->author }}</td>
-                      <td>{{ $resource->description }}</td>
-                      <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
-                      <td>
-                        @if ($resource->resourceStatus == 1)
-                        <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
-                        @else
-                        <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
-                        @endif
-                      </td>
-                      <td>
-                        <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                      </td>
-                    </tr>
-                    @endif
                     @endforeach
                   </tbody>
                 </table>
@@ -190,5 +132,3 @@
 </section>
 
 <script src="{{ asset('js/fetch.js') }}"></script>
-
- 
