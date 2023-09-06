@@ -34,8 +34,8 @@
                     <div class="vertical-center-rel">
                         <h6 class="text-uppercase f-w-900" style="visibility: visible;" data-aos="fade-left">Why Use GENER?</h6>
                         <h3 class="f-w-900 m-b-md" style="visibility: visible;" data-aos="fade-left">We're transforming the way people learn.</h3>
-                        <p class="m-b-md">Democritum inciderint nam ut, duo ne rebum tibique molestiae, mediocrem incorrupte dissentiunt has in. Vidisse gloriatur eum in, alia docendi molestie est te. Nam facer erant aeterno te, sed no utamur perfecto.</p>
-                        <a href="{{ route('register') }}" class="btn btn-ghost smooth-scroll text-uppercase">Register Now!</a>
+                        <p class="m-b-md" data-aos="fade-left">Democritum inciderint nam ut, duo ne rebum tibique molestiae, mediocrem incorrupte dissentiunt has in. Vidisse gloriatur eum in, alia docendi molestie est te. Nam facer erant aeterno te, sed no utamur perfecto.</p>
+                        <a href="{{ route('register') }}" class="btn btn-ghost smooth-scroll text-uppercase" data-aos="zoom-in">Register Now!</a>
                     </div>
                 </div>
             </div>

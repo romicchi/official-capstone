@@ -1,0 +1,8 @@
+.card.shadow.mb-5 {
+    height: 40rem;
+    padding: 20px;
+}
+
+.card-body {
+    height: 45rem;
+}

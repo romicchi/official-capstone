@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "barryvdh/laravel-dompdf": "^2.0",
         "google/apiclient": "^2.14",
         "google/cloud-firestore": "^1.30",
         "google/cloud-storage": "^1.31",

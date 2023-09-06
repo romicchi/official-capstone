@@ -25,6 +25,7 @@
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 0 0 5px 5px;
+    margin-bottom: 50px;
 }
 
 /* Additional styles for the table container */
@@ -32,6 +33,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 20px;
+    height: 60rem;
 }
 
 /* Add this CSS to highlight the active tab */

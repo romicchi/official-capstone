@@ -47,6 +47,7 @@
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 0 0 5px 5px;
+    margin-bottom: 20px;
 }
 
 /* Additional styles for the table container */
@@ -60,4 +61,8 @@
 .tablinks.active {
     background-color: gray;
     color: white;
+}
+
+.card-body {
+    height: 50rem;
 }

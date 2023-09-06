@@ -61,6 +61,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminpage');
     Route::get('/adminnavlayout', [AdminController::class, 'adminnav'])->name('adminnavlayout');
+    Route::get('/generate-report', [AdminController::class, 'generateReport'])->name('generate.report');
 
     Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
     Route::put('/resources/{resource}/approve', [ResourceController::class, 'adminapprove'])->name('adminresources.approve');

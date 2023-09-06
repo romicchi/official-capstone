@@ -1,6 +1,7 @@
 @extends('layout.adminnavlayout')
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset ('css/resourcemanage.css')}}">
 
 <div class="card">
     <div class="card-header">
@@ -11,6 +12,7 @@
             <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
 
             <div class="table-wrapper py-2">
+                <div class="card shadow mb-5">
                 <table class="table table-bordered table-hover" id="resourceTable">
                     <thead>
                     <tr>
@@ -34,7 +36,7 @@
                             <tr>
                                 <td><strong>{{ $resource->title }}<strong></td> 
                                 <td>{{ $resource->author }}</td> 
-                                <td>{{ $resource->created_at }}</td>
+                                <td>{{ \Carbon\Carbon::parse($resource->created_at)->format('F j, Y') }}</td>
                                 <td>{{ $resource->college->collegeName }}</td>
                                 <td>{{ $resource->course->courseName }}</td>
                                 <td>{{ $resource->subject->subjectName }}</td>
@@ -47,6 +49,7 @@
                     </tbody>
                 </table>
             </div>
+        </div>
             <!-- Pagination links -->
             <div class="d-flex justify-content-center">
                 {{ $resources->links('pagination::bootstrap-4') }}
