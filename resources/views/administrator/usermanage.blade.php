@@ -6,6 +6,7 @@
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'existing')">Existing Users</button>
   <button class="tablinks" onclick="openTab(event, 'pending')">Pending Users</button>
+  <button class="tablinks" onclick="openTab(event, 'archive')">Archive Viewable</button>
 </div>
 
 <!-- Pending Users Tab -->
@@ -172,6 +173,7 @@
                     <th>Firstname</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Expiry Date</th>
                     <th>Uploaded ID</th>
                     <th>Action</th>
                 </tr>
@@ -184,12 +186,20 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role->role }}</td>
                         <td>
+                            @if ($user->expiration_date)
+                                {{ $user->expiration_date }}
+                            @else
+                                Not Applicable
+                            @endif
+                    </td>
+                        <td>
                             <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
                                 <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
                             </a>
                         </td>
                         <td>
                         <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">Edit</a>
+                        <a type="submit" class="btn btn-secondary" href="{{ route('archive', ['id' => $user->id]) }}">Archive</a>
                         <a type="submit" class="btn btn-danger" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
                         </td>
                     </tr>
@@ -227,6 +237,79 @@
   </div>
 </div>
 </div>
+<div id="archive" class="tabcontent">
+    <!-- Archive Viewable Users Table -->
+    @if ($archiveViewableUsers->count() > 0)
+    <form class="table-wrapper" id="admin-table">
+        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Lastname</th>
+                    <th>Firstname</th>
+                    <th>Email</th>
+                    <th>Role</th> <!-- New column for Role -->
+                    <th>Uploaded ID</th> <!-- New column for Uploaded ID -->
+                    <th>Year Level</th> <!-- New column for Year Level -->
+                    <th>Archived At</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($archiveViewableUsers as $user)
+                <tr>
+                    <td><strong>{{ $user->lastname }}</strong></td>
+                    <td><strong>{{ $user->firstname }}</strong></td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->role }}</td> <!-- Display Role -->
+                    <td>
+                        <!-- Display Uploaded ID with a clickable preview -->
+                        <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
+                            <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
+                        </a>
+                    </td>
+                    <td>{{ $user->year_level }}</td> <!-- Display Year Level -->
+                    <td>{{ $user->archived_at }}</td>
+                    <td>
+                        <!-- Add Reactivate and Delete buttons -->
+                        <a type="submit" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
+                        <a type="submit" class="btn btn-danger" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <!-- Pagination links for Archived Viewable Users -->
+        <div class="d-flex justify-content-center">
+            {{ $archiveViewableUsers->links('pagination::bootstrap-4') }}
+        </div>
+    </form>
+    @else
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Lastname</th>
+                        <th>Firstname</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Uploaded ID</th>
+                        <th>Year Level</th>
+                        <th>Archived At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center" colspan="8"><strong>No archived users found</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
+</div>
+
 
 
 <script>

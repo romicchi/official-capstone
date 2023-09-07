@@ -75,14 +75,17 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('/usermanage/filterPendingByRole', [UsermanageController::class, 'filterPendingByRole'])->name('filterPendingByRole');
 
 
-
-    // -------------------------- USER: ADD-UPDATE-DELETE-SEARCH --------------------------------//
+    // -------------------------- USER: ADD-UPDATE-DELETE-SEARCH-ARCHIVE --------------------------------//
     Route::get('delete/{id}',[UsermanageController::class, 'delete'])->name('delete');
     Route::get('adminedit/{id}',[UsermanageController::class, 'showadminedit'])->name('adminedit');
     Route::post('adminedit',[UsermanageController::class, 'update'])->name('update');
     Route::get('search',[UsermanageController::class, 'search'])->name('search');
     Route::get('adminadd',[UsermanageController::class, 'showadminadd'])->name('adminadd');
     Route::post('/add.user', [UsermanageController::class, 'addUser'])->name('add.user');
+    Route::get('/usermanage/archiveviewable', [UsermanageController::class, 'archiveViewable'])->name('archiveViewable');
+    Route::get('/archive/{id}', [UsermanageController::class, 'archive'])->name('archive');
+    Route::get('/reactivate/{id}', [UsermanageController::class, 'reactivate'])->name('reactivate');
+    Route::get('/delete-archive/{id}', [UsermanageController::class, 'deleteArchive'])->name('delete-archive');
 
 
     // -------------------------- ACADEMICS: ADD-UPDATE-DELETE-SEARCH --------------------------------//
