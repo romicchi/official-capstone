@@ -91,18 +91,26 @@ class AuthController extends Controller
             'lastname' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
-            'role' => 'required|in:1,2'
+            'role' => 'required|in:1,2',
+            'year_level' => 'required_if:role,1|in:1,2,3,4', // Add validation for year_level if role is student
         ]);
-
+    
         $data['firstname'] = $request->firstname;
         $data['lastname'] = $request->lastname;
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role_id'] = $request->input('role');
         $data['verified'] = false;
-
+    
         // Create the user record in the database
         $user = User::create($data);
+    
+        // Save the year level in the database if the user is a student
+        if ($data['role_id'] == 1) {
+            $user->year_level = $request->input('year_level');
+            $user->expiry_date = calculateExpiryDate($user->year_level);
+            $user->save();
+        }
 
         // Upload the file to Google Drive
         $file = $request->file('id');
@@ -162,6 +170,22 @@ class AuthController extends Controller
         // redirect to login after successfully registered
         return redirect(route('login'))->with("success", "Registration successful. Check your email and wait for verification."); //with("key", "success message") and inside the route is the name in get
         
+    }
+
+    function calculateExpiryDate($yearLevel) {
+        // Define the account durations for each year level
+        $accountDurations = [
+            1 => 4, // 1st year -> 4 years account duration
+            2 => 3, // 2nd year -> 3 years account duration
+            3 => 2, // 3rd year -> 2 years account duration
+            4 => 1, // 4th year -> 1 year account duration
+        ];
+    
+        // Calculate the expiration date based on the current date and year level
+        $currentDate = Carbon::now();
+        $expiryDate = $currentDate->addYears($accountDurations[$yearLevel]);
+    
+        return $expiryDate;
     }
 
     function logout(){
