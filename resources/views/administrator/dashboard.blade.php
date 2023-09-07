@@ -11,7 +11,7 @@
     @endif
 
     <div class="container">
-        <div class="card">
+        <div class="card shadow">
             <div class="card-header">
                 <h2>Backup and Restore Dashboard</h2>
             </div>
@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        <div class="card mt-4">
+        <div class="card shadow mt-4">
             <div class="card-header">
                 <h2>Restore Backup</h2>
             </div>
@@ -34,7 +34,7 @@
                         <label for="backup_file">Select Backup ZIP File:</label>
                         <input type="file" class="form-control" id="backup_file" name="backup_file">
                     </div>
-                    <button type="submit" class="btn btn-primary">Restore</button>
+                    <button type="submit" class="btn btn-primary my-3">Restore</button>
                 </form>
             </div>
         </div>

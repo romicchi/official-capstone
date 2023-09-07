@@ -116,12 +116,11 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
     Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
     
-    Route::middleware(['auth', 'role:super-admin'])->group(function () {
+    Route::middleware(['auth', 'role:4'])->group(function () {
         Route::get('backup-restore/dashboard', [BackupRestoreController::class, 'dashboard'])->name('administrator.dashboard');
+        Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
+        Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
     });
-
-    Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
-    Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
 
 });
 

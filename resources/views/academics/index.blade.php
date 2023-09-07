@@ -11,7 +11,7 @@
 
 <div id="colleges" class="tabcontent">
 <a href="{{ route('academics.createCollege') }}" class="btn btn-success mt-3 mb-4">+Add College</a>
-<div class="table-container">
+<div class="table-container shadow">
 
 <!-- College Table -->
 <h2>Colleges</h2>
@@ -67,7 +67,7 @@
         </form>
     </div>
 
-<div class="table-container">
+<div class="table-container shadow">
 <h2>Courses</h2>
 <table>
     <thead>
@@ -123,7 +123,7 @@
         </form>
     </div>
 
-<div class="table-container">
+<div class="table-container shadow">
 <h2>Subjects</h2>
 <table>
     <thead>

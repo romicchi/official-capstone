@@ -231,7 +231,7 @@ class UsermanageController extends Controller
             $existingUsersQuery->where('role_id', $roleFilter);
         }
         
-        $existingUsers = $existingUsersQuery->paginate(10);
+        $existingUsers = $existingUsersQuery->paginate(2);
         
         $pendingUsers = User::with('role')
         ->where('verified', false)

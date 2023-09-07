@@ -27,14 +27,18 @@ class BackupRestoreController extends Controller
         if (Auth::attempt($credentials)) {
             // Check if the authenticated user has the super-admin role
             if (Auth::user()->role_id == 4) {
-                return view('administrator.dashboard');
-
+                return redirect()->route('administrator.dashboard');
             } else {
                 return redirect()->back()->with('error', 'You do not have the required privileges.');
             }
         }
 
         return redirect()->back()->with('error', 'Invalid login credentials.');
+    }
+
+    public function dashboard()
+    {
+        return view('administrator.dashboard');
     }
 
     public function backup()
@@ -46,7 +50,7 @@ class BackupRestoreController extends Controller
         exec("php \"$artisanPath\" backup:run", $output, $exitCode);
         
         if ($exitCode === 0) {
-            return redirect()->back()->with('success', 'Backup completed successfully.');
+            return redirect()->route('administrator.dashboard')->with('success', 'Backup completed successfully.');
         } else {
             return redirect()->back()->with('error', 'Backup operation failed.');
         }

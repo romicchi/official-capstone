@@ -26,9 +26,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('sessions:expire')->daily();
-        $schedule->command('backup:run')->everyMinute();
-        // $schedule->command('backup:clean')->daily()->at('01:00'); // to clean the older backups
-        // $schedule->command('backup:run')->daily()->at('02:00');
+        $schedule->command('backup:clean')->daily()->at('01:00'); // to clean the older backups
+        $schedule->command('backup:run')->daily()->at('02:00'); // to run new backup file
         // ->everyMinute();
     }
 

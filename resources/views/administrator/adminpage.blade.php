@@ -10,50 +10,31 @@
         <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> -->
         
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
         
       </head>
       <style>
-          .border-left-primary {
-              border-left: 0.25rem solid #4e73df !important;
-            }
-            
-            .border-left-success {
-                border-left: 0.25rem solid #1cc88a !important;
-            }
-            
-            .border-left-info {
-                border-left: 0.25rem solid #36b9cc !important;
-            }
-            
-            .border-left-warning {
-                border-left: 0.25rem solid #f6c23e !important;
-            }
+
       </style>
     <body>
 
-      <!-- Content -->
-      <header>
+    <!-- Content -->
+    <header>
 		<div class="logo">
-    <h2>Welcome to the {{config('app.name')}} Admin Dashboard</h2>
-			<p>Here you can manage user accounts, add or edit resources, generate reports and more.</p>
+            <h4>Primary</h4>
+            <h2>DASHBOARD</h2>
 		</div>
 	</header>
 	<main>
-		<section class="dashboard">
-			<h2>Welcome to the {{config('app.name')}} Admin Dashboard</h2>
-			<p>Here you can manage user accounts, add or edit resources, generate reports and more.</p>
-		</section>
-		
         <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <div class="d-sm-flex align-items-center justify-content-end mb-4">
             <a href="{{ route('generate.report') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
             class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
         </div>
-            
+        <div class="card p-4">
+            <p class="h4 mb-0 text-gray-800">Today's Data</p>
 <!-- Content Row -->
 <div class="row">
 
@@ -134,10 +115,14 @@
                     </div>
                 </div>
             </div>
+
+            </div>
+
+
     
     <!-- Content Row -->
     
-    <div class="row">
+    <div class="row my-4">
         
         <!-- Area Chart -->
         <div class="col-xl-8 col-lg-7">
@@ -361,7 +346,4 @@ var myLineChart = new Chart(ctx, {
   }
 });
 
-
-
-    
 </script>
