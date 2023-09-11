@@ -17,6 +17,7 @@ use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BackupRestoreController;
+use App\Http\Controllers\DisciplineController;
 
 
 /*
@@ -169,6 +170,8 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     // SUBJECTS & RESOURCES
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
     Route::get('/resources', [ResourceController::class, 'resources'])->name('show.resources');
+
+    Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
     
     Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
     Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
