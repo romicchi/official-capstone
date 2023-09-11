@@ -16,6 +16,7 @@ use Google\Cloud\Storage\StorageClient;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Input;
 use App\Mail\RegistrationEmail;
 use Google\Client as GoogleClient;
 use Carbon\Carbon;
@@ -46,11 +47,11 @@ class UsermanageController extends Controller
         $currentYear = Carbon::now()->year;
         $currentMonth = Carbon::now()->month;
 
-        $yearLevelDifference = 4 - $yearLevel;
+        $yearLevelDifference = 5 - $yearLevel;
 
         $yearDifference = $currentYear + $yearLevelDifference;
 
-        $expiration_date = Carbon::createFromDate($yearDifference, 12, 31);
+        $expiration_date = Carbon::createFromDate($yearDifference, 06, 15);
 
         return $expiration_date;
     }
@@ -74,7 +75,6 @@ class UsermanageController extends Controller
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role_id'] = $request->input('role');
-        $data['verified'] = false;
 
         // Create the user record in the database
         $user = User::create($data);
@@ -83,6 +83,22 @@ class UsermanageController extends Controller
         if ($data['role_id'] == 1) {
             $user->year_level = $request->input('year_level');
             $user->expiration_date = self::calculateExpiryDate($user->year_level); // Use self:: to reference the function
+            $user->save();
+        }
+
+        // Save the info in the database if the user is a teacher
+        if ($data['role_id'] == 2) {
+            $user->year_level = null;
+            $user->expiration_date = null;
+            $user->role_id = 2;
+            $user->save();
+        }
+
+        // Save the info in the database if the user is an admin
+        if ($data['role_id'] == 3) {
+            $user->year_level = null;
+            $user->expiration_date = null;
+            $user->role_id = 3;
             $user->save();
         }
 
@@ -114,17 +130,15 @@ class UsermanageController extends Controller
         
         $user->url = $previewLink;
 
+        $user->verified = true;
+        $user->created_at = now();
+        $user->updated_at = now();
         $user->save();
         
         function getGoogleDriveAccessToken()
         {
             return 'your_access_token';
         }
-
-        // if(!$user) {
-        // return redirect(route('register'))->with("error", "Registration failed, try again."); //with("key", "error message") and inside the route is the name in get
-        // }
-        // redirect to login after successfully registered
 
         $activeTab = 'existing';
 
@@ -149,7 +163,7 @@ class UsermanageController extends Controller
         $existingUsers = $existingUsersQuery->paginate(10);
 
         $activeTab = 'existing';
-        $roles = Role::all();
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
         
         return view('administrator.usermanage', ['pendingUsers' => $pendingUsers, 'existingUsers' => $existingUsers, 'activeTab' => $activeTab, 'roles' => $roles, 'archiveViewableUsers' => $archiveViewableUsers, 'calculateExpiryDate' => $calculateExpiryDate]);
     }
@@ -199,6 +213,8 @@ class UsermanageController extends Controller
         $userdata->lastname = $req->lastname;
         $userdata->email = $req->email;
         $userdata->role_id = $req->role;
+        // updated_at will update
+        $userdata->updated_at = now();
         $userdata->save();
 
         $activeTab = 'existing';
@@ -226,15 +242,46 @@ class UsermanageController extends Controller
     
         // Set the active tab to 'existing' since the search only affects existing users
         $activeTab = 'existing';
-        $roles = Role::all();
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
     
         return view('administrator.usermanage', [
             'pendingUsers' => $pendingUsers,
             'existingUsers' => $existingUsers,
             'activeTab' => $activeTab, //
             'roles' => $roles,
+            'archiveViewableUsers' => $archiveViewableUsers,
         ]);
     }
+
+    // Search function for archived users
+public function searchArchive(Request $request)
+{
+    $query = $request->input('query');
+    $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
+    $existingUsers = User::with('role')->where('verified', true)->paginate(10, ['*'], 'existing_page');
+
+    // Query the archived users
+    $archiveViewableUsers = ArchiveUser::where('archived', true)
+        ->where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('firstname', 'like', '%' . $query . '%')
+                ->orWhere('lastname', 'like', '%' . $query . '%')
+                ->orWhere('email', 'like', '%' . $query . '%');
+        })
+        ->paginate(10);
+
+    // Set the active tab to 'archive'
+    $activeTab = 'archive';
+    $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+
+    return view('administrator.usermanage', [
+        'pendingUsers' => $pendingUsers,
+        'existingUsers' => $existingUsers,
+        'archiveViewableUsers' => $archiveViewableUsers,
+        'activeTab' => $activeTab,
+        'roles' => $roles,
+    ]);
+}
     
     public function filterByRole(Request $request)
     {
@@ -252,7 +299,8 @@ class UsermanageController extends Controller
         ->where('verified', false)
         ->paginate(10);
         
-        $roles = Role::all();
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
         
         $activeTab = 'existing';
         
@@ -261,6 +309,7 @@ class UsermanageController extends Controller
             'existingUsers' => $existingUsers,
             'roles' => $roles,
             'activeTab' => $activeTab,
+            'archiveViewableUsers' => $archiveViewableUsers,
         ]);
     }
     
@@ -281,7 +330,8 @@ class UsermanageController extends Controller
             ->where('verified', true)
             ->paginate(10);
 
-        $roles = Role::all();
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
 
         $activeTab = 'pending';
 
@@ -290,6 +340,7 @@ class UsermanageController extends Controller
             'existingUsers' => $existingUsers,
             'roles' => $roles,
             'activeTab' => $activeTab,
+            'archiveViewableUsers' => $archiveViewableUsers,
         ]);
     }
 
@@ -305,6 +356,7 @@ public function archive($id)
     // Retrieve the user to be archived
     $user = User::find($id);
 
+    if ($user) {
    // Create an archive record
    $archiveUser = new ArchiveUser();
    $archiveUser->firstname = $user->firstname;
@@ -320,7 +372,6 @@ public function archive($id)
     // Delete the original user record
     $user->delete();
 
-    $roles = Role::all();
     $existingUsers = User::with('role')
         ->where('verified', true)
         ->paginate(10);
@@ -329,12 +380,18 @@ public function archive($id)
         ->paginate(10);
     $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
         
-        $roles = Role::all();
+    $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
         
         $activeTab = 'existing';
 
-    // Redirect back to the archive view
-    return view('administrator.usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('success', 'User Archived successfully.');
+        // Redirect back to the archive view
+        return redirect()->route('usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('success', 'User Archived successfully.');
+    } else {
+        // Handle the case where the user doesn't exist
+        $activeTab = 'existing';
+        return redirect()->route('usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('error', 'User not found.');
+    }
+
 }
 
 public function reactivate($id)
@@ -342,12 +399,15 @@ public function reactivate($id)
     // Retrieve the archived user
     $archivedUser = ArchiveUser::find($id);
 
+    if ($archivedUser) {
     // Create a new user record
     $user = new User();
     $user->firstname = $archivedUser->firstname;
     $user->lastname = $archivedUser->lastname;
     $user->email = $archivedUser->email;
     $user->year_level = $archivedUser->year_level;
+    // expiration date after reactivation and based on the yr level
+    $user->expiration_date = self::calculateExpiryDate($user->year_level);
     $user->verified = 1; // Assuming users are verified upon reactivation
 
     // Generate a temporary password and hash it
@@ -362,7 +422,6 @@ public function reactivate($id)
     // Delete the archived user
     $archivedUser->delete();
 
-    $roles = Role::all();
     $existingUsers = User::with('role')
         ->where('verified', true)
         ->paginate(10);
@@ -371,12 +430,17 @@ public function reactivate($id)
         ->paginate(10);
         $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
         
-        $roles = Role::all();
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
         
         $activeTab = 'archive';
 
-    // Redirect back to the archive view
-    return view('administrator.usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('success', 'User Reactivated successfully.');
+        // Redirect back to the archive view
+        return redirect()->route('usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('success', 'User Reactivated successfully.');
+    } else {
+        // Handle the case where the archived user doesn't exist
+        $activeTab = 'archive';
+        return redirect()->route('usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('error', 'Archived User not found.');
+    }
 }
 
 // Delete user function in UsermanageController.php
@@ -389,7 +453,7 @@ public function deleteArchive($id)
         $userdata->forceDelete();
     }
 
-    $activeTab = 'existing';
+    $activeTab = 'archive';
 
     return redirect()->route('usermanage', compact('activeTab'))->with('success', 'User deleted successfully.');
 }

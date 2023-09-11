@@ -80,6 +80,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('adminedit/{id}',[UsermanageController::class, 'showadminedit'])->name('adminedit');
     Route::post('adminedit',[UsermanageController::class, 'update'])->name('update');
     Route::get('search',[UsermanageController::class, 'search'])->name('search');
+    Route::get('/search-archive',[UsermanageController::class, 'searchArchive'])->name('searchArchive');
     Route::get('adminadd',[UsermanageController::class, 'showadminadd'])->name('adminadd');
     Route::post('/add.user', [UsermanageController::class, 'addUser'])->name('add.user');
     Route::get('/usermanage/archiveviewable', [UsermanageController::class, 'archiveViewable'])->name('archiveViewable');

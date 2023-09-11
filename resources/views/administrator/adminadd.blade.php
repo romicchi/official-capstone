@@ -89,6 +89,8 @@
         var roleSelect = document.getElementById('role');
         var yearLevelContainer = document.getElementById('yearLevelContainer');
 
+        console.log('Selected Role:', roleSelect.value);
+
         // If the selected role is "1" (Student), show the Year Level dropdown; otherwise, hide it
         if (roleSelect.value === '1') {
             yearLevelContainer.style.display = 'block';

@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up()
 {
-    Schema::create('archive_user', function (Blueprint $table) {
+    Schema::create('archive_users', function (Blueprint $table) {
         $table->id();
         $table->string('firstname');
         $table->string('lastname');
-        $table->string('email')->unique();
+        $table->string('email')->unique;
         $table->unsignedBigInteger('user_id');
+        $table->string('role');
+        $table->string('url');
         $table->integer('year_level');
         $table->timestamp('archived_at');
+        $table->boolean('archived')->default(1);
         $table->timestamps();
     });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('archive_user');
+        Schema::dropIfExists('archive_users');
     }
 };

@@ -64,6 +64,7 @@
           </tr>
         @else
           @foreach ($pendingUsers as $user)
+          @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
             <tr>
               <td><strong>{{ $user->lastname }}</strong></td>
               <td><strong>{{ $user->firstname }}</strong></td>
@@ -85,6 +86,7 @@
                 <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
               </td>
             </tr>
+            @endif
           @endforeach
         @endif
       </tbody>
@@ -98,7 +100,9 @@
   </form>
 
 @else
-<table class="table table-bordered table-hover">
+<div class="card shadow mb-4">
+  <div class="card-body">
+<table class="table table-bordered table-hover" width="100%" cellspacing="0">
   <thead>
     <tr>
       <th>Lastname</th>
@@ -118,6 +122,8 @@
     <p>No pending users inside the table</p>
 </center>
 @endif
+</div>
+</div>
 </div>
 
 <div id="existing" class="tabcontent">
@@ -179,7 +185,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($existingUsers as $user)
+              @foreach ($existingUsers as $user)
+              @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
                     <tr>
                         <td><strong>{{ $user->lastname }}</strong></td>
                         <td><strong>{{ $user->firstname }}</strong></td>
@@ -203,6 +210,7 @@
                         <a type="submit" class="btn btn-danger" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
                         </td>
                     </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>
@@ -237,10 +245,29 @@
   </div>
 </div>
 </div>
+
 <div id="archive" class="tabcontent">
+
+<div class="d-flex justify-content-end align-items-center">
+<div class="d-flex align-items-center">
+
+<!-- Search Bar for Archive Tab -->
+<form class="form-inline" type="GET" action="{{ route('searchArchive') }}">
+    <div class="input-group" style="max-width: 250px;">
+        <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+        <div class="input-group-append">
+            <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+        </div>
+    </div>
+</form>
+
+</div>
+</div>
     <!-- Archive Viewable Users Table -->
     @if ($archiveViewableUsers->count() > 0)
     <form class="table-wrapper" id="admin-table">
+      <div class="card shadow mb-4">
+      <div class="card-body">
         <table class="table table-bordered table-hover" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -282,6 +309,8 @@
         <div class="d-flex justify-content-center">
             {{ $archiveViewableUsers->links('pagination::bootstrap-4') }}
         </div>
+      </div>
+    </div>
     </form>
     @else
     <div class="card shadow mb-4">

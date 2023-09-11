@@ -100,7 +100,6 @@ class AuthController extends Controller
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role_id'] = $request->input('role');
-        $data['verified'] = false;
     
         // Create the user record in the database
         $user = User::create($data);
@@ -108,7 +107,7 @@ class AuthController extends Controller
         // Save the year level in the database if the user is a student
         if ($data['role_id'] == 1) {
             $user->year_level = $request->input('year_level');
-            $user->expiry_date = calculateExpiryDate($user->year_level);
+            $user->expiration_date = self::calculateExpiryDate($user->year_level); // Use self:: to reference the function
             $user->save();
         }
 
@@ -139,6 +138,9 @@ class AuthController extends Controller
         $previewLink = "http://drive.google.com/uc?export=view&id=$fileId";
         
         $user->url = $previewLink;
+        $user->verified = false;
+        $user->created_at = now();
+        $user->updated_at = now();
         $user->save();
         
         // Send verification email
@@ -172,20 +174,17 @@ class AuthController extends Controller
         
     }
 
-    function calculateExpiryDate($yearLevel) {
-        // Define the account durations for each year level
-        $accountDurations = [
-            1 => 4, // 1st year -> 4 years account duration
-            2 => 3, // 2nd year -> 3 years account duration
-            3 => 2, // 3rd year -> 2 years account duration
-            4 => 1, // 4th year -> 1 year account duration
-        ];
-    
-        // Calculate the expiration date based on the current date and year level
-        $currentDate = Carbon::now();
-        $expiryDate = $currentDate->addYears($accountDurations[$yearLevel]);
-    
-        return $expiryDate;
+    private static function calculateExpiryDate($yearLevel) {
+        $currentYear = Carbon::now()->year;
+        $currentMonth = Carbon::now()->month;
+
+        $yearLevelDifference = 5 - $yearLevel;
+
+        $yearDifference = $currentYear + $yearLevelDifference;
+
+        $expiration_date = Carbon::createFromDate($yearDifference, 06, 15);
+
+        return $expiration_date;
     }
 
     function logout(){
