@@ -10,9 +10,9 @@ class Discipline extends Model
 
     protected $fillable = ['name']; // Fillable attributes
 
-    // Relationship with colleges
-    public function colleges()
+    // Relationship with a single college
+    public function college()
     {
-        return $this->belongsToMany(College::class, 'discipline_Name', 'discipline_id', 'college_id');
+        return $this->belongsTo(College::class, 'college_id');
     }
 }

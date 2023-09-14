@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\College;
 use App\Models\Course;
 use App\Models\Subject;
+use App\Models\Discipline;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -17,9 +18,10 @@ class AcademicsController extends Controller
         $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
         $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
         $subjects = Subject::with('course')->paginate(10, ['*'], 'subject_page');
+        $disciplines = Discipline::with('college')->paginate(10, ['*'], 'discipline_page');
         Paginator::useBootstrap();
     
-        return view('academics.index', compact('colleges', 'allCourses', 'courses', 'subjects'));
+        return view('academics.index', compact('colleges', 'allCourses', 'courses', 'subjects', 'disciplines'));
     }
 
     // College
@@ -246,6 +248,63 @@ class AcademicsController extends Controller
         return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully deleted subject.');
     }
 
+    // Disciplines
+
+    public function createDiscipline()
+    {
+        return view('academics.create_disciplines');
+    }
+
+    public function storeDiscipline(Request $request)
+    {
+        $request->validate([
+            'discipline_Name' => 'required',
+            // Add validation for other fields if needed
+        ]);
+
+        Discipline::create([
+            'discipline_Name' => $request->input('discipline_Name'),
+            // Add other fields as needed
+        ]);
+
+        $activeTab = 'disciplines';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully added discipline.');
+    }
+
+    public function editDiscipline($id)
+    {
+        $discipline = Discipline::findOrFail($id);
+        return view('academics.edit_disciplines', compact('discipline'));
+    }
+
+    public function updateDiscipline(Request $request, $id)
+    {
+        $request->validate([
+            'discipline_Name' => 'required',
+            // Add validation for other fields if needed
+        ]);
+
+        $discipline = Discipline::findOrFail($id);
+        $discipline->update([
+            'discipline_Name' => $request->input('discipline_Name'),
+            // Update other fields as needed
+        ]);
+
+        $activeTab = 'disciplines';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully updated discipline.');
+    }
+
+    public function destroyDiscipline($id)
+    {
+        $discipline = Discipline::findOrFail($id);
+        $discipline->delete();
+
+        $activeTab = 'disciplines';
+
+        return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully deleted discipline.');
+    }
 
     // Search Functionality
     public function searchCourse(Request $request)

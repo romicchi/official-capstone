@@ -7,6 +7,7 @@
     <button class="tablinks" onclick="openTab(event, 'colleges')">Colleges</button>
     <button class="tablinks" onclick="openTab(event, 'courses')">Courses</button>
     <button class="tablinks" onclick="openTab(event, 'subjects')">Subjects</button>
+    <button class="tablinks" onclick="openTab(event, 'disciplines')">Disciplines</button>
 </div>
 
 <div id="colleges" class="tabcontent">
@@ -153,6 +154,41 @@
 
 <div class="my-3">{{ $subjects->appends(['activeTab' => 'subjects'])->links('pagination::bootstrap-4', ['paginator' => $subjects]) }}</div>
 </div>
+</div>
+
+<!-- Discipline Table -->
+<div id="disciplines" class="tabcontent">
+    <!-- Add code for disciplines here -->
+    <a href="{{ route('academics.createDiscipline') }}" class="btn btn-success mt-3 mb-4">+Add Discipline</a>
+    <div class="table-container">
+        <h2>Disciplines</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Discipline Name</th>
+                    <!-- Add more columns if needed -->
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($disciplines as $discipline)
+                <tr>
+                    <td>{{ $discipline->discipline_Name }}</td>
+                    <!-- Add more columns if needed -->
+                    <td>
+                        <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('academics.destroyDiscipline', $discipline->id) }}" method="POST" style="display: inline-block">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="my-3">{{ $disciplines->appends(['activeTab' => 'disciplines'])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}</div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>

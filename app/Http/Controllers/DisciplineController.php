@@ -12,7 +12,6 @@ class DisciplineController extends Controller
     {
         // Create a new discipline
         $discipline = Discipline::create(['name' => 'Computer Science']);
-        $discipline = Discipline::create(['name' => 'Philosophy']);
 
         // Associate a discipline with a college
         $college = College::find(1);

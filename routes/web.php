@@ -103,6 +103,13 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('/academics/edit/subject/{id}', [AcademicsController::class, 'editSubject'])->name('academics.editSubject');
     Route::put('/academics/update/subject/{id}', [AcademicsController::class, 'updateSubject'])->name('academics.updateSubject');
     Route::delete('/academics/delete/subject/{id}', [AcademicsController::class, 'destroySubject'])->name('academics.destroySubject');
+    
+    Route::get('/academics/index/disciplines', [AcademicsController::class, 'indexDisciplines'])->name('academics.indexDisciplines');
+    Route::get('/academics/create/discipline', [AcademicsController::class, 'createDiscipline'])->name('academics.createDiscipline');
+    Route::post('/academics/store/discipline', [AcademicsController::class, 'storeDiscipline'])->name('academics.storeDiscipline');
+    Route::get('/academics/edit/discipline/{id}', [AcademicsController::class, 'editDiscipline'])->name('academics.editDiscipline');
+    Route::put('/academics/update/discipline/{id}', [AcademicsController::class, 'updateDiscipline'])->name('academics.updateDiscipline');
+    Route::delete('/academics/delete/discipline/{id}', [AcademicsController::class, 'destroyDiscipline'])->name('academics.destroyDiscipline');
 
     Route::get('/academics/search/course', [AcademicsController::class, 'searchCourse'])->name('academics.searchCourse');
     Route::get('/academics/search/subject', [AcademicsController::class, 'searchSubject'])->name('academics.searchSubject');
