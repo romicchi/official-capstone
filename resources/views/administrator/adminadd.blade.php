@@ -51,6 +51,7 @@
             <div class="form-group">
                 <label for="role">Role of the user:</label>
                 <select class="form-control" id="role" name="role">
+                    <option disabled selected>Select Role</option>
                     <option value="1">Student</option>
                     <option value="2">Teacher</option>
                     <option value="3">Admin</option>
@@ -63,9 +64,14 @@
                     <option value="2">2nd year</option>
                     <option value="3">3rd year</option>
                     <option value="4">4th year</option>
-                    <!-- Add more year level options as needed -->
                 </select>
             </div>
+
+            <div class="form-group" id="studentNumberGroup" style="display: none;">
+                <label for="student_number">Student Number:</label>
+                <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter Student Number" maxlength="7">
+            </div>
+
             <div class="form-group row">
                 <label for="id" class="col-form-label"></label>
                 <div class="col-md-9">
@@ -98,6 +104,16 @@
             yearLevelContainer.style.display = 'none';
         }
     }
+
+        // JavaScript to Show/Hide Student Number Field
+        document.getElementById('role').addEventListener('change', function () {
+        const studentNumberGroup = document.getElementById('studentNumberGroup');
+        if (this.value === '1') {
+            studentNumberGroup.style.display = 'block';
+        } else {
+            studentNumberGroup.style.display = 'none';
+        }
+    });
 
     // Add an event listener to the Role dropdown to trigger the toggle function
     document.getElementById('role').addEventListener('change', toggleYearLevelDropdown);

@@ -47,26 +47,88 @@ class AdminController extends Controller
         return view('administrator.adminpage', compact('verifiedUsersCount', 'totalResourcesCount', 'pendingUsersCount', 'activeUsersCount', 'studentCount', 'teacherCount', 'adminCount', 'resourceData'));
     }
 
-    public function generateReport()
+    public function generateReport(Request $request)
     {
+        $period = $request->input('report_period');
+        
+        // Determine the date range based on the selected period
+        $startDate = now();
+        $endDate = now();
+        
+        if ($period === 'month') {
+            $startDate->startOfMonth();
+            $endDate->endOfMonth();
+        } elseif ($period === 'year') {
+            $startDate->startOfYear();
+            $endDate->endOfYear();
+        } else {
+            // Default to day
+            $startDate->startOfDay();
+            $endDate->endOfDay();
+        }
+        
         // Fetch the data you want to include in the report
-        $verifiedUsersCount = User::where('verified', true)->count();
-        $totalResourcesCount = Resource::count();
-        $pendingUsersCount = User::where('verified', false)->count();
-        $activeUsersCount = User::where('last_activity', '>=', now()->subDays(3))
-            ->whereNotIn('role_id', [3, 4])
-            ->count();
-    
-        // Create a PDF using the data and your report template
-        $pdf = PDF::loadView('administrator.generate_report', [
-            'verifiedUsersCount' => $verifiedUsersCount,
-            'totalResourcesCount' => $totalResourcesCount,
-            'pendingUsersCount' => $pendingUsersCount,
-            'activeUsersCount' => $activeUsersCount,
-        ]);
-    
-        // Return the PDF as a downloadable file
-        return $pdf->download('admin_report.pdf');
+        $reportData = [];
+        
+        // Query the users based on their roles and the selected period
+        $roles = ['student', 'teacher', 'admin', 'super-admin'];
+        
+        foreach ($roles as $role) {
+            $userCount = User::where('role_id', function ($query) use ($role) {
+                    $query->select('id')->from('roles')->where('role', $role);
+                })
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->count();
+        
+            $reportData[$role] = $userCount;
+        }
+        
+        // Load the view with the report data
+        return view('administrator.generate_report', ['reportData' => $reportData]);
     }
+    
 
+    public function generatePDFReport(Request $request)
+    {
+        $period = $request->input('report_period');
+        
+        // Determine the date range based on the selected period
+        $startDate = now();
+        $endDate = now();
+        
+        if ($period === 'month') {
+            $startDate->startOfMonth();
+            $endDate->endOfMonth();
+        } elseif ($period === 'year') {
+            $startDate->startOfYear();
+            $endDate->endOfYear();
+        } else {
+            // Default to day
+            $startDate->startOfDay();
+            $endDate->endOfDay();
+        }
+        
+        // Fetch the data you want to include in the report
+        $reportData = [];
+        
+        // Query the users based on their roles and the selected period
+        $roles = ['student', 'teacher', 'admin', 'super-admin'];
+        
+        foreach ($roles as $role) {
+            $userCount = User::where('role_id', function ($query) use ($role) {
+                    $query->select('id')->from('roles')->where('role', $role);
+                })
+                ->whereBetween('created_at', [$startDate, $endDate])
+                ->count();
+        
+            $reportData[$role] = $userCount;
+        }
+        
+        // Load the PDF view with the report data
+        $pdf = PDF::loadView('administrator.generate_report_pdf', ['reportData' => $reportData]);
+        
+        // Generate and return the PDF as a download
+        return $pdf->download('report.pdf');
+    }
+    
 }

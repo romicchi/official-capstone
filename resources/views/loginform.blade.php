@@ -11,10 +11,12 @@
  
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{ asset ('css/login.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   </head>
   <body>
 
-  <div class="background" style="background-image: url({{ asset('assets/img/background-image.png')}}" loading="lazy">
+  <div class="background" style="background-image: url({{ asset('assets/img/Background.png')}}" loading="lazy">
     <div class="container"> 
       <div class="mt-5 message">
         @if($errors->any())
@@ -45,9 +47,15 @@
             <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
           </div>
           <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
-          </div>
+    <label for="password">Password:</label>
+    <div class="input-group">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+        <span class="input-group-text">
+                <i class="fas fa-eye" id="togglePassword"></i>
+            </span>
+    </div>
+</div>
+
 
           <div class="form-group">
             <div class="custom-control custom-checkbox">
@@ -69,3 +77,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function () {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>

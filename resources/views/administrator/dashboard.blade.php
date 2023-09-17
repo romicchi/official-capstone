@@ -13,7 +13,7 @@
     <div class="container">
         <div class="card shadow">
             <div class="card-header">
-                <h2>Backup and Restore Dashboard</h2>
+                <h2>Backup</h2>
             </div>
             <div class="card-body">
                 <form action="{{ route('administrator.backup') }}" method="post">

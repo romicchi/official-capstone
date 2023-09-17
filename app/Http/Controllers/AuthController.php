@@ -92,7 +92,8 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:1,2',
-            'year_level' => 'required_if:role,1|in:1,2,3,4', // Add validation for year_level if role is student
+            'year_level' => 'required_if:role,1|in:1,2,3,4', // Validation for year_level if role is student
+            'student_number' => 'required_if:role,1|nullable|unique:users|digits:7', // Validation for student_number
         ]);
     
         $data['firstname'] = $request->firstname;
@@ -108,6 +109,16 @@ class AuthController extends Controller
         if ($data['role_id'] == 1) {
             $user->year_level = $request->input('year_level');
             $user->expiration_date = self::calculateExpiryDate($user->year_level); // Use self:: to reference the function
+            $user->student_number = $request->input('student_number');
+            $user->save();
+        }
+
+        // update user's role to 'teacher' if the selected role is 'teacher'
+        if ($data['role_id'] == 2) {
+            $user->role_id = 2;
+            $user->year_level = null;
+            $user->expiration_date = null;
+            $user->student_number = null;
             $user->save();
         }
 
@@ -142,24 +153,9 @@ class AuthController extends Controller
         $user->created_at = now();
         $user->updated_at = now();
         $user->save();
-        
-        // Send verification email
-        Mail::to($data['email'])->send(new RegistrationEmail($user));
-
-        // Update user's role to 'teacher' if the selected role is 'teacher'
-        if ($data['role_id'] == 2) {
-            $user->role_id = 2;
-            $user->save();
-        }
 
         // Send verification email
         Mail::to($data['email'])->send(new RegistrationEmail($user));
-
-         // update user's role to 'teacher' if the selected role is 'teacher'
-         if ($data['role_id'] == 2) {
-            $user->role_id = 2;
-            $user->save();
-        }
 
         function getGoogleDriveAccessToken()
         {

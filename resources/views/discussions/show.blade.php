@@ -26,9 +26,13 @@
                     <div class="card">
                         @include('partials.discussion-header')
                         <!-- To display the content of the discussion -->
-                        <div class="card-body content-scroll">
+                        <div class="card-body content-scroll shadow">
                             <div>
+                                @if ($discussion->author)
                                 Author: {{ $discussion->author->firstname }} {{ $discussion->author->lastname }}
+                                @else
+                                Author: Unknown
+                                @endif
                             </div>
                             <div>
                                 Course: {{ $discussion->course->courseName }}

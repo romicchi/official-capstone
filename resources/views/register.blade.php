@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div class="background" style="background-image: url({{ asset('assets/img/background-image.png') }}" loading="lazy">
+<div class="background" style="background-image: url({{ asset('assets/img/Background.png') }}" loading="lazy">
     <div class="container">
         <div class="col">
             <form action="{{ route('register.post') }}" method="post" enctype="multipart/form-data">
@@ -75,6 +75,11 @@
                     </select>
                 </div>
 
+                <div class="form-group" id="studentNumberGroup" style="display: none;">
+                    <label for="student_number">Student Number:</label>
+                    <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter Student Number" maxlength="7">
+                </div>
+
                 <div class="form-group row">
                     <label for="id" class="col-form-label">School ID: </label>
                     <div class="col-md-9">
@@ -93,14 +98,24 @@
     </div>
 </div>
 
-<!-- JavaScript to Show Year Level Dropdown -->
 <script>
+        // JavaScript to Show Year Level Dropdown
     document.getElementById('role').addEventListener('change', function () {
         const yearLevelGroup = document.getElementById('yearLevelGroup');
         if (this.value === '1') {
             yearLevelGroup.style.display = 'block';
         } else {
             yearLevelGroup.style.display = 'none';
+        }
+    });
+
+        // JavaScript to Show/Hide Student Number Field
+        document.getElementById('role').addEventListener('change', function () {
+        const studentNumberGroup = document.getElementById('studentNumberGroup');
+        if (this.value === '1') {
+            studentNumberGroup.style.display = 'block';
+        } else {
+            studentNumberGroup.style.display = 'none';
         }
     });
 </script>

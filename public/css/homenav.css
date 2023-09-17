@@ -15,7 +15,7 @@ body {
 }
 
 .navbar {
-  background-color: #e9ecef;
+  background-color: rgba(7, 3, 114);
   overflow: hidden;
   z-index: 1;
   height: 60px;
@@ -28,10 +28,10 @@ body {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  color: white;
 }
 
 .navbar a:hover {
-  background-color: #e7e7e7;
   color: black;
 }
 

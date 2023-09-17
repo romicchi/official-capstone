@@ -1,12 +1,17 @@
   /* Global Styles */
 body {
     background-color: rgb(233, 233, 233) !important;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Gilroy-Bold', sans-serif;
     font-size: 16px;
+  }
+
+  /* icon color of fas */
+  .fas {
+    color: #f6b024;
   }
   
   header {
-    background-color: #364F6B !important;
+    background-color: rgba(7, 3, 114, 0.9) !important;
     color: #fff;
     display: flex;
     flex-direction: row;
@@ -124,7 +129,6 @@ body {
 
 
   footer {
-    
     color: #000000; /* set text color */
     padding: 20px; /* add padding for spacing */
     text-align: center; /* center-align text */

@@ -5,6 +5,19 @@ body {
     font-family: 'Roboto', sans-serif;
   }
 
+  .sidebar-divider {
+    border-top: 2px solid white;
+    margin: 0 1rem 1rem;
+  }
+
+.nav-link.inactive {
+  color: grey !important;
+}
+  
+.nav-link:hover {
+  color: white !important;
+}
+  
   .navbar-brand {
     display: flex;
     align-items: center;
@@ -83,11 +96,6 @@ body {
     padding: 10px;
     text-align: left;
     border-bottom: 1px solid #ccc;
-  }
-  
-  th {
-    background-color: #364F6B;
-    color: #fff;
   }
   
   td:nth-child(4) a {

@@ -34,10 +34,14 @@
                                 <!-- To display the author email/name and display the title. Note: check the Discussion.php to see the function -->
                                 @include('partials.discussion-header')
                                 <!-- To display the content of the discussion -->
-                                <div class="card-body">
+                                <div class="card-body shadow">
                                     <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
                                         <div>
+                                            @if ($discussion->author)
                                             Author: {{ $discussion->author->firstname }} {{ $discussion->author->lastname }}
+                                            @else
+                                            Author: Unknown
+                                            @endif
                                         </div>
                                         <div>
                                             Course: {{ $discussion->course->courseName }}

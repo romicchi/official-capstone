@@ -47,6 +47,7 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
+          <th>Student Number</th>
           <th>Lastname</th>
           <th>Firstname</th>
           <th>Email</th>
@@ -66,6 +67,7 @@
           @foreach ($pendingUsers as $user)
           @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
             <tr>
+              <td><strong>{{ $user->student_number }}</strong></td>
               <td><strong>{{ $user->lastname }}</strong></td>
               <td><strong>{{ $user->firstname }}</strong></td>
               <td>{{ $user->email }}</td>
@@ -105,6 +107,7 @@
 <table class="table table-bordered table-hover" width="100%" cellspacing="0">
   <thead>
     <tr>
+      <th>Student Number</th>
       <th>Lastname</th>
       <th>Firstname</th>
       <th>Email</th>
@@ -175,6 +178,7 @@
         <table class="table table-bordered table-hover" width="100%" cellspacing="0">
             <thead>
                 <tr>
+                    <th>Student Number</th>
                     <th>Lastname</th>
                     <th>Firstname</th>
                     <th>Email</th>
@@ -188,6 +192,13 @@
               @foreach ($existingUsers as $user)
               @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
                     <tr>
+                        <td><strong>
+                          @if ($user->student_number)
+                          {{ $user->student_number }}
+                          @else
+                          Not Applicable
+                          @endif
+                        </strong></td>
                         <td><strong>{{ $user->lastname }}</strong></td>
                         <td><strong>{{ $user->firstname }}</strong></td>
                         <td>{{ $user->email }}</td>
@@ -227,6 +238,7 @@
     <table class="table table-bordered table-hover" width="100%" cellspacing="0">
       <thead>
         <tr>
+          <th>Student Number</th>
           <th>Lastname</th>
           <th>Firstname</th>
           <th>Email</th>
@@ -271,6 +283,7 @@
         <table class="table table-bordered table-hover" width="100%" cellspacing="0">
             <thead>
                 <tr>
+                    <th>Student Number</th>
                     <th>Lastname</th>
                     <th>Firstname</th>
                     <th>Email</th>
@@ -284,6 +297,7 @@
             <tbody>
                 @foreach ($archiveViewableUsers as $user)
                 <tr>
+                    <td><strong>{{ $user->student_number }}</strong></td>
                     <td><strong>{{ $user->lastname }}</strong></td>
                     <td><strong>{{ $user->firstname }}</strong></td>
                     <td>{{ $user->email }}</td>
@@ -318,6 +332,7 @@
             <table class="table table-bordered table-hover" width="100%" cellspacing="0">
                 <thead>
                     <tr>
+                        <th>Student Number</th>
                         <th>Lastname</th>
                         <th>Firstname</th>
                         <th>Email</th>

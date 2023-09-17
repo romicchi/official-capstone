@@ -12,22 +12,29 @@
         <div class="mb-3">
         </div>
 
-        <table class="table">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Subject Name</th>
-                    <!-- Add more table headers if needed -->
                 </tr>
             </thead>
             <tbody>
                 @foreach ($subjects as $subject)
                     <tr>
-                    <td><a href="{{ route('show.resources', ['subject_id' => $subject->id]) }}">{{ $subject->subjectName }}</a></td>
-                        <!-- Add more table cells for additional subject properties -->
+                        <td>
+                            <a href="{{ route('show.resources', ['subject_id' => $subject->id]) }}">
+                                {{ $subject->subjectName }}
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+    </div>
+    </div>
     </div>
 
     <script src="{{ asset('js/subjectlivesearch.js') }}"></script>

@@ -34,7 +34,7 @@
                     <div class="vertical-center-rel">
                         <h6 class="text-uppercase f-w-900" style="visibility: visible;" data-aos="fade-left">Why Use GENER?</h6>
                         <h3 class="f-w-900 m-b-md" style="visibility: visible;" data-aos="fade-left">We're transforming the way people learn.</h3>
-                        <p class="m-b-md" data-aos="fade-left">Democritum inciderint nam ut, duo ne rebum tibique molestiae, mediocrem incorrupte dissentiunt has in. Vidisse gloriatur eum in, alia docendi molestie est te. Nam facer erant aeterno te, sed no utamur perfecto.</p>
+                        <p class="m-b-md" data-aos="fade-left">By promoting collaboration, tailoring learning materials, ensuring accessibility, and enabling scalability, GENER empowers educators to curate high-quality resources and provides learners with a flexible, diverse, and ever-expanding repository of knowledge, truly reshaping the landscape of modern education.</p>
                         <a href="{{ route('register') }}" class="btn btn-ghost smooth-scroll text-uppercase" data-aos="zoom-in">Register Now!</a>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
             <h2 class="mb-5 text-center">Features</h2>
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="card mb-5 mb-lg-0 shadow">
+                    <div class="card mb-5 mb-lg-0 ">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Easy Access</h5>
                             <p class="card-text text-center">Provide students with easy access to information about all the courses offered at LNU.</p>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card mb-5 mb-lg-0 shadow">
+                    <div class="card mb-5 mb-lg-0 ">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Sharing</h5>
                             <p class="card-text text-center">The platform enables teachers to easily share educational materials with their students, such as lecture notes, study guides, and reading assignments.</p>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card shadow">
+                    <div class="card">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Discovery</h5>
                             <p class="card-text text-center">Enables students to quickly find the learning resources they need. Students can search by keyword, subject, or topic to locate relevant materials.</p>
@@ -100,11 +100,11 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 mb-2 mb-lg-0">
-          <h5>About Us</h5>
+          <h5><strong>About Us</strong></h5>
           <p class="mb-0">{{config('app.name')}} is a Resource Pool system for LNU Students.</p>
         </div>
         <div class="col-lg-3">
-          <h5>Links</h5>
+          <h5><strong>Links</strong></h5>
           <ul class="list-unstyled">
             <li><a href="#">Home</a></li>
             <li><a href="#about-container">About</a></li>
@@ -114,8 +114,8 @@
           </ul>
         </div>
         <div class="col-lg-3">
-          <h5>Address</h5>
-          <p>Leyte Normal University <br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
+          <h5><strong>Address</strong></h5>
+          <p><strong>Leyte Normal University </strong><br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
         </div>
       </div>
       <div class="row">

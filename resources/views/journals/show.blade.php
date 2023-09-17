@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body shadow">
             <p class="card-text">{!! $journal->content !!}</p>
             <p class="card-text"><small class="text-muted">Created at: {{ $journal->created_at->format('F d, Y') }}</small></p>
         </div>

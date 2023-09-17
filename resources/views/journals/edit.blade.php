@@ -11,7 +11,7 @@
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
 
-<div class="container card">
+<div class="container card shadow">
     <h3>Edit Note</h3>
     <form action="{{ route('journals.update', $journal) }}" method="post">
         @csrf

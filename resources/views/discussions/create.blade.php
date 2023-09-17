@@ -26,7 +26,7 @@
     <div class="alert alert-danger">{{ $message }}</div>
     @enderror
         <div class="px-5">
-            <div class="container card">
+            <div class="container card shadow">
                 <div class="card-header"><strong>Add Discussion</strong></div>
                 <div class="card-body">
                     <form action="{{ route('discussions.store')}}" method="post">

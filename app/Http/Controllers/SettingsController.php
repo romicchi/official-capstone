@@ -50,7 +50,6 @@ class SettingsController extends Controller
         $validatedData = $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
         ]);
     
         $user->update($validatedData);

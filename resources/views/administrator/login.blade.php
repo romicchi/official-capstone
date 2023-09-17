@@ -62,7 +62,7 @@
         @endif
 
         <div class="overlay">
-            <div class="login-form">
+            <div class="login-form shadow">
                 <h2 class="mb-4">Super-Admin Access</h2>
                 <form action="{{ route('administrator.login.submit') }}" method="post">
                     @csrf

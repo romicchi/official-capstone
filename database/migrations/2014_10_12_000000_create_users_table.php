@@ -24,7 +24,9 @@ return new class extends Migration
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('email')->unique();
+            $table->unsignedInteger('year_level')->nullable();
             $table->unsignedBigInteger('role_id')->default(1);
+            $table->unsignedInteger('student_number')->unique()->nullable();
             $table->string('url', 1000)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

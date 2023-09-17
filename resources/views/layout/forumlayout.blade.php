@@ -11,7 +11,7 @@
 <a href="{{ route('discussions.create') }}" class="btn btn-info my-2 btn-style">+Add Discussion</a> 
             <div class="card">
                 <div class="card-header layout-header"><strong>Channels</strong></div>
-            <div class="card-body layout-body">
+            <div class="card-body layout-body shadow">
                 <ul class="list-group">
                     @foreach($channels as $channel)
                         <li class="list-group-item">    
@@ -28,7 +28,7 @@
             <div class="card-header layout-header">
                 <strong>Filter & Sort Discussions</strong>
             </div>
-            <div class="card-body layout-body">
+            <div class="card-body layout-body shadow">
                 <form action="{{ route('discussions.index') }}" method="GET">
                     <div class="form-group">
                         <label for="course">Select a Course:</label>

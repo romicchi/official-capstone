@@ -68,6 +68,7 @@ class UsermanageController extends Controller
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:1,2,3',
             'year_level' => 'required_if:role,1|in:1,2,3,4',
+            'student_number' => 'required_if:role,1|nullable|unique:users|digits:7',
         ]);
 
         $data['firstname'] = $request->firstname;
@@ -83,6 +84,7 @@ class UsermanageController extends Controller
         if ($data['role_id'] == 1) {
             $user->year_level = $request->input('year_level');
             $user->expiration_date = self::calculateExpiryDate($user->year_level); // Use self:: to reference the function
+            $user->student_number = $request->input('student_number');
             $user->save();
         }
 
@@ -90,6 +92,7 @@ class UsermanageController extends Controller
         if ($data['role_id'] == 2) {
             $user->year_level = null;
             $user->expiration_date = null;
+            $user->student_number = null;
             $user->role_id = 2;
             $user->save();
         }
@@ -98,6 +101,7 @@ class UsermanageController extends Controller
         if ($data['role_id'] == 3) {
             $user->year_level = null;
             $user->expiration_date = null;
+            $user->student_number = null;
             $user->role_id = 3;
             $user->save();
         }
@@ -212,9 +216,24 @@ class UsermanageController extends Controller
         $userdata->firstname = $req->firstname;
         $userdata->lastname = $req->lastname;
         $userdata->email = $req->email;
+        $userdata->password = Hash::make($req->password);
         $userdata->role_id = $req->role;
-        // updated_at will update
         $userdata->updated_at = now();
+        $userdata->expiration_date = null;
+
+        // Check if the role is "Student" and update the student number if provided
+        if ($req->role == 1) {
+            $req->validate([
+                'student_number' => 'required|numeric|digits:7|unique:users,student_number,'.$userdata->id, // Ensure it's unique for the current user
+                'year_level' => 'required_if:role,1|in:1,2,3,4', // Add validation for year level
+
+            ]);
+            
+            $userdata->year_level = $req->input('year_level');
+            $userdata->expiration_date = self::calculateExpiryDate($userdata->year_level); // Use self:: to reference the function
+            $userdata->student_number = $req->student_number;
+        }
+
         $userdata->save();
 
         $activeTab = 'existing';
@@ -232,7 +251,8 @@ class UsermanageController extends Controller
             ->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('firstname', 'like', '%' . $query . '%')
                     ->orWhere('lastname', 'like', '%' . $query . '%')
-                    ->orWhere('email', 'like', '%' . $query . '%');
+                    ->orWhere('email', 'like', '%' . $query . '%')
+                    ->orWhere('student_number', 'like', '%' . $query . '%');
             })
             ->paginate(10);
     
@@ -266,7 +286,8 @@ public function searchArchive(Request $request)
         ->where(function ($queryBuilder) use ($query) {
             $queryBuilder->where('firstname', 'like', '%' . $query . '%')
                 ->orWhere('lastname', 'like', '%' . $query . '%')
-                ->orWhere('email', 'like', '%' . $query . '%');
+                ->orWhere('email', 'like', '%' . $query . '%')
+                ->orWhere('student_number', 'like', '%' . $query . '%');
         })
         ->paginate(10);
 
@@ -359,11 +380,17 @@ public function archive($id)
     if ($user) {
    // Create an archive record
    $archiveUser = new ArchiveUser();
+   $archiveUser->student_number = $user->student_number;
    $archiveUser->firstname = $user->firstname;
    $archiveUser->lastname = $user->lastname;
    $archiveUser->email = $user->email;
    $archiveUser->user_id = $user->id;
-   $archiveUser->year_level = $user->year_level; // Add year level
+   // Check if the user has the "Student" role (role_id = 1)
+   if ($user->role_id === 1) {
+       $archiveUser->year_level = $user->year_level; // Add year level
+    } else {
+        $archiveUser->year_level = null; // Make year_level nullable for other roles
+    }
    $archiveUser->role = $user->role->role; // Add role
    $archiveUser->url = $user->url; // Add URL
    $archiveUser->archived_at = now(); // Add the current date and time
@@ -402,6 +429,7 @@ public function reactivate($id)
     if ($archivedUser) {
     // Create a new user record
     $user = new User();
+    $user->student_number = $archivedUser->student_number;
     $user->firstname = $archivedUser->firstname;
     $user->lastname = $archivedUser->lastname;
     $user->email = $archivedUser->email;

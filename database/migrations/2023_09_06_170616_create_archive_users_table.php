@@ -13,13 +13,14 @@ return new class extends Migration
 {
     Schema::create('archive_users', function (Blueprint $table) {
         $table->id();
+        $table->unsignedInteger('student_number')->unique()->nullable();
         $table->string('firstname');
         $table->string('lastname');
         $table->string('email')->unique;
         $table->unsignedBigInteger('user_id');
         $table->string('role');
         $table->string('url');
-        $table->integer('year_level');
+        $table->integer('year_level')->nullable();
         $table->timestamp('archived_at');
         $table->boolean('archived')->default(1);
         $table->timestamps();

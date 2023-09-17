@@ -4,12 +4,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/favorite.css') }}">
 
     <div class="container">
-    <h2 class="text-center">Favorite Resources</h2>
+        <h2 class="text-center">Favorite Resources</h2>
 
-    @if ($resources->isEmpty())
-        <p>No added favorite resources yet.</p>
-    @else
-        <table class="table">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+        <table class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>
                     <th>Title</th>
@@ -20,17 +19,27 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($resources as $resource)
+                @if ($resources->isEmpty())
                     <tr>
-                        <td>{{ $resource->title }}</td>
-                        <td>{{ $resource->author }}</td>
-                        <td>{{ $resource->description }}</td>
-                        <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
-                        <td><a href="{{ route('resource.show', $resource->id) }}">View</a> |<td>
+                        <td colspan="5">No added favorite resources yet.</td>
                     </tr>
-                @endforeach
+                @else
+                    @foreach ($resources as $resource)
+                        <tr>
+                            <td>{{ $resource->title }}</td>
+                            <td>{{ $resource->author }}</td>
+                            <td>{{ $resource->description }}</td>
+                            <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
+                            <td><a href="{{ route('resource.show', $resource->id) }}">View</a> |</td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
-    @endif
-</div>
+        <div class="d-flex justify-content-center">
+            {{ $resources->links('pagination::bootstrap-4') }}
+        </div>
+    </div>
+    </div>
+    </div>
 @show

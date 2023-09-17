@@ -4,20 +4,6 @@
             <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         </head>
-        <style>
-            .sidebar-divider {
-                border-top: 2px solid white;
-                margin: 0 1rem 1rem;
-            }
-
-            .nav-link.inactive {
-                color: grey !important;
-            }
-
-            .nav-link:hover {
-                color: white !important;
-            }
-        </style>
 
 <!-- NAV BAR -->
 @section('adminnavbar')
