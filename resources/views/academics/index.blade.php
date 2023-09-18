@@ -6,7 +6,6 @@
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'colleges')">Colleges</button>
     <button class="tablinks" onclick="openTab(event, 'courses')">Courses</button>
-    <button class="tablinks" onclick="openTab(event, 'subjects')">Subjects</button>
     <button class="tablinks" onclick="openTab(event, 'disciplines')">Disciplines</button>
 </div>
 

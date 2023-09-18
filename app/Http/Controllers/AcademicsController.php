@@ -258,12 +258,12 @@ class AcademicsController extends Controller
     public function storeDiscipline(Request $request)
     {
         $request->validate([
-            'discipline_Name' => 'required',
+            'disciplineName' => 'required',
             // Add validation for other fields if needed
         ]);
 
         Discipline::create([
-            'discipline_Name' => $request->input('discipline_Name'),
+            'disciplineName' => $request->input('disciplineName'),
             // Add other fields as needed
         ]);
 
@@ -281,13 +281,13 @@ class AcademicsController extends Controller
     public function updateDiscipline(Request $request, $id)
     {
         $request->validate([
-            'discipline_Name' => 'required',
+            'disciplineName' => 'required',
             // Add validation for other fields if needed
         ]);
 
         $discipline = Discipline::findOrFail($id);
         $discipline->update([
-            'discipline_Name' => $request->input('discipline_Name'),
+            'disciplineName' => $request->input('disciplineName'),
             // Update other fields as needed
         ]);
 

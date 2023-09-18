@@ -17,82 +17,82 @@ class DisciplineSeeder extends Seeder
         $cas = College::where('collegeName', 'CAS')->first();
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'Computer Science',
+            'college_id' => $cas->id,
+            'disciplineName' => 'Computer Science',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'Mathematics',
+            'college_id' => $cas->id,
+            'disciplineName' => 'Mathematics',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'Natural Sciences',
+            'college_id' => $cas->id,
+            'disciplineName' => 'Natural Sciences',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'The Arts',
+            'college_id' => $cas->id,
+            'disciplineName' => 'The Arts',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'Sports',
+            'college_id' => $cas->id,
+            'disciplineName' => 'Sports',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'Applied Sciences',
+            'college_id' => $cas->id,
+            'disciplineName' => 'Applied Sciences',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cas->id,
-            'discipline_Name' => 'Social Sciences',
+            'college_id' => $cas->id,
+            'disciplineName' => 'Social Sciences',
         ]);
 
         $cme = College::where('collegeName', 'CME')->first();
 
         Discipline::create([
-            'discipline_id' => $cme->id,
-            'discipline_Name' => 'Language',
+            'college_id' => $cme->id,
+            'disciplineName' => 'Language',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cme->id,
-            'discipline_Name' => 'Linguistics',
+            'college_id' => $cme->id,
+            'disciplineName' => 'Linguistics',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cme->id,
-            'discipline_Name' => 'Literature',
+            'college_id' => $cme->id,
+            'disciplineName' => 'Literature',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cme->id,
-            'discipline_Name' => 'Geography',
+            'college_id' => $cme->id,
+            'disciplineName' => 'Geography',
         ]);
 
         Discipline::create([
-            'discipline_id' => $cme->id,
-            'discipline_Name' => 'Management',
+            'college_id' => $cme->id,
+            'disciplineName' => 'Management',
         ]);
 
         $coe = College::where('collegeName', 'COE')->first();
 
         Discipline::create([
-            'discipline_id' => $coe->id,
-            'discipline_Name' => 'Philosophy',
+            'college_id' => $coe->id,
+            'disciplineName' => 'Philosophy',
         ]);
 
         Discipline::create([
-            'discipline_id' => $coe->id,
-            'discipline_Name' => 'Psychology',
+            'college_id' => $coe->id,
+            'disciplineName' => 'Psychology',
         ]);
 
         Discipline::create([
-            'discipline_id' => $coe->id,
-            'discipline_Name' => 'History',
+            'college_id' => $coe->id,
+            'disciplineName' => 'History',
         ]);
     }
 }

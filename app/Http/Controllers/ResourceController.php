@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\College;
 use App\Models\Course;
 use App\Models\Subject;
+use App\Models\Discipline;
 use App\Models\User;
 use App\Models\Resource;
 use Illuminate\Pagination\Paginator;
@@ -267,7 +268,10 @@ class ResourceController extends Controller
         return view('subjects.show', compact('resource'));
     }
 
+    public function disciplines($id)
+    {
+        $disciplines = Discipline::where('college_id', $id)->get();
+        return view('disciplines.show', compact('disciplines'));
+    }
+
 }
-
-
-
