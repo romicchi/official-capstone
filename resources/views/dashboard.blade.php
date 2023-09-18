@@ -40,8 +40,7 @@
   <!-- Content -->
   <header>
 		<div class="dashboard">
-    <h2>Welcome to the User Dashboard, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
-			<p>Here you can manage your account, view statistics, history, and more.</p>
+    <h2>Welcome to Dashboard, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
 		</div>
 	</header>
 	<main>

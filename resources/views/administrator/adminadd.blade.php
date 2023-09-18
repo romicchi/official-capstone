@@ -4,8 +4,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/register.css') }}">
 
 <div class="container">
-    <div class="col">
-        <form action="{{ route('add.user') }}" method="post" enctype="multipart/form-data">
+  <div class="col">
+        <form class="bg-light" action="{{ route('add.user') }}" method="post" enctype="multipart/form-data">
             @csrf
 
             <!-- Error Message -->
@@ -73,7 +73,7 @@
             </div>
 
             <div class="form-group row">
-                <label for="id" class="col-form-label"></label>
+                <label for="id" class="col-form-label">School ID:</label>
                 <div class="col-md-9">
                     <input id="id" type="file" class="form-control @error('id') is-invalid @enderror" name="id" required autofocus>
                     @error('file')
@@ -89,35 +89,4 @@
     </div>
 </div>
 
-<script>
-    // Function to toggle the Year Level dropdown based on the selected role
-    function toggleYearLevelDropdown() {
-        var roleSelect = document.getElementById('role');
-        var yearLevelContainer = document.getElementById('yearLevelContainer');
-
-        console.log('Selected Role:', roleSelect.value);
-
-        // If the selected role is "1" (Student), show the Year Level dropdown; otherwise, hide it
-        if (roleSelect.value === '1') {
-            yearLevelContainer.style.display = 'block';
-        } else {
-            yearLevelContainer.style.display = 'none';
-        }
-    }
-
-        // JavaScript to Show/Hide Student Number Field
-        document.getElementById('role').addEventListener('change', function () {
-        const studentNumberGroup = document.getElementById('studentNumberGroup');
-        if (this.value === '1') {
-            studentNumberGroup.style.display = 'block';
-        } else {
-            studentNumberGroup.style.display = 'none';
-        }
-    });
-
-    // Add an event listener to the Role dropdown to trigger the toggle function
-    document.getElementById('role').addEventListener('change', toggleYearLevelDropdown);
-
-    // Initialize the state of the Year Level dropdown based on the initial role value
-    toggleYearLevelDropdown();
-</script>
+<script src="{{ asset('js/admin.js') }}"></script>

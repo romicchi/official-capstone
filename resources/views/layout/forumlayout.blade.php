@@ -8,7 +8,7 @@
 
 @section('Channel-Add')
 <div class="col-md-4">
-<a href="{{ route('discussions.create') }}" class="btn btn-info my-2 btn-style">+Add Discussion</a> 
+<a href="{{ route('discussions.create') }}" class="btn btn-info my-2 btn-style">+Create Discussion</a> 
             <div class="card">
                 <div class="card-header layout-header"><strong>Channels</strong></div>
             <div class="card-body layout-body shadow">
@@ -48,7 +48,7 @@
                             <option value="oldest" @if(request()->get('sort') == 'oldest') selected @endif>Oldest to Newest</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary my-2">Apply Filters</button>
+                    <button type="submit" class="btn btn-secondary my-2">Apply Filters</button>
                 </form>
             </div>
         </div>

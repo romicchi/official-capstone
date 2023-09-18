@@ -43,8 +43,8 @@
           @endif
           <h1>Login</h1>
           <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+            <label for="email_or_student_number">Email:</label>
+            <input type="text" class="form-control" id="email_or_student_number" name="email_or_student_number" placeholder="Email/Student Number" required>
           </div>
           <div class="form-group">
     <label for="password">Password:</label>

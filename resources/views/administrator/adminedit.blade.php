@@ -64,31 +64,4 @@
   </div>
 </div>
 
-
-<script>
-    // JavaScript to Show/Hide Student Number Field
-    document.getElementById('role').addEventListener('change', function () {
-        const studentNumberGroup = document.getElementById('studentNumberGroup');
-        if (this.value === '1') {
-            studentNumberGroup.style.display = 'block';
-        } else {
-            studentNumberGroup.style.display = 'none';
-        }
-    });
-
-    // Trigger the change event initially to show/hide based on the selected role
-    document.getElementById('role').dispatchEvent(new Event('change'));
-
-    // JavaScript to Show/Hide Year Level Field
-    document.getElementById('role').addEventListener('change', function () {
-    const yearLevelGroup = document.getElementById('yearLevelGroup');
-    if (this.value === '1') {
-      yearLevelGroup.style.display = 'block';
-    } else {
-      yearLevelGroup.style.display = 'none';
-    }
-  });
-
-  // Trigger the change event initially to set the initial visibility state
-  document.getElementById('role').dispatchEvent(new Event('change'));
-</script>
+<script src="{{ asset('js/admin.js') }}"></script>

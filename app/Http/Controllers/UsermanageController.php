@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\ArchiveUser;
 use App\Models\Role;
+use App\Models\Image;
+use App\Models\ArchiveUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;  
-use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 use App\Mail\RegistrationEmail;
+use App\Mail\UserVerifiedEmail;
+use App\Rules\ValidEmailDomain;
 use Google\Client as GoogleClient;
 use Carbon\Carbon;
 
@@ -64,7 +65,7 @@ class UsermanageController extends Controller
             'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
             'firstname' => 'required|max:255',
             'lastname' => 'required|max:255',
-            'email' => 'required|email|unique:users',
+            'email' => ['required', 'email', new ValidEmailDomain, 'unique:users'],
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:1,2,3',
             'year_level' => 'required_if:role,1|in:1,2,3,4',
@@ -131,13 +132,17 @@ class UsermanageController extends Controller
         // Get the file ID and generate the preview link
         $fileId = $uploadedFile->id;
         $previewLink = "http://drive.google.com/uc?export=view&id=$fileId";
+
         
         $user->url = $previewLink;
-
+        
         $user->verified = true;
         $user->created_at = now();
         $user->updated_at = now();
         $user->save();
+
+        // Send a verification email to verified users
+        Mail::to($user->email)->send(new UserVerifiedEmail($user));
         
         function getGoogleDriveAccessToken()
         {
@@ -185,6 +190,12 @@ class UsermanageController extends Controller
     
         User::whereIn('id', $verifiedUserIds)->update(['verified' => true]);
         User::whereIn('id', $rejectedUserIds)->delete();
+
+        // Send a verification email to verified users
+        $verifiedUsers = User::whereIn('id', $verifiedUserIds)->get();
+        foreach ($verifiedUsers as $user) {
+            Mail::to($user->email)->send(new UserVerifiedEmail($user));
+        }
 
         $activeTab = 'pending';
     
@@ -314,7 +325,7 @@ public function searchArchive(Request $request)
             $existingUsersQuery->where('role_id', $roleFilter);
         }
         
-        $existingUsers = $existingUsersQuery->paginate(2);
+        $existingUsers = $existingUsersQuery->paginate(3);
         
         $pendingUsers = User::with('role')
         ->where('verified', false)

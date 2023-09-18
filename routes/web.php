@@ -130,6 +130,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 });
 
 // -------------------------- STUDENT-TEACHER-ADMIN --------------------------------//
+Route::middleware(['profanity'])->group(function () {
 Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the user is login only he/she can see this 
 
     Route::get('/usernav', [AdminController::class, 'usernav'])->name('usernav');
@@ -213,6 +214,8 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 });
 
 Route::get('/embed/{resource}', [ResourceController::class, 'showEmbed'])->name('embed');
+
+});
 
 
 

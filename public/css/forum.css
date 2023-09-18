@@ -58,7 +58,8 @@
 }
 
 .layout-header {
-  background-color: rgb(184, 184, 184) !important;
+  background-color: rgba(7, 3, 114, 0.9) !important;
+  color: #fff !important;
 }
 
 .card-body {

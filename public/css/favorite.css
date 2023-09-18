@@ -16,6 +16,11 @@ body {
   padding-right: 2rem;
 }
 
+th {
+  background-color: #070372 !important;
+  color: #fff;
+}
+
 /* when at lower screen sizes decrease the padding-left of body */
 
 @media screen and (max-width: 993px) {

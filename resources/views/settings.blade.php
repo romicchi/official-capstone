@@ -1,5 +1,9 @@
 @extends('layout.usernav')
 
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+</head>
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -29,22 +33,22 @@
                         </div>
 
                         <div class="form-group row my-2">
-                        <label for="lastname" class="col-md-4 col-form-label text-md-right">{{ __('Lastname') }}</label>
+                            <label for="lastname" class="col-md-4 col-form-label text-md-right">{{ __('Lastname') }}</label>
                         
-                        <div class="col-md-6">
-                            <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname', auth()->user()->lastname) }}" required autocomplete="lastname" autofocus>
+                            <div class="col-md-6">
+                                <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname', auth()->user()->lastname) }}" required autocomplete="lastname" autofocus>
                             
-                            @error('lastname')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                                @error('lastname')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
                         <div class="form-group row mb-0 my-2">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success" id="profileSubmitBtn">
                                     {{ __('Save Changes') }}
                                 </button>
                             </div>
@@ -110,7 +114,17 @@
                         
                         <div class="form-group row mb-0 my-2">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">{{ __('Save Changes') }}</button>
+                                <button type="submit" class="btn btn-success" id="passwordChangeSubmitBtn">{{ __('Save Changes') }}</button>
                             </div>
                         </div>
-                                
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+
+<script src="{{ asset('js/profile.js') }}"></script>

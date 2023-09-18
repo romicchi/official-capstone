@@ -248,11 +248,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="center" colspan="6"><strong>No users found</strong></td>
-        </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+      <center>
+        <td class="center" colspan="6"><strong>No users found</strong></td>
+      </center>
     @endif
   </div>
 </div>
@@ -344,54 +344,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="center" colspan="8"><strong>No archived users found</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+                  </tbody>
+                </table>
+                <center>
+                  <p>No archived users inside the table</p>
+                </center>
         </div>
     </div>
     @endif
 </div>
 
-
-
-<script>
-  function showImage(url) {
-    // Create an overlay
-    var overlay = document.createElement("div");
-    overlay.className = "overlay";
-    
-    // Create an image element
-    var image = document.createElement("img");
-    image.src = url;
-    image.alt = "Uploaded ID";
-    image.className = "overlay-image";
-    
-    // Append the image to the overlay
-    overlay.appendChild(image);
-    
-    // Append the overlay to the body
-    document.body.appendChild(overlay);
-    
-    // Add a click event listener to close the overlay when clicked
-    overlay.addEventListener("click", function() {
-      document.body.removeChild(overlay);
-    });
-  }
-
-  function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
-
-</script>
+<script src="{{ asset('js/admin.js') }}"></script>

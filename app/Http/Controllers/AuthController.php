@@ -11,6 +11,7 @@ use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RegistrationEmail;
+use App\Rules\ValidEmailDomain;
 use App\Models\User;
 use Carbon\Carbon;
 use Google\Client as GoogleClient;
@@ -34,14 +35,27 @@ class AuthController extends Controller
     function loginPost(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'email_or_student_number' => 'required',
             'password' => 'required'
         ]);
     
-        $credentials = $request->only('email', 'password');
-        $remember = $request->has('remember'); // Check if "Remember Me" is checked
+        $emailOrStudentNumber = $request->input('email_or_student_number'); // Get the input from the form
+        $password = $request->input('password');
+        $remember = $request->has('remember'); // Check if "Remember Me" is checkeds
 
-        if (Auth::attempt($credentials, $remember)) {
+        $credentials = [
+            'password' => $password
+        ];
+
+        // Check if the input is an email address
+        if (filter_var($emailOrStudentNumber, FILTER_VALIDATE_EMAIL)) {
+            $credentials['email'] = $emailOrStudentNumber;
+        } else {
+            // If not an email, assume it's a student number
+            $credentials['student_number'] = $emailOrStudentNumber;
+        }
+
+        if (Auth::attempt($credentials, $password, $remember)) {
             $user = Auth::user();
             // If user is not verified then redirect to login
             if (!$user->verified) {
@@ -89,7 +103,7 @@ class AuthController extends Controller
             'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
             'firstname' => 'required',
             'lastname' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => ['required', 'email', new ValidEmailDomain, 'unique:users'],
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:1,2',
             'year_level' => 'required_if:role,1|in:1,2,3,4', // Validation for year_level if role is student
