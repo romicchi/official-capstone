@@ -17,6 +17,7 @@ use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BackupRestoreController;
+use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\FavoriteController;
 
 
@@ -115,6 +116,13 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('/academics/edit/subject/{id}', [AcademicsController::class, 'editSubject'])->name('academics.editSubject');
     Route::put('/academics/update/subject/{id}', [AcademicsController::class, 'updateSubject'])->name('academics.updateSubject');
     Route::delete('/academics/delete/subject/{id}', [AcademicsController::class, 'destroySubject'])->name('academics.destroySubject');
+    
+    Route::get('/academics/index/disciplines', [AcademicsController::class, 'indexDisciplines'])->name('academics.indexDisciplines');
+    Route::get('/academics/create/discipline', [AcademicsController::class, 'createDiscipline'])->name('academics.createDiscipline');
+    Route::post('/academics/store/discipline', [AcademicsController::class, 'storeDiscipline'])->name('academics.storeDiscipline');
+    Route::get('/academics/edit/discipline/{id}', [AcademicsController::class, 'editDiscipline'])->name('academics.editDiscipline');
+    Route::put('/academics/update/discipline/{id}', [AcademicsController::class, 'updateDiscipline'])->name('academics.updateDiscipline');
+    Route::delete('/academics/delete/discipline/{id}', [AcademicsController::class, 'destroyDiscipline'])->name('academics.destroyDiscipline');
 
     Route::get('/academics/search/course', [AcademicsController::class, 'searchCourse'])->name('academics.searchCourse');
     Route::get('/academics/search/subject', [AcademicsController::class, 'searchSubject'])->name('academics.searchSubject');
@@ -182,6 +190,9 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     // SUBJECTS & RESOURCES
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
     Route::get('/resources', [ResourceController::class, 'resources'])->name('show.resources');
+
+    Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
+    Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
     
     Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
     Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
@@ -213,8 +224,6 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:3']], function () {
         Route::get('/resourcemanage', 'App\Http\Controllers\ResourceController@showResourceManage')->name('resourcemanage');
-        Route::put('/resources/{resource}/approve', [ResourceController::class, 'approve'])->name('resources.approve');
-        Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'disapprove'])->name('resources.disapprove');
         Route::get('/resources/search', [ResourceController::class, 'searchResources'])->name('resources.search');
     });
 });

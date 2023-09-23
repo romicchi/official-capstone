@@ -4,8 +4,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
     <!-- Teacher Resource Table -->
-<section class="resource-management">
-  <h2>Management Resources</h2>
+    <section class="resource-management">
+  <h2>Resource Management</h2>
   <div class="row">
     <div class="col-md-4">
       <div class="card">
@@ -13,6 +13,19 @@
           <h4 class="card-title">Add Resource</h4>
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
+
+          <div class="form-group row my-3">
+                <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
+                <div class="col-md-9">
+                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
+                    @error('file')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            
             <div class="form-group">
               <label for="title">Title</label>
               <input type="text" class="form-control" id="title" name="title" required>
@@ -43,39 +56,23 @@
               </select>
             </div>
             
-            <div class="form-group" id="courseContainer" style="display: none;">
-              <label for="course">Course</label>
-              <select class="form-control" id="courseSelect" name="course" required>
-                <option value="">Select Course</option>
-              </select>
-            </div>
-            
-            <div class="form-group" id="subjectContainer" style="display: none;">
-              <label for="subject">Subject</label>
-              <select class="form-control" id="subjectSelect" name="subject" required>
-                <option value="">Select Subject</option>
+            <div class="form-group" id="disciplineContainer">
+              <label for="discipline">Discipline</label>
+              <select class="form-control" id="disciplineSelect" name="discipline" required>
+                <option value="">Select Discipline</option>
+                @foreach ($college->disciplines as $discipline)
+                <option value="{{ $discipline->id }}">{{ $discipline->disciplineName }}</option>
+                @endforeach
               </select>
             </div>
 
-            <div class="form-group row my-3">
-                            <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
-                            <div class="col-md-9">
-                                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
-                                @error('file')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-           
-                        <div class="form-group row">
-                            <div class="col-md-9 offset-md-3">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Upload') }}
-                                </button>
-                            </div>
-                        </div>
+            <div class="form-group row">
+                <div class="col-md-9 offset-md-3">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Upload') }}
+                    </button>
+                </div>
+            </div>
           </form>
         </div>
       </div>
@@ -85,7 +82,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Pending Resources</h4>
+              <h4 class="card-title">Your File Uploads</h4>
               <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -93,17 +90,14 @@
                       <th>Title</th>
                       <th>Author</th>
                       <th>College</th>
-                      <th>Course</th>
-                      <th>Subject</th>
+                      <th>Discipline</th>
                       <th>Description</th>
                       <th>URL</th>
-                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($resources as $resource)
-                    @if ($resource->resourceStatus == '0')
                     <tr>
                       <td><strong>{{ $resource->title }}<strong></td>
                       <td>{{ $resource->author }}</td>
@@ -113,13 +107,6 @@
                       <td>{{ $resource->description }}</td>
                       <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                       <td>
-                        @if ($resource->resourceStatus == 1)
-                        <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
-                        @else
-                        <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
-                        @endif
-                      </td>
-                      <td>
                         <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                           @csrf
@@ -128,55 +115,6 @@
                         </form>
                       </td>
                     </tr>
-                    @endif
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="card my-5">
-            <div class="card-body">
-              <h4 class="card-title">Verified Resources</h4>
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Title</th>
-                      <th>Author</th>
-                      <th>Description</th>
-                      <th>URL</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($resources as $resource)
-                    @if ($resource->resourceStatus == '1')
-                    <tr>
-                      <td><strong>{{ $resource->title }}<strong></td>
-                      <td>{{ $resource->author }}</td>
-                      <td>{{ $resource->description }}</td>
-                      <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
-                      <td>
-                        @if ($resource->resourceStatus == 1)
-                        <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
-                        @else
-                        <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
-                        @endif
-                      </td>
-                      <td>
-                        <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                      </td>
-                    </tr>
-                    @endif
                     @endforeach
                   </tbody>
                 </table>
@@ -190,5 +128,3 @@
 </section>
 
 <script src="{{ asset('js/fetch.js') }}"></script>
-
- 

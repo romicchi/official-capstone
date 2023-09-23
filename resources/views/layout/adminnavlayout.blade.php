@@ -33,7 +33,7 @@
 
                     <li class="nav-item dropend">
 
-                            <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.subjects' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.disciplines' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
 
                             <img class="images" src="">Resources
@@ -46,14 +46,14 @@
                                         {{ $college->collegeName }}
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdown{{ $college->id }}">
-                                        @foreach ($college->courses as $course)
-                                            <li><a class="dropdown-item" href="{{ route('show.subjects', ['course_id' => $course->id]) }}">{{ $course->courseName }}</a></li>
+                                        @foreach ($college->disciplines as $discipline)
+                                            <li><a class="dropdown-item" href="{{ route('show.disciplines', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}">{{ $discipline->disciplineName }}</a></li>
                                         @endforeach
                                     </ul>
                                 </li>
                             @endforeach
                         </ul>
-                    </li>                    
+                    </li>
 
                     <li class="nav-item">
                     <a class="nav-link {{ $currentRoute === 'usermanage' ? 'active' : 'inactive' }}" href="{{ route('usermanage') }}?activeTab=existing">Manage User</a>

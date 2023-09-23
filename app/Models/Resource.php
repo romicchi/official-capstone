@@ -18,7 +18,6 @@ class Resource extends Model
         'course_id',
         'subject_id',
         'resourceType',
-        'resourceStatus',
     ];
 
     public function college()

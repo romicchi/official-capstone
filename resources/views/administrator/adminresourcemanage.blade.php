@@ -20,8 +20,7 @@
                         <th>Author</th>
                         <th>Date</th>
                         <th>College</th>
-                        <th>Course</th>
-                        <th>Subject</th>
+                        <th>Discipline</th>
                         <th>URL</th>
                         <th>Action</th>
                     </tr>
