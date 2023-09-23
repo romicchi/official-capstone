@@ -160,8 +160,8 @@ class UsermanageController extends Controller
     public function show(Request $request)
     {
         $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
-        $existingUsers = User::with('role')->where('verified', true)->paginate(10, ['*'], 'existing_page');
-        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
+        $existingUsers = User::with('role')->where('verified', true)->paginate(11, ['*'], 'existing_page');
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10, ['*'], 'archive_page');
         $calculateExpiryDate = self::calculateExpiryDate($request->year_level);
 
         $existingUsersQuery = User::with('role')->where('verified', true);
@@ -169,7 +169,7 @@ class UsermanageController extends Controller
         // Sorting
         $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
         $existingUsersQuery->orderBy('lastname', $sortOrder);
-        $existingUsers = $existingUsersQuery->paginate(10);
+        $existingUsers = $existingUsersQuery->paginate(11);
 
         $activeTab = 'existing';
         $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
@@ -256,6 +256,9 @@ class UsermanageController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
+        
+        // Get the current page from the query parameters
+        $currentPage = $request->query('page', 1);
     
         $existingUsers = User::with('role')
             ->where('verified', true)
@@ -265,7 +268,7 @@ class UsermanageController extends Controller
                     ->orWhere('email', 'like', '%' . $query . '%')
                     ->orWhere('student_number', 'like', '%' . $query . '%');
             })
-            ->paginate(10);
+            ->paginate(10, ['*'], 'existing_page')->withQueryString();
     
         $pendingUsers = User::with('role')
             ->where('verified', false)
@@ -279,58 +282,96 @@ class UsermanageController extends Controller
         return view('administrator.usermanage', [
             'pendingUsers' => $pendingUsers,
             'existingUsers' => $existingUsers,
-            'activeTab' => $activeTab, //
+            'activeTab' => $activeTab,
+            'roles' => $roles,
+            'archiveViewableUsers' => $archiveViewableUsers,
+        ]);
+    }
+
+    public function searchPending(Request $request)
+    {
+        $query = $request->input('query');
+        
+        // Get the current page from the query parameters
+        $currentPage = $request->query('page', 1);
+
+        $pendingUsers = User::with('role')
+            ->where('verified', false)
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('firstname', 'like', '%' . $query . '%')
+                    ->orWhere('lastname', 'like', '%' . $query . '%')
+                    ->orWhere('email', 'like', '%' . $query . '%')
+                    ->orWhere('student_number', 'like', '%' . $query . '%');
+            })
+            ->paginate(10, ['*'], 'pending_page')->withQueryString();
+
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->paginate(10, ['*'], 'existing_page');
+
+        $activeTab = 'pending';
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
+
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'activeTab' => $activeTab,
             'roles' => $roles,
             'archiveViewableUsers' => $archiveViewableUsers,
         ]);
     }
 
     // Search function for archived users
-public function searchArchive(Request $request)
-{
-    $query = $request->input('query');
-    $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
-    $existingUsers = User::with('role')->where('verified', true)->paginate(10, ['*'], 'existing_page');
+    public function searchArchive(Request $request)
+    {
+        $query = $request->input('query');
+        $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
+        $existingUsers = User::with('role')->where('verified', true)->paginate(10, ['*'], 'existing_page');
 
-    // Query the archived users
-    $archiveViewableUsers = ArchiveUser::where('archived', true)
-        ->where(function ($queryBuilder) use ($query) {
-            $queryBuilder->where('firstname', 'like', '%' . $query . '%')
-                ->orWhere('lastname', 'like', '%' . $query . '%')
-                ->orWhere('email', 'like', '%' . $query . '%')
-                ->orWhere('student_number', 'like', '%' . $query . '%');
-        })
-        ->paginate(10);
+        // Query the archived users
+        $archiveViewableUsers = ArchiveUser::where('archived', true)
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('firstname', 'like', '%' . $query . '%')
+                    ->orWhere('lastname', 'like', '%' . $query . '%')
+                    ->orWhere('email', 'like', '%' . $query . '%')
+                    ->orWhere('student_number', 'like', '%' . $query . '%');
+            })
+            ->paginate(10);
 
-    // Set the active tab to 'archive'
-    $activeTab = 'archive';
-    $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+        // Set the active tab to 'archive'
+        $activeTab = 'archive';
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
 
-    return view('administrator.usermanage', [
-        'pendingUsers' => $pendingUsers,
-        'existingUsers' => $existingUsers,
-        'archiveViewableUsers' => $archiveViewableUsers,
-        'activeTab' => $activeTab,
-        'roles' => $roles,
-    ]);
-}
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'archiveViewableUsers' => $archiveViewableUsers,
+            'activeTab' => $activeTab,
+            'roles' => $roles,
+        ]);
+    }
     
     public function filterByRole(Request $request)
     {
         $roleFilter = $request->input('role');
         
+        // Get the current page from the query parameters
+        $currentPage = $request->query('page', 1);
+
         $existingUsersQuery = User::with('role')->where('verified', true);
         
         if ($roleFilter != 'all') {
             $existingUsersQuery->where('role_id', $roleFilter);
         }
         
-        $existingUsers = $existingUsersQuery->paginate(3);
-        
+        // Paginate the results and pass the current page
+        $existingUsers = $existingUsersQuery->paginate(10, ['*'], 'existing_page')->withQueryString();
+
         $pendingUsers = User::with('role')
-        ->where('verified', false)
-        ->paginate(10);
-        
+            ->where('verified', false)
+            ->paginate(10);
+
         $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
         $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
         
@@ -349,6 +390,9 @@ public function searchArchive(Request $request)
     {
         $roleFilter = $request->input('role');
 
+        // Get the current page from the query parameters
+        $currentPage = $request->query('page', 1);
+
         $pendingUsersQuery = User::with('role')
             ->where('verified', false);
 
@@ -356,7 +400,7 @@ public function searchArchive(Request $request)
             $pendingUsersQuery->where('role_id', $roleFilter);
         }
 
-        $pendingUsers = $pendingUsersQuery->paginate(10);
+        $pendingUsers = $pendingUsersQuery->paginate(10)->withQueryString();
 
         $existingUsers = User::with('role')
             ->where('verified', true)
@@ -376,12 +420,141 @@ public function searchArchive(Request $request)
         ]);
     }
 
+    public function filterArchiveByRole(Request $request)
+    {
+        $roleFilter = $request->input('role');
+
+        // Get the current page from the query parameters
+        $currentPage = $request->query('page', 1);
+
+        $archiveViewableUsersQuery = ArchiveUser::where('archived', true);
+
+        if ($roleFilter != 'all') {
+            $archiveViewableUsersQuery->where('role_id', $roleFilter);
+        }
+
+        $archiveViewableUsers = $archiveViewableUsersQuery->paginate(10)->withQueryString();
+
+        $pendingUsers = User::with('role')
+            ->where('verified', false)
+            ->paginate(10);
+
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->paginate(10);
+
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+
+        $activeTab = 'archive';
+
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'roles' => $roles,
+            'activeTab' => $activeTab,
+            'archiveViewableUsers' => $archiveViewableUsers,
+        ]);
+    }
+
+    public function sortArchive(Request $request)
+    {
+        $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
+    
+        // Query the archiveViewableUsers based on the selected sorting order
+        $archiveViewableUsers = ArchiveUser::with('role')
+            ->where('archived', true)
+            ->orderBy('lastname', $sortOrder) // Sort by created_at column
+            ->paginate(10)->withQueryString();
+    
+        $pendingUsers = User::with('role')
+            ->where('verified', false)
+            ->paginate(10);
+    
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->paginate(10);
+    
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+    
+        $activeTab = 'archive';
+    
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'roles' => $roles,
+            'activeTab' => $activeTab,
+            'archiveViewableUsers' => $archiveViewableUsers,
+        ]);
+    }
+
+    public function sortExisting(Request $request)
+    {
+        $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
+    
+        // Query the archiveViewableUsers based on the selected sorting order
+        $archiveViewableUsers = ArchiveUser::with('role')
+            ->where('archived', true)
+            ->paginate(10)->withQueryString();
+    
+        $pendingUsers = User::with('role')
+            ->where('verified', false)
+            ->paginate(10);
+    
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->orderBy('lastname', $sortOrder) // Sort by created_at column
+            ->paginate(10);
+    
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+    
+        $activeTab = 'existing';
+    
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'roles' => $roles,
+            'activeTab' => $activeTab,
+            'archiveViewableUsers' => $archiveViewableUsers,
+        ]);
+    }
+
+    public function sortPending(Request $request)
+    {
+        $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
+    
+        // Query the archiveViewableUsers based on the selected sorting order
+        $archiveViewableUsers = ArchiveUser::with('role')
+            ->where('archived', true)
+            ->paginate(10)->withQueryString();
+    
+        $pendingUsers = User::with('role')
+            ->where('verified', false)
+            ->orderBy('lastname', $sortOrder) // Sort by created_at column
+            ->paginate(10);
+    
+        $existingUsers = User::with('role')
+            ->where('verified', true)
+            ->paginate(10);
+    
+        $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
+    
+        $activeTab = 'pending';
+    
+        return view('administrator.usermanage', [
+            'pendingUsers' => $pendingUsers,
+            'existingUsers' => $existingUsers,
+            'roles' => $roles,
+            'activeTab' => $activeTab,
+            'archiveViewableUsers' => $archiveViewableUsers,
+        ]);
+    }
+
     public function archiveViewable()
-{
+    {
     $archiveViewableUsers = ArchiveUser::where('archived', true)->with('role')->paginate(10);
 
     return view('administrator.usermanage', ['archiveViewableUsers' => $archiveViewableUsers]);
-}
+    }
 
 public function archive($id)
 {
@@ -402,7 +575,7 @@ public function archive($id)
     } else {
         $archiveUser->year_level = null; // Make year_level nullable for other roles
     }
-   $archiveUser->role = $user->role->role; // Add role
+    $archiveUser->role_id = $user->role_id; // Add role ID
    $archiveUser->url = $user->url; // Add URL
    $archiveUser->archived_at = now(); // Add the current date and time
    $archiveUser->save();
@@ -445,6 +618,7 @@ public function reactivate($id)
     $user->lastname = $archivedUser->lastname;
     $user->email = $archivedUser->email;
     $user->year_level = $archivedUser->year_level;
+    $user->role_id = $archivedUser->role_id;
     // expiration date after reactivation and based on the yr level
     $user->expiration_date = self::calculateExpiryDate($user->year_level);
     $user->verified = 1; // Assuming users are verified upon reactivation

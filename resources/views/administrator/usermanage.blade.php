@@ -28,14 +28,28 @@
             </div>
         </div>
     </form>
-
-    <!-- Sorting Links -->
-    <div class="ml-auto px-5">
-      <span>Sort By:</span>
-      <a href="{{ route('usermanage', ['sort_order' => 'asc']) }}" class="btn btn-link ">Name A-Z</a> |
-      <a href="{{ route('usermanage', ['sort_order' => 'desc']) }}" class="btn btn-link">Name Z-A</a>
-    </div>
 </div>
+<!-- Sorting -->
+<form class="form-inline" type="GET" action="{{ route('sortPending') }}">
+    <div class="input-group mx-3" style="max-width: 250px;">
+        <select class="form-control rounded-0" name="sort_order">
+            <option value="asc">Name A-Z</option>
+            <option value="desc">Name Z-A</option>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-primary rounded-0" type="submit" id="sort-btn">Sort</button>
+        </div>
+    </div>
+</form>
+  <!-- Search Bar -->
+  <form class="form-inline" type="GET" action="{{ route('searchPending') }}">
+    <div class="input-group" style="max-width: 250px;">
+      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+      <div class="input-group-append">
+        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+      </div>
+    </div>
+  </form>
 </div>
 @if ($pendingUsers->count() > 0)
 
@@ -67,7 +81,13 @@
           @foreach ($pendingUsers as $user)
           @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
             <tr>
-              <td><strong>{{ $user->student_number }}</strong></td>
+              <td><strong>
+                @if ($user->student_number)
+                {{ $user->student_number }}
+                @else
+                Not Applicable
+                @endif
+              </strong></td>
               <td><strong>{{ $user->lastname }}</strong></td>
               <td><strong>{{ $user->firstname }}</strong></td>
               <td>{{ $user->email }}</td>
@@ -152,12 +172,18 @@
 </form>
 </div>
 
-    <!-- Sorting Links -->
-    <div class="ml-auto">
-      <span>Sort By:</span>
-      <a href="{{ route('usermanage', ['sort_order' => 'asc']) }}" class="btn btn-link ">Name A-Z</a> |
-      <a href="{{ route('usermanage', ['sort_order' => 'desc']) }}" class="btn btn-link">Name Z-A</a>
+<!-- Sorting -->
+<form class="form-inline" type="GET" action="{{ route('sortExisting') }}">
+    <div class="input-group mx-3" style="max-width: 250px;">
+        <select class="form-control rounded-0" name="sort_order">
+            <option value="asc">Name A-Z</option>
+            <option value="desc">Name Z-A</option>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-primary rounded-0" type="submit" id="sort-btn">Sort</button>
+        </div>
     </div>
+</form>
 
   <!-- Search Bar -->
   <form class="form-inline" type="GET" action="{{ route('search') }}">
@@ -183,6 +209,7 @@
                     <th>Firstname</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Year Level</th>
                     <th>Expiry Date</th>
                     <th>Uploaded ID</th>
                     <th>Action</th>
@@ -209,7 +236,14 @@
                             @else
                                 Not Applicable
                             @endif
-                    </td>
+                        </td>
+                        <td>
+                          @if ($user->year_level)
+                          {{ $user->year_level }}
+                          @else
+                          Not Applicable
+                          @endif
+                        </td>
                         <td>
                             <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
                                 <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
@@ -260,11 +294,39 @@
 
 <div id="archive" class="tabcontent">
 
-<div class="d-flex justify-content-end align-items-center">
+<div class="d-flex justify-content-between align-items-center">
 <div class="d-flex align-items-center">
+    <!-- Role Filter Dropdown -->
+    <form class="form-inline" type="GET" action="{{ route('filterArchiveByRole') }}">
+        <div class="input-group mx-3" style="max-width: 250px;">
+            <select class="form-control rounded-0" name="role">
+                <option value="all">All Roles</option>
+                @foreach($roles as $role)
+                    <option value="{{ $role->id }}">{{ $role->role }}</option>
+                @endforeach
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-primary rounded-0" type="submit" id="filter-btn">Filter</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Sorting -->
+<form class="form-inline" type="GET" action="{{ route('sortArchive') }}">
+    <div class="input-group mx-3" style="max-width: 250px;">
+        <select class="form-control rounded-0" name="sort_order">
+            <option value="asc">Name A-Z</option>
+            <option value="desc">Name Z-A</option>
+        </select>
+        <div class="input-group-append">
+            <button class="btn btn-primary rounded-0" type="submit" id="sort-btn">Sort</button>
+        </div>
+    </div>
+</form>
 
 <!-- Search Bar for Archive Tab -->
-<form class="form-inline" type="GET" action="{{ route('searchArchive') }}">
+<form class="form-inline justify-content-end" type="GET" action="{{ route('searchArchive') }}">
     <div class="input-group" style="max-width: 250px;">
         <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
         <div class="input-group-append">
@@ -272,8 +334,6 @@
         </div>
     </div>
 </form>
-
-</div>
 </div>
     <!-- Archive Viewable Users Table -->
     @if ($archiveViewableUsers->count() > 0)
@@ -297,18 +357,31 @@
             <tbody>
                 @foreach ($archiveViewableUsers as $user)
                 <tr>
-                    <td><strong>{{ $user->student_number }}</strong></td>
+                    <td><strong>
+                      @if ($user->student_number)
+                      {{ $user->student_number }}
+                      @else
+                      Not Applicable
+                      @endif
+                    </strong></td>
                     <td><strong>{{ $user->lastname }}</strong></td>
                     <td><strong>{{ $user->firstname }}</strong></td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->role }}</td> <!-- Display Role -->
+                    <!-- display role name -->
+                    <td>{{ $user->role->role }}</td>
                     <td>
                         <!-- Display Uploaded ID with a clickable preview -->
                         <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
                             <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
                         </a>
                     </td>
-                    <td>{{ $user->year_level }}</td> <!-- Display Year Level -->
+                    <td>
+                      @if ($user->year_level)
+                      {{ $user->year_level }}
+                      @else
+                      Not Applicable
+                      @endif
+                    </td>
                     <td>{{ $user->archived_at }}</td>
                     <td>
                         <!-- Add Reactivate and Delete buttons -->
@@ -321,7 +394,7 @@
         </table>
         <!-- Pagination links for Archived Viewable Users -->
         <div class="d-flex justify-content-center">
-            {{ $archiveViewableUsers->links('pagination::bootstrap-4') }}
+            {{ $archiveViewableUsers->appends(['activeTab' => 'archive'])->links('pagination::bootstrap-4') }}
         </div>
       </div>
     </div>

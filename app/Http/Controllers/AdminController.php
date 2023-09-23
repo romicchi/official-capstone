@@ -47,16 +47,16 @@ class AdminController extends Controller
     
         // Corrected method: use sub instead of subInterval
         if ($interval === 'day') {
-            $startDate->subDay();
+            $startDate->subDay(7);
             $labels = $this->generateLabelsForInterval('day', 7); // Generate labels for days
         } elseif ($interval === 'week') {
-            $startDate->startOfWeek()->subWeek();
+            $startDate->startOfWeek()->subWeek(7);
             $labels = $this->generateLabelsForInterval('week', 7); // Generate labels for weeks
         } elseif ($interval === 'month') {
-            $startDate->subMonth();
+            $startDate->subMonth(12);
             $labels = $this->generateLabelsForInterval('month', 12); // Generate labels for months
         } elseif ($interval === 'year') {
-            $startDate->subYear();
+            $startDate->subYear(12);
             $labels = $this->generateLabelsForInterval('year', 12); // Generate labels for years
         }
     
@@ -66,7 +66,7 @@ class AdminController extends Controller
             ->get()
             ->groupBy(function ($resource) use ($interval) {
                 if ($interval === 'day') {
-                    return $resource->created_at->format('M d');
+                    return $resource->created_at->startOfDay()->format('M d');
                 } elseif ($interval === 'week') {
                     return $resource->created_at->startOfWeek()->format('M d') . ' - ' . $resource->created_at->endOfWeek()->format('M d');
                 } elseif ($interval === 'month') {

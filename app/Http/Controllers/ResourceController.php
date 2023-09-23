@@ -224,11 +224,8 @@ class ResourceController extends Controller
     public function showAdminResourceManage()
     {
         $resources = Resource::paginate(10);
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
     
-        return view('administrator.adminresourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
+        return view('administrator.adminresourcemanage', compact('resources'));
     }
     public function adminapprove(Resource $resource)
     {

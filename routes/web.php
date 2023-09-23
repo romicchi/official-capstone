@@ -75,6 +75,10 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::post('usermanage/verify-users',[UsermanageController::class, 'postVerifyUsers'])->name('verify-users.post');
     Route::get('/usermanage/filterByRole',[UsermanageController::class, 'filterByRole'])->name('filterByRole');
     Route::get('/usermanage/filterPendingByRole', [UsermanageController::class, 'filterPendingByRole'])->name('filterPendingByRole');
+    Route::get('/usermanage/filterArchiveByRole', [UsermanageController::class, 'filterArchiveByRole'])->name('filterArchiveByRole');
+    Route::get('/usermanage/sortarchive', [UsermanageController::class, 'sortArchive'])->name('sortArchive');
+    Route::get('/usermanage/sortexisting', [UsermanageController::class, 'sortExisting'])->name('sortExisting');
+    Route::get('/usermanage/sortpending', [UsermanageController::class, 'sortPending'])->name('sortPending');
 
 
     // -------------------------- USER: ADD-UPDATE-DELETE-SEARCH-ARCHIVE --------------------------------//
@@ -83,6 +87,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::post('adminedit',[UsermanageController::class, 'update'])->name('update');
     Route::get('search',[UsermanageController::class, 'search'])->name('search');
     Route::get('/search-archive',[UsermanageController::class, 'searchArchive'])->name('searchArchive');
+    Route::get('/search-pending',[UsermanageController::class, 'searchPending'])->name('searchPending');
     Route::get('adminadd',[UsermanageController::class, 'showadminadd'])->name('adminadd');
     Route::post('/add.user', [UsermanageController::class, 'addUser'])->name('add.user');
     Route::get('/usermanage/archiveviewable', [UsermanageController::class, 'archiveViewable'])->name('archiveViewable');

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class College extends Model
 {
     protected $table = 'college'; // Name of the colleges table in the database
+    protected $with = ['college'];
+
 
     // Relationship with courses
     public function courses()

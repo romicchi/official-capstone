@@ -33,7 +33,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            // Add foreign key constraint for the role_id column
+            // Foreign key constraint for the role_id column
             $table->foreign('role_id')->references('id')->on('roles');
         });
 

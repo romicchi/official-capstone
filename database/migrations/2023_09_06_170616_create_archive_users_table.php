@@ -18,12 +18,15 @@ return new class extends Migration
         $table->string('lastname');
         $table->string('email')->unique;
         $table->unsignedBigInteger('user_id');
-        $table->string('role');
+        $table->unsignedBigInteger('role_id')->default(1);
         $table->string('url');
         $table->integer('year_level')->nullable();
         $table->timestamp('archived_at');
         $table->boolean('archived')->default(1);
         $table->timestamps();
+
+        // Foreign key constraint for the role_id column
+        $table->foreign('role_id')->references('id')->on('roles');
     });
     }
 
