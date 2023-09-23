@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\College;
 use App\Models\Course;
 use App\Models\Subject;
+use App\Models\Discipline;
 use App\Models\User;
 use App\Models\Resource;
 use Illuminate\Pagination\Paginator;
@@ -187,38 +188,19 @@ class ResourceController extends Controller
     public function searchResources(Request $request)
     {
         $query = $request->input('query');
-        $resources = Resource::where('resourceStatus', 0)
-            ->orWhere('resourceStatus', 1)
-            ->where(function ($queryBuilder) use ($query) {
-                $queryBuilder->where(function ($queryBuilder) use ($query) {
-                    $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
-                        ->orWhere('author', 'LIKE', '%' . $query . '%')
-                        ->orWhere('created_at', 'LIKE', '%' . $query . '%');
-                })
-                ->orWhereHas('subject', function ($queryBuilder) use ($query) {
-                    $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
-                });
-            })
-            ->paginate(10);
+
+        $resources = Resource::where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
+                ->orWhere('author', 'LIKE', '%' . $query . '%')
+                ->orWhere('created_at', 'LIKE', '%' . $query . '%');
+        })
+        ->orWhereHas('subject', function ($queryBuilder) use ($query) {
+            $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
+        })
+        ->paginate(10);
 
         return view('resourcemanage', compact('resources'));
     }
-
-    public function approve(Resource $resource)
-    {
-        $resource->resourceStatus = 1;
-        $resource->save();
-    
-        return redirect()->route('resourcemanage')->with('success', 'Resource has been approved.');
-    }
-
-    public function disapprove(Resource $resource)
-     {
-         $resource->resourceStatus = 0;
-         $resource->save();
-
-         return redirect()->route('resourcemanage')->with('success', 'Resource has been disapproved.');
-     }
 
      //--------------ADMIN-----------------//
     public function showAdminResourceManage()
@@ -230,43 +212,23 @@ class ResourceController extends Controller
     
         return view('administrator.adminresourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
     }
-    public function adminapprove(Resource $resource)
+
+    public function adminsearchResources(Request $request)
     {
-        $resource->resourceStatus = 1;
-        $resource->save();
-    
-        return redirect()->route('adminresourcemanage')->with('success', 'Resource has been approved.');
+        $query = $request->input('query');
+
+        $resources = Resource::where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
+                ->orWhere('author', 'LIKE', '%' . $query . '%')
+                ->orWhere('created_at', 'LIKE', '%' . $query . '%');
+        })
+        ->orWhereHas('subject', function ($queryBuilder) use ($query) {
+            $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
+        })
+        ->paginate(10);
+
+        return view('administrator.adminresourcemanage', compact('resources'));
     }
-
-    public function admindisapprove(Resource $resource)
-     {
-         $resource->resourceStatus = 0;
-         $resource->save();
-
-         return redirect()->route('adminresourcemanage')->with('success', 'Resource has been disapproved.');
-     }
-     public function adminsearchResources(Request $request)
-     {
-         $query = $request->input('query');
-         $resources = Resource::where('resourceStatus', 0)
-             ->orWhere('resourceStatus', 1)
-             ->where(function ($queryBuilder) use ($query) {
-                 $queryBuilder->where(function ($queryBuilder) use ($query) {
-                     $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
-                         ->orWhere('author', 'LIKE', '%' . $query . '%')
-                         ->orWhere('created_at', 'LIKE', '%' . $query . '%');
-                 })
-                 ->orWhereHas('subject', function ($queryBuilder) use ($query) {
-                     $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
-                 });
-             })
-             ->paginate(10);
-     
-         return view('administrator.adminresourcemanage', compact('resources'));
-     }
-    
-     
-
 
     //---------Subject Resources----------//
     public function showEmbed(Request $request, $id)
@@ -332,7 +294,13 @@ class ResourceController extends Controller
         return view('subjects.show', compact('resource'));
     }
 
+    public function disciplines(Request $request, $college_id, $discipline_id)
+    {
+        $college = College::findOrFail($college_id);
+        $discipline = Discipline::findOrFail($discipline_id);
+        $resources = $discipline->resources;
+
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
+    }
+
 }
-
-
-
