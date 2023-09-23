@@ -61,7 +61,7 @@
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="dropdown{{ $college->id }}">
                     @foreach ($college->disciplines as $discipline)
-                      <li><a class="dropdown-item" href="{{ route('show.disciplines', ['id' => $discipline->id]) }}">{{ $discipline->disciplineName }}</a></li>
+                      <li><a class="dropdown-item" href="{{ route('show.disciplines', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}">{{ $discipline->disciplineName }}</a></li>
                     @endforeach
                 </ul>
               </li>
