@@ -179,7 +179,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/resources', [ResourceController::class, 'resources'])->name('show.resources');
 
     Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
-    Route::get('/disciplines{id}', [ResourceController::class, 'disciplines'])->name('disciplines.show');
+    Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
     
     Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
     Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');

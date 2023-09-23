@@ -7,29 +7,27 @@
 
 @section('content')
     <div class="container my-5">
-    <h2 class="text-center"><strong>{{ $course->courseName }}</strong></h2>
-        <h2>Subjects</h2>
+        <h2 class="text-center"><strong>{{ $discipline->disciplineName }}</strong></h2>
+        <h2>Resources</h2>
         <div class="mb-3">
         </div>
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>Subject Name</th>
+                    <th>Resource Name</th>
                     <!-- Add more table headers if needed -->
                 </tr>
             </thead>
             <tbody>
-                @foreach ($subjects as $subject)
+                @foreach ($discipline->resources as $resource)
                     <tr>
-                    <!-- <td><a href="{{ route('show.resources', ['subject_id' => $subject->id]) }}">{{ $subject->subjectName }}</a></td> -->
-                        <!-- Add more table cells for additional subject properties -->
+                        <td>{{ $resource->resourceName }}</td>
+                        <!-- Add more table cells for additional resource properties -->
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-
-    <script src="{{ asset('js/subjectlivesearch.js') }}"></script>
-
 @show
+

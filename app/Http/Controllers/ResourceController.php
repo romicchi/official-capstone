@@ -268,10 +268,13 @@ class ResourceController extends Controller
         return view('subjects.show', compact('resource'));
     }
 
-    public function disciplines($id)
+    public function disciplines(Request $request, $college_id, $discipline_id)
     {
-        $disciplines = Discipline::where('college_id', $id)->get();
-        return view('disciplines.show', compact('disciplines'));
+        $college = College::findOrFail($college_id);
+        $discipline = Discipline::findOrFail($discipline_id);
+        $resources = $discipline->resources;
+
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
 
 }

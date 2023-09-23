@@ -15,4 +15,9 @@ class Discipline extends Model
     {
         return $this->belongsTo(College::class, 'college_id');
     }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class, 'discipline_id');
+    }
 }

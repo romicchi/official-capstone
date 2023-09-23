@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('college_id'); // Foreign key for college table
             $table->unsignedBigInteger('subject_id'); // Foreign key for subjects table
             $table->unsignedBigInteger('course_id'); // Foreign key for courses table
+            $table->unsignedBigInteger('discipline_id'); // Foreign key for courses table
             $table->timestamps();
 
             $table->foreign('college_id')->references('id')->on('college')->onDelete('cascade');

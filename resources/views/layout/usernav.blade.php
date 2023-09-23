@@ -48,7 +48,7 @@
                 <hr class="sidebar-divider my-0">
 
                 <li class="nav-item dropend">
-                  <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.subjects' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
+                  <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.disciplines' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
                   <img class="images">Resources
                 </a>
@@ -60,11 +60,9 @@
                     {{ $college->collegeName }}
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="dropdown{{ $college->id }}">
-                    @foreach ($college->courses as $course)
-                    <li><a class="dropdown-item"
-                    href="{{ route('show.subjects', ['course_id' => $course->id]) }}">{{ $course->courseName }}</a>
-                  </li>
-                  @endforeach
+                    @foreach ($college->disciplines as $discipline)
+                      <li><a class="dropdown-item" href="{{ route('show.disciplines', ['id' => $discipline->id]) }}">{{ $discipline->disciplineName }}</a></li>
+                    @endforeach
                 </ul>
               </li>
               @endforeach
@@ -90,7 +88,7 @@
                 <!-- Button available for the teacher role only -->
                 @if (auth()->user()->role_id === 2)
                 <li class="nav-item">
-                  <a class="nav-link {{ $currentRoute === 'teacher.manage' ? 'active' : 'inactive' }}" href="{{ route('teacher.manage') }}"><img class="images1">Resources</a>
+                  <a class="nav-link {{ $currentRoute === 'teacher.manage' ? 'active' : 'inactive' }}" href="{{ route('teacher.manage') }}"><img class="images1">Uploads</a>
                 </li>
                 @endif
 

@@ -4,8 +4,8 @@
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
 
     <!-- Teacher Resource Table -->
-<section class="resource-management">
-  <h2>Management Resources</h2>
+    <section class="resource-management">
+  <h2>Resource Management</h2>
   <div class="row">
     <div class="col-md-4">
       <div class="card">
@@ -13,6 +13,19 @@
           <h4 class="card-title">Add Resource</h4>
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
+
+          <div class="form-group row my-3">
+                <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
+                <div class="col-md-9">
+                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
+                    @error('file')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            
             <div class="form-group">
               <label for="title">Title</label>
               <input type="text" class="form-control" id="title" name="title" required>
@@ -43,39 +56,23 @@
               </select>
             </div>
             
-            <div class="form-group" id="courseContainer" style="display: none;">
-              <label for="course">Course</label>
-              <select class="form-control" id="courseSelect" name="course" required>
-                <option value="">Select Course</option>
-              </select>
-            </div>
-            
-            <div class="form-group" id="subjectContainer" style="display: none;">
-              <label for="subject">Subject</label>
-              <select class="form-control" id="subjectSelect" name="subject" required>
-                <option value="">Select Subject</option>
+            <div class="form-group" id="disciplineContainer">
+              <label for="discipline">Discipline</label>
+              <select class="form-control" id="disciplineSelect" name="discipline" required>
+                <option value="">Select Discipline</option>
+                @foreach ($college->disciplines as $discipline)
+                <option value="{{ $discipline->id }}">{{ $discipline->disciplineName }}</option>
+                @endforeach
               </select>
             </div>
 
-            <div class="form-group row my-3">
-                            <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
-                            <div class="col-md-9">
-                                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
-                                @error('file')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-           
-                        <div class="form-group row">
-                            <div class="col-md-9 offset-md-3">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Upload') }}
-                                </button>
-                            </div>
-                        </div>
+            <div class="form-group row">
+                <div class="col-md-9 offset-md-3">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Upload') }}
+                    </button>
+                </div>
+            </div>
           </form>
         </div>
       </div>
@@ -93,8 +90,7 @@
                       <th>Title</th>
                       <th>Author</th>
                       <th>College</th>
-                      <th>Course</th>
-                      <th>Subject</th>
+                      <th>Discipline</th>
                       <th>Description</th>
                       <th>URL</th>
                       <th>Action</th>

@@ -172,7 +172,7 @@
             <tbody>
                 @foreach($disciplines as $discipline)
                 <tr>
-                    <td>{{ $discipline->discipline_Name }}</td>
+                    <td>{{ $discipline->disciplineName }}</td>
                     <!-- Add more columns if needed -->
                     <td>
                         <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">Edit</a>
