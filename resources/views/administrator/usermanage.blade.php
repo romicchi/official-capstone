@@ -6,7 +6,7 @@
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'existing')">Existing Users</button>
   <button class="tablinks" onclick="openTab(event, 'pending')">Pending Users</button>
-  <button class="tablinks" onclick="openTab(event, 'archive')">Archive Viewable</button>
+  <button class="tablinks" onclick="openTab(event, 'archive')">Archived Users</button>
 </div>
 
 <!-- Pending Users Tab -->

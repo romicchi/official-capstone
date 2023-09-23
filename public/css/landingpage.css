@@ -354,7 +354,8 @@ footer a {
 
 @media screen and (max-width: 576px) {
   .jumbotron {
-      height: 200px;
+      height: 300px;
+      width: 100%;
   }
 
   .jumbotron h1 {
@@ -399,5 +400,6 @@ footer a {
 
   footer {
       font-size: 0.8rem;
+      text-align: center;
   }
 }

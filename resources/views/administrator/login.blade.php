@@ -74,10 +74,17 @@
                         <label for="password">Password</label>
                         <input type="password" name="password" class="form-control" required>
                     </div>
-                    <button type="submit" class="btn btn-primary my-3">Login</button>
+                    <button type="submit" id="login-button" class="btn btn-primary my-3">Login</button>
                 </form>
             </div>
         </div>
     </div>
 </body>
 </html>
+
+@include('loader')
+<script src="{{ asset('js/loader.js') }}"></script>
+
+<script>
+
+</script>

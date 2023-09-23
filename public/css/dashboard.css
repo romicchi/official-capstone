@@ -4,11 +4,6 @@ body {
     font-family: 'Gilroy-Bold', sans-serif;
     font-size: 16px;
   }
-
-  /* icon color of fas */
-  .fas {
-    color: #f6b024;
-  }
   
   header {
     background-color: rgba(7, 3, 114, 0.9) !important;
@@ -127,6 +122,21 @@ body {
     background-color: #2B3A4D;
   }
 
+  .dropdown.no-arrow .dropdown-toggle::after {
+    display: none;
+  }
+
+  .card-header {
+    background-color: rgba(7, 3, 114, 0.9) !important;
+  }
+
+  h6 {
+    color: #fff !important;
+  }
+
+  .fas.fa-ellipsis-v.fa-sm.fa-fw.text-gray-400 {
+    color: #fff !important;
+  }
 
   footer {
     color: #000000; /* set text color */

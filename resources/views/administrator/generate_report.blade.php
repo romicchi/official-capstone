@@ -31,8 +31,8 @@
         </form>
         
         <div class="card">
+        <div class="card-header">Report Results</div>
             <div class="card-body">
-        <h2>Report Results</h2>
         <table class="table">
             <thead>
                 <tr>

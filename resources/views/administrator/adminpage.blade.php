@@ -30,8 +30,8 @@
 	<main>
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-end mb-4">
-            <a href="{{ route('generate.report') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <a href="{{ route('generate.report') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
         </div>
         <div class="card p-4">
             <p class="h4 mb-0 text-gray-800">Today's Data</p>
@@ -79,7 +79,7 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Active Users</div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
@@ -130,20 +130,20 @@
                 <!-- Card Header - Dropdown -->
                 <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Resources Uploaded</h6>
+                <h6 class="m-0 font-weight-bold">Resources Uploaded</h6>
                 <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                    <a class="dropdown-toggle" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                 aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+                   <div class="dropdown-header">Select Time Interval:</div>
+                   <a class="dropdown-item" data-interval="day">Day</a>
+                   <a class="dropdown-item" data-interval="week">Week</a>
+                   <a class="dropdown-item" data-interval="month">Month</a>
+                   <a class="dropdown-item" data-interval="year">Year</a>
+                </div>
             </div>
         </div>
         <!-- Card Body -->
@@ -161,7 +161,7 @@
             <!-- Card Header -->
             <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Users</h6>
+            <h6 class="m-0 font-weight-bold">Users</h6>
 
 </div>
 <!-- Card Body -->
@@ -198,6 +198,7 @@
     </body>
 </html>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
@@ -270,92 +271,140 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
-var myLineChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-            label: "Resources Uploaded",
-            lineTension: 0.3,
-            backgroundColor: "rgba(78, 115, 223, 0.05)",
-            borderColor: "rgba(78, 115, 223, 1)",
-            pointRadius: 3,
-            pointBackgroundColor: "rgba(78, 115, 223, 1)",
-            pointBorderColor: "rgba(78, 115, 223, 1)",
-            pointHoverRadius: 3,
-            pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-            pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-            pointHitRadius: 10,
-            pointBorderWidth: 2,
-            data: {!! json_encode($resourceData) !!}, // Use the resourceData variable here
-        }],
-    },
-    options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return '' + number_format(value);
-          }
-        },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
-      callbacks: {
+var myLineChart;
+
+function updateAreaChart(interval) {
+    if (myLineChart) {
+        myLineChart.destroy(); // Destroy the previous chart instance if it exists
+    }
+
+    $.ajax({
+        url: "{{ route('get.chart.data') }}", // Use the named route
+        type: 'GET',
+        data: { interval: interval },
+        success: function (data) {
+            const labels = data.labels;
+            const chartData = data.data;
+
+            if (labels.length === 0 || chartData.length === 0) {
+                // Handle empty data or labels, e.g., display a message
+                console.error('No data received.');
+                return;
+            }
+
+            // Create a new chart with the updated data and labels
+            var ctx = document.getElementById("myAreaChart");
+            myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Resources Uploaded",
+                        lineTension: 0.3,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 3,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 3,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: chartData,
+                    }],
+                },
+                options: {
+                maintainAspectRatio: false,
+                layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                }
+                },
+                scales: {
+                xAxes: [{
+                    time: {
+                    unit: 'date'
+                    },
+                    gridLines: {
+                    display: false,
+                    drawBorder: false
+                    },
+                    ticks: {
+                    maxTicksLimit: 7
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    stepSize: 1, //Preferred step size
+                    // Include any sign in the ticks
+                    callback: function(value, index, values) {
+                        return '' + number_format(value);
+                    }
+                    },
+                    gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                    }
+                }],
+                },
+                legend: {
+                display: false
+                },
+                tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                intersect: false,
+                mode: 'index',
+                caretPadding: 10,
+                callbacks: {
         label: function(tooltipItem, chart) {
           var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
           return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
         }
       }
     }
-  }
+  },
+            });
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+// Wait for the document to be ready
+$(document).ready(function () {
+    // Set "day" as the default interval
+    const defaultInterval = "day";
+    updateAreaChart(defaultInterval);
+
+    // Target the dropdown element by its ID
+    $('#dropdownMenuLink').click(function () {
+        // Toggle the dropdown menu
+        $('.dropdown-menu-right').toggle();
+    });
 });
 
+// Update the chart when a dropdown item is clicked
+$('.dropdown-item').on('click', function () {
+    const interval = $(this).data('interval');
+    updateAreaChart(interval); // Update the chart with the selected interval
+});
 </script>

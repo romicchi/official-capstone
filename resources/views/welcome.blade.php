@@ -32,9 +32,9 @@
                 <!-- Text Block -->
                 <div class="col-md-6 shadow bg-edit bg-blue text-white spotlight-text center-md">
                     <div class="vertical-center-rel">
-                        <h6 class="text-uppercase f-w-900" style="visibility: visible;" data-aos="fade-left">Why Use GENER?</h6>
-                        <h3 class="f-w-900 m-b-md" style="visibility: visible;" data-aos="fade-left">We're transforming the way people learn.</h3>
-                        <p class="m-b-md" data-aos="fade-left">By promoting collaboration, tailoring learning materials, ensuring accessibility, and enabling scalability, GENER empowers educators to curate high-quality resources and provides learners with a flexible, diverse, and ever-expanding repository of knowledge, truly reshaping the landscape of modern education.</p>
+                        <h6 class="text-uppercase f-w-900" style="visibility: visible;" data-aos="fade-up">Why Use GENER?</h6>
+                        <h3 class="f-w-900 m-b-md" style="visibility: visible;" data-aos="fade-up">We're transforming the way people learn.</h3>
+                        <p class="m-b-md" data-aos="fade-up">By promoting collaboration, tailoring learning materials, ensuring accessibility, and enabling scalability, GENER empowers educators to curate high-quality resources and provides learners with a flexible, diverse, and ever-expanding repository of knowledge, truly reshaping the landscape of modern education.</p>
                         <a href="{{ route('register') }}" class="btn btn-ghost smooth-scroll text-uppercase" data-aos="zoom-in">Register Now!</a>
                     </div>
                 </div>

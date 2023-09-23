@@ -18,7 +18,7 @@
             <div class="card-body">
                 <form action="{{ route('administrator.backup') }}" method="post">
                     @csrf
-                    <button type="submit" class="btn btn-primary">Backup</button>
+                    <button type="submit" id="backup-button" class="btn btn-primary">Backup</button>
                 </form>
             </div>
         </div>
@@ -31,13 +31,30 @@
                 <form action="{{ route('administrator.restore') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="backup_file">Select Backup ZIP File:</label>
+                        <label for="backup_file">Select Backup ZIP/Sql File:</label>
                         <input type="file" class="form-control" id="backup_file" name="backup_file">
                     </div>
-                    <button type="submit" class="btn btn-primary my-3">Restore</button>
+                    <button type="submit" id="restore-button" class="btn btn-primary my-3">Restore</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 @show
+
+@include('loader')
+<script src="{{ asset('js/loader.js') }}"></script>
+
+<script>
+// JavaScript to Show Loader When Login Button is Clicked
+document.getElementById('backup-button').addEventListener('click', function () {
+    // Show the loader
+    document.querySelector('.loader-container').style.display = 'block';
+});
+
+// JavaScript to Show Loader When Login Button is Clicked
+document.getElementById('restore-button').addEventListener('click', function () {
+    // Show the loader
+    document.querySelector('.loader-container').style.display = 'block';
+});
+</script>

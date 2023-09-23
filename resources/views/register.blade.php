@@ -37,11 +37,11 @@
                 <h1>Register</h1>
                 <div class="form-group">
                     <label for="firstname">Firstname:</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" required>
+                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="lastname">Lastname:</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" required>
+                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
@@ -91,32 +91,33 @@
                         @enderror
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary my-2">Sign Up</button>
+                <button type="submit" id="signup-button" class="btn btn-primary my-2">Sign Up</button>
                 <p><a href="/login">Already have an account?</a></p>
             </form>
         </div>
     </div>
 </div>
 
+@include('loader')
+<script src="{{ asset('js/loader.js') }}"></script>
 <script>
-        // JavaScript to Show Year Level Dropdown
+    // JavaScript to Show Year Level Dropdown and Student Number Field
     document.getElementById('role').addEventListener('change', function () {
         const yearLevelGroup = document.getElementById('yearLevelGroup');
+        const studentNumberGroup = document.getElementById('studentNumberGroup');
         if (this.value === '1') {
             yearLevelGroup.style.display = 'block';
+            studentNumberGroup.style.display = 'block';
         } else {
             yearLevelGroup.style.display = 'none';
+            studentNumberGroup.style.display = 'none';
         }
     });
 
-        // JavaScript to Show/Hide Student Number Field
-        document.getElementById('role').addEventListener('change', function () {
-        const studentNumberGroup = document.getElementById('studentNumberGroup');
-        if (this.value === '1') {
-            studentNumberGroup.style.display = 'block';
-        } else {
-            studentNumberGroup.style.display = 'none';
-        }
+    // JavaScript to Show Loader When Sign Up Button is Clicked
+    document.getElementById('signup-button').addEventListener('click', function () {
+        // Show the loader
+        document.querySelector('.loader-container').style.display = 'block';
     });
 </script>
 

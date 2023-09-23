@@ -60,6 +60,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     // -------------------------- ADMIN PAGES --------------------------------//
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminpage');
+    Route::get('/get-chart-data', [AdminController::class, 'getChartData'])->name('get.chart.data');
     Route::get('/adminnavlayout', [AdminController::class, 'adminnav'])->name('adminnavlayout');
     Route::get('/generate-report', [AdminController::class, 'generateReport'])->name('generate.report');
     Route::post('/generate-pdf-report', [AdminController::class, 'generatePDFReport'])->name('generate.pdf.report');
