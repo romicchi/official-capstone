@@ -1,0 +1,12 @@
+html {
+    margin-bottom: 4rem;
+}
+
+.card.shadow.mb-5 {
+    height: 48rem;
+    padding: 20px;
+}
+
+.card-body {
+    height: 55rem;
+}

@@ -14,12 +14,13 @@
                 <div class="dot"></div>
                 <div class="dropdown-menu" id="dropdownMenu">
                     <a class="dropdown-item" href="{{ route('journals.edit', $journal) }}">Edit</a>
+                    <a class="dropdown-item" href="{{ route('journals.download-pdf', $journal) }}" class="btn btn-primary">Download</a>
                     <button type="button" class="dropdown-item delete-journal">Delete</button>
                 </div>
             </div>
         </div>
         <div class="card-body shadow">
-            <p class="card-text">{!! $journal->content !!}</p>
+            <p>{!! $journal->content !!}</p>
             <p class="card-text"><small class="text-muted">Created at: {{ $journal->created_at->format('F d, Y') }}</small></p>
         </div>
     </div>

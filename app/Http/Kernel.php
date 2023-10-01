@@ -26,6 +26,7 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'profanity' => \App\Http\Middleware\ProfanityFilterMiddleware::class,
+        'activitylog' => \App\Http\Middleware\ActivityLogMiddleware::class,
     ];
 
     /**

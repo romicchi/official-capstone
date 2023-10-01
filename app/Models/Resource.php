@@ -35,6 +35,11 @@ class Resource extends Model
         return $this->belongsTo(Subject::class, 'subject_id');
     }
 
+    public function discipline()
+    {
+        return $this->belongsTo(Discipline::class, 'discipline_id');
+    }
+
     public function favoritedBy()
     {
         return $this->belongsToMany(User::class, 'favorites', 'resource_id', 'user_id');

@@ -11,14 +11,20 @@
                 @csrf
                 <div class="form-group">
                     <label for="discipline_Name">Discipline Name</label>
-                    <input type="text" class="form-control" id="discipline_Name" name="name" autocomplete="off" required>
+                    <input type="text" class="form-control" id="discipline_Name" name="discipline_Name" autocomplete="off" required>
                 </div>
-                <!-- You can add other fields for discipline information if needed -->
-
+                <div class="form-group">
+                    <label for="college_id">College</label>
+                    <select class="form-control" id="college_id" name="college_id" required>
+                        @foreach($colleges as $college)
+                            <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary my-3">Create Discipline</button>
                 <a href="{{ route('academics.index') }}?activeTab=disciplines" class="btn btn-secondary m-1">Cancel</a>
             </form>
         </div>
     </div>
 </div>
-@endsection
+@show

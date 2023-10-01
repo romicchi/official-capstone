@@ -2,6 +2,7 @@
 
 
 <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset ('css/teachermanage.css')}}">
 
     <!-- Teacher Resource Table -->
     <section class="resource-management">
@@ -17,7 +18,7 @@
           <div class="form-group row my-3">
                 <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
                 <div class="col-md-9">
-                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required autofocus>
+                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required>
                     @error('file')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -68,7 +69,7 @@
 
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary m-4">
                         {{ __('Upload') }}
                     </button>
                 </div>
@@ -77,13 +78,12 @@
         </div>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8 my-1">
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Your File Uploads</h4>
-              <div class="table-responsive">
                 <table class="table">
                   <thead>
                     <tr>
@@ -97,6 +97,11 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @if(count($resources) === 0)
+                    <tr>
+                      <td colspan="7">No uploaded material/resource.</td>
+                    </tr>
+                    @else
                     @foreach($resources as $resource)
                     <tr>
                       <td><strong>{{ $resource->title }}<strong></td>
@@ -116,9 +121,9 @@
                       </td>
                     </tr>
                     @endforeach
+                    @endif
                   </tbody>
                 </table>
-              </div>
             </div>
           </div>
         </div>

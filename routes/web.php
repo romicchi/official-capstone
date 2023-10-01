@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AcademicsController;
 use App\Http\Controllers\UsermanageController;
 use App\Http\Controllers\ImageController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BackupRestoreController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\UsernavController;
 
 
 /*
@@ -43,6 +45,7 @@ Route::get('/homenav', function () {
 });
 
 // -------------------------- LOGIN --------------------------------//
+Route::middleware(['activitylog'])->group(function () {
 Route::get('/login', [AuthController::class, 'login'])->name('login'); //second 'login' -> function
 Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.post');
 
@@ -65,6 +68,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::get('/adminnavlayout', [AdminController::class, 'adminnav'])->name('adminnavlayout');
     Route::get('/generate-report', [AdminController::class, 'generateReport'])->name('generate.report');
     Route::post('/generate-pdf-report', [AdminController::class, 'generatePDFReport'])->name('generate.pdf.report');
+    Route::post('/update-report-table', [AdminController::class, 'updateReportTable'])->name('update.report.table');
 
     Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
     Route::put('/resources/{resource}/approve', [ResourceController::class, 'adminapprove'])->name('adminresources.approve');
@@ -111,13 +115,6 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::put('/academics/update/course/{id}', [AcademicsController::class, 'updateCourse'])->name('academics.updateCourse');
     Route::delete('/academics/delete/course/{id}', [AcademicsController::class, 'destroyCourse'])->name('academics.destroyCourse');
     
-    Route::get('/academics/create/subject', [AcademicsController::class, 'createSubject'])->name('academics.createSubject');
-    Route::post('/academics/store/subject', [AcademicsController::class, 'storeSubject'])->name('academics.storeSubject');
-    Route::get('/academics/edit/subject/{id}', [AcademicsController::class, 'editSubject'])->name('academics.editSubject');
-    Route::put('/academics/update/subject/{id}', [AcademicsController::class, 'updateSubject'])->name('academics.updateSubject');
-    Route::delete('/academics/delete/subject/{id}', [AcademicsController::class, 'destroySubject'])->name('academics.destroySubject');
-    
-    Route::get('/academics/index/disciplines', [AcademicsController::class, 'indexDisciplines'])->name('academics.indexDisciplines');
     Route::get('/academics/create/discipline', [AcademicsController::class, 'createDiscipline'])->name('academics.createDiscipline');
     Route::post('/academics/store/discipline', [AcademicsController::class, 'storeDiscipline'])->name('academics.storeDiscipline');
     Route::get('/academics/edit/discipline/{id}', [AcademicsController::class, 'editDiscipline'])->name('academics.editDiscipline');
@@ -125,11 +122,12 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::delete('/academics/delete/discipline/{id}', [AcademicsController::class, 'destroyDiscipline'])->name('academics.destroyDiscipline');
 
     Route::get('/academics/search/course', [AcademicsController::class, 'searchCourse'])->name('academics.searchCourse');
-    Route::get('/academics/search/subject', [AcademicsController::class, 'searchSubject'])->name('academics.searchSubject');
+    Route::get('/academics/search/discipline', [AcademicsController::class, 'searchDiscipline'])->name('academics.searchDiscipline');
 
     Route::get('academics/filter-courses', [AcademicsController::class, 'filterCourses'])->name('academics.filterCourses');
-    Route::get('academics/filter-subjects', [AcademicsController::class, 'filterSubjects'])->name('academics.filterSubjects');
+    Route::get('academics/filter-disciplines', [AcademicsController::class, 'filterDisciplines'])->name('academics.filterDisciplines');
 
+    // -------------------------- BACKUP AND RESTORE --------------------------------//
     Route::get('/backup-restore/login', [BackupRestoreController::class, 'showLoginForm'])->name('administrator.login');
     Route::post('/backup-restore/login', [BackupRestoreController::class, 'login'])->name('administrator.login.submit');
     Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
@@ -141,14 +139,20 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
         Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
     });
 
+    // -------------------------- ACTIVITY LOGS --------------------------------//
+    Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity-log');
+    Route::get('/activity-log/search', [ActivityLogController::class, 'search'])->name('activity-log.search');
+    Route::get('/activity-log/filter', [ActivityLogController::class, 'filter'])->name('activity-log.filter');
+
 });
 
 // -------------------------- STUDENT-TEACHER-ADMIN --------------------------------//
 Route::middleware(['profanity'])->group(function () {
 Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the user is login only he/she can see this 
 
-    Route::get('/usernav', [AdminController::class, 'usernav'])->name('usernav');
-    
+    Route::get('/usernav', [UsernavController::class, 'usernav'])->name('usernav');
+    Route::post('/update-seen-guide', [UsernavController::class, 'updateSeenGuide'])->name('updateSeenGuide');
+
     //FORUM/DISCUSSION
     Route::get('/create', function () {
         return view('discussions.create');
@@ -175,7 +179,9 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/journals/{journal}', [JournalController::class, 'show'])->name('journals.show');
     Route::get('/journals/{journal}/edit', [JournalController::class, 'edit'])->name('journals.edit');
     Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
+    Route::get('/journals/{journal}/download-pdf', [JournalController::class, 'downloadPdf'])->name('journals.download-pdf');
     Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
+    Route::post('/ckeditor/upload', [JournalController::class, 'upload'])->name('ckeditor.upload');
 
     // FAVORITES
     Route::get('/favorites',[FavoriteController::class, 'showFavorites'])->name('favorites');
@@ -232,6 +238,7 @@ Route::get('/embed/{resource}', [ResourceController::class, 'showEmbed'])->name(
 
 });
 
+});
 
 
 

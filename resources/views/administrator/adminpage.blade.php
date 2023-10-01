@@ -184,7 +184,60 @@
 </div>
 </div>
 </div>
-</section>
+
+<div class="row">
+    <!-- Most Favorite Resources Table -->
+    <div class="col-md-6">
+        <div class="table-container shadow">
+            <p class="h4 mb-0 text-gray-800">Top Resources</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Favorites Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($mostFavoriteResources as $resource)
+                            <tr>
+                                <td>{{ $resource->title }}</td>
+                                <td>{{ $resource->author }}</td>
+                                <td>{{ $resource->favorites_count }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Most Replied Discussions Table -->
+    <div class="col-md-6">
+        <div class="table-container shadow">
+            <p class="h4 mb-0 text-gray-800">Top Discussions</p>
+            <div class="d-flex justify-content-between align-items-center">
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Replies Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($mostRepliedDiscussions as $discussion)
+                        <tr>
+                            <td>{{ $discussion->title }}</td>
+                            <td>{{ $discussion->replies_count }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 </main>
 <!-- Footer -->

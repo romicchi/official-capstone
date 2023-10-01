@@ -58,7 +58,7 @@
     @csrf
     <div class="card shadow mb-4">
     <div class="card-body">
-    <table class="table table-bordered table-hover">
+    <table class="table table-hover">
       <thead>
         <tr>
           <th>Student Number</th>
@@ -124,7 +124,7 @@
 @else
 <div class="card shadow mb-4">
   <div class="card-body">
-<table class="table table-bordered table-hover" width="100%" cellspacing="0">
+<table class="table table-hover" width="100%" cellspacing="0">
   <thead>
     <tr>
       <th>Student Number</th>
@@ -201,7 +201,7 @@
     <div class="card shadow mb-4">
     <div class="card-body">
     <form class="table-wrapper" id="admin-table">
-        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+        <table class="table table-hover" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th>Student Number</th>
@@ -231,18 +231,18 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role->role }}</td>
                         <td>
-                            @if ($user->expiration_date)
-                                {{ $user->expiration_date }}
-                            @else
-                                Not Applicable
-                            @endif
-                        </td>
-                        <td>
                           @if ($user->year_level)
                           {{ $user->year_level }}
                           @else
                           Not Applicable
                           @endif
+                        </td>
+                        <td>
+                            @if ($user->expiration_date)
+                                {{ $user->expiration_date }}
+                            @else
+                                Not Applicable
+                            @endif
                         </td>
                         <td>
                             <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
@@ -269,7 +269,7 @@
 @else
 <div class="card shadow mb-4">
   <div class="card-body">
-    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+    <table class="table table-hover" width="100%" cellspacing="0">
       <thead>
         <tr>
           <th>Student Number</th>
@@ -340,7 +340,7 @@
     <form class="table-wrapper" id="admin-table">
       <div class="card shadow mb-4">
       <div class="card-body">
-        <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+        <table class="table table-hover" width="100%" cellspacing="0">
             <thead>
                 <tr>
                     <th>Student Number</th>
@@ -402,7 +402,7 @@
     @else
     <div class="card shadow mb-4">
         <div class="card-body">
-            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+            <table class="table table-hover" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Student Number</th>

@@ -94,78 +94,43 @@
         @endforeach
     </tbody>
 </table>
-<div class="my-3">{{ $courses->appends(['activeTab' => 'courses'])->links('pagination::bootstrap-4', ['paginator' => $courses]) }}
+<div class="my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $courses]) }}
 </div>
 </div>
 </div>
 
-<div id="subjects" class="tabcontent">
-    <div class="d-flex justify-content-between align-items-center">
+<!-- Discipline Table -->
+<div id="disciplines" class="tabcontent">
+<div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <a href="{{ route('academics.createSubject') }}" class="btn btn-success mb-3">+Add Subject</a>
-            <form action="{{ route('academics.filterSubjects') }}" method="GET" class="ml-3">
+            <a href="{{ route('academics.createDiscipline') }}" class="btn btn-success mt-3 mb-4">+Add Discipline</a>
+            <form action="{{ route('academics.filterDisciplines') }}" method="GET" class="ml-3">
                 <div class="input-group m-3">
-                    <select name="course_filter" class="form-control">
-                        <option value="">All Courses</option>
-                        @foreach($allCourses  as $course)
-                            <option value="{{ $course->id }}">{{ $course->courseName }}</option>
+                    <select name="college_filter" class="form-control">
+                        <option value="">All Colleges</option>
+                        @foreach($colleges as $college)
+                        <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
                         @endforeach
                     </select>
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
             </form>
         </div>
-        <form action="{{ route('academics.searchSubject') }}" method="GET">
+        <form action="{{ route('academics.searchDiscipline') }}" method="GET">
             <div class="input-group">
-                <input type="text" name="subject_search" class="form-control" placeholder="Search Subjects" autocomplete="off">
+                <input type="text" name="discipline_search" class="form-control" placeholder="Search Disciplines" autocomplete="off">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
     </div>
 
-<div class="table-container shadow">
-<h2>Subjects</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Subject Name</th>
-            <th>Course</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($subjects as $subject)
-        <tr>
-            <td>{{ $subject->subjectName }}</td>
-            <td>{{ $subject->course->courseName }}</td>
-            <td>
-                <a href="{{ route('academics.editSubject', $subject->id) }}" class="btn btn-primary">Edit</a>
-                <form action="{{ route('academics.destroySubject', $subject->id) }}" method="POST" style="display: inline-block">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-
-<div class="my-3">{{ $subjects->appends(['activeTab' => 'subjects'])->links('pagination::bootstrap-4', ['paginator' => $subjects]) }}</div>
-</div>
-</div>
-
-<!-- Discipline Table -->
-<div id="disciplines" class="tabcontent">
-    <!-- Add code for disciplines here -->
-    <a href="{{ route('academics.createDiscipline') }}" class="btn btn-success mt-3 mb-4">+Add Discipline</a>
     <div class="table-container">
         <h2>Disciplines</h2>
         <table>
             <thead>
                 <tr>
                     <th>Discipline Name</th>
-                    <!-- Add more columns if needed -->
+                    <th>College</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -173,7 +138,7 @@
                 @foreach($disciplines as $discipline)
                 <tr>
                     <td>{{ $discipline->disciplineName }}</td>
-                    <!-- Add more columns if needed -->
+                    <td>{{ $discipline->college->collegeName }}</td>
                     <td>
                         <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('academics.destroyDiscipline', $discipline->id) }}" method="POST" style="display: inline-block">
@@ -186,7 +151,8 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="my-3">{{ $disciplines->appends(['activeTab' => 'disciplines'])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}</div>
+        <div class="my-3">{{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}
+</div>
     </div>
 </div>
 

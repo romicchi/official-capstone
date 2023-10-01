@@ -7,7 +7,9 @@ use App\Models\Course;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Resource;
+use App\Models\Discussion;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
 use PDF;
@@ -17,6 +19,18 @@ class AdminController extends Controller
 
     public function dashboard()
     {
+        // Retrieve the top 10 most favorite resources
+        $mostFavoriteResources = Resource::withCount('favoritedBy') // Use 'favoritedBy' instead of 'favorites'
+        ->orderBy('favorited_by_count', 'desc') // Use 'favorited_by_count' instead of 'favorites_count'
+        ->take(10) // You can change this number as needed
+        ->get();
+        
+        // Retrieve the top 10 most replied discussion
+        $mostRepliedDiscussions = Discussion::withCount('replies')
+        ->orderBy('replies_count', 'desc')
+        ->take(10)
+        ->get();
+
         // Cards
         $verifiedUsersCount = User::where('verified', true)->count();
         $totalResourcesCount = Resource::count();
@@ -32,7 +46,17 @@ class AdminController extends Controller
         $teacherCount = User::where('role_id', 2)->count(); // Teacher Count
         $adminCount = User::where('role_id', 3)->count(); // Admin Count
 
-        return view('administrator.adminpage', compact('verifiedUsersCount', 'totalResourcesCount', 'pendingUsersCount', 'activeUsersCount', 'studentCount', 'teacherCount', 'adminCount'));
+        return view('administrator.adminpage', 
+        compact(
+            'verifiedUsersCount', 
+            'totalResourcesCount', 
+            'pendingUsersCount', 
+            'activeUsersCount', 
+            'studentCount', 
+            'teacherCount', 
+            'adminCount', 
+            'mostFavoriteResources',
+            'mostRepliedDiscussions'));
     }
 
     public function getChartData(Request $request)
@@ -116,33 +140,16 @@ class AdminController extends Controller
     
         return array_reverse($labels);
     }
-    
-    
 
     public function generateReport(Request $request)
     {
-        $period = $request->input('report_period');
-        
-        // Determine the date range based on the selected period
-        $startDate = now();
-        $endDate = now();
-        
-        if ($period === 'month') {
-            $startDate->startOfMonth();
-            $endDate->endOfMonth();
-        } elseif ($period === 'year') {
-            $startDate->startOfYear();
-            $endDate->endOfYear();
-        } else {
-            // Default to day
-            $startDate->startOfDay();
-            $endDate->endOfDay();
-        }
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
         
         // Fetch the data you want to include in the report
         $reportData = [];
         
-        // Query the users based on their roles and the selected period
+        // Query the users based on their roles and the selected date range
         $roles = ['student', 'teacher', 'admin', 'super-admin'];
         
         foreach ($roles as $role) {
@@ -159,31 +166,15 @@ class AdminController extends Controller
         return view('administrator.generate_report', ['reportData' => $reportData]);
     }
     
-
     public function generatePDFReport(Request $request)
     {
-        $period = $request->input('report_period');
-        
-        // Determine the date range based on the selected period
-        $startDate = now();
-        $endDate = now();
-        
-        if ($period === 'month') {
-            $startDate->startOfMonth();
-            $endDate->endOfMonth();
-        } elseif ($period === 'year') {
-            $startDate->startOfYear();
-            $endDate->endOfYear();
-        } else {
-            // Default to day
-            $startDate->startOfDay();
-            $endDate->endOfDay();
-        }
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
         
         // Fetch the data you want to include in the report
         $reportData = [];
         
-        // Query the users based on their roles and the selected period
+        // Query the users based on their roles and the selected date range
         $roles = ['student', 'teacher', 'admin', 'super-admin'];
         
         foreach ($roles as $role) {
@@ -202,5 +193,10 @@ class AdminController extends Controller
         // Generate and return the PDF as a download
         return $pdf->download('report.pdf');
     }
+    
+    public function updateReportTable(Request $request)
+    {
+    }
+
     
 }

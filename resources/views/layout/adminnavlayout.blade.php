@@ -68,6 +68,10 @@
                     <li class="nav-item">
 
                     <li class="nav-item">
+                        <a class="nav-link {{ $currentRoute === 'activity-log' ? 'active' : 'inactive' }}" href="{{ route('activity-log') }}?activeTab=colleges">Activity Logs</a>
+                    <li class="nav-item">
+
+                    <li class="nav-item">
                         <a class="nav-link {{ $currentRoute === 'administrator.login' ? 'active' : 'inactive' }}" href="{{ route('administrator.login') }}">Backup & Restore</a>
                     </li>
 

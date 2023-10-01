@@ -2,8 +2,9 @@
 
 <link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
 
+<h1>Study Journal</h1>
+
 <div class="container">
-    <h1>Study Journal</h1>
     <a href="{{ route('journals.create') }}" class="btn btn-primary">+ Create Journal</a>
     <hr>
     <form action="{{ route('journals.index') }}" method="GET" class="mb-3">

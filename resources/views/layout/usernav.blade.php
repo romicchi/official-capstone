@@ -3,27 +3,9 @@
 <head>
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/usernav.css')}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<style>
-  .sidebar-divider {
-    border-top: 2px solid white;
-    margin: 0 1rem 1rem;
-  }
-
-  .nav-link.inactive {
-    color: grey !important;
-  }
-  
-  .nav-link.personal:hover, .nav-link.active.personal {
-    color: white !important;
-  }
-
-  .nav-link.personal {
-    color: grey !important;
-  }
-  </style>
-
       <div class="container-fluid">
         <div class="row">
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top col-12 col-lg-2">
@@ -111,6 +93,21 @@
           
         </div>
       </div>
+
+      <!-- New user guide overlay (initially hidden) -->
+      <div class="new-user-guide-overlay" style="display: none;">
+          <div class="new-user-guide-card">
+              <div class="new-user-guide-content">
+                  <h3>Welcome, New User!</h3>
+                  <p id="guide-text">Here's what each navbar link does:</p>
+              </div>
+              <div class="new-user-guide-buttons">
+                  <button id="prev-guide-button" disabled>Prev</button>
+                  <button id="next-guide-button">Next</button>
+                  <button id="skip-guide-button">Skip</button>
+              </div>
+          </div>
+      </div>
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
           <script>
@@ -121,6 +118,122 @@
               e.preventDefault();
             });
           });
+
+
+
+          // Variables to track guide state and current step
+    let showGuide = true;
+    let currentStep = 0;
+
+    // Array of guide steps
+    const guideSteps = [
+        "Dashboard: Access Chatbot and ask anything.",
+        "Resources: Access educational resources.",
+        "Personal: Manage your personal notes, study journal, and favorites.",
+        "Forum: Join discussions and interact with other students & teachers.",
+        @if (auth()->user()->role_id === 2)
+        "Uploads: Upload educational resources and manage uploaded content.",
+        @endif
+        "Settings: Adjust your account settings."
+    ];
+
+// Function to update the guide content and position it next to the active navigation link
+function updateGuideContent() {
+    if (currentStep < guideSteps.length) {
+        // Update the guide text
+        document.getElementById('guide-text').textContent = guideSteps[currentStep];
+
+        // Get the active navigation link
+        const activeNavLink = document.querySelector('.nav-link.active');
+
+        // Position the guide card next to the active navigation link
+        if (activeNavLink) {
+            const navLinkRect = activeNavLink.getBoundingClientRect();
+            const guideCard = document.querySelector('.new-user-guide-card');
+            const guideCardRect = guideCard.getBoundingClientRect();
+
+            // Calculate the top and left positions for the guide card
+            const topPosition = navLinkRect.top + window.scrollY + (navLinkRect.height / 2) - (guideCardRect.height / 2);
+            const leftPosition = navLinkRect.right + window.scrollX + 20; // Adjust the spacing as needed
+
+            guideCard.style.top = topPosition + 'px';
+            guideCard.style.left = leftPosition + 'px';
+        }
+
+        // Enable or disable the "Previous" and "Next" buttons based on the current step
+        document.getElementById('prev-guide-button').disabled = currentStep === 0;
+        document.getElementById('next-guide-button').disabled = currentStep === guideSteps.length - 1;
+
+        // Hide the "Previous" button on the first step
+        if (currentStep === 0) {
+            document.getElementById('prev-guide-button').style.display = 'none';
+        } else {
+            document.getElementById('prev-guide-button').style.display = 'block';
+        }
+        
+        // Hide the guide when reaching the last step
+        if (currentStep === guideSteps.length - 1) {
+            hideGuide();
+        }
+    } else {
+        // If all steps are completed, hide the guide
+        hideGuide();
+    }
+}
+
+    // Function to show the guide overlay
+    function showGuideOverlay() {
+        document.querySelector('.new-user-guide-overlay').style.display = 'block';
+        updateGuideContent();
+    }
+
+// Function to hide the guide overlay and update seen_guide
+function hideGuide() {
+    document.querySelector('.new-user-guide-overlay').style.display = 'none';
+    // Set the seen_guide flag so the guide won't appear again
+    @if (auth()->user()->seen_guide === 0)
+        $.ajax({
+            url: '{{ route('updateSeenGuide') }}',
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            success: function(data) {
+                if (data.success) {
+                    console.log('seen_guide updated to 1');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    @endif
+    showGuide = false;
+}
+
+    // Event listener for the "Next" button
+    document.getElementById('next-guide-button').addEventListener('click', () => {
+        currentStep++;
+        updateGuideContent();
+    });
+
+    // Event listener for the "Previous" button
+document.getElementById('prev-guide-button').addEventListener('click', () => {
+    if (currentStep > 0) {
+        currentStep--;
+        updateGuideContent();
+    }
+});
+
+    // Event listener for the "Skip" button
+    document.getElementById('skip-guide-button').addEventListener('click', () => {
+        hideGuide();
+    });
+
+    // Show the guide if it's the first time for the user and change seen_guide to 1
+    @if (auth()->user()->seen_guide === 0)
+    showGuideOverlay();
+    @endif
           </script>
 
 @show

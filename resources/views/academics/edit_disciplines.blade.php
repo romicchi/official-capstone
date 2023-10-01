@@ -12,10 +12,16 @@
                 @method('PUT')
                 <div class="form-group">
                     <label for="disciplineName">Discipline Name</label>
-                    <input type="text" class="form-control" id="disciplineName" name="name" value="{{ $discipline->name }}" autocomplete="off" required>
+                    <input type="text" class="form-control" id="disciplineName" name="disciplineName" value="{{ $discipline->disciplineName }}" autocomplete="off" required>
                 </div>
-                <!-- You can add other fields for discipline information if needed -->
-
+                <div class="form-group">
+                    <label for="college_id">College</label>
+                    <select class="form-control" id="college_id" name="college_id" required>
+                        @foreach($colleges as $col)
+                            <option value="{{ $col->id }}" {{ $col->id == $discipline->college_id ? 'selected' : '' }}>{{ $col->collegeName }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary m-1">Update Discipline</button>
                     <a href="{{ route('academics.index') }}?activeTab=disciplines" class="btn btn-secondary m-1">Cancel</a>
@@ -24,4 +30,4 @@
         </div>
     </div>
 </div>
-@endsection
+@show

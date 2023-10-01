@@ -46,5 +46,11 @@
 
 th {
     background-color: #070372;
+    padding: 10px;
     color: #fff;
   }
+
+button {
+    padding-top: 10px;
+}
+  

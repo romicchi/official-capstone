@@ -1,11 +1,15 @@
 @include('layout.homenav')
 @extends('layout.chatbotlayout')
+@extends('layout.app')
+
+
 @yield('chatbot')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
         <title>@section('title', 'GENER')</title>
 
@@ -18,7 +22,7 @@
         @section('navbar')
         @endsection
                 <!-- Jumbotron -->
-    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}" loading="lazy">
+    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}" loading="lazy" width="150">
     </div>
     <!-- About Section -->
     <section class="about" id="about-container">
@@ -75,25 +79,23 @@
         </div>
     </section>
 
-  <!-- Chatbot Section -->
-    <section class="chatbot">
-        <div class="container" id="chatbot-container">
-        <h2 class="mb-5 text-center">ChatBot</h2>
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Chatbot Assistance</h5>
-                            <p class="card-text text-center">Our chatbot is here to help you with any questions or concerns you may have. Simply type in your query, and the chatbot will provide you with relevant information and assistance.</p>
-                            <div class="text-center">
-                                <a href="{{ route('login') }}" class="btn btn-primary" id="try-now-btn" data-aos="zoom-in">Try Now</a>
-                            </div>
-                        </div>
-                    </div>
+<!-- Chatbot Section -->
+<section class="chatbot">
+    <div class="container" id="chatbot-container">
+        <h2 class="mb-5 text-center">Talk to GENER</h2>
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+            <div class="text-center">
+                <div class="gener">
+                    <a href="{{ route('login') }}">
+                    <img class="gener-image" src="{{ asset('assets/img/gener2.png')}}" alt="logo" class="img-fluid" data-aos="zoom-in" width="250">
+                </a>
                 </div>
+        </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
   <!-- Footer -->
   <footer class="bg-dark text-white py-3" id="footer-container">

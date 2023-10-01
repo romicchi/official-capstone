@@ -74,6 +74,8 @@ class AuthController extends Controller
             $user->save();
     
             if ($user->role_id == 3 || $user->role_id == 4) {
+                session(['logged_activity' => true]);
+
                 // Redirect to admin page for admin user
                 return redirect()->intended(route('adminpage'));
             }
@@ -135,6 +137,14 @@ class AuthController extends Controller
             $user->student_number = null;
             $user->save();
         }
+
+        // Log the 'register' activity before registering
+        \DB::table('activity_logs')->insert([
+            'user_id' => $user->id,
+            'activity' => 'has registered',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // Upload the file to Google Drive
         $file = $request->file('id');
@@ -198,8 +208,20 @@ class AuthController extends Controller
     }
 
     function logout(){
+        
+        // Log the 'logout' activity before logging out
+        $user = Auth::user();
+        \DB::table('activity_logs')->insert([
+            'user_id' => $user->id,
+            'activity' => 'has logout',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         Session::flush();
         Auth::logout();
+        
+        
         return redirect(route('login'))->with('logout_message', true);
     }
 }

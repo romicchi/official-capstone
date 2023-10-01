@@ -1,0 +1,40 @@
+.table-container {
+    border: 1px solid #ccc;
+    background-color: #fff !important;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 2rem;
+}
+
+/* Style the table headers */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #070372;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style the table rows and cells */
+tr {
+    border-bottom: 1px solid #ccc;
+}
+
+td {
+    padding: 10px;
+}
+
+/* Style the odd rows with a different background color */
+tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+/* Style links within the table */
+a {
+    color: #007bff;
+    text-decoration: none;
+}

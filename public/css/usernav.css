@@ -1,0 +1,80 @@
+.sidebar-divider {
+    border-top: 2px solid white;
+    margin: 0 1rem 1rem;
+  }
+
+  .nav-link.inactive {
+    color: grey !important;
+  }
+  
+  .nav-link.personal:hover, .nav-link.active.personal {
+    color: white !important;
+  }
+
+  .nav-link.personal {
+    color: grey !important;
+  }
+
+  .new-user-guide-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.new-user-guide-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    width: 250px;
+    margin-left: 16rem;
+    margin-top: 15rem;
+    text-align: center;
+}
+
+@media screen and (max-width: 576px) {
+  .new-user-guide-card {
+    margin-left: 3.5rem;
+  }
+}
+
+.new-user-guide-content {
+  text-align: left;
+}
+
+.new-user-guide-content p {
+  margin-left: 20px;
+}
+
+.new-user-guide-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.new-user-guide-buttons button {
+    margin: 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.new-user-guide-buttons button#skip-guide-button {
+    background-color: #ccc;
+}
