@@ -20,14 +20,11 @@ return new class extends Migration
             $table->text('description');
             $table->string('url', 1000);
             $table->unsignedBigInteger('college_id'); // Foreign key for college table
-            $table->unsignedBigInteger('subject_id'); // Foreign key for subjects table
-            $table->unsignedBigInteger('course_id'); // Foreign key for courses table
-            $table->unsignedBigInteger('discipline_id'); // Foreign key for courses table
+            $table->unsignedBigInteger('discipline_id'); // Foreign key for disciplines table
             $table->timestamps();
 
             $table->foreign('college_id')->references('id')->on('college')->onDelete('cascade');
-            $table->foreign('subject_id')->references('id')->on('subject')->onDelete('cascade');
-            $table->foreign('course_id')->references('id')->on('course')->onDelete('cascade');
+            $table->foreign('discipline_id')->references('id')->on('disciplines')->onDelete('cascade');
         });
     }
 

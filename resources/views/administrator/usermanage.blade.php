@@ -65,6 +65,7 @@
           <th>Lastname</th>
           <th>Firstname</th>
           <th>Email</th>
+          <th>College</th>
           <th>Role</th>
           <th>Uploaded ID</th>
           <th>Verified</th>
@@ -91,6 +92,7 @@
               <td><strong>{{ $user->lastname }}</strong></td>
               <td><strong>{{ $user->firstname }}</strong></td>
               <td>{{ $user->email }}</td>
+              <td>{{ $user->college->collegeName }}</td>
               <td>{{ $user->role->role }}</td>
               <td>
                   <!-- Clickable preview image -->
@@ -131,6 +133,7 @@
       <th>Lastname</th>
       <th>Firstname</th>
       <th>Email</th>
+      <th>College</th>
       <th>Role</th>
       <th>Uploaded ID</th>
       <th>Verified</th>
@@ -208,6 +211,7 @@
                     <th>Lastname</th>
                     <th>Firstname</th>
                     <th>Email</th>
+                    <th>College</th>
                     <th>Role</th>
                     <th>Year Level</th>
                     <th>Expiry Date</th>
@@ -229,6 +233,7 @@
                         <td><strong>{{ $user->lastname }}</strong></td>
                         <td><strong>{{ $user->firstname }}</strong></td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->college->collegeName }}</td>
                         <td>{{ $user->role->role }}</td>
                         <td>
                           @if ($user->year_level)
@@ -276,6 +281,7 @@
           <th>Lastname</th>
           <th>Firstname</th>
           <th>Email</th>
+          <th>College</th>
           <th>Role</th>
           <th>Uploaded ID</th>
           <th>Action</th>
@@ -347,9 +353,10 @@
                     <th>Lastname</th>
                     <th>Firstname</th>
                     <th>Email</th>
-                    <th>Role</th> <!-- New column for Role -->
-                    <th>Uploaded ID</th> <!-- New column for Uploaded ID -->
-                    <th>Year Level</th> <!-- New column for Year Level -->
+                    <th>College</th>
+                    <th>Role</th>
+                    <th>Uploaded ID</th>
+                    <th>Year Level</th>
                     <th>Archived At</th>
                     <th>Action</th>
                 </tr>
@@ -367,7 +374,7 @@
                     <td><strong>{{ $user->lastname }}</strong></td>
                     <td><strong>{{ $user->firstname }}</strong></td>
                     <td>{{ $user->email }}</td>
-                    <!-- display role name -->
+                    <td>{{ $user->college->collegeName }}</td>
                     <td>{{ $user->role->role }}</td>
                     <td>
                         <!-- Display Uploaded ID with a clickable preview -->
@@ -409,6 +416,7 @@
                         <th>Lastname</th>
                         <th>Firstname</th>
                         <th>Email</th>
+                        <th>College</th>
                         <th>Role</th>
                         <th>Uploaded ID</th>
                         <th>Year Level</th>

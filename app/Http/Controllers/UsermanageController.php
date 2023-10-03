@@ -70,6 +70,7 @@ class UsermanageController extends Controller
             'role' => 'required|in:1,2,3',
             'year_level' => 'required_if:role,1|in:1,2,3,4',
             'student_number' => 'required_if:role,1|nullable|unique:users|digits:7',
+            'college_id' => 'required|exists:college,id',
         ]);
 
         $data['firstname'] = $request->firstname;
@@ -77,6 +78,7 @@ class UsermanageController extends Controller
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role_id'] = $request->input('role');
+        $data['college_id'] = $request->input('college_id');
 
         // Create the user record in the database
         $user = User::create($data);
@@ -84,7 +86,7 @@ class UsermanageController extends Controller
         // Save the year level in the database if the user is a student
         if ($data['role_id'] == 1) {
             $user->year_level = $request->input('year_level');
-            $user->expiration_date = self::calculateExpiryDate($user->year_level); // Use self:: to reference the function
+            $user->expiration_date = Carbon::now()->addYear()->month(6)->day(15);
             $user->student_number = $request->input('student_number');
             $user->save();
         }
@@ -229,6 +231,7 @@ class UsermanageController extends Controller
         $userdata->email = $req->email;
         $userdata->password = Hash::make($req->password);
         $userdata->role_id = $req->role;
+        $userdata->college_id = $req->college_id;
         $userdata->updated_at = now();
         $userdata->expiration_date = null;
 
@@ -237,11 +240,11 @@ class UsermanageController extends Controller
             $req->validate([
                 'student_number' => 'required|numeric|digits:7|unique:users,student_number,'.$userdata->id, // Ensure it's unique for the current user
                 'year_level' => 'required_if:role,1|in:1,2,3,4', // Add validation for year level
-
+                'college_id' => 'required|exists:college,id',
             ]);
             
             $userdata->year_level = $req->input('year_level');
-            $userdata->expiration_date = self::calculateExpiryDate($userdata->year_level); // Use self:: to reference the function
+            $userdata->expiration_date = Carbon::now()->addYear()->month(6)->day(15);
             $userdata->student_number = $req->student_number;
         }
 
@@ -568,6 +571,7 @@ public function archive($id)
    $archiveUser->firstname = $user->firstname;
    $archiveUser->lastname = $user->lastname;
    $archiveUser->email = $user->email;
+   $archiveUser->college_id = $user->college_id;
    $archiveUser->user_id = $user->id;
    // Check if the user has the "Student" role (role_id = 1)
    if ($user->role_id === 1) {
@@ -617,10 +621,11 @@ public function reactivate($id)
     $user->firstname = $archivedUser->firstname;
     $user->lastname = $archivedUser->lastname;
     $user->email = $archivedUser->email;
+    $user->college_id = $archivedUser->college_id;
     $user->year_level = $archivedUser->year_level;
     $user->role_id = $archivedUser->role_id;
     // expiration date after reactivation and based on the yr level
-    $user->expiration_date = self::calculateExpiryDate($user->year_level);
+    $user->expiration_date = Carbon::now()->addYear()->month(6)->day(15);
     $user->verified = 1; // Assuming users are verified upon reactivation
 
     // Generate a temporary password and hash it

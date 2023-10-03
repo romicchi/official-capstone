@@ -32,6 +32,7 @@ class User extends Authenticatable
         'url',
         'password',
         'seen_guide',
+        'college_id',
     ];
 
     /**
@@ -56,6 +57,11 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function college()
+    {
+        return $this->belongsTo(College::class, 'college_id');
     }
 
     //This part is for the DiscussionsController. Means that user can have many discussions
@@ -86,6 +92,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Resource::class, 'favorites', 'user_id', 'resource_id');
     }
 
+    public function history()
+    {
+        return $this->hasMany(History::class);
+    }
 
     // ...
 

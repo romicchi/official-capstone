@@ -39,6 +39,16 @@
     text-align: center;
 }
 
+.nav-link {
+  font-size: 18px;
+}
+
+@media (min-width: 992px) {
+  .navbar {
+    max-width: 220px;
+  }  
+}
+
 @media screen and (max-width: 576px) {
   .new-user-guide-card {
     margin-left: 3.5rem;
@@ -77,4 +87,26 @@
 
 .new-user-guide-buttons button#skip-guide-button {
     background-color: #ccc;
+}
+
+@media screen and (max-width: 1176px) {
+
+  .logo-image {
+    width: 6.3rem; /* adjust the width to your desired size */
+}
+
+  .nav-link {
+    font-size: 16px;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 10px;
+    padding-left: 15px;
+    color: #fff;
+  }
+
+  .dropdown-item {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
 }

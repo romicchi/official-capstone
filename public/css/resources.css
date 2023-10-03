@@ -2,7 +2,24 @@ body {
   padding-top: 4rem;
   padding-left: 17rem;
   padding-right: 2rem;
+}
 
+button.toggle-favorite {
+  background: none;
+  color: #f1c40f;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}  
+
+.card.shadow.mb-5 {
+  height: 48rem;
+  padding: 20px;
+}
+
+.card-body {
+  height: 55rem;
+  overflow: auto;
 }
 
 @media screen and (max-width: 991.33px) { 
@@ -18,56 +35,3 @@ body {
     padding-right: 2rem;
   }    
 }
-
-.title-subject {
-    text-align: center; 
-    font-weight: bold; 
-    font-family: Arial;
-}
-
-/* .dropdown {
-    display: inline-block;
-    position: relative;
-  } */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    width: 100%;
-    overflow: auto;
-    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
-  }
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-  .dropdown-content a {
-    display: block;
-    color: #000000;
-    padding: 5px;
-    text-decoration: none;
-  }
-  .dropdown-content a:hover {
-    color: #FFFFFF;
-    background-color: #00A4BD;
-  }
-  
-  .courbgcol {
-    background-color: #b6b6b6;
-    color: b6b6b6;
-    width: 95%;
-    height: 100%;
-  }
-  
-  .matcards {
-    background-color: white;
-    width: 95%;
-    height: 8vh;
-    border-radius: 15px;
-  }
-  
-  .matcards2 {
-    width: 75%;
-    font-size: 18px;
-    text-align: left;
-    padding-top: 
-    11px;
-  }

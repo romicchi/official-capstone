@@ -1,5 +1,5 @@
 body {
-    padding-left: 18rem; /* Set padding top equal to navbar height */
+    padding-left: 16rem; /* Set padding top equal to navbar height */
     padding-top: 4rem;
     padding-right: 2rem;
     font-family: 'Roboto', sans-serif;
@@ -10,18 +10,20 @@ body {
     margin: 0 1rem 1rem;
   }
 
-.nav-link.inactive {
-  color: grey !important;
-}
-  
-.nav-link:hover {
-  color: white !important;
-}
-  
-  .navbar-brand {
-    display: flex;
-    align-items: center;
-}
+  .nav-link.inactive {
+    color: grey !important;
+  }
+    
+  .nav-link:hover {
+    color: white !important;
+  }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+  }
+
+
 
 .logo-image {
     width: 9rem; /* adjust the width to your desired size */
@@ -148,7 +150,7 @@ body {
 
     .navbar {
       flex-direction: column;
-      width: 250px;
+      width: 220px;
       height: 100vh;
       position: fixed;
       top: 0;
@@ -169,7 +171,7 @@ body {
       width: 100%;
     }
     .nav-link {
-      font-size: 22px;
+      font-size: 18px;
       font-weight: bold;
       font-family: "Trebuchet MS", Helvetica, sans-serif;
       margin-top: 10px;
@@ -200,11 +202,10 @@ body {
 @media screen and (max-width: 991.33px) { 
   body {
     padding-left: 2rem;
-
   }
 }
 
-@media screen and (max-width: 767px) { 
+@media screen and (max-width: 768px) { 
   body {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -213,8 +214,12 @@ body {
 
 @media screen and (max-width: 1176px) {
 
+  .logo-image {
+    width: 6.3rem; /* adjust the width to your desired size */
+}
+
   .nav-link {
-    font-size: 20px;
+    font-size: 10px;
     font-weight: bold;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     margin-top: 10px;
@@ -222,7 +227,7 @@ body {
   }
 
   .navbar-nav .nav-link {
-    padding: 12px;
+    padding: 10px;
     padding-left: 15px;
     color: #fff;
    

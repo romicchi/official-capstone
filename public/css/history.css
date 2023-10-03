@@ -1,0 +1,39 @@
+body {
+    padding-left: 18rem; /* Set padding top equal to navbar height */
+    padding-top: 4rem;
+    padding-right: 2rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.card-body {
+  height: 50rem;
+  overflow: auto;
+}
+
+.table-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  padding-right: 2rem;
+  overflow: hidden;
+}
+
+th {
+  background-color: #070372 !important;
+  color: #fff;
+}
+
+/* when at lower screen sizes decrease the padding-left of body */
+
+@media screen and (max-width: 993px) {
+  body {
+        padding-left: 1rem; /* 0px */
+    }
+}
+
+@media (max-width: 576px) {
+  body {
+    padding-left: 1rem; /* 0px */
+}
+}
+

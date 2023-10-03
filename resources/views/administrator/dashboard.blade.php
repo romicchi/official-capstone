@@ -46,13 +46,13 @@
 <script src="{{ asset('js/loader.js') }}"></script>
 
 <script>
-// JavaScript to Show Loader When Login Button is Clicked
+// JavaScript to Show Loader When back-up Button is Clicked
 document.getElementById('backup-button').addEventListener('click', function () {
     // Show the loader
     document.querySelector('.loader-container').style.display = 'block';
 });
 
-// JavaScript to Show Loader When Login Button is Clicked
+// JavaScript to Show Loader When restore Button is Clicked
 document.getElementById('restore-button').addEventListener('click', function () {
     // Show the loader
     document.querySelector('.loader-container').style.display = 'block';

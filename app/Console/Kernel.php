@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('sessions:expire')->daily();
         $schedule->command('backup:clean')->daily()->at('01:00'); // to clean the older backups
         $schedule->command('backup:run')->daily()->at('02:00'); // to run new backup file
+        $schedule->command('archive:expired_users')->daily(); // to archive expired user every June 15
+        $schedule->command('cleanup:archive_users')->weekly(); // clean archived users every 6 months
         // ->everyMinute();
     }
 

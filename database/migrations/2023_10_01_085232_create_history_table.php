@@ -11,13 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('activity_logs', function (Blueprint $table) {
+        Schema::create('history', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('activity'); // 'login' or 'logout'
+            $table->unsignedBigInteger('resource_id');
             $table->timestamps();
-        
+            
+            // Define foreign keys
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
+                        
+            // Ensure that a user can have only one entry for a particular resource
+            $table->unique(['user_id', 'resource_id']);
         });
     }
 
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('activity_logs');
+        Schema::dropIfExists('history');
     }
 };

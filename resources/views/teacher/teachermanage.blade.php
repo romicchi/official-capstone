@@ -57,15 +57,12 @@
               </select>
             </div>
             
-            <div class="form-group" id="disciplineContainer">
-              <label for="discipline">Discipline</label>
-              <select class="form-control" id="disciplineSelect" name="discipline" required>
-                <option value="">Select Discipline</option>
-                @foreach ($college->disciplines as $discipline)
-                <option value="{{ $discipline->id }}">{{ $discipline->disciplineName }}</option>
-                @endforeach
-              </select>
-            </div>
+            <div class="form-group">
+    <label for="discipline">Discipline</label>
+    <select class="form-control" id="discipline" name="discipline" required>
+        <option value="">Select Discipline</option>
+    </select>
+</div>
 
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
@@ -107,8 +104,7 @@
                       <td><strong>{{ $resource->title }}<strong></td>
                       <td>{{ $resource->author }}</td>
                       <td>{{ $resource->college->collegeName }}</td>
-                      <td>{{ $resource->course->courseName }}</td>
-                      <td>{{ $resource->subject->subjectName }}</td>
+                      <td>{{ $resource->discipline->disciplineName }}</td>
                       <td>{{ $resource->description }}</td>
                       <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                       <td>
@@ -124,6 +120,9 @@
                     @endif
                   </tbody>
                 </table>
+                <div class="d-flex justify-content-center">
+                  {{ $resources->links('pagination::bootstrap-4') }}
+                </div>
             </div>
           </div>
         </div>

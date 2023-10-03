@@ -54,6 +54,16 @@
         <label for="student_number">Student Number:</label>
         <input class="form-control rounded-0" type="text" id="student_number" name="student_number" value="{{ $users->student_number }}" maxlength="7">
       </div>
+
+      <!-- User select college where they belong -->
+      <div class="form-group">
+        <label for="college_id">College:</label>
+        <select class="form-control" id="college_id" name="college_id">
+          <option disabled selected>Please select your college</option>
+          @foreach($colleges as $college)
+          <option value="{{ $college->id }}" {{ $users->college_id == $college->id ? 'selected' : '' }}>{{ $college->collegeName }}</option>
+          @endforeach
+        </select>
       
       <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary m-1">Update</button>

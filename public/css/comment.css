@@ -1,0 +1,69 @@
+/* Comment Section Styles */
+.comments {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.comments h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Comment Form Styles */
+.comment-form {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* scroll in comment body */
+.scrollable {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.comment-form h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.comment-form button {
+    margin-top: 10px;
+}
+
+/* Individual Comment Styles */
+.list-group-item {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.list-group-item strong {
+    font-weight: bold;
+}
+
+.list-group-item p {
+    margin-top: 5px;
+}
+
+.list-group-item form {
+    margin-top: 10px;
+}
+
+.list-group-item button {
+    margin-left: 10px;
+}

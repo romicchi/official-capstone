@@ -6,20 +6,22 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AcademicsController;
-use App\Http\Controllers\UsermanageController;
-use App\Http\Controllers\ImageController;
-use App\Http\Controllers\ChartController;
 use App\Http\Controllers\AuthenticatedController;
-use App\Http\Controllers\ResourceController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\JournalController;
-use App\Http\Controllers\DiscussionsController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BackupRestoreController;
+use App\Http\Controllers\ChartController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DiscussionsController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\UsermanageController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\JournalController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UsernavController;
 
 
@@ -171,6 +173,12 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 
     
     Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');
+
+    // HISTORY
+    Route::get('/history',[HistoryController::class, 'index'])->name('history.index');
+    Route::get('/history/search', [HistoryController::class, 'search'])->name('history.search');
+    Route::delete('/history/{resource}', [HistoryController::class, 'destroy'])->name('history.destroy');
+    Route::post('/history/clear', [HistoryController::class, 'clear'])->name('history.clear');
     
     // JOURNAL
     Route::get('/journals', [JournalController::class, 'index'])->name('journals.index');
@@ -186,6 +194,9 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     // FAVORITES
     Route::get('/favorites',[FavoriteController::class, 'showFavorites'])->name('favorites');
     Route::post('resource/toggle-favorite', [ResourceController::class, 'toggleFavorite'])->name('resource.toggleFavorite');
+    Route::get('/favorites/search', [FavoriteController::class, 'search'])->name('favorites.search');
+    Route::delete('/favorites/{resource}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::post('/favorites/clear', [FavoriteController::class, 'clear'])->name('favorites.clear');
 
     // SETTINGS
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
@@ -194,14 +205,16 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/settings/password', [SettingsController::class, 'updatePassword'])->name('user.updatePassword');
     
     // SUBJECTS & RESOURCES
+    // Display the selected resources/subject
+    Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
+    // Display the resources
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
-    Route::get('/resources', [ResourceController::class, 'resources'])->name('show.resources');
-
     Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
     Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
-    
-    Route::get('/download{file}',[ResourceController::class, 'download'])->name('download');
-    Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
+    Route::get('/download/{resource}',[ResourceController::class, 'download'])->name('resource.download');
+
+    // COMMENTS
+    Route::resource('comments', CommentController::class)->only(['store', 'destroy']);
 }); 
 
 // Special Route for Teacher Role only
@@ -209,21 +222,23 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:2']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
-
-    // -------------------------- TEACHER UPLOAD --------------------------------//
-   
+        
+        // -------------------------- TEACHER UPLOAD --------------------------------//
+        Route::post('/teachermanage/upload', [ResourceController::class, 'storeResource'])->name('resources.store');
+        
+        // Route to get subjects by course ID
+        Route::get('/api/subjects/{courseId}', [ResourceController::class, 'getSubjectsByCourse']);
+        
+        // Route to get courses by college ID
+        Route::get('/api/courses/{collegeId}', [ResourceController::class, 'getCoursesByCollege']);
+        
+        Route::get('/api/disciplines/{collegeId}', [ResourceController::class, 'getDisciplinesByCollege']);
+        
+        Route::delete('/resources/{resource}', [ResourceController::class, 'destroy'])->name('resources.destroy');
+        Route::get('/resources/{resource}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
+        Route::put('/resources/{resource}', [ResourceController::class, 'update'])->name('resources.update');
+        
     });
-    Route::post('/teachermanage/upload', [ResourceController::class, 'storeResource'])->name('resources.store');
-
-    // Route to get subjects by course ID
-    Route::get('/api/subjects/{courseId}', [SubjectController::class, 'getSubjectsByCourse']);
-    
-    // Route to get courses by college ID
-    Route::get('/api/courses/{collegeId}', [CourseController::class, 'getCoursesByCollege']);
-
-    Route::delete('/resources/{resource}', [ResourceController::class, 'destroy'])->name('resources.destroy');
-    Route::get('/resources/{resource}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
-    Route::put('/resources/{resource}', [ResourceController::class, 'update'])->name('resources.update');
 });
 
 // -------------------------- VERIFIER ACCESS --------------------------------//

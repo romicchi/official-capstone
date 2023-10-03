@@ -5,6 +5,11 @@
 .background {
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  max-width: 100%; /* Set maximum width to ensure the image doesn't exceed its natural size */
 }
 
 .container {

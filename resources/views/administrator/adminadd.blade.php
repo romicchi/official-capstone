@@ -72,6 +72,17 @@
                 <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter Student Number" maxlength="7">
             </div>
 
+            <!-- User select college where they belong -->
+            <div class="form-group">
+                <label for="college_id">College:</label>
+                <select class="form-control" id="college_id" name="college_id">
+                    <option disabled selected>Please select your college</option>
+                    @foreach($colleges as $college)
+                    <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="form-group row">
                 <label for="id" class="col-form-label">School ID:</label>
                 <div class="col-md-9">

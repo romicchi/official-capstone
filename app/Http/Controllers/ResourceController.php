@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\College;
 use App\Models\Course;
-use App\Models\Subject;
 use App\Models\Discipline;
+use App\Models\History;
+use App\Models\Subject;
 use App\Models\User;
 use App\Models\Resource;
 use Illuminate\Pagination\Paginator;
@@ -42,17 +43,23 @@ class ResourceController extends Controller
         return view('teacher.teachermanage', compact('resources'));
     }
 
+    public function getDisciplinesByCollege($collegeId)
+    {
+        $disciplines = Discipline::where('college_id', $collegeId)->get();
+
+        return response()->json($disciplines);
+    }
     
     public function getCoursesByCollege($collegeId)
     {
         $courses = Course::where('college_id', $collegeId)->get();
-
+    
         return response()->json($courses);
     }
 
     public function getSubjectsByCourse($courseId)
-    {   
-        $subjects = Subject::where('course_id', $courseId)->get();  
+    {
+        $subjects = Subject::where('course_id', $courseId)->get();
 
         return response()->json($subjects);
     }
@@ -69,8 +76,7 @@ class ResourceController extends Controller
         'author' => 'required',
         'description' => 'required',
         'college' => 'required',
-        'course' => 'required',
-        'subject' => 'required',
+        'discipline' => 'required',
     ]);
 
     // Upload the file to Google Drive
@@ -110,8 +116,7 @@ class ResourceController extends Controller
     $resource->description = $validatedData['description'];
     $resource->url = $fileUrl;
     $resource->college_id = $validatedData['college'];
-    $resource->course_id = $validatedData['course'];
-    $resource->subject_id = $validatedData['subject'];
+    $resource->discipline_id = $validatedData['discipline'];
     $resource->save();
 
     // Redirect or perform additional actions as needed
@@ -257,8 +262,57 @@ class ResourceController extends Controller
 
     public function download(Resource $resource) 
     {
-        return response()->download(public_path($resource->url));
+        // Extract the file ID from the Google Drive URL
+        $urlParts = parse_url($resource->url);
+        parse_str($urlParts['query'], $queryParameters);
+        $fileId = $queryParameters['id'];
+    
+        try {
+            // Set access token for the Google client
+            $googleClient = new GoogleClient();
+            $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+    
+            // Initialize the Google Drive service
+            $googleDrive = new GoogleDriveService($googleClient);
+    
+            // Get the file from Google Drive
+            $file = $googleDrive->files->get($fileId, ['alt' => 'media']);
+    
+            // Determine the MIME type based on the file extension
+            $fileExtension = pathinfo($resource->url, PATHINFO_EXTENSION);
+            $fileMimeType = $this->getMimeTypeByExtension($fileExtension);
+    
+            // Get the file contents
+            $fileContents = $file->getBody()->getContents();
+    
+            // Create a new Laravel HTTP response and set the file contents
+            $response = new \Illuminate\Http\Response($fileContents);
+    
+            // Set the appropriate content type and disposition for download
+            $response->header('Content-Type', $fileMimeType);
+            $response->header('Content-Disposition', 'attachment; filename="' . $resource->title . '.' . $fileExtension . '"');
+    
+            // Return the response
+            return $response;
+        } catch (\Exception $e) {
+            // Handle any errors that occur during file retrieval from Google Drive
+            return redirect()->back()->with('error', 'Failed to download the file: ' . $e->getMessage());
+        }
     }
+    
+
+    // Function to map file extensions to MIME types
+    private function getMimeTypeByExtension($extension) 
+    {
+        $mimeTypes = [
+            'pdf' => 'application/pdf',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+
+        return $mimeTypes[$extension] ?? 'application/octet-stream'; // Default to binary stream
+    }
+
+    
 
     public function toggleFavorite(Request $request)
     {
@@ -284,11 +338,20 @@ class ResourceController extends Controller
         return response()->json(['isFavorite' => $isFavorite]);
     }
     
-    
-
+    // display the selected resources/subject
     public function show(Resource $resource)
     {
-        return view('subjects.show', compact('resource'));
+        // Record the resource view in the history
+        $user = auth()->user();
+
+        // Check if the user has already viewed this resource to prevent duplicate entries
+        if (!$user->history->contains('resource_id', $resource->id)) {
+            $user->history()->create(['resource_id' => $resource->id]);
+        }
+
+        $comments = $resource->comments()->paginate(10);
+
+        return view('subjects.show', compact('comments', 'resource'));
     }
 
     public function disciplines(Request $request, $college_id, $discipline_id)

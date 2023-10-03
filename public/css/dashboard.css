@@ -32,6 +32,11 @@ body {
  main {
     padding: 20px;
   } 
+
+  .text-decoration {
+    color: rgba(7, 3, 114, 0.9);
+    text-decoration: none;
+  }
   
   .chart {
 

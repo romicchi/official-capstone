@@ -57,7 +57,7 @@
             <img>Personal
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown2">
-            <a class="dropdown-item" href="#">Notes History</a>
+            <a class="dropdown-item" href="{{ route('history.index') }}">Notes History</a>
             <a class="dropdown-item" href="{{ route('journals.index') }}">Study Journal</a>
             <a class="dropdown-item" href="{{ route ('favorites') }}">Favorites</a>
           </ul>
@@ -127,9 +127,9 @@
 
     // Array of guide steps
     const guideSteps = [
-        "Dashboard: Access Chatbot and ask anything.",
+        "Dashboard: Access GENER and ask anything.",
         "Resources: Access educational resources.",
-        "Personal: Manage your personal notes, study journal, and favorites.",
+        "Personal: Manage your history, study journal, and favorites.",
         "Forum: Join discussions and interact with other students & teachers.",
         @if (auth()->user()->role_id === 2)
         "Uploads: Upload educational resources and manage uploaded content.",

@@ -55,6 +55,7 @@
                     <label for="password_confirmation">Confirm Password:</label>
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
                 </div>
+                
                 <div class="form-group">
                     <label for="role">I am a:</label>
                     <select class="form-control" id="role" name="role">
@@ -78,6 +79,17 @@
                 <div class="form-group" id="studentNumberGroup" style="display: none;">
                     <label for="student_number">Student Number:</label>
                     <input type="text" class="form-control" id="student_number" name="student_number" placeholder="Enter Student Number" maxlength="7">
+                </div>
+
+                <!-- User select college where they belong -->
+                <div class="form-group">
+                    <label for="college_id">College:</label>
+                    <select class="form-control" id="college_id" name="college_id">
+                        <option disabled selected>Please select your college</option>
+                        @foreach($colleges as $college)
+                            <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="form-group row">

@@ -110,6 +110,7 @@ class AuthController extends Controller
             'role' => 'required|in:1,2',
             'year_level' => 'required_if:role,1|in:1,2,3,4', // Validation for year_level if role is student
             'student_number' => 'required_if:role,1|nullable|unique:users|digits:7', // Validation for student_number
+            'college_id' => 'required|exists:college,id',
         ]);
     
         $data['firstname'] = $request->firstname;
@@ -117,6 +118,7 @@ class AuthController extends Controller
         $data['email'] = $request->email;
         $data['password'] = Hash::make($request->password);
         $data['role_id'] = $request->input('role');
+        $data['college_id'] = $request->input('college_id');
     
         // Create the user record in the database
         $user = User::create($data);
@@ -124,7 +126,7 @@ class AuthController extends Controller
         // Save the year level in the database if the user is a student
         if ($data['role_id'] == 1) {
             $user->year_level = $request->input('year_level');
-            $user->expiration_date = self::calculateExpiryDate($user->year_level); // Use self:: to reference the function
+            $user->expiration_date = Carbon::now()->addYear()->month(6)->day(15);
             $user->student_number = $request->input('student_number');
             $user->save();
         }

@@ -45,4 +45,15 @@ class Resource extends Model
         return $this->belongsToMany(User::class, 'favorites', 'resource_id', 'user_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class);
+    }
+
+
 }

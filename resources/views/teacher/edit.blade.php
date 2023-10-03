@@ -1,8 +1,6 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 
-@yield('usernav')
-
-<div class="container">
+<div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -28,8 +26,9 @@
                                 <textarea class="form-control" name="description" required>{{ $resource->description }}</textarea>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group my-2">
                                 <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
+                                <a href="{{ route('teacher.manage') }}" class="btn btn-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

@@ -204,7 +204,7 @@
                             <tr>
                                 <td>{{ $resource->title }}</td>
                                 <td>{{ $resource->author }}</td>
-                                <td>{{ $resource->favorites_count }}</td>
+                                <td>{{ $resource->favorited_by_count }}</td>
                             </tr>
                         @endforeach
                     </tbody>
