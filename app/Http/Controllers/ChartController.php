@@ -18,15 +18,26 @@ class ChartController extends Controller
     }
 
     public function getRecommendations(Request $request)
-    {
-        $query = $request->input('query');
-        $resources = Resource::where('topic', 'like', '%' . $query . '%')
-            ->orWhere('title', 'like', '%' . $query . '%')
-            ->orWhere('keywords', 'like', '%' . $query . '%')
-            ->select('url')
-            ->paginate(5);
+{
+    $query = $request->input('query');
 
-        return view('recommendations', compact('resources'));
-    }
+    // Define a list of stopwords (common words to be removed)
+    $stopwords = ['what', 'is', 'the', 'and', 'or', 'of', 'in', 'to'];
+
+    // Explode the query into individual words, remove stopwords, and make the remaining words unique
+    $keywords = array_unique(array_diff(explode(' ', strtolower($query)), $stopwords));
+
+    // Use a raw SQL query to search for resources based on keywords
+    $resources = Resource::where(function ($queryBuilder) use ($keywords) {
+        foreach ($keywords as $keyword) {
+            $queryBuilder->orWhereRaw("LOWER(topic) LIKE '%$keyword%'")
+                         ->orWhereRaw("LOWER(title) LIKE '%$keyword%'")
+                         ->orWhereRaw("LOWER(keywords) LIKE '%$keyword%'");
+        }
+    })->select('title', 'url')
+      ->paginate(5);
+
+    return view('recommendations', compact('resources'));
+}
 
 }

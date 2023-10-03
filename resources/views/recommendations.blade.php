@@ -6,13 +6,15 @@
     <header>
     </header>
     <main>
-<div class="container">
+    <div class="container">
     <h2>Relevant Resources</h2>
     <ul class="recommendations-list">
         @foreach ($resources as $resource)
-            <li><a href="{{ $resource->url }}" target="_blank">{{ $resource->url }}</a></li>
+            <li><a href="{{ $resource->url }}" target="_blank">{{ $resource->title }} - {{ $resource->url }}</a></li>
         @endforeach
     </ul>
+
+    <!-- Pagination links -->
     {{ $resources->links() }}
 </div>
 </main>
