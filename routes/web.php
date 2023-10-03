@@ -213,6 +213,12 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 
 Route::get('/embed/{resource}', [ResourceController::class, 'showEmbed'])->name('embed');
 
+// -------------------------- FILE-READER --------------------------------//
+
+Route::get('/get-recommendations', [ChartController::class, 'getRecommendations'])->name('getRecommendations');
+
+
+
 
 
 

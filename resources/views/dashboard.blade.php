@@ -33,6 +33,64 @@
             .border-left-warning {
                 border-left: 0.25rem solid #f6c23e !important;
             }
+
+            .chatbot-container {
+        max-width: 600px; /* Adjust the maximum width as needed */
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+    }
+
+    /* Style the chatbot messages and user input */
+    .chatbot-messages {
+        height: 300px; /* Adjust the height as needed */
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .chatbot-input {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    input[type="text"] {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button#send-button {
+        margin-left: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    /* Define styles for chatbot messages and user messages */
+    .chatbot-message {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .user-message {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
       </style>
     <body>
   <!-- Nav Bar -->
@@ -41,120 +99,169 @@
   <header>
 		<div class="dashboard">
     <h2>Welcome to the User Dashboard, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
-			<p>Here you can manage your account, view statistics, history, and more.</p>
+			<p>Here you can chat with our Files, manage your account, view statistics, history, and more.</p>
 		</div>
 	</header>
 	<main>
-    
-    <!-- <section class="personal-info">
-        <h2>Personal Information</h2>
-        <p>Name: {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
-        <p>Email: {{ Auth::user()->email }}</p>
-    </section> -->
-		
-<!-- Content Row -->
-<div class="row">
-    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-        <!-- card -->
-        <div class="card h-100 card-lift">
-            <!-- card body -->
-            <div class="card-body">
-                <!-- heading -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <h4 class="mb-0">Projects</h4>
-                    </div>
-                    <div class="icon-shape icon-md bg-primary-soft text-primary rounded-2">
-                        <i  data-feather="briefcase" height="20" width="20"></i>
-                    </div>
-                </div>
-                <!-- project number -->
-                <div class="lh-1">
-                    <h1 class=" mb-1 fw-bold">18</h1>
-                    <p class="mb-0"><span class="text-dark me-2">2</span>Completed</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-        <!-- card -->
-        <div class="card h-100 card-lift">
-            <!-- card body -->
-            <div class="card-body">
-                <!-- heading -->
-                <div class="d-flex justify-content-between align-items-center
-                mb-3">
-                <div>
-                    <h4 class="mb-0">Active Task</h4>
-                </div>
-                <div class="icon-shape icon-md bg-primary-soft text-primary
-                rounded-2">
-                <i  data-feather="list" height="20" width="20"></i>
-            </div>
-        </div>
-        <!-- project number -->
-        <div class="lh-1">
-            <h1 class="  mb-1 fw-bold">132</h1>
-            <p class="mb-0"><span class="text-dark me-2">28</span>Completed</p>
-        </div>
-    </div>
-</div>
-</div>
-<div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-    <!-- card -->
-    <div class="card h-100 card-lift">
-        <!-- card body -->
-        <div class="card-body">
-            <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center
-            mb-3">
-            <div>
-                <h4 class="mb-0">Teams</h4>
-            </div>
-            <div class="icon-shape icon-md bg-primary-soft text-primary
-            rounded-2">
-            <i  data-feather="users" height="20" width="20"></i>
-        </div>
-    </div>
-    <!-- project number -->
-    <div class="lh-1">
-        <h1 class="  mb-1 fw-bold">12</h1>
-        <p class="mb-0"><span class="text-dark me-2">1</span>Completed</p>
-    </div>
-</div>
-</div>
-</div>
 
-<div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-    <!-- card -->
-    <div class="card h-100 card-lift">
-        <!-- card body -->
-        <div class="card-body">
-            <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center
-            mb-3">
-            <div>
-                <h4 class="mb-0">Productivity</h4>
+    <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Talk to Gener</div>
+                <div class="card-body">
+                    
+                    <!-- Chatbot container -->
+                    <div class="chatbot-container">
+                        <!-- Include an empty container for file recommendations -->
+                        
+                        <div class="chatbot-messages" id="chatbot-messages">
+                            <!-- Chatbot messages will appear here -->
+                        </div>
+                                
+                        <div class="chatbot-input">
+                            <form method="GET" action="{{ route('getRecommendations') }}">
+                                @csrf
+                                <input type="text" name="query" id="user-input" placeholder="Type your message...">
+                                <button type="submit" id="send-button">Search</button>
+                            </form>
+                
+                            <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations container -->
+                    <div class="recommendations-container" id="recommendations-container">
+                        <!-- Relevant resource URLs will appear here -->
+                    </div>
+                    
+                </div>
             </div>
-            <div class="icon-shape icon-md bg-primary-soft text-primary
-            rounded-2">
-            <i  data-feather="target" height="20" width="20"></i>
         </div>
     </div>
-    <!-- project number -->
-    <div class="lh-1">
-        <h1 class="  mb-1 fw-bold">76%</h1>
-        <p class="mb-0"><span class="text-success me-2">5%</span>Completed</p>
-    </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-	
-</main>
-    </body>
-    <footer>
-	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
-</footer>
-</html>
+            
+     </main>
+         </body>
+         <footer>    
+     	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
+     </footer>
+     </html>
+
+     <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const recommendationsContainer = document.getElementById("recommendations-container");
+        const loadingSpinner = document.getElementById("loading-spinner");
+
+        document.querySelector("form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const query = document.getElementById("user-input").value;
+
+            // Display loading spinner while fetching recommendations
+            loadingSpinner.style.display = "inline-block";
+
+            // Fetch recommendations based on the user's query
+            fetch(`/get-recommendations?query=${encodeURIComponent(query)}`)
+                .then((response) => response.text())
+                .then((html) => {
+                    // Hide loading spinner
+                    loadingSpinner.style.display = "none";
+                    
+                    // Update the recommendations container with the fetched HTML
+                    recommendationsContainer.innerHTML = html;
+                })
+                .catch((error) => {
+                    console.error("Error fetching recommendations:", error);
+                });
+        });
+    });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const chatbotMessages = document.getElementById("chatbot-messages");
+    const userInput = document.getElementById("user-input");
+    const sendButton = document.getElementById("send-button");
+    const loadingSpinner = document.getElementById("loading-spinner");
+
+    // Function to add a message to the chatbot messages container
+    function addMessage(message, className) {
+        const messageElement = document.createElement("div");
+        messageElement.className = className;
+        messageElement.innerText = message;
+        chatbotMessages.appendChild(messageElement);
+    }
+
+    // Function to toggle the loading spinner and send button
+    function toggleLoading(isLoading) {
+        if (isLoading) {
+            sendButton.style.display = "none";
+            loadingSpinner.style.display = "block";
+        } else {
+            sendButton.style.display = "block";
+            loadingSpinner.style.display = "none";
+        }
+    }
+
+    // Function to send user input to the Flask API and display the response
+    async function sendMessageToChatbot(query, modelType, muteStream, hideSource) {
+        addMessage(query, "user-message");
+        toggleLoading(true); // Loading spinner and hide send button
+
+        // API request to Flask
+        try {
+            const response = await fetch("http://localhost:8080/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query,
+                    model_type: modelType,
+                    mute_stream: muteStream,
+                    hide_source: hideSource,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const chatbotResponse = data.answer || "Chatbot didn't respond.";
+                addMessage(chatbotResponse, "chatbot-message");
+            } 
+            
+            else {
+                addMessage("Error: Unable to communicate with the chatbot.", "chatbot-message");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            addMessage("Error: Unable to communicate with the chatbot.", "chatbot-message");
+        } finally {
+            toggleLoading(false); // Hide loading spinner and show send button
+        }
+
+        userInput.value = ""; // Clear the user input field
+    }
+
+    // Event listener for the send button
+    sendButton.addEventListener("click", () => {
+        const query = userInput.value;
+        const modelType = "GPT4All";
+        const muteStream = false;
+        const hideSource = false;
+        sendMessageToChatbot(query, modelType, muteStream, hideSource);
+    });
+
+    // Event listener for pressing Enter key in the input field
+    userInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            const query = userInput.value;
+            const modelType = "GPT4All";
+            const muteStream = false;
+            const hideSource = false;
+            sendMessageToChatbot(query, modelType, muteStream, hideSource);
+        }
+    });
+});
+</script>
