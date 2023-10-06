@@ -3,6 +3,10 @@
 	background-repeat: no-repeat;
 }
 
+html {
+	background-color: #f8f9fa;;
+  }
+
 .container {
 	display: flex;
 	justify-content: center;
@@ -21,6 +25,17 @@ form {
 	form {
 		width: 80%;
 		margin: 0 auto;
+	}
+}
+
+@media (max-width: 576px) {
+	form {
+		width: 80%;
+		margin: 2rem auto;
+	}
+	
+	.background {
+		background-image: none !important; /* This will hide the background image on mobile devices */
 	}
 }
 

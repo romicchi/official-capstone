@@ -7,6 +7,7 @@ body {
 
 .card-body {
   height: 50rem;
+  overflow: auto;
 }
 
 .table-container {

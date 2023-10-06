@@ -6,11 +6,13 @@
 @endif
 
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/resources.css') }}">
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8">
+    <title>GENER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/resources.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 <head>
         
 @section('content')
@@ -81,6 +83,6 @@
                 },
             });
         });
-    });
+});
 </script>
 

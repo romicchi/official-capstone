@@ -1,7 +1,12 @@
 @extends('layout.adminnavlayout')
 
-<link rel="stylesheet" type="text/css" href="{{ asset('css/table.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ asset('css/usermanage.css') }}">
+<head>
+  <meta charset="utf-8">
+    <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/table.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/usermanage.css') }}">
+</head>
 
 <div class="tab">
   <button class="tablinks" onclick="openTab(event, 'existing')">Existing Users</button>
@@ -58,63 +63,65 @@
     @csrf
     <div class="card shadow mb-4">
     <div class="card-body">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Student Number</th>
-          <th>Lastname</th>
-          <th>Firstname</th>
-          <th>Email</th>
-          <th>College</th>
-          <th>Role</th>
-          <th>Uploaded ID</th>
-          <th>Verified</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- If empty this message will display -->
-        @if ($pendingUsers->isEmpty())
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
           <tr>
-            <td colspan="8"><strong>No unverified users inside the table</strong></td>
+            <th>Student Number</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Email</th>
+            <th>College</th>
+            <th>Role</th>
+            <th>Uploaded ID</th>
+            <th>Verified</th>
+            <th>Action</th>
           </tr>
-        @else
-          @foreach ($pendingUsers as $user)
-          @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
+        </thead>
+        <tbody>
+          <!-- If empty this message will display -->
+          @if ($pendingUsers->isEmpty())
             <tr>
-              <td><strong>
-                @if ($user->student_number)
-                {{ $user->student_number }}
-                @else
-                Not Applicable
-                @endif
-              </strong></td>
-              <td><strong>{{ $user->lastname }}</strong></td>
-              <td><strong>{{ $user->firstname }}</strong></td>
-              <td>{{ $user->email }}</td>
-              <td>{{ $user->college->collegeName }}</td>
-              <td>{{ $user->role->role }}</td>
-              <td>
-                  <!-- Clickable preview image -->
-                  <img src="{{ $user->url }}" alt="Uploaded ID" height="50" width="50" class="clickable-preview" onclick="showImage('{{ $user->url }}')">
-              </td>
-              <td>
-                @if ($user->Verified == 1)
-                  <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
-                @else
-                  <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
-                @endif
-              </td>
-              <td>
-                <button type="submit" name="verified_users[]" value="{{ $user->id }}" class="btn btn-primary">Approve</button>
-                <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
-              </td>
+              <td colspan="8"><strong>No unverified users inside the table</strong></td>
             </tr>
-            @endif
-          @endforeach
-        @endif
-      </tbody>
-    </table>
+          @else
+            @foreach ($pendingUsers as $user)
+            @if ($user->role->role !== 'admin' && $user->role->role !== 'super-admin')
+              <tr>
+                <td><strong>
+                  @if ($user->student_number)
+                  {{ $user->student_number }}
+                  @else
+                  Not Applicable
+                  @endif
+                </strong></td>
+                <td><strong>{{ $user->lastname }}</strong></td>
+                <td><strong>{{ $user->firstname }}</strong></td>
+                <td>{{ $user->email }}</td>
+                <td>{{ $user->college->collegeName }}</td>
+                <td>{{ $user->role->role }}</td>
+                <td>
+                    <!-- Clickable preview image -->
+                    <img src="{{ $user->url }}" alt="Uploaded ID" height="50" width="50" class="clickable-preview" onclick="showImage('{{ $user->url }}')">
+                </td>
+                <td>
+                  @if ($user->Verified == 1)
+                    <span class="badge badge-success badge-lg" style="color: green;">Approved</span>
+                  @else
+                    <span class="badge badge-warning badge-lg" style="color: red;">Pending</span>
+                  @endif
+                </td>
+                <td>
+                  <button type="submit" name="verified_users[]" value="{{ $user->id }}" class="btn btn-primary">Approve</button>
+                  <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
+                </td>
+              </tr>
+              @endif
+            @endforeach
+          @endif
+        </tbody>
+      </table>
+    </div>
     <!-- Pagination links for Pending Users -->
     <div class="d-flex justify-content-center">
       {{ $pendingUsers->links('pagination::bootstrap-4') }}
@@ -126,30 +133,32 @@
 @else
 <div class="card shadow mb-4">
   <div class="card-body">
-<table class="table table-hover" width="100%" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Student Number</th>
-      <th>Lastname</th>
-      <th>Firstname</th>
-      <th>Email</th>
-      <th>College</th>
-      <th>Role</th>
-      <th>Uploaded ID</th>
-      <th>Verified</th>
-      <th>Approve</th>
-      <th>Reject</th>
-    </tr>
-  </thead>
-  <tbody>
-  </tbody>
-</table>
-<center>
-    <p>No pending users inside the table</p>
-</center>
-@endif
-</div>
-</div>
+    <div class="table-responsive">
+      <table class="table table-hover" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Student Number</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Email</th>
+            <th>College</th>
+            <th>Role</th>
+            <th>Uploaded ID</th>
+            <th>Verified</th>
+            <th>Approve</th>
+            <th>Reject</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+        </table>
+      </div>
+      <center>
+        <p>No pending users inside the table</p>
+      </center>
+      @endif
+    </div>
+  </div>
 </div>
 
 <div id="existing" class="tabcontent">
@@ -204,6 +213,7 @@
     <div class="card shadow mb-4">
     <div class="card-body">
     <form class="table-wrapper" id="admin-table">
+      <div class="table-responsive">
         <table class="table table-hover" width="100%" cellspacing="0">
             <thead>
                 <tr>
@@ -264,6 +274,7 @@
                 @endforeach
             </tbody>
         </table>
+      </div>
         <!-- Pagination links for Existing Users -->
         <div class="d-flex justify-content-center">
             {{ $existingUsers->links('pagination::bootstrap-4') }}
@@ -274,28 +285,30 @@
 @else
 <div class="card shadow mb-4">
   <div class="card-body">
-    <table class="table table-hover" width="100%" cellspacing="0">
-      <thead>
-        <tr>
-          <th>Student Number</th>
-          <th>Lastname</th>
-          <th>Firstname</th>
-          <th>Email</th>
-          <th>College</th>
-          <th>Role</th>
-          <th>Uploaded ID</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        </tbody>
-      </table>
+    <div class="table-responsive">
+      <table class="table table-hover" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Student Number</th>
+            <th>Lastname</th>
+            <th>Firstname</th>
+            <th>Email</th>
+            <th>College</th>
+            <th>Role</th>
+            <th>Uploaded ID</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+        </table>
+      </div>
       <center>
         <td class="center" colspan="6"><strong>No users found</strong></td>
       </center>
-    @endif
+      @endif
+    </div>
   </div>
-</div>
 </div>
 
 <div id="archive" class="tabcontent">
@@ -345,70 +358,8 @@
     @if ($archiveViewableUsers->count() > 0)
     <form class="table-wrapper" id="admin-table">
       <div class="card shadow mb-4">
-      <div class="card-body">
-        <table class="table table-hover" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Student Number</th>
-                    <th>Lastname</th>
-                    <th>Firstname</th>
-                    <th>Email</th>
-                    <th>College</th>
-                    <th>Role</th>
-                    <th>Uploaded ID</th>
-                    <th>Year Level</th>
-                    <th>Archived At</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($archiveViewableUsers as $user)
-                <tr>
-                    <td><strong>
-                      @if ($user->student_number)
-                      {{ $user->student_number }}
-                      @else
-                      Not Applicable
-                      @endif
-                    </strong></td>
-                    <td><strong>{{ $user->lastname }}</strong></td>
-                    <td><strong>{{ $user->firstname }}</strong></td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->college->collegeName }}</td>
-                    <td>{{ $user->role->role }}</td>
-                    <td>
-                        <!-- Display Uploaded ID with a clickable preview -->
-                        <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
-                            <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
-                        </a>
-                    </td>
-                    <td>
-                      @if ($user->year_level)
-                      {{ $user->year_level }}
-                      @else
-                      Not Applicable
-                      @endif
-                    </td>
-                    <td>{{ $user->archived_at }}</td>
-                    <td>
-                        <!-- Add Reactivate and Delete buttons -->
-                        <a type="submit" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
-                        <a type="submit" class="btn btn-danger" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <!-- Pagination links for Archived Viewable Users -->
-        <div class="d-flex justify-content-center">
-            {{ $archiveViewableUsers->appends(['activeTab' => 'archive'])->links('pagination::bootstrap-4') }}
-        </div>
-      </div>
-    </div>
-    </form>
-    @else
-    <div class="card shadow mb-4">
         <div class="card-body">
+          <div class="table-responsive">
             <table class="table table-hover" width="100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -425,14 +376,80 @@
                     </tr>
                 </thead>
                 <tbody>
-                  </tbody>
-                </table>
-                <center>
-                  <p>No archived users inside the table</p>
-                </center>
+                    @foreach ($archiveViewableUsers as $user)
+                    <tr>
+                        <td><strong>
+                          @if ($user->student_number)
+                          {{ $user->student_number }}
+                          @else
+                          Not Applicable
+                          @endif
+                        </strong></td>
+                        <td><strong>{{ $user->lastname }}</strong></td>
+                        <td><strong>{{ $user->firstname }}</strong></td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->college->collegeName }}</td>
+                        <td>{{ $user->role->role }}</td>
+                        <td>
+                            <!-- Display Uploaded ID with a clickable preview -->
+                            <a href="javascript:void(0);" onclick="showImage('{{ asset($user->url) }}');">
+                                <img src="{{ asset($user->url) }}" alt="Uploaded ID" height="50">
+                            </a>
+                        </td>
+                        <td>
+                          @if ($user->year_level)
+                          {{ $user->year_level }}
+                          @else
+                          Not Applicable
+                          @endif
+                        </td>
+                        <td>{{ $user->archived_at }}</td>
+                        <td>
+                            <!-- Add Reactivate and Delete buttons -->
+                            <a type="submit" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
+                            <a type="submit" class="btn btn-danger" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+          </div>
+        <!-- Pagination links for Archived Viewable Users -->
+        <div class="d-flex justify-content-center">
+            {{ $archiveViewableUsers->appends(['activeTab' => 'archive'])->links('pagination::bootstrap-4') }}
         </div>
+      </div>
     </div>
-    @endif
-</div>
+    </form>
+    @else
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Student Number</th>
+                <th>Lastname</th>
+                <th>Firstname</th>
+                <th>Email</th>
+                <th>College</th>
+                <th>Role</th>
+                <th>Uploaded ID</th>
+                <th>Year Level</th>
+                <th>Archived At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              </tbody>
+            </table>
+          </div>
+          <center>
+            <p>No archived users inside the table</p>
+          </center>
+        </div>
+      </div>
+      @endif
+    </div>
 
 <script src="{{ asset('js/admin.js') }}"></script>

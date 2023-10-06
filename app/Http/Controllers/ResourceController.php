@@ -10,6 +10,7 @@ use App\Models\History;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Resource;
+use App\Models\ResourceRating;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -361,6 +362,21 @@ class ResourceController extends Controller
         $resources = $discipline->resources;
 
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
+    }
+
+    public function rate(Request $request)
+    {
+        $resourceId = $request->input('resourceId');
+        $rating = $request->input('rating');
+        $user = auth()->user();
+    
+        // Check if the user has already rated this resource, if yes, update the rating, otherwise create a new rating
+        $user->resourceRatings()->updateOrCreate(
+            ['resource_id' => $resourceId],
+            ['rating' => $rating]
+        );
+    
+        return response()->json(['success' => true]);
     }
 
 }

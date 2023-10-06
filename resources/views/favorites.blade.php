@@ -1,8 +1,13 @@
 @include('layout.usernav')
 
-@section('content')
+<head>
+    <meta charset="utf-8">
+    <title>GENER | Favorite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/favorite.css') }}">
+</head>
 
+@section('content')
     <div class="container">
         <h2 class="text-center">Favorite Resources</h2>
 

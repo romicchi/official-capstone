@@ -22,7 +22,7 @@ class AdminSeeder extends Seeder
             'role_id' => 3, // Admin role ID
             'url' => null,
             'email_verified_at' => now(),
-            'password' => Hash::make('Admin123!'),
+            'password' => Hash::make('W%nWdFF7c(4avX2j=G1g^{4Tnzz&&z'),
             'remember_token' => null,
             'created_at' => now(),
             'updated_at' => now(),
@@ -37,7 +37,7 @@ class AdminSeeder extends Seeder
             'role_id' => 4, // Super Admin role ID
             'url' => null,
             'email_verified_at' => now(),
-            'password' => Hash::make('Superadmin123!'),
+            'password' => Hash::make('qu#lwsorHX~}_n8Z+SDk2!n0WAXPLK8c(m5t=V5`%PFh(:&WB[<+ab^sPh?hs'),
             'remember_token' => null,
             'created_at' => now(),
             'updated_at' => now(),

@@ -50,6 +50,11 @@ class Resource extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function resourceRatings()
+    {
+        return $this->hasMany(ResourceRating::class);
+    }
+
     public function resource()
     {
         return $this->belongsTo(Resource::class);

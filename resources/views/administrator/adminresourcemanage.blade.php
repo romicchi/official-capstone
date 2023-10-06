@@ -1,7 +1,12 @@
 @extends('layout.adminnavlayout')
 
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/resourcemanage.css')}}">
+<head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/resourcemanage.css')}}">
+</head>
 
 <div class="card">
     <div class="card-header">
@@ -13,7 +18,8 @@
 
             <div class="table-wrapper py-2">
                 <div class="card shadow mb-5">
-                <table class="table table-bordered table-hover" id="resourceTable">
+                    <div class="table-responsive">
+                <table class="table table-hover" id="resourceTable">
                     <thead>
                     <tr>
                         <th>Title</th>
@@ -41,17 +47,23 @@
                             <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                             <td>
                             <a href="{{ route('resource.show', $resource->id) }}">View</a> |
+                            <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                             </tr>
                         @endforeach
                     @endif
                     </tbody>
                 </table>
+                </div>
+                            <!-- Pagination links -->
+            <div class="d-flex justify-content-center">
+                {{ $resources->onEachSide(3)->links('pagination::bootstrap-4') }}
+            </div>
             </div>
         </div>
-            <!-- Pagination links -->
-            <div class="d-flex justify-content-center">
-                {{ $resources->links('pagination::bootstrap-4') }}
-            </div>
         </center>
     </div>
 </div>

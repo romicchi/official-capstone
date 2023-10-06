@@ -8,11 +8,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-        <title>@section('title', 'GENER')</title>
-
+        <title>GENER | Welcome</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Fonts -->
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset ('css/landingpage.css') }}">

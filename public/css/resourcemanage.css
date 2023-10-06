@@ -6,3 +6,7 @@
 .card-body {
     height: 55rem;
 }
+
+.table-responsive {
+    overflow-y: hidden;
+}

@@ -73,8 +73,6 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
     Route::post('/update-report-table', [AdminController::class, 'updateReportTable'])->name('update.report.table');
 
     Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
-    Route::put('/resources/{resource}/approve', [ResourceController::class, 'adminapprove'])->name('adminresources.approve');
-    Route::put('/resources/{resource}/disapprove', [ResourceController::class, 'admindisapprove'])->name('adminresources.disapprove');
     Route::get('/resources/search', [ResourceController::class, 'adminsearchResources'])->name('adminresources.search');
 
     Route::get('usermanage',[UsermanageController::class, 'show'])->name('usermanage');
@@ -212,6 +210,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
     Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
     Route::get('/download/{resource}',[ResourceController::class, 'download'])->name('resource.download');
+    Route::post('/resource/rate', [ResourceController::class, 'rate'])->name('resource.rate');
 
     // COMMENTS
     Route::resource('comments', CommentController::class)->only(['store', 'destroy']);
@@ -237,7 +236,6 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         Route::delete('/resources/{resource}', [ResourceController::class, 'destroy'])->name('resources.destroy');
         Route::get('/resources/{resource}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
         Route::put('/resources/{resource}', [ResourceController::class, 'update'])->name('resources.update');
-        
     });
 });
 

@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Dashboard</title>
+        <title>GENER | Dashboard</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    
@@ -156,16 +156,16 @@
                         <tr>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Favorites Count</th>
-                            <th>Action</th>
+                            <th>Favorited</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($mostFavoriteResources as $resource)
                             <tr>
-                                <td>{{ $resource->title }}</td>
-                                <td>{{ $resource->author }}</td>
-                                <td>{{ $resource->favorited_by_count }}</td>
+                                <td class="text-center">{{ $resource->title }}</td>
+                                <td class="text-center">{{ $resource->author }}</td>
+                                <td class="text-center">{{ $resource->favorited_by_count }}</td>
                                 <td>
                                     <a class="text-decoration" href="{{ route('resource.show', $resource->id) }}">View</a>
                                 </td>
@@ -186,15 +186,17 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Title</th>
-                        <th>Replies Count</th>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Replied</th>
+                        <th class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($mostRepliedDiscussions as $discussion)
                         <tr>
-                            <td>{{ $discussion->title }}</td>
-                            <td>{{ $discussion->replies_count }}</td>
+                            <td class="text-center">{{ $discussion->title }}</td>
+                            <td class="text-center">{{ $discussion->replies_count }}</td>
+                            <td><a class="text-decoration" href="{{ route('discussions.show', $discussion->slug, ['id' => $discussion->id]) }}">View</a></td>
                         </tr>
                     @endforeach
                 </tbody>

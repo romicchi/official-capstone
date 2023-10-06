@@ -1,9 +1,11 @@
-        <head>            
-            <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        </head>
+<head>   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
 
 <!-- NAV BAR -->
 @section('adminnavbar')

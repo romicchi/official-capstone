@@ -1,7 +1,12 @@
 @extends('layout.usernav')
 
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js"></script>
-<link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
+<head>
+    <meta charset="utf-8">
+    <title>GENER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/classic/ckeditor.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
+</head>
 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>

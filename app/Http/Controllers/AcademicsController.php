@@ -13,10 +13,10 @@ class AcademicsController extends Controller
 {
     public function index()
     {
-        $allCourses = Course::paginate(10);
-        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
-        $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
-        $disciplines = Discipline::with('college')->paginate(10, ['*'], 'discipline_page');
+        $allCourses = Course::paginate(14);
+        $colleges = College::with('courses')->paginate(14, ['*'], 'college_page');
+        $courses = Course::with('college')->paginate(14, ['*'], 'course_page');
+        $disciplines = Discipline::with('college')->paginate(14, ['*'], 'discipline_page');
         Paginator::useBootstrap();
     
         return view('academics.index', compact('colleges', 'allCourses', 'courses', 'disciplines'));
@@ -147,16 +147,16 @@ class AcademicsController extends Controller
     public function filterCourses(Request $request)
     {
         $collegeId = $request->input('college_filter');
-        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
-        $allCourses = Course::paginate(10, ['*'], 'course_page');
+        $colleges = College::with('courses')->paginate(14, ['*'], 'college_page');
+        $allCourses = Course::paginate(14, ['*'], 'course_page');
         
         if ($collegeId) {
-            $courses = Course::where('college_id', $collegeId)->paginate(10, ['*'], 'course_page');
+            $courses = Course::where('college_id', $collegeId)->paginate(14, ['*'], 'course_page');
         } else {
-            $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
+            $courses = Course::with('college')->paginate(14, ['*'], 'course_page');
         }
         
-        $disciplines = Discipline::with('college')->paginate(10, ['*'], 'discipline_page');
+        $disciplines = Discipline::with('college')->paginate(14, ['*'], 'discipline_page');
         
         // Append the college_filter parameter to pagination
         $courses->appends(['college_filter' => $collegeId]);
@@ -173,14 +173,14 @@ class AcademicsController extends Controller
     {
         $collegeId = $request->input('college_filter');
     
-        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
-        $allCourses = Course::paginate(10, ['*'], 'course_page');
-        $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
+        $colleges = College::with('courses')->paginate(14, ['*'], 'college_page');
+        $allCourses = Course::paginate(14, ['*'], 'course_page');
+        $courses = Course::with('college')->paginate(14, ['*'], 'course_page');
         
         if ($collegeId) {
-            $disciplines = Discipline::where('college_id', $collegeId)->paginate(10, ['*'], 'discipline_page');
+            $disciplines = Discipline::where('college_id', $collegeId)->paginate(14, ['*'], 'discipline_page');
         } else {
-            $disciplines = Discipline::with('college')->paginate(10, ['*'], 'discipline_page');
+            $disciplines = Discipline::with('college')->paginate(14, ['*'], 'discipline_page');
         }
         
         // Append the college_filter parameter to pagination
@@ -257,9 +257,9 @@ class AcademicsController extends Controller
     {
         $searchQuery = $request->input('course_search');
 
-        $courses = Course::where('courseName', 'LIKE', "%$searchQuery%")->paginate(10, ['*'], 'course_page');
-        $allCourses = Course::paginate(10, ['*'], 'course_page');
-        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
+        $courses = Course::where('courseName', 'LIKE', "%$searchQuery%")->paginate(14, ['*'], 'course_page');
+        $allCourses = Course::paginate(14, ['*'], 'course_page');
+        $colleges = College::with('courses')->paginate(14, ['*'], 'college_page');
         Paginator::useBootstrap();
 
         $activeTab = 'courses';
@@ -271,10 +271,10 @@ class AcademicsController extends Controller
     {
         $searchQuery = $request->input('discipline_search');
 
-        $disciplines = Discipline::where('disciplineName', 'LIKE', "%$searchQuery%")->paginate(10, ['*'], 'discipline_page');
-        $colleges = College::with('courses')->paginate(10, ['*'], 'college_page');
-        $courses = Course::with('college')->paginate(10, ['*'], 'course_page');
-        $allCourses = Course::paginate(10, ['*'], 'course_page');
+        $disciplines = Discipline::where('disciplineName', 'LIKE', "%$searchQuery%")->paginate(14, ['*'], 'discipline_page');
+        $colleges = College::with('courses')->paginate(14, ['*'], 'college_page');
+        $courses = Course::with('college')->paginate(14, ['*'], 'course_page');
+        $allCourses = Course::paginate(14, ['*'], 'course_page');
         Paginator::useBootstrap();
 
         $activeTab = 'disciplines';

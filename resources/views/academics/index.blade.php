@@ -1,7 +1,12 @@
 @extends('layout.adminnavlayout')
 
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/academics.css')}}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+<head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/academics.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+</head>
 
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'colleges')">Colleges</button>
@@ -94,7 +99,7 @@
         @endforeach
     </tbody>
 </table>
-<div class="my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $courses]) }}
+<div class="my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}
 </div>
 </div>
 </div>

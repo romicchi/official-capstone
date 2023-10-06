@@ -181,7 +181,7 @@ class AuthController extends Controller
         $user->save();
 
         // Send verification email
-        Mail::to($data['email'])->send(new RegistrationEmail($user));
+        Mail::to($user->email)->send(new RegistrationEmail($user));
 
         function getGoogleDriveAccessToken()
         {

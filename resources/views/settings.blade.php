@@ -1,6 +1,9 @@
 @extends('layout.usernav')
 
 <head>
+    <meta charset="utf-8">
+    <title>GENER | Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 

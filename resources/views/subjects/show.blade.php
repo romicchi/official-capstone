@@ -11,8 +11,10 @@
         <html>
         <head>
             <title>GENER</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.0/viewer.min.css">
+            <link rel="stylesheet" type="text/css" href="{{ asset('css/embed.css') }}">
+            <meta name="csrf-token" content="{{ csrf_token() }}">
         </head>
         <body>
         <div class="row">
@@ -23,6 +25,20 @@
             <p>Author: {{ $resource->author }}</p>
             </div>
             <p>Description: {{ $resource->description }}</p>
+
+            <a href="{{ route('resource.rate') }}" class="rate-resource" data-resource-id="{{ $resource->id }}">Rate</a>
+            <div class="rating-overlay">
+                <h3>{{ $resource->title }}</h3>
+                <div class="stars-container">
+                    <span class="star" data-rating="1">&#9733;</span>
+                    <span class="star" data-rating="2">&#9733;</span>
+                    <span class="star" data-rating="3">&#9733;</span>
+                    <span class="star" data-rating="4">&#9733;</span>
+                    <span class="star" data-rating="5">&#9733;</span>
+                    <div class="success-message"></div>
+                    <div class="error-message"></div>
+                </div>
+            </div>
             
             <div id="loading-spinner" class="text-center" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
                 <div class="spinner-border text-primary" role="status">
@@ -47,6 +63,7 @@
 </div>
 @show
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.0/viewer.min.js"></script>
 <script>
 function handlePdfLoad() {
@@ -76,4 +93,75 @@ function handlePdfLoad() {
         }
     });
 }
+
+    $(document).ready(function () {
+        // Handle star rating selection within the overlay
+        var stars = $('.rating-overlay .star');
+
+        stars.hover(
+            function () {
+                // On hover, add the 'hovered' class to stars up to the current one
+                stars.slice(0, $(this).index() + 1).addClass('hovered');
+            },
+            function () {
+                // On mouse out, remove the 'hovered' class from all stars
+                stars.removeClass('hovered');
+            }
+        );
+
+        // Show the rating overlay when the "Rate" link is clicked
+        $('.rate-resource').click(function (e) {
+            e.preventDefault(); // Prevent the link from navigating
+
+            // Hide all other rating overlays (if any)
+            $('.rating-overlay').hide();
+
+            // Show the rating overlay for the clicked resource
+            var overlay = $(this).siblings('.rating-overlay');
+            overlay.fadeIn();
+
+            // Handle star rating selection within the overlay
+            overlay.find('.star').click(function () {
+                var rating = $(this).data('rating');
+                var resourceId = {{ $resource->id }}; // Make sure $resource->id is correctly populated
+
+                // Send the rating data to your server using AJAX
+                $.ajax({
+                    url: '{{ route('resource.rate') }}',
+                    type: 'POST',
+                    data: {
+                        resourceId: resourceId,
+                        rating: rating,
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            // Display the success message within the overlay
+                            overlay.find('.success-message').html('Rating submitted successfully.');
+                            // You can update the UI to reflect the new rating here if needed
+                        } else {
+                            // Display the error message within the overlay
+                            overlay.find('.error-message').html('Failed to submit rating.');
+                        }
+                    },
+                    error: function () {
+                        // Display the error message within the overlay
+                        overlay.find('.error-message').html('Failed to submit rating.');
+                    },
+                });
+
+                // Hide the rating overlay after selecting a rating
+                overlay.fadeOut();
+            });
+
+            // Close the rating overlay when clicking outside of it
+            $(document).mouseup(function (e) {
+                if (!overlay.is(e.target) && overlay.has(e.target).length === 0) {
+                    overlay.fadeOut();
+                }
+            });
+        });
+        
+        // ...
+    });
 </script>

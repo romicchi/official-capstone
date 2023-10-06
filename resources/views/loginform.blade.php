@@ -5,7 +5,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Dashboard</title>
+        <title>GENER | Login</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
  
@@ -16,7 +16,7 @@
   </head>
   <body>
 
-  <div class="background" style="background-image: url({{ asset('assets/img/Background.png')}}" loading="lazy">
+  <div class="background" style="background-image: url('{{ asset('assets/img/Background.png') }}')" loading="lazy">
     <div class="container"> 
       <div class="mt-5 message">
         @if($errors->any())

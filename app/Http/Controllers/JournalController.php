@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Journal;
 use App\Models\User;
+use App\Models\College;
+use App\Models\Discipline;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -23,18 +25,29 @@ class JournalController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-    
-        // Retrieve journals with matching titles
+        $selectedDiscipline = $request->input('discipline');
+
+        // Query to retrieve journals with matching titles
         $matchingJournals = Journal::where('title', 'like', "%$search%");
-    
-        // Retrieve remaining journals
-        $otherJournals = Journal::where('title', 'not like', "%$search%");
-    
-        // Merge the two sets of journals
-        $journals = $matchingJournals->union($otherJournals)->paginate(5);
-    
-        return view('journals.index', compact('journals', 'search'));
+
+        // Query to filter by selected discipline
+        if (!empty($selectedDiscipline)) {
+            $matchingJournals->where('discipline_id', $selectedDiscipline);
+        }
+
+        // Filter journals to only include those owned by the authenticated user
+        $user = auth()->user();
+        $matchingJournals->where('user_id', $user->id);
+
+        // Retrieve the filtered journals
+        $journals = $matchingJournals->paginate(5);
+
+        // Retrieve all disciplines for the dropdown
+        $disciplines = Discipline::all();
+
+        return view('journals.index', compact('journals', 'search', 'disciplines', 'selectedDiscipline'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -52,6 +65,8 @@ class JournalController extends Controller
         $validatedData = $request->validate([
             'title' => 'required',
             'content' => 'nullable',
+            'college_id' => 'required',
+            'discipline_id' => 'required',
         ]);
     
         // Check if the title exceeds the maximum word limit
@@ -67,6 +82,8 @@ class JournalController extends Controller
         $journal = Journal::create([
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
+            'college_id' => $validatedData['college_id'], // Use college_id
+            'discipline_id' => $validatedData['discipline_id'], // Use discipline_id
             'user_id' => auth()->user()->id,
         ]);
     

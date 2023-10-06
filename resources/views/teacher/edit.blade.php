@@ -1,5 +1,11 @@
 @extends('layout.usernav')
 
+<head>
+    <meta charset="utf-8">
+    <title>GENER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
 <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-md-8">

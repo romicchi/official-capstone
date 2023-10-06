@@ -1,9 +1,10 @@
-<!-- BLADE -->
-<!-- Link to Bootstrap stylesheet -->
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/chatbot.css') }}">
-<!-- Link to jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{ asset ('css/chatbot.css') }}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
 
 @section('chatbot')
 <div id="toggle-chatbot" class="chatbot-button">

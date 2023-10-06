@@ -44,15 +44,15 @@ function generateResponse(input) {
       "response": "Our web application provides a wide range of educational resources, including textbooks, lecture notes, video lectures, research papers, and more. You can explore resources from various colleges, courses, and subjects to support your learning."
     },
     {
-      "keywords": ["open educational resources", "OER"],
+      "keywords": ["open educational resources", "OER", "open"],
       "response": "We offer a collection of open educational resources (OER) that are freely available for anyone to access. These resources are created by professors and experts, ensuring credibility and relevance for your studies."
     },
     {
-      "keywords": ["professors", "contributors"],
+      "keywords": ["professors", "contributors", "teacher", "teachers"],
       "response": "Our web application features resources contributed by professors and experts from different educational institutions. Their expertise ensures the quality and credibility of the materials available on our platform."
     },
     {
-      "keywords": ["safety", "credibility"],
+      "keywords": ["safety", "credibility", "safe"],
       "response": "We prioritize the safety and credibility of our educational resources. Our team carefully reviews and curates the content to ensure it meets high standards of accuracy, reliability, and relevance for learners."
     },
     {
@@ -60,15 +60,15 @@ function generateResponse(input) {
       "response": "You can find resources from various colleges and educational institutions on our platform. We aim to provide a diverse collection that covers a wide range of subjects and courses to meet your learning needs."
     },
     {
-      "keywords": ["courses", "subjects"],
+      "keywords": ["courses", "subjects", "materials", "material"],
       "response": "Our web application offers resources for a wide variety of courses and subjects. Whether you're studying mathematics, history, information technology, or any other discipline, you can find relevant resources to support your learning journey."
     },
     {
-      "keywords": ["discussion forum", "community"],
+      "keywords": ["discussion forum", "community", "forum"],
       "response": "We provide a discussion forum where you can connect with fellow learners, ask questions, share insights, and engage in educational discussions. It's a great way to collaborate and learn from a community of like-minded individuals."
     },
     {
-      "keywords": ["personal notes", "note-taking"],
+      "keywords": ["personal notes", "note-taking", "journal", "note", "notes"],
       "response": "Our web application allows you to take personal notes while accessing educational resources. You can create, organize, and save your notes, making it easier to review and consolidate your learning."
     },
     {
@@ -76,8 +76,24 @@ function generateResponse(input) {
       "response": "We maintain a search history feature that allows you to track and revisit your previous searches. It helps you keep a record of the resources you have explored and simplifies navigation within the web application."
     },
     {
-      "keywords": ["dashboard", "user dashboard"],
+      "keywords": ["dashboard", "user dashboard", "home"],
       "response": "Our user-friendly dashboard provides a personalized and centralized hub for your educational journey. You can access your saved resources, view progress, manage your profile, and discover new materials from the dashboard."
+    },
+    {
+      "keywords": ["help", "assistance", "support"],
+      "response": "I'm here to provide assistance with your educational needs. Feel free to ask any questions, and I'll do my best to help you."
+    },
+    {
+      "keywords": ["features", "capabilities", "options"],
+      "response": "Our platform offers a variety of features, including a discussion forum, personal note-taking, and a user dashboard. How can I assist you in using these features?"
+    },
+    {
+      "keywords": ["community", "interact", "connect"],
+      "response": "Our community forum is a great place to interact with other learners. You can ask questions, share insights, and collaborate with fellow students. How would you like to engage with the community today?"
+    },
+    {
+      "keywords": ["gener", "GENER", "Generate Report of Educational Resource"],
+      "response": "Gener is your friendly AI chatbot here to assist you with a wide range of tasks and questions. Whether it's educational support, information, or just a friendly chat, The AI is here to help! 😊"
     }
   ];
 

@@ -1,6 +1,9 @@
 @extends('layout.adminnavlayout')
 
 <head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/logs.css')}}">
 </head>
 
@@ -34,6 +37,7 @@
         </form>
     </div>
     
+    <div class="table-responsive">
     <table>
         <thead>
             <tr>
@@ -56,8 +60,9 @@
             @endforeach
         </tbody>
     </table>
+    </div>
     <!-- pagination bootstrap center-->
     <div class="d-flex justify-content-center my-3">
-    {{ $activityLog->appends(['activity_filter' => request('activity_filter'), 'query' => request('query')])->links('pagination::bootstrap-4') }}
+    {{ $activityLog->appends(['activity_filter' => request('activity_filter'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
     </div>
 </div>

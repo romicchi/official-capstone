@@ -4,23 +4,16 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Admin Access</title>
+        <title>Admin</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> -->
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">        
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
         <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-        
       </head>
-      <style>
-
-      </style>
     <body>
 
-    <!-- Content -->
     <header>
 		<div class="logo">
             <h4>Primary</h4>
@@ -191,27 +184,29 @@
         <div class="table-container shadow">
             <p class="h4 mb-0 text-gray-800">Top Resources</p>
             <div class="d-flex justify-content-between align-items-center">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Favorites Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mostFavoriteResources as $resource)
+            </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
                             <tr>
-                                <td>{{ $resource->title }}</td>
-                                <td>{{ $resource->author }}</td>
-                                <td>{{ $resource->favorited_by_count }}</td>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">Author</th>
+                                <th class="text-center">Favorited</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($mostFavoriteResources as $resource)
+                                <tr>
+                                    <td class="text-center">{{ $resource->title }}</td>
+                                    <td class="text-center">{{ $resource->author }}</td>
+                                    <td class="text-center">{{ $resource->favorited_by_count }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- Most Replied Discussions Table -->
     <div class="col-md-6">
@@ -219,22 +214,24 @@
             <p class="h4 mb-0 text-gray-800">Top Discussions</p>
             <div class="d-flex justify-content-between align-items-center">
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Replies Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($mostRepliedDiscussions as $discussion)
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>{{ $discussion->title }}</td>
-                            <td>{{ $discussion->replies_count }}</td>
+                            <th class="text-center">Title</th>
+                            <th class="text-center">Replied</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($mostRepliedDiscussions as $discussion)
+                            <tr>
+                                <td class="text-center">{{ $discussion->title }}</td>
+                                <td class="text-center">{{ $discussion->replies_count }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

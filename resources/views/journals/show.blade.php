@@ -1,7 +1,12 @@
 @extends('layout.usernav')
 
-<link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+<head>
+    <meta charset="utf-8">
+    <title>GENER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+</head>
 
 <div class="container">
     <a href="{{ route('journals.index') }}" class="back-button">← Back</a>

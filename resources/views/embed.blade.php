@@ -9,7 +9,9 @@
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Embedded Resource</title>
+            <meta charset="utf-8">
+            <title>GENER</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.0/viewer.min.css">
         </head>
         <body>

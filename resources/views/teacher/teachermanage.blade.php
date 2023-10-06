@@ -1,8 +1,12 @@
 @include('layout.usernav')
 
-
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
-<link rel="stylesheet" type="text/css" href="{{ asset ('css/teachermanage.css')}}">
+<head>
+    <meta charset="utf-8">
+    <title>GENER | Upload</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/teachermanage.css')}}">
+</head>
 
     <!-- Teacher Resource Table -->
     <section class="resource-management">
@@ -58,11 +62,11 @@
             </div>
             
             <div class="form-group">
-    <label for="discipline">Discipline</label>
-    <select class="form-control" id="discipline" name="discipline" required>
-        <option value="">Select Discipline</option>
-    </select>
-</div>
+              <label for="discipline">Discipline</label>
+              <select class="form-control" id="discipline" name="discipline" required>
+                <option value="">Select Discipline</option>
+              </select>
+            </div>
 
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
@@ -89,7 +93,6 @@
                       <th>College</th>
                       <th>Discipline</th>
                       <th>Description</th>
-                      <th>URL</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -106,7 +109,6 @@
                       <td>{{ $resource->college->collegeName }}</td>
                       <td>{{ $resource->discipline->disciplineName }}</td>
                       <td>{{ $resource->description }}</td>
-                      <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                       <td>
                         <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
                         <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">

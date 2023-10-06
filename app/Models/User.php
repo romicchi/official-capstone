@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->hasMany(Discussion::class);
     }
 
+    public function resourceRatings()
+    {
+        return $this->hasMany(ResourceRating::class);
+    }    
+
     //This part is for the RepliesController. Means that a user can have many replies
     public function replies()
     {
