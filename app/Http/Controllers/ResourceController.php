@@ -350,6 +350,8 @@ class ResourceController extends Controller
             $user->history()->create(['resource_id' => $resource->id]);
         }
 
+        $resource->increment('view_count');
+
         $comments = $resource->comments()->paginate(10);
 
         return view('subjects.show', compact('comments', 'resource'));
@@ -378,5 +380,21 @@ class ResourceController extends Controller
     
         return response()->json(['success' => true]);
     }
+
+    public function trackDownload(Request $request)
+    {
+        $resourceId = $request->input('resourceId');
+        $resource = Resource::find($resourceId);
+
+        if (!$resource) {
+            return response()->json(['error' => 'Resource not found'], 404);
+        }
+
+        // Increment the download count
+        $resource->increment('download_count');
+
+        return response()->json(['message' => 'Download counted successfully']);
+    }
+
 
 }

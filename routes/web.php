@@ -204,9 +204,11 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     
     // SUBJECTS & RESOURCES
     // Display the selected resources/subject
-    Route::get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
+    Route::middleware(['throttle:5,1'])->get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
     // Display the resources
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
+    Route::middleware(['throttle:5,1'])->post('/resources/track-download', [ResourceController::class, 'trackDownload'])->name('resource.trackDownload');
+    Route::middleware(['throttle:5,1'])->get('/resources/{resource}/track-view', [ResourceController::class, 'trackView'])->name('resource.trackView');
     Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
     Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
     Route::get('/download/{resource}',[ResourceController::class, 'download'])->name('resource.download');

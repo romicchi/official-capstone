@@ -18,6 +18,9 @@ class Resource extends Model
         'course_id',
         'subject_id',
         'resourceType',
+        'download_count',
+        'view_count',
+        'discipline_id',
     ];
 
     public function college()

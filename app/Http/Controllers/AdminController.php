@@ -8,9 +8,11 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Models\Resource;
 use App\Models\Discussion;
+use App\Models\Discipline;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use PDF;
 
@@ -145,6 +147,8 @@ class AdminController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $selectedReportType = $request->input('report_type');
+        $selectedResourceType = $request->input('selected_resource_type');
         
         // Fetch the data you want to include in the report
         $reportData = [];
@@ -170,33 +174,230 @@ class AdminController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
+        $selectedReportType = $request->input('report_type');
+        $selectedResourceType = $request->input('selected_resource_type');
         
-        // Fetch the data you want to include in the report
-        $reportData = [];
+        // Determine the user's role (student or teacher)
+        $userRole = Auth::user()->role->role;
         
-        // Query the users based on their roles and the selected date range
-        $roles = ['student', 'teacher', 'admin', 'super-admin'];
+        // Fetch the colleges from your database, assuming you have a College model
+        $colleges = College::all();
+
+        $data = [];
         
-        foreach ($roles as $role) {
-            $userCount = User::where('role_id', function ($query) use ($role) {
-                    $query->select('id')->from('roles')->where('role', $role);
-                })
-                ->whereBetween('created_at', [$startDate, $endDate])
+        if ($selectedReportType === 'user') {
+        // Calculate totals for each year and all years for students
+            $totalFirstYear = User::where('role_id', 1)
+                ->where('year_level', 1)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
                 ->count();
+            // totalSecondYear
+            $totalSecondYear = User::where('role_id', 1)
+                ->where('year_level', 2)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            // totalThirdYear
+            $totalThirdYear = User::where('role_id', 1)
+                ->where('year_level', 3)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            // totalFourthYear
+            $totalFourthYear = User::where('role_id', 1)
+                ->where('year_level', 4)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            $totalAllYears = $totalFirstYear + $totalSecondYear + $totalThirdYear + $totalFourthYear;
+
+            // total teachers
+            $totalTeachers = User::where('role_id', 2)
+            ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+            ->count();
+               
         
-            $reportData[$role] = $userCount;
+            $data = [
+                'colleges' => $colleges,
+                'totalFirstYear' => $totalFirstYear,
+                'totalSecondYear' => $totalSecondYear,
+                'totalThirdYear' => $totalThirdYear,
+                'totalFourthYear' => $totalFourthYear,
+                'totalAllYears' => $totalAllYears,
+                'totalTeachers' => $totalTeachers,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ];
+
+        } elseif ($selectedReportType === 'resources') {
+            // Calculate total resources for each college
+            $totalResources = [];
+    
+            foreach ($colleges as $college) {
+                $resources = Resource::where('college_id', $college->id)
+                    ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                    ->get();
+
+                $totalResources[$college->collegeName] = $resources->count();
+    
+            }
+    
+            $data = [
+                'colleges' => $colleges,
+                'totalResources' => $totalResources,
+                'startDate' => $startDate, // Pass start date to the view
+                'endDate' => $endDate,     // Pass end date to the view
+            ];
+        } elseif ($selectedReportType === 'resources_specific') {
+            $selectedResourceType = $request->input('selected_resource_type'); // Get the selected resource type from the hidden input
+            
+            // Fetch resources based on the selected resource type and date range
+            $allowedExtensions = [];
+    
+            // Determine allowed file extensions based on the selected resource type
+            if ($selectedResourceType === 'text_based') {
+                $allowedExtensions = ['pdf', 'docx', 'pptx'];
+            } elseif ($selectedResourceType === 'video_based') {
+                $allowedExtensions = ['mp4', 'avi'];
+            } elseif ($selectedResourceType === 'image_based') {
+                $allowedExtensions = ['png', 'jpg', 'jpeg'];
+            }
+
+            // Filter resources based on allowed file extensions
+            $resources = Resource::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->get()
+                ->filter(function ($resource) use ($allowedExtensions) {
+                    $fileUrl = $resource->url;
+                    $extension = pathinfo($fileUrl, PATHINFO_EXTENSION);
+                    return in_array(strtolower($extension), $allowedExtensions);
+                });
+    
+            $data = [
+                'resources' => $resources,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'selectedResourceType' => $selectedResourceType,
+            ];
         }
+
         
-        // Load the PDF view with the report data
-        $pdf = PDF::loadView('administrator.generate_report_pdf', ['reportData' => $reportData]);
+        // Load the appropriate PDF view with the report data
+        $pdfView = ($selectedReportType === 'user') ? 'administrator.generate_report_pdf' : ($selectedReportType === 'resources' ? 'administrator.generate_resources_report' : ($selectedReportType === 'resources_specific' ? 'administrator.generate_resources_specific' : 'administrator.generate_resources_specific'));
+        
+        $pdf = PDF::loadView($pdfView, $data);
         
         // Generate and return the PDF as a download
-        return $pdf->download('report.pdf');
-    }
-    
-    public function updateReportTable(Request $request)
-    {
+        if ($selectedReportType === 'user') {
+            return $pdf->download('report.pdf');
+        } elseif ($selectedReportType === 'resources') {
+            return $pdf->download('resources_report.pdf');
+        } elseif ($selectedReportType === 'resources_specific') {
+            return $pdf->download('resources_specific.pdf');
+        }
     }
 
+    public function updateReportTable(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $selectedReportType = $request->input('report_type');
+        $selectedResourceType = $request->input('selected_resource_type'); // Get the selected resource type from the hidden input
+        
+        // Fetch resources based on the selected resource type and date range
+        $allowedExtensions = [];
+
+        // Determine allowed file extensions based on the selected resource type
+        if ($selectedResourceType === 'text_based') {
+            $allowedExtensions = ['pdf', 'docx', 'pptx'];
+        } elseif ($selectedResourceType === 'video_based') {
+            $allowedExtensions = ['mp4', 'avi'];
+        } elseif ($selectedResourceType === 'image_based') {
+            $allowedExtensions = ['png', 'jpg', 'jpeg'];
+        }
+
+        // Filter resources based on allowed file extensions
+        $resources = Resource::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+            ->get()
+            ->filter(function ($resource) use ($allowedExtensions) {
+                $fileUrl = $resource->url;
+                $extension = pathinfo($fileUrl, PATHINFO_EXTENSION);
+                return in_array(strtolower($extension), $allowedExtensions);
+            });
+
+
+        // Fetch the data based on the selected report type and date range
+        $colleges = College::all(); // Fetch colleges from the database
+
+                // Calculate totals for each year and all years for students
+                $totalFirstYear = User::where('role_id', 1)
+                ->where('year_level', 1)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            // totalSecondYear
+            $totalSecondYear = User::where('role_id', 1)
+                ->where('year_level', 2)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            // totalThirdYear
+            $totalThirdYear = User::where('role_id', 1)
+                ->where('year_level', 3)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            // totalFourthYear
+            $totalFourthYear = User::where('role_id', 1)
+                ->where('year_level', 4)
+                ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+                ->count();
+            $totalAllYears = $totalFirstYear + $totalSecondYear + $totalThirdYear + $totalFourthYear;
+
+            // total teachers
+            $totalTeachers = User::where('role_id', 2)
+            ->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+            ->count();
+
+        if ($selectedReportType === 'user') {
+            // Load the generate_report_pdf view for the user report
+            return view('administrator.generate_report_pdf', [
+                'colleges' => $colleges,
+                'totalFirstYear' => $totalFirstYear,
+                'totalSecondYear' => $totalSecondYear,
+                'totalThirdYear' => $totalThirdYear,
+                'totalFourthYear' => $totalFourthYear,
+                'totalAllYears' => $totalAllYears,
+                'totalTeachers' => $totalTeachers,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ])->render();
+        } elseif ($selectedReportType === 'resources') {
+            // Load the generate_resources_report view for the resource report
+            return view('administrator.generate_resources_report', [
+                'colleges' => $colleges,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ])->render();            
+        } elseif ($selectedReportType === 'resources_specific') {
+            // Load the generate_resources_report view for the resource report
+            return view('administrator.generate_resources_specific', [
+                'resources' => $resources,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'selectedResourceType' => $selectedResourceType,
+            ])->render();            
+        } else {
+            // Handle other report types or show an error message
+            return '<center><p>Select a report type.</p></center>';
+        }
+    }
+
+    private static function getGoogleDriveAccessToken()
+    {
+        $jsonKeyFilePath = base_path('resources/credentials/generapp-c64fbc26723c.json'); // Replace with the path to your JSON key file
+        $jsonKey = file_get_contents($jsonKeyFilePath);
+
+        $googleClient = new GoogleClient();
+        $googleClient->setAuthConfig(json_decode($jsonKey, true));
+        $googleClient->setScopes([\Google_Service_Drive::DRIVE]);
+        $googleClient->fetchAccessTokenWithAssertion();
+
+        return $googleClient->getAccessToken()['access_token'];
+    }
+    
     
 }

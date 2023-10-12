@@ -30,5 +30,10 @@ class College extends Model
     {
         return $this->belongsTo(College::class, 'name', 'collegeName');
     }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'college_id'); // Assuming 'college_id' is the foreign key in the users table
+    }
 }
 

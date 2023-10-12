@@ -43,7 +43,8 @@
                             <td>
                                 <a href="{{ route('resource.show', $resource->id) }}">View</a> |
                                 <!-- download the resources-->
-                                <a href="{{ route('resource.download', ['resource' => $resource]) }}">Download</a>
+                                <a href="{{ route('resource.download', ['resource' => $resource]) }}"
+                                onclick="trackDownload('{{ $resource->id }}')">Download</a>
                                 <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
                                     <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-star"></i>
                                 </button>
@@ -84,5 +85,17 @@
             });
         });
 });
+
+    // Track download of user
+    function trackDownload(resourceId) {
+            $.ajax({
+                url: '{{ route('resource.trackDownload') }}',
+                type: 'POST',
+                data: { resourceId: resourceId, _token: '{{ csrf_token() }}' },
+                success: function (data) {
+                    // Handle success, e.g., show a message or update the UI.
+                }
+            });
+        }
 </script>
 
