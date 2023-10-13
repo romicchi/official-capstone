@@ -33,6 +33,76 @@
             .border-left-warning {
                 border-left: 0.25rem solid #f6c23e !important;
             }
+
+            
+    .chatbot-container {
+        width: 100%; /* Adjust the maximum width as needed */
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+    }
+
+    /* Style the chatbot messages and user input */
+    .chatbot-messages {
+        height: 400px; /* Adjust the height as needed */
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+    .chatbot-input input[type=text] {
+        width: 90%;
+        height: 40px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+        }
+
+    button#send-button {
+        width: 10%;
+        height: 40px;
+        margin-top: 10px; 
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Define styles for chatbot messages and user messages */
+    .chatbot-message {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .user-message {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .tip-message {
+        display: none;
+        position: absolute;
+        background-color: #D4D4D4;
+        color: #151515;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: -40px; 
+        margin-left: 10px; 
+        z-index: 1;
+    }
+
       </style>
     <body>
   <!-- Nav Bar -->
@@ -117,97 +187,179 @@
 </div>
 </div>
 </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Talk to Gener</div>
+                    <div class="card-body">
+                        <!-- Chatbot container -->
+                        <div class="chatbot-container">
+                            <!-- Include an empty container for file recommendations -->
+                            <div class="chatbot-messages" id="chatbot-messages">
+                                <!-- Chatbot messages will appear here -->
+                            </div>
+                            <div class="chatbot-input">
+                                <form method="GET" action="{{ route('getRecommendations') }}">
+                                    @csrf
+                                    <div style="display: flex;">
+                                    <input type="text" name="query" id="user-input" placeholder="Type your message...">
+                                    <button type="submit" id="send-button">&#10148;</button>
+                                </form>
+                                <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
 
-<div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-    <!-- card -->
-    <div class="card h-100 card-lift">
-        <!-- card body -->
-        <div class="card-body">
-            <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center
-            mb-3">
-            <div>
-                <h4 class="mb-0">Productivity</h4>
-            </div>
-            <div class="icon-shape icon-md bg-primary-soft text-primary
-            rounded-2">
-            <i  data-feather="target" height="20" width="20"></i>
-        </div>
-    </div>
-    <!-- project number -->
-    <div class="lh-1">
-        <h1 class="  mb-1 fw-bold">76%</h1>
-        <p class="mb-0"><span class="text-success me-2">5%</span>Completed</p>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>
+                                 <!-- Add the tip element with an initial hidden state -->
+                                 <div id="tip" class="tip-message" style="display: none;">
+                                     <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
+                                 </div>
+                            </div>
+                        </div>
 
-<div class="row">
-    <!-- Most Favorite Resources Table -->
-    <div class="col-md-6">
-        <div class="table-container shadow">
-            <p class="h4 mb-0 text-gray-800">Top Resources</p>
-            <div class="d-flex justify-content-between align-items-center">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Favorited</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mostFavoriteResources as $resource)
-                            <tr>
-                                <td class="text-center">{{ $resource->title }}</td>
-                                <td class="text-center">{{ $resource->author }}</td>
-                                <td class="text-center">{{ $resource->favorited_by_count }}</td>
-                                <td>
-                                    <a class="text-decoration" href="{{ route('resource.show', $resource->id) }}">View</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        <!-- Recommendations container -->
+                        <div class="recommendations-container" id="recommendations-container">
+                            <!-- Relevant resource URLs will appear here -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Most Replied Discussions Table -->
-    <div class="col-md-6">
-        <div class="table-container shadow">
-            <p class="h4 mb-0 text-gray-800">Top Discussions</p>
-            <div class="d-flex justify-content-between align-items-center">
-            </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="text-center">Title</th>
-                        <th class="text-center">Replied</th>
-                        <th class="text-center"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($mostRepliedDiscussions as $discussion)
-                        <tr>
-                            <td class="text-center">{{ $discussion->title }}</td>
-                            <td class="text-center">{{ $discussion->replies_count }}</td>
-                            <td><a class="text-decoration" href="{{ route('discussions.show', $discussion->slug, ['id' => $discussion->id]) }}">View</a></td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-	
 </main>
     </body>
-    <footer>
-	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
-</footer>
+         <footer>    
+
+     </footer>
 </html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const recommendationsContainer = document.getElementById("recommendations-container");
+        const loadingSpinner = document.getElementById("loading-spinner");
+
+        document.querySelector("form").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const query = document.getElementById("user-input").value;
+
+            // Display loading spinner while fetching recommendations
+            loadingSpinner.style.display = "inline-block";
+
+            // Fetch recommendations based on the user's query
+            fetch(`/get-recommendations?query=${encodeURIComponent(query)}`)
+                .then((response) => response.text())
+                .then((html) => {
+                    // Hide loading spinner
+                    loadingSpinner.style.display = "none";
+
+                    // Update the recommendations container with the fetched HTML
+                    recommendationsContainer.innerHTML = html;
+                })
+                .catch((error) => {
+                    console.error("Error fetching recommendations:", error);
+                });
+        });
+    });
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const chatbotMessages = document.getElementById("chatbot-messages");
+    const userInput = document.getElementById("user-input");
+    const sendButton = document.getElementById("send-button");
+    const loadingSpinner = document.getElementById("loading-spinner");
+    const tipElement = document.getElementById("tip");
+
+    // Function to add a message to the chatbot messages container
+    function addMessage(message, className) {
+        const messageElement = document.createElement("div");
+        messageElement.className = className;
+        messageElement.innerText = message;
+        chatbotMessages.appendChild(messageElement);
+    }
+
+    // Function to toggle the loading spinner and send button
+    function toggleLoading(isLoading) {
+        if (isLoading) {
+            sendButton.style.display = "none";
+            loadingSpinner.style.display = "block";
+        } else {
+            sendButton.style.display = "block";
+            loadingSpinner.style.display = "none";
+        }
+    }
+
+    // Function to show the tip
+    function showTip() {
+        tipElement.style.display = "block";
+        setTimeout(function () {
+            tipElement.style.display = "none";
+        }, 5000); // Hide the tip after 5 seconds
+    }
+
+    // Event listener for clicking the text box
+    userInput.addEventListener("click", function () {
+        showTip();
+    });
+
+    // Function to send user input to the Flask API and display the response
+    async function sendMessageToChatbot(query, modelType, muteStream, hideSource) {
+        addMessage(query, "user-message");
+        toggleLoading(true); // Loading spinner and hide send button
+
+        // API request to Flask
+        try {
+            const response = await fetch("http://localhost:8080/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    query,
+                    model_type: modelType,
+                    mute_stream: muteStream,
+                    hide_source: hideSource,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const chatbotResponse = data.answer || "Chatbot didn't respond.";
+                addMessage(chatbotResponse, "chatbot-message");
+            } 
+            
+            else {
+                addMessage("Error: Unable to communicate with the chatbot.", "chatbot-message");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            addMessage("Error: Unable to communicate with the chatbot.", "chatbot-message");
+        } finally {
+            toggleLoading(false); // Hide loading spinner and show send button
+        }
+
+        userInput.value = ""; // Clear the user input field
+    }
+
+    // Event listener for the send button
+    sendButton.addEventListener("click", () => {
+        const query = userInput.value;
+        const modelType = "GPT4All";
+        const muteStream = false;
+        const hideSource = false;
+        sendMessageToChatbot(query, modelType, muteStream, hideSource);
+    });
+
+    // Event listener for pressing Enter key in the input field
+    userInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            const query = userInput.value;
+            const modelType = "GPT4All";
+            const muteStream = false;
+            const hideSource = false;
+            sendMessageToChatbot(query, modelType, muteStream, hideSource);
+        }
+    });
+});
+
+</script>
