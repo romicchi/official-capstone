@@ -34,8 +34,9 @@
                 border-left: 0.25rem solid #f6c23e !important;
             }
 
-            .chatbot-container {
-        max-width: 600px; /* Adjust the maximum width as needed */
+            
+    .chatbot-container {
+        width: 100%; /* Adjust the maximum width as needed */
         margin: 0 auto;
         padding: 20px;
         background-color: #f5f5f5;
@@ -44,7 +45,7 @@
 
     /* Style the chatbot messages and user input */
     .chatbot-messages {
-        height: 300px; /* Adjust the height as needed */
+        height: 400px; /* Adjust the height as needed */
         overflow-y: scroll;
         border: 1px solid #ccc;
         padding: 10px;
@@ -52,26 +53,25 @@
         border-radius: 5px;
     }
 
-    .chatbot-input {
-        display: flex;
-        justify-content: space-between;
+    .chatbot-input input[type=text] {
+        width: 90%;
+        height: 40px;
         margin-top: 10px;
-    }
-
-    input[type="text"] {
-        flex-grow: 1;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-    }
+        resize: vertical;
+        }
 
     button#send-button {
-        margin-left: 10px;
-        padding: 10px 20px;
+        width: 10%;
+        height: 40px;
+        margin-top: 10px; 
+        border: 1px solid #ccc;
+        border-radius: 5px;
         background-color: #007bff;
         color: #fff;
-        border: none;
-        border-radius: 5px;
+        font-weight: bold;
         cursor: pointer;
     }
 
@@ -91,6 +91,18 @@
         margin-bottom: 10px;
     }
 
+    .tip-message {
+        display: none;
+        position: absolute;
+        background-color: #D4D4D4;
+        color: #151515;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: -40px; 
+        margin-left: 10px; 
+        z-index: 1;
+    }
+
       </style>
     <body>
   <!-- Nav Bar -->
@@ -102,55 +114,54 @@
 			<p>Here you can chat with our Files, manage your account, view statistics, history, and more.</p>
 		</div>
 	</header>
-	<main>
-
+    <main>
     <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Talk to Gener</div>
-                <div class="card-body">
-                    
-                    <!-- Chatbot container -->
-                    <div class="chatbot-container">
-                        <!-- Include an empty container for file recommendations -->
-                        
-                        <div class="chatbot-messages" id="chatbot-messages">
-                            <!-- Chatbot messages will appear here -->
-                        </div>
-                                
-                        <div class="chatbot-input">
-                            <form method="GET" action="{{ route('getRecommendations') }}">
-                                @csrf
-                                <input type="text" name="query" id="user-input" placeholder="Type your message...">
-                                <button type="submit" id="send-button">Search</button>
-                            </form>
-                
-                            <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                                <span class="sr-only">Loading...</span>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Talk to Gener</div>
+                    <div class="card-body">
+                        <!-- Chatbot container -->
+                        <div class="chatbot-container">
+                            <!-- Include an empty container for file recommendations -->
+                            <div class="chatbot-messages" id="chatbot-messages">
+                                <!-- Chatbot messages will appear here -->
+                            </div>
+                            <div class="chatbot-input">
+                                <form method="GET" action="{{ route('getRecommendations') }}">
+                                    @csrf
+                                    <div style="display: flex;">
+                                    <input type="text" name="query" id="user-input" placeholder="Type your message...">
+                                    <button type="submit" id="send-button">&#10148;</button>
+                                </form>
+                                <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+
+                                 <!-- Add the tip element with an initial hidden state -->
+                                 <div id="tip" class="tip-message" style="display: none;">
+                                     <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
+                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Recommendations container -->
-                    <div class="recommendations-container" id="recommendations-container">
-                        <!-- Relevant resource URLs will appear here -->
+                        <!-- Recommendations container -->
+                        <div class="recommendations-container" id="recommendations-container">
+                            <!-- Relevant resource URLs will appear here -->
+                        </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </div>
-</div>
-            
-     </main>
-         </body>
+</main>
+    </body>
          <footer>    
-     	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
-     </footer>
-     </html>
 
-     <script>
+     </footer>
+</html>
+
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         const recommendationsContainer = document.getElementById("recommendations-container");
         const loadingSpinner = document.getElementById("loading-spinner");
@@ -168,7 +179,7 @@
                 .then((html) => {
                     // Hide loading spinner
                     loadingSpinner.style.display = "none";
-                    
+
                     // Update the recommendations container with the fetched HTML
                     recommendationsContainer.innerHTML = html;
                 })
@@ -185,6 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const userInput = document.getElementById("user-input");
     const sendButton = document.getElementById("send-button");
     const loadingSpinner = document.getElementById("loading-spinner");
+    const tipElement = document.getElementById("tip");
 
     // Function to add a message to the chatbot messages container
     function addMessage(message, className) {
@@ -204,6 +216,19 @@ document.addEventListener("DOMContentLoaded", function () {
             loadingSpinner.style.display = "none";
         }
     }
+
+    // Function to show the tip
+    function showTip() {
+        tipElement.style.display = "block";
+        setTimeout(function () {
+            tipElement.style.display = "none";
+        }, 5000); // Hide the tip after 5 seconds
+    }
+
+    // Event listener for clicking the text box
+    userInput.addEventListener("click", function () {
+        showTip();
+    });
 
     // Function to send user input to the Flask API and display the response
     async function sendMessageToChatbot(query, modelType, muteStream, hideSource) {
@@ -264,4 +289,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
 </script>
