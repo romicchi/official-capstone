@@ -1,0 +1,60 @@
+.card-body {
+    height: 75rem;
+}
+
+.th-color {
+    color: black;
+}
+
+.styled-form {
+max-width: 600px;
+background-color: white ;
+margin: 10 auto;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+label {
+font-weight: bold;
+}
+
+select.form-control,
+input[type="date"] {
+width: 100%;
+font-size: 16px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.btn-primary {
+background-color: #4CAF50;
+color: white;
+padding: 15px 20px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.btn-primary:hover {
+background-color: #45a049;
+}
+
+/* PDF Report Style */
+.header {
+    text-align: center;
+}
+.header .logo {
+    display: inline-block;
+    margin-left: 0;
+
+}
+.header .info {
+    display: inline-block;
+    vertical-align: top;
+}

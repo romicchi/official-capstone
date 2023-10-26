@@ -9,13 +9,14 @@
 </head>
 
     <div class="container">
-        <h2 class="text-center">Notes History</h2>
 
         <div class="d-flex justify-content-between align-items-center">
         <!-- Clear History -->
         <form action="{{ route('history.clear') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-danger">Clear History</button>
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-broom"></i>
+                Clear</button>
         </form>
 
         <!-- Search -->
@@ -31,28 +32,43 @@
         <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Description</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
+                @if ($resources->isEmpty())
+                    <tr>
+                        <td colspan="5">Your added history appears here.</td>
+                    </tr>
+                @else
                 @foreach ($resources as $resource)
                 <tr>
-                    <td>{{ $resource->title }}</td>
-                    <td>{{ $resource->author }}</td>
-                    <td>{{ $resource->description }}</td>
+                    <!-- time in 10:00am format -->
+                    <td>{{ $resource->created_at->format('h:i A') }}</td>
                     <td>
-                        <a href="{{ route('resource.show', $resource->id) }}">View</a> |
+                        <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                            {{ $resource->title }}
+                        </a>
+                    </td>
+                    <td>{{ $resource->author }}</td>
+                    <td>
+                        <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
+                            <i class="fas fa-eye"></i>
+                        </button>
                         <form action="{{ route('history.destroy', $resource->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-danger">Delete</button>
-                        </form>                    
+                            <button type="submit" class="btn btn-danger mx-1">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
+                @endif
             </tbody>
         </table>
         <div class="d-flex justify-content-center">

@@ -29,8 +29,8 @@ td {
 }
 
 /* Style the odd rows with a different background color */
-tr:nth-child(odd) {
-    background-color: #f2f2f2;
+tr:nth-child(even) {
+    background-color: rgba(7, 3, 114, 0.1);
 }
 
 /* Style links within the table */

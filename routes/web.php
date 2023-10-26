@@ -46,24 +46,17 @@ Route::get('/homenav', function () {
     return view('layout.homenav');
 });
 
-// -------------------------- LOGIN --------------------------------//
+// -------------------------- AUTHENTICATION ROUTES --------------------------------//
 Route::middleware(['activitylog'])->group(function () {
-Route::get('/login', [AuthController::class, 'login'])->name('login'); //second 'login' -> function
-Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.post');
-
-// -------------------------- REGISTER --------------------------------//
-Route::get('/register', [AuthController::class, 'registration'])->name('register');
-Route::post('/register/upload', [AuthController::class, 'registerPost'])->name('register.post');
-
-// -------------------------- LOG-OUT --------------------------------//
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/loginform', [AuthController::class, 'loginPost'])->name('login.post');
+    Route::get('/register', [AuthController::class, 'registration'])->name('register');
+    Route::post('/register/upload', [AuthController::class, 'registerPost'])->name('register.post');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
-
-// If you are admin then only you can access this page
 // -------------------------- ADMIN ACCESS --------------------------------//
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
-    // -------------------------- ADMIN PAGES --------------------------------//
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminpage');
     Route::get('/get-chart-data', [AdminController::class, 'getChartData'])->name('get.chart.data');
@@ -204,13 +197,14 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     
     // SUBJECTS & RESOURCES
     // Display the selected resources/subject
-    Route::middleware(['throttle:5,1'])->get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
+    Route::middleware(['throttle:50,1'])->get('/resource/show/{resource}', [ResourceController::class, 'show'])->name('resource.show');
     // Display the resources
     Route::get('/subjects', [ResourceController::class, 'subjects'])->name('show.subjects');
-    Route::middleware(['throttle:5,1'])->post('/resources/track-download', [ResourceController::class, 'trackDownload'])->name('resource.trackDownload');
-    Route::middleware(['throttle:5,1'])->get('/resources/{resource}/track-view', [ResourceController::class, 'trackView'])->name('resource.trackView');
+    Route::middleware(['throttle:50,1'])->post('/resources/track-download', [ResourceController::class, 'trackDownload'])->name('resource.trackDownload');
+    Route::middleware(['throttle:50,1'])->get('/resources/{resource}/track-view', [ResourceController::class, 'trackView'])->name('resource.trackView');
     Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
     Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
+    Route::get('/disciplines/{college_id}/{discipline_id}/search', [ResourceController::class, 'searchDisciplineResources'])->name('disciplines.search');
     Route::get('/download/{resource}',[ResourceController::class, 'download'])->name('resource.download');
     Route::post('/resource/rate', [ResourceController::class, 'rate'])->name('resource.rate');
 
@@ -221,35 +215,24 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 // Special Route for Teacher Role only
 // -------------------------- TEACHER ACCESS --------------------------------//
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:2']], function () {
+    Route::group(['middleware' => ['role:2,3,4']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
         
         // -------------------------- TEACHER UPLOAD --------------------------------//
         Route::post('/teachermanage/upload', [ResourceController::class, 'storeResource'])->name('resources.store');
         
-        // Route to get subjects by course ID
+        // Route to get subjects by course ID & courses by college ID
+        Route::middleware(['auth', 'role:1,2,3,4'])->group(function () {
         Route::get('/api/subjects/{courseId}', [ResourceController::class, 'getSubjectsByCourse']);
-        
-        // Route to get courses by college ID
         Route::get('/api/courses/{collegeId}', [ResourceController::class, 'getCoursesByCollege']);
-        
         Route::get('/api/disciplines/{collegeId}', [ResourceController::class, 'getDisciplinesByCollege']);
+        });
         
         Route::delete('/resources/{resource}', [ResourceController::class, 'destroy'])->name('resources.destroy');
         Route::get('/resources/{resource}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
         Route::put('/resources/{resource}', [ResourceController::class, 'update'])->name('resources.update');
     });
 });
-
-// -------------------------- VERIFIER ACCESS --------------------------------//
-Route::group(['middleware' => ['auth', 'Authenticated']], function () {
-    Route::group(['middleware' => ['role:3']], function () {
-        Route::get('/resourcemanage', 'App\Http\Controllers\ResourceController@showResourceManage')->name('resourcemanage');
-        Route::get('/resources/search', [ResourceController::class, 'searchResources'])->name('resources.search');
-    });
-});
-
-Route::get('/embed/{resource}', [ResourceController::class, 'showEmbed'])->name('embed');
 
 });
 

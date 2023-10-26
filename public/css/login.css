@@ -56,13 +56,16 @@ form {
     form {
       left: 50%;
       width: 70%;
-      height: 55%;
-      margin-top: 0;
+      margin-top: 4rem;
       transform: translate(-50%, -50%);
+    }
+
+    body {
+      background-color: aqua;
     }
 
     .background {
       background-image: none !important; /* This will hide the background image on mobile devices */
   }
-
-  }
+  
+}

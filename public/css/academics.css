@@ -44,11 +44,20 @@
     color: white;
 }
 
-th {
+table th {
     background-color: #070372;
     padding: 10px;
     color: #fff;
+    text-align: center;
   }
+
+  table td {
+    text-align: center;
+  }
+
+tr:nth-child(even) {
+    background-color: rgba(7, 3, 114, 0.1);
+}
 
 button {
     padding-top: 10px;

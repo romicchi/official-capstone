@@ -33,7 +33,6 @@
         <message-container>
           <input id="input-field" type="text" placeholder="Type your question here" autocomplete="off">
           <button id="submit-button" type="submit">
-            <img class="send-icon" src="send-message.png" alt="">
           </button>
         </message-container>
       </form>

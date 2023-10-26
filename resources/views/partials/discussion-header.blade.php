@@ -8,7 +8,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-
 <div class="card-header text-center">
     <!-- To display the author's email and the View and Delete buttons -->
     <div class="d-flex justify-content-between align-items-center">

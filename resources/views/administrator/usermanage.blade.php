@@ -4,6 +4,7 @@
   <meta charset="utf-8">
     <title>Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/table.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/usermanage.css') }}">
 </head>
@@ -267,7 +268,7 @@
                         <td>
                         <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">Edit</a>
                         <a type="submit" class="btn btn-secondary" href="{{ route('archive', ['id' => $user->id]) }}">Archive</a>
-                        <a type="submit" class="btn btn-danger" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
+                        <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
                         </td>
                     </tr>
                     @endif
@@ -407,7 +408,7 @@
                         <td>
                             <!-- Add Reactivate and Delete buttons -->
                             <a type="submit" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
-                            <a type="submit" class="btn btn-danger" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
+                            <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
                         </td>
                     </tr>
                     @endforeach
@@ -452,4 +453,6 @@
       @endif
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/admin.js') }}"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>

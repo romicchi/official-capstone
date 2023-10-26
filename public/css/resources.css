@@ -8,7 +8,6 @@ button.toggle-favorite {
   background: none;
   color: #f1c40f;
   border: none;
-  padding: 0;
   cursor: pointer;
 }  
 

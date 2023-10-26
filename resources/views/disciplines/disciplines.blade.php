@@ -21,33 +21,46 @@
         <div class="mb-3">
         </div>
 
+        <div class="d-flex justify-content-end align-items-center">
+            <!-- Search -->
+            <form action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="ml-3">
+                <div class="input-group">
+                    <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search..." aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+
         <div class="card">
         <div class="card-body">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Resource Name</th>
+                        <th>Title</th>
                         <th>Author</th>
                         <th>Description</th>
-                        <th>File</th>
-                        <th>Action</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($discipline->resources as $resource)
+                    @foreach ($resources as $resource)
                         <tr>
                             <td>{{ $resource->title }}</td>
                             <td>{{ $resource->author }}</td>
                             <td>{{ $resource->description }}</td>
-                            <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                             <td>
-                                <a href="{{ route('resource.show', $resource->id) }}">View</a> |
+                            <div class="d-flex justify-content-end">
+                                <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
                                 <!-- download the resources-->
-                                <a href="{{ route('resource.download', ['resource' => $resource]) }}"
-                                onclick="trackDownload('{{ $resource->id }}')">Download</a>
+                                <button class="btn btn-primary mx-1" onclick="window.location='{{ route('resource.download', ['resource' => $resource]) }}'">
+                                    <i class="fas fa-download"></i>
+                                </button>
                                 <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
                                     <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-star"></i>
                                 </button>
+                            </div>
                             </td>
                         </tr>
                     @endforeach

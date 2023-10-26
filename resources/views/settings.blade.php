@@ -5,8 +5,9 @@
     <title>GENER | Settings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
-
+<body>
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -62,10 +63,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -126,6 +123,7 @@
         </div>
     </div>
 </div>
+</body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>

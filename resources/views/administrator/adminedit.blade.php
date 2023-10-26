@@ -38,7 +38,7 @@
         </select>
       </div>
 
-      <!-- Display Year Level input when role is "Student" -->
+      <!-- Display Year Level input when the role is "Student" -->
       <div class="form-group" id="yearLevelGroup">
         <label for="year_level">Year Level:</label>
         <select class="form-control" id="year_level" name="year_level">
@@ -55,7 +55,7 @@
         <input class="form-control rounded-0" type="text" id="student_number" name="student_number" value="{{ $users->student_number }}" maxlength="7">
       </div>
 
-      <!-- User select college where they belong -->
+      <!-- User selects the college where they belong -->
       <div class="form-group">
         <label for="college_id">College:</label>
         <select class="form-control" id="college_id" name="college_id">
@@ -64,12 +64,12 @@
           <option value="{{ $college->id }}" {{ $users->college_id == $college->id ? 'selected' : '' }}>{{ $college->collegeName }}</option>
           @endforeach
         </select>
+      </div>
       
       <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary m-1">Update</button>
         <a href="{{ route('usermanage') }}?activeTab=existing" class="btn btn-secondary m-1">Cancel</a>
       </div>
-      
     </form>
   </div>
 </div>

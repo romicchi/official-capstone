@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="background" style="background-image: url({{ asset('assets/img/Background.png') }}" loading="lazy">
+<div class="background" style="background-image: url({{ asset('assets/img/Background.png') }})" loading="lazy">
     <div class="container">
         <div class="col">
             <form action="{{ route('register.post') }}" method="post" enctype="multipart/form-data">
@@ -19,21 +19,21 @@
 
                 <!-- Error Message -->
                 @if($errors->any())
-                    <div class="col-12">
-                        @foreach($errors->all() as $error)
-                            <div class="alert alert-danger">{{ $error }}</div>
-                        @endforeach
-                    </div>
+                <div class="col-12">
+                    @foreach($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+                    @endforeach
+                </div>
                 @endif
 
                 <!-- Session Error -->
                 @if(session()->has('error'))
-                    <div class="alert alert-danger">{{ session('error') }}</div>
+                <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
 
                 <!-- Success Message -->
                 @if(session()->has('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
                 <h1>Register</h1>
@@ -57,7 +57,7 @@
                     <label for="password_confirmation">Confirm Password:</label>
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="role">I am a:</label>
                     <select class="form-control" id="role" name="role">
@@ -89,7 +89,7 @@
                     <select class="form-control" id="college_id" name="college_id">
                         <option disabled selected>Please select your college</option>
                         @foreach($colleges as $college)
-                            <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
+                        <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <button type="submit" id="signup-button" class="btn btn-primary my-2">Sign Up</button>
-                <p><a href="/login">Already have an account?</a></p>
+                <p><a href="{{ route('login') }}">Already have an account?</a></p>
             </form>
         </div>
     </div>

@@ -15,7 +15,9 @@
         <!-- Clear History -->
         <form action="{{ route('favorites.clear') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-danger">Clear Favorites</button>
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-broom"></i>
+                Clear</button>
         </form>
 
         <!-- Search -->
@@ -34,28 +36,33 @@
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
-                    <th>Description</th>
-                    <th>File</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @if ($resources->isEmpty())
                     <tr>
-                        <td colspan="5">No added favorite resources yet.</td>
+                        <td colspan="5">Your added favorite resources appears here.</td>
                     </tr>
                 @else
                     @foreach ($resources as $resource)
                         <tr>
-                            <td>{{ $resource->title }}</td>
+                            <td>
+                                <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                                    {{ $resource->title }}
+                                </a>
+                            </td>
                             <td>{{ $resource->author }}</td>
-                            <td>{{ $resource->description }}</td>
-                            <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
-                            <td><a href="{{ route('resource.show', $resource->id) }}">View</a> |
+                            <td>
+                                <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
                             <form action="{{ route('favorites.destroy', $resource->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
                             </form>
                         </td>
                         </tr>

@@ -2,33 +2,33 @@
 @extends('layout.chatbotlayout')
 @extends('layout.app')
 
-
-@yield('chatbot')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <title>GENER | Welcome</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- Fonts -->
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset ('css/landingpage.css') }}">
+<head>
+    <meta charset="utf-8">
+    <title>GENER | Welcome</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/landingpage.css') }}">
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="antialiased">
 
-    </head>
-    <body class="antialiased">
-        @section('navbar')
-        @endsection
-                <!-- Jumbotron -->
-    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png')}}" loading="lazy" width="150">
+    <!-- Jumbotron -->
+    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png') }})" loading="lazy" width="150">
     </div>
+
     <!-- About Section -->
     <section class="about" id="about-container">
         <div class="container">
             <div class="row m-a-0">
-            <h2 class="mb-5 text-center">About</h2>
+                <h2 class="mb-5 text-center">About</h2>
                 <!-- Image Block -->
                 <div class="col-md-6 p-a-0">
-                    <div class="img-wrap shadow" style="background-image: url({{ asset('assets/img/learning.jpg')}}" loading="lazy"></div>
+                    <div class="img-wrap shadow" style="background-image: url({{ asset('assets/img/learning.jpg') }})" loading="lazy"></div>
                 </div>
                 <!-- Text Block -->
                 <div class="col-md-6 shadow bg-edit bg-blue text-white spotlight-text center-md">
@@ -49,7 +49,7 @@
             <h2 class="mb-5 text-center">Features</h2>
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="card mb-5 mb-lg-0 ">
+                    <div class="card mb-5 mb-lg-0">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Easy Access</h5>
                             <p class="card-text text-center">Provide students with easy access to information about all the courses offered at LNU.</p>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="card mb-5 mb-lg-0 ">
+                    <div class="card mb-5 mb-lg-0">
                         <div class="card-body" data-aos="zoom-in-up">
                             <h5 class="card-title text-center">Sharing</h5>
                             <p class="card-text text-center">The platform enables teachers to easily share educational materials with their students, such as lecture notes, study guides, and reading assignments.</p>
@@ -76,61 +76,58 @@
         </div>
     </section>
 
-<!-- Chatbot Section -->
-<section class="chatbot">
-    <div class="container" id="chatbot-container">
-        <h2 class="mb-5 text-center">Talk to GENER</h2>
-        <div class="row">
-            <div class="col-lg-8 offset-lg-2">
-            <div class="text-center">
-                <div class="gener">
-                    <a href="{{ route('login') }}">
-                    <img class="gener-image" src="{{ asset('assets/img/gener2.png')}}" alt="logo" class="img-fluid" data-aos="zoom-in" width="250">
-                </a>
+    <!-- Chatbot Section -->
+    <section class="chatbot">
+        <div class="container" id="chatbot-container">
+            <h2 class="mb-5 text-center">Talk to GENER</h2>
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="text-center">
+                        <div class="gener">
+                            <a href="{{ route('login') }}">
+                                <img class="gener-image" src="{{ asset('assets/img/gener2.png') }}" alt="logo" class="img-fluid" data-aos="zoom-in" width="250">
+                            </a>
+                        </div>
+                    </div>
                 </div>
-        </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="bg-dark text-white py-3" id="footer-container">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 mb-2 mb-lg-0">
-          <h5><strong>About Us</strong></h5>
-          <p class="mb-0">{{config('app.name')}} is a Resource Pool system for LNU Students.</p>
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3" id="footer-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-2 mb-lg-0">
+                    <h5><strong>About Us</strong></h5>
+                    <p class="mb-0">{{ config('app.name') }} is a Resource Pool system for LNU Students.</p>
+                </div>
+                <div class="col-lg-3">
+                    <h5><strong>Links</strong></h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#about-container">About</a></li>
+                        <li><a href="#features-container">Features</a></li>
+                        <li><a href="#chatbot-container">Chatbot</a></li>
+                        <li><a href="#footer-container">Address</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5><strong>Address</strong></h5>
+                    <p><strong>Leyte Normal University</strong><br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center mt-3">
+                    <p>&copy; 2023 Leyte Normal University. All Rights Reserved.</p>
+                    <p>LNU GENER V.1.0.0 | Maintained and Managed by PancitCantonEnjoyers</p>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-3">
-          <h5><strong>Links</strong></h5>
-          <ul class="list-unstyled">
-            <li><a href="#">Home</a></li>
-            <li><a href="#about-container">About</a></li>
-            <li><a href="#features-container">Features</a></li>
-            <li><a href="#chatbot-container">Chatbot</a></li>
-            <li><a href="#footer-container">Address</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-3">
-          <h5><strong>Address</strong></h5>
-          <p><strong>Leyte Normal University </strong><br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12 text-center mt-3">
-          <p>&copy; 2023 Leyte Normal University. All Rights Reserved.</p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-        </div>
-    </body>
+    </footer>
+</body>
 </html>
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <script>
-  AOS.init();
+    AOS.init();
 </script>

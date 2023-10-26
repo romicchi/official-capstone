@@ -24,21 +24,24 @@
             <h2>Title: {{ $resource->title }}</h2>
             <p>Author: {{ $resource->author }}</p>
             </div>
-            <p>Description: {{ $resource->description }}</p>
+            <a href="{{ URL::previous() }}" class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
 
-            <a href="{{ route('resource.rate') }}" class="rate-resource" data-resource-id="{{ $resource->id }}">Rate</a>
-            <div class="rating-overlay">
-                <h3>{{ $resource->title }}</h3>
-                <div class="stars-container">
-                    <span class="star" data-rating="1">&#9733;</span>
-                    <span class="star" data-rating="2">&#9733;</span>
-                    <span class="star" data-rating="3">&#9733;</span>
-                    <span class="star" data-rating="4">&#9733;</span>
-                    <span class="star" data-rating="5">&#9733;</span>
-                    <div class="success-message"></div>
-                    <div class="error-message"></div>
+                    <button class="btn btn-success mb-3 rate-resource" data-resource-id="{{ $resource->id }}">
+                        Rate
+                    </button>
+
+                <div class="rating-overlay">
+                    <h3>{{ $resource->title }}</h3>
+                    <div class="stars-container">
+                        <span class="star" data-rating="1">&#9733;</span>
+                        <span class="star" data-rating="2">&#9733;</span>
+                        <span class="star" data-rating="3">&#9733;</span>
+                        <span class="star" data-rating="4">&#9733;</span>
+                        <span class="star" data-rating="5">&#9733;</span>
+                        <div class="success-message"></div>
+                        <div class="error-message"></div>
+                    </div>
                 </div>
-            </div>
             
             <div id="loading-spinner" class="text-center" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
                 <div class="spinner-border text-primary" role="status">
@@ -51,7 +54,7 @@
         </div>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 comment-container">
                 @include('subjects.comment')
                 @include('subjects.comment_form')
             </div>
@@ -164,4 +167,21 @@ function handlePdfLoad() {
         
         // ...
     });
+
+    $(document).ready(function () {
+    var commentContainer = $('.comment-container');
+
+    commentContainer.on('click', '.pagination a', function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            success: function (data) {
+                commentContainer.html(data);
+            },
+        });
+    });
+});
 </script>

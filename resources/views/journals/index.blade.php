@@ -1,4 +1,5 @@
 @extends('layout.usernav')
+
 <head>
     <meta charset="utf-8">
     <title>GENER | Journal</title>
@@ -9,35 +10,35 @@
 <h1>Study Journal</h1>
 
 <div class="container">
-<div class="d-flex justify-content-between align-items-center">
-    <div class="d-flex align-items-center">
-        <a href="{{ route('journals.create') }}" class="btn btn-primary mx-2">+ Create Journal</a>
-    </div>
-</div>
-<hr>
-<form action="{{ route('journals.index') }}" method="GET" class="my-3">
-            <div class="input-group">
-                <select name="discipline" class="form-control">
-                    <option value="">All Disciplines</option>
-                    @foreach ($disciplines as $discipline)
-                        <option value="{{ $discipline->id }}">{{ $discipline->disciplineName }}</option>
-                    @endforeach
-                </select>
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Filter</button>
-                </div>
-            </div>
-        </form>
-    <form action="{{ route('journals.index') }}" method="GET" class="mb-3">
-    <div class="input-group">
-        <input type="text" name="search" class="form-control" placeholder="Search by title" value="{{ $search }}">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="submit">Search</button>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <a href="{{ route('journals.create') }}" class="btn btn-primary mx-2">+ Create Journal</a>
         </div>
     </div>
-</form>
+    <hr>
 
+    <form action="{{ route('journals.index') }}" method="GET" class="my-3">
+        <div class="input-group">
+            <select name="discipline" class="form-control">
+                <option value="">All Disciplines</option>
+                @foreach ($disciplines as $discipline)
+                    <option value="{{ $discipline->id }}">{{ $discipline->disciplineName }}</option>
+                @endforeach
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Filter</button>
+            </div>
+        </div>
+    </form>
 
+    <form action="{{ route('journals.index') }}" method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by title" value="{{ $search }}">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
 
     <div id="journal-list">
         @if ($journals->count() > 0)
@@ -56,9 +57,8 @@
             <p>No journals found.</p>
         @endif
     </div>
+    
     <div class="d-flex justify-content-center">
-    {{ $journals->appends(['search' => $search])->links('pagination::bootstrap-4') }}
-</div>
-
-
+        {{ $journals->appends(['search' => $search])->links('pagination::bootstrap-4') }}
+    </div>
 </div>

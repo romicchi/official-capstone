@@ -63,8 +63,8 @@ class JournalController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
-            'content' => 'nullable',
+            'title' => 'required|max:100',
+            'content' => 'nullable|max:65535',
             'college_id' => 'required',
             'discipline_id' => 'required',
         ]);

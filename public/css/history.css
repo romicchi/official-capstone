@@ -23,6 +23,25 @@ th {
   color: #fff;
 }
 
+.table th,
+.table td {
+text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(7, 3, 114, 0.1);
+}
+
+a {
+  color: #000; /* Set the color to black */
+  text-decoration: none; /* Remove underline */
+}
+
+.hover:hover {
+  color: #070372;
+  text-decoration: underline;
+}
+
 /* when at lower screen sizes decrease the padding-left of body */
 
 @media screen and (max-width: 993px) {

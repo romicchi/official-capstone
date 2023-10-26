@@ -1,48 +1,30 @@
 @extends('layout.usernav')
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>GENER | Dashboard</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
-		<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GENER | Dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <!-- Custom fonts for this template-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
+	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
 
-      </head>
-      <style>
-          .border-left-primary {
-              border-left: 0.25rem solid #4e73df !important;
-            }
-            
-            .border-left-success {
-                border-left: 0.25rem solid #1cc88a !important;
-            }
-            
-            .border-left-info {
-                border-left: 0.25rem solid #36b9cc !important;
-            }
-            
-            .border-left-warning {
-                border-left: 0.25rem solid #f6c23e !important;
-            }
-      </style>
-    <body>
+<body>
   <!-- Nav Bar -->
   @yield('usernav')
   <!-- Content -->
-  <header>
-		<div class="dashboard">
-    <h2>Welcome to Dashboard, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
+    <header>
+      <div class="dashboard">
+          <h2>Welcome, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
 		</div>
-	</header>
+    </header>
 	<main>
 		
 <!-- Content Row -->
@@ -149,14 +131,14 @@
     <!-- Most Favorite Resources Table -->
     <div class="col-md-6">
         <div class="table-container shadow">
-            <p class="h4 mb-0 text-gray-800">Top Resources</p>
+            <p class="h4 mb-0 text-gray-800 text-center mb-2">Top Resources</p>
             <div class="d-flex justify-content-between align-items-center">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Favorited</th>
+                            <th class="text-center">Title</th>
+                            <th class="text-center">Author</th>
+                            <th class="text-center">Favorited</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -180,7 +162,7 @@
     <!-- Most Replied Discussions Table -->
     <div class="col-md-6">
         <div class="table-container shadow">
-            <p class="h4 mb-0 text-gray-800">Top Discussions</p>
+            <p class="h4 mb-0 text-gray-800 text-center mb-2">Top Discussions</p>
             <div class="d-flex justify-content-between align-items-center">
             </div>
             <table class="table">
@@ -206,8 +188,9 @@
 </div>
 	
 </main>
-    </body>
-    <footer>
-	<p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p>
+<footer class="bg-dark text-white py-3" id="footer-container">
+    <p>&copy; 2023 Leyte Normal University. All Rights Reserved.</p>
+    <p>LNU GENER V.1.0.0 | Maintained and Managed by PancitCantonEnjoyers</p>
 </footer>
+</body>
 </html>
