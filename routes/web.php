@@ -255,9 +255,13 @@ Route::get('/embed/{resource}', [ResourceController::class, 'showEmbed'])->name(
 
 Route::get('/get-recommendations', [ChartController::class, 'getRecommendations'])->name('getRecommendations');
 
+    });
+});
 
+Route::post('/askChatbot', [ChartController::class, 'askChatbot'])->name('askChatbot');
 
-
+Route::post('/autofill/keywords-discipline', [ResourceController::class, 'autofillKeywordsAndDiscipline']);
+Route::post('/summarize', [ResourceController::class, 'autofillSummary']);
 
 
 

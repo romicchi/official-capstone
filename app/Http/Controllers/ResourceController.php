@@ -72,12 +72,12 @@ class ResourceController extends Controller
     $validatedData = $request->validate([
         'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
         'title' => 'required',
-        'topic' => 'required',
-        'keywords' => 'required',
-        'author' => 'required',
-        'description' => 'required',
-        'college' => 'required',
-        'discipline' => 'required',
+        'topic' => 'nullable',
+        'keywords' => 'nullable',
+        'author' => 'nullable',
+        'description' => 'nullable',
+        'college' => 'nullable',
+        'discipline' => 'nullable',
     ]);
 
     // Upload the file to Google Drive
@@ -111,17 +111,22 @@ class ResourceController extends Controller
     // Create a new resource instance
     $resource = new Resource();
     $resource->title = $validatedData['title'];
-    $resource->topic = $validatedData['topic'];
-    $resource->keywords = $validatedData['keywords'];
-    $resource->author = $validatedData['author'];
-    $resource->description = $validatedData['description'];
+   // $resource->topic = $validatedData['topic'];
+   // $resource->keywords = $validatedData['keywords'];
+   // $resource->author = $validatedData['author'];
+   // $resource->description = $validatedData['description'];
     $resource->url = $fileUrl;
-    $resource->college_id = $validatedData['college'];
-    $resource->discipline_id = $validatedData['discipline'];
+   // $resource->college_id = $validatedData['college'];
+   // $resource->discipline_id = $validatedData['discipline'];
     $resource->save();
 
-    // Redirect or perform additional actions as needed
-    return redirect()->back()->with('success', 'Resource added successfully.');
+   if ($resource) {
+       // Redirect to the edit page for the newly uploaded resource
+       return redirect()->route('resources.edit', $resource)->with('success', 'Resource uploaded successfully');
+   } else {
+       // Handle the case where no resource was found
+       return redirect()->route('teachermanage')->with('error', 'Resource not found.');
+   }
 }
 
 
@@ -172,12 +177,41 @@ class ResourceController extends Controller
         return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects'));
     }
 
-    // Update resource function
+    // Update resource function STAR STAR STAR STAR
     public function update(Request $request, Resource $resource)
     {
         $resource->update($request->all());
 
         return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
+    }
+
+    // Summarizer AutoFill
+    public function autofillKeywordsAndDiscipline(Resource $resource)
+{
+    $pdfUrl = $resource->url; // Assuming 'url' is the column name for the PDF URL
+
+    // Make a request to the Flask API using the $pdfUrl
+    $client = new \GuzzleHttp\Client();
+    $response = $client->post('http://192.168.1.16:5000/predict', [
+        'form_params' => [
+            'pdf_url' => $pdfUrl,
+        ],
+    ]);
+
+    return $response->getBody();
+}
+
+    public function autofillSummary(Request $request)
+    {
+    // Use Guzzle or other HTTP client to make a request to your Flask API
+    $client = new \GuzzleHttp\Client();
+    $response = $client->post('http://127.0.0.1:8080/summarize', [
+        'json' => [
+            'title' => $request->input('title'),
+        ],
+    ]);
+
+    return $response->getBody();
     }
 
     //---------DEPARTMENTCHAIR-PROGCOORDINATOR-ADMIN----------------//
