@@ -205,6 +205,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/create-discipline', [DisciplineController::class, 'createDisciplineAndAssociateWithCollege']);
     Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
     Route::get('/disciplines/{college_id}/{discipline_id}/search', [ResourceController::class, 'searchDisciplineResources'])->name('disciplines.search');
+    Route::get('/disciplines/{college_id}/{discipline_id}/sort', [ResourceController::class, 'sortDisciplineResources'])->name('disciplines.sort');
     Route::get('/download/{resource}',[ResourceController::class, 'download'])->name('resource.download');
     Route::post('/resource/rate', [ResourceController::class, 'rate'])->name('resource.rate');
 
@@ -220,17 +221,18 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
         
         // -------------------------- TEACHER UPLOAD --------------------------------//
         Route::post('/teachermanage/upload', [ResourceController::class, 'storeResource'])->name('resources.store');
-        
-        // Route to get subjects by course ID & courses by college ID
-        Route::middleware(['auth', 'role:1,2,3,4'])->group(function () {
-        Route::get('/api/subjects/{courseId}', [ResourceController::class, 'getSubjectsByCourse']);
-        Route::get('/api/courses/{collegeId}', [ResourceController::class, 'getCoursesByCollege']);
-        Route::get('/api/disciplines/{collegeId}', [ResourceController::class, 'getDisciplinesByCollege']);
-        });
-        
         Route::delete('/resources/{resource}', [ResourceController::class, 'destroy'])->name('resources.destroy');
         Route::get('/resources/{resource}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
         Route::put('/resources/{resource}', [ResourceController::class, 'update'])->name('resources.update');
+    });
+});
+
+// -------------------------- All ACCESS --------------------------------//
+Route::group(['middleware' => ['auth', 'Authenticated']], function () {
+    Route::group(['middleware' => ['role:1,2,3,4']], function () {
+        Route::get('/api/subjects/{courseId}', [ResourceController::class, 'getSubjectsByCourse']);
+        Route::get('/api/courses/{collegeId}', [ResourceController::class, 'getCoursesByCollege']);
+        Route::get('/api/disciplines/{collegeId}', [ResourceController::class, 'getDisciplinesByCollege']);
     });
 });
 

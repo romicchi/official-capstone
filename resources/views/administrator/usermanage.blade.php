@@ -113,7 +113,7 @@
                   @endif
                 </td>
                 <td>
-                  <button type="submit" name="verified_users[]" value="{{ $user->id }}" class="btn btn-primary">Approve</button>
+                  <button type="submit" class="btn btn-primary approve-button" name="verified_users[]" value="{{ $user->id }}">Approve</button>
                   <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
                 </td>
               </tr>
@@ -124,7 +124,7 @@
       </table>
     </div>
     <!-- Pagination links for Pending Users -->
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center my-3">
       {{ $pendingUsers->links('pagination::bootstrap-4') }}
     </div>
   </div>
@@ -267,7 +267,7 @@
                         </td>
                         <td>
                         <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">Edit</a>
-                        <a type="submit" class="btn btn-secondary" href="{{ route('archive', ['id' => $user->id]) }}">Archive</a>
+                        <a type="submit" class="btn btn-secondary archive-button" href="{{ route('archive', ['id' => $user->id]) }}">Archive</a>
                         <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
                         </td>
                     </tr>
@@ -277,7 +277,7 @@
         </table>
       </div>
         <!-- Pagination links for Existing Users -->
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center my-3">
             {{ $existingUsers->links('pagination::bootstrap-4') }}
         </div>
     </form>
@@ -407,7 +407,7 @@
                         <td>{{ $user->archived_at }}</td>
                         <td>
                             <!-- Add Reactivate and Delete buttons -->
-                            <a type="submit" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
+                            <a type="submit" id="reactivate-button" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
                             <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
                         </td>
                     </tr>
@@ -416,7 +416,7 @@
             </table>
           </div>
         <!-- Pagination links for Archived Viewable Users -->
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center my-3">
             {{ $archiveViewableUsers->appends(['activeTab' => 'archive'])->links('pagination::bootstrap-4') }}
         </div>
       </div>
@@ -453,6 +453,30 @@
       @endif
     </div>
 
+@include('loader')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/admin.js') }}"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
+<script>
+// To Show Loader When archive button is clicked
+document.querySelectorAll('.archive-button').forEach(function(button) {
+    button.addEventListener('click', function () {
+        // Show the loader
+        document.querySelector('.loader-container').style.display = 'block';
+    });
+});
+
+// To Show loader when approve button is Clicked
+document.querySelectorAll('.approve-button').forEach(function(button) {
+    button.addEventListener('click', function () {
+        // Show the loader
+        document.querySelector('.loader-container').style.display = 'block';
+    });
+});
+
+// To Show loader when reactivate button is Clicked
+document.getElementById('reactivate-button').addEventListener('click', function () {
+    // Show the loader
+    document.querySelector('.loader-container').style.display = 'block';
+});
+</script>

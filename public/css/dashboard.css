@@ -184,3 +184,8 @@ a {
     color: #007bff;
     text-decoration: none;
 }
+
+/* table overflow */
+.table-container {
+  overflow: auto;
+}

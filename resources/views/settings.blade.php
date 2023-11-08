@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="form-group row mb-0 my-2">
-                            <div class="col-md-6 offset-md-4">
+                            <div class="col-md-6 offset-md-4 text-center">
                                 <button type="submit" class="btn btn-success" id="profileSubmitBtn">
                                     {{ __('Save Changes') }}
                                 </button>
@@ -113,7 +113,7 @@
                         </div>
                         
                         <div class="form-group row mb-0 my-2">
-                            <div class="col-md-6 offset-md-4">
+                            <div class="col-md-6 offset-md-4 text-center">
                                 <button type="submit" class="btn btn-success" id="passwordChangeSubmitBtn">{{ __('Save Changes') }}</button>
                             </div>
                         </div>

@@ -12,7 +12,7 @@
     @csrf
     <div class="form-group">
         <label for="report_type">Select Report Type:</label>
-        <select name="report_type" id="report_type" class="form-control">
+        <select name="report_type" id="report_type" class="form-control" required>
             <option value="" selected disabled>Select</option>
             <option value="user">User Report</option>
             <option value="resources">Resources Report</option>
@@ -40,7 +40,7 @@
             <input type="date" name="end_date" id="end_date" class="form-control" required>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Generate Report</button>
+    <button type="submit" id="generate-button" class="btn btn-primary">Generate Report</button>
 </form>
 
 
@@ -58,6 +58,7 @@
     </div>
 </div>
 
+@include('loader')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Function to update the report table
@@ -88,10 +89,22 @@
             },
             success: function (data) {
                 $('#report-table tbody').html(data);
+
+                // Hide the loader in case of an error
+                $('.loader-container').hide();
+
+                // Re-enable the "Generate Report" button
+                document.getElementById('generate-button').disabled = false;
             },
             error: function (error) {
                 console.error('Error occurred:', error);
                 console.log(error);
+                
+                // Hide the loader in case of an error
+                $('.loader-container').hide();
+
+                // Re-enable the "Generate Report" button
+                document.getElementById('generate-button').disabled = false;
             }
         });
     }
@@ -114,17 +127,35 @@
         });
     });
 
-        // Function to update the selected resource type
-        function updateSelectedResourceType() {
-        var selectedResourceType = $('#resource_type').val(); // Get the selected resource type
-        $('#selectedResourceType').text('Resource Type: ' + selectedResourceType);
-    }
-
+    // Selected Resource Type Read
+    $('#resource_type').change(function () {
+        var selectedResourceType = $(this).val();
+        $('#selected_resource_type').val(selectedResourceType);
+    });
     // Listen for changes in the select element
     $(document).ready(function () {
         $('#resource_type').change(function () {
             updateSelectedResourceType(); // Call the function to update the resource type
         });
+    });
+
+    // JavaScript to Show Loader When Generate Button is Clicked
+    document.getElementById('generate-button').addEventListener('click', function (event) {
+        const report_type = document.getElementById('report_type').value;
+        const start_date = document.getElementById('start_date').value;
+        const end_date = document.getElementById('end_date').value;
+        const resource_type = document.getElementById('resource_type').value;
+        const selected_resource_type = document.getElementById('selected_resource_type').value;
+
+        if (report_type.trim() !== '' && start_date.trim() !== '' && end_date.trim() !== '') {
+            event.preventDefault(); // Prevent the form submission
+            // Show the loader and change the button text
+            document.querySelector('.loader-container').style.display = 'block';
+            this.disabled = true; // Disable the button
+
+            // Submit the form
+            this.closest('form').submit();
+        }
     });
 </script>
 @show

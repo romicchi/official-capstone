@@ -47,16 +47,14 @@
             <input type="text" class="form-control" id="email_or_student_number" name="email_or_student_number" placeholder="Email/Student Number" required>
           </div>
           <div class="form-group">
-    <label for="password">Password:</label>
-    <div class="input-group">
-        <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
-        <span class="input-group-text">
+            <label for="password">Password:</label>
+            <div class="input-group">
+              <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+              <span class="input-group-text">
                 <i class="fas fa-eye" id="togglePassword"></i>
-            </span>
-    </div>
-</div>
-
-
+              </span>
+            </div>
+          </div>
           <div class="form-group">
             <div class="custom-control custom-checkbox">
               <input class="form-check-input" type="checkbox" name="remember" id="remember">
@@ -67,8 +65,7 @@
           </div>
 
           <button type="submit" id="login-button" class="btn btn-primary my-2"<a href="{{ route('dashboard') }}">Login</a></button>
-          
-          
+
           <p>Don't have an account yet? <a href="/register">Sign Up</a></p>
         </form>
       </div>
@@ -76,14 +73,6 @@
   </div>
 @include('loader')
 <script src="{{ asset('js/loader.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <script>
-      // JavaScript to Show Loader When Login Button is Clicked
-      document.getElementById('login-button').addEventListener('click', function () {
-        // Show the loader
-        document.querySelector('.loader-container').style.display = 'block';
-      });
-    </script>
 </body>
 </html>
 

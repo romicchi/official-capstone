@@ -60,9 +60,12 @@ class DiscussionsController extends Controller
     
         $discussions = $query->paginate(10);
         $discussions->appends($request->query());
+
+        $characterLimit = 100;
     
         return view('discussions.index', [
-            'discussions' => $discussions
+            'discussions' => $discussions,
+            'characterLimit' => $characterLimit
         ]);
     }
     
@@ -109,9 +112,12 @@ class DiscussionsController extends Controller
     {
         $replies = $discussion->replies()->paginate(3); // Fetch replies and paginate
 
+        $characterLimit = 300;
+
         return view('discussions.show', [
             'discussion' => $discussion,
             'replies' => $replies, // Pass the paginated replies to the view
+            'characterLimit' => $characterLimit,
 
             'userId' => auth()->check() ? auth()->user()->id : null 
         ]);

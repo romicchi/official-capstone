@@ -129,42 +129,38 @@
 
 <div class="row">
     <!-- Most Favorite Resources Table -->
-    <div class="col-md-6">
+    <div class="col-md-12 col-lg-6">
         <div class="table-container shadow">
             <p class="h4 mb-0 text-gray-800 text-center mb-2">Top Resources</p>
-            <div class="d-flex justify-content-between align-items-center">
-                <table class="table">
-                    <thead>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Title</th>
+                        <th class="text-center">Author</th>
+                        <th class="text-center">Favorited</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($mostFavoriteResources as $resource)
                         <tr>
-                            <th class="text-center">Title</th>
-                            <th class="text-center">Author</th>
-                            <th class="text-center">Favorited</th>
-                            <th></th>
+                            <td class="text-center">{{ Str::limit($resource->title, 30) }}</td>
+                            <td class="text-center">{{ $resource->author }}</td>
+                            <td class="text-center">{{ $resource->favorited_by_count }}</td>
+                            <td>
+                                <a class="text-decoration" href="{{ route('resource.show', $resource->id) }}">View</a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($mostFavoriteResources as $resource)
-                            <tr>
-                                <td class="text-center">{{ $resource->title }}</td>
-                                <td class="text-center">{{ $resource->author }}</td>
-                                <td class="text-center">{{ $resource->favorited_by_count }}</td>
-                                <td>
-                                    <a class="text-decoration" href="{{ route('resource.show', $resource->id) }}">View</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 
     <!-- Most Replied Discussions Table -->
-    <div class="col-md-6">
+    <div class="col-md-12 col-lg-6">
         <div class="table-container shadow">
             <p class="h4 mb-0 text-gray-800 text-center mb-2">Top Discussions</p>
-            <div class="d-flex justify-content-between align-items-center">
-            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -176,7 +172,7 @@
                 <tbody>
                     @foreach ($mostRepliedDiscussions as $discussion)
                         <tr>
-                            <td class="text-center">{{ $discussion->title }}</td>
+                            <td class="text-center">{{ Str::limit($discussion->title, 50) }}</td>
                             <td class="text-center">{{ $discussion->replies_count }}</td>
                             <td><a class="text-decoration" href="{{ route('discussions.show', $discussion->slug, ['id' => $discussion->id]) }}">View</a></td>
                         </tr>
@@ -185,6 +181,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 	
 </main>

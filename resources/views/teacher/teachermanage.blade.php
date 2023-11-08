@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/teachermanage.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
     <!-- Teacher Resource Table -->
@@ -36,16 +37,8 @@
               <input type="text" class="form-control" id="title" name="title" required>
             </div>
             <div class="form-group">
-              <label for="topic">Topic(s)</label>
-              <input type="text" class="form-control" id="topic" name="topic" required>
-            </div>
-            <div class="form-group">
               <label for="keywords">Keywords</label>
               <input type="text" class="form-control" id="keywords" name="keywords" required>
-            </div>
-            <div class="form-group">
-              <label for="author">Owner(s)</label>
-              <input type="text" class="form-control" id="author" name="author" required>
             </div>
             <div class="form-group">
               <label for="description">Description/Summary</label>
@@ -70,7 +63,7 @@
 
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
-                    <button type="submit" class="btn btn-primary m-4">
+                    <button type="submit" id="upload-button" class="btn btn-primary m-4">
                         {{ __('Upload') }}
                     </button>
                 </div>
@@ -92,7 +85,6 @@
                       <th>Author</th>
                       <th>College</th>
                       <th>Discipline</th>
-                      <th>Description</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -104,17 +96,27 @@
                     @else
                     @foreach($resources as $resource)
                     <tr>
-                      <td><strong>{{ $resource->title }}<strong></td>
+                      <td>
+                        <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                          <strong>{{ Str::limit($resource->title, 35) }}</strong>
+                        </a>
+                      </td>
                       <td>{{ $resource->author }}</td>
                       <td>{{ $resource->college->collegeName }}</td>
                       <td>{{ $resource->discipline->disciplineName }}</td>
-                      <td>{{ $resource->description }}</td>
                       <td>
-                        <a href="{{ route('resources.edit', $resource) }}" class="btn btn-primary">Edit</a>
+                        <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-primary mx-1" onclick="window.location='{{ route('resources.edit', $resource->id) }}'">
+                          <i class="fas fa-edit"></i>
+                        </button>
                         <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn btn-danger">Delete</button>
+                          <button type="submit" class="btn btn-danger delete-resource-confirm">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
                         </form>
                       </td>
                     </tr>
@@ -133,4 +135,15 @@
   </div>
 </section>
 
+@include('loader')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+<script src="{{ asset('js/loader.js') }}"></script>
 <script src="{{ asset('js/fetch.js') }}"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>
+<script>
+  // JavaScript to Show Loader When Login Button is Clicked
+  document.getElementById('upload-button').addEventListener('click', function () {
+    // Show the loader
+    document.querySelector('.loader-container').style.display = 'block';
+  });
+</script>

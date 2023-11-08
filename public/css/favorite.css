@@ -1,5 +1,5 @@
 body {
-    padding-left: 18rem; /* Set padding top equal to navbar height */
+    padding-left: 17rem; /* Set padding top equal to navbar height */
     padding-top: 4rem;
     padding-right: 2rem;
     font-family: 'Roboto', sans-serif;
@@ -23,8 +23,8 @@ th {
 }
 
 a {
-  color: #000; /* Set the color to black */
-  text-decoration: none; /* Remove underline */
+  color: #000;
+  text-decoration: none;
 }
 
 .hover:hover {
@@ -52,6 +52,15 @@ tr:nth-child(even) {
 @media (max-width: 576px) {
   body {
     padding-left: 1rem; /* 0px */
-}
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .card.shadow.mb-4 {
+    height: auto;
+    padding: 10px;
+  }
 }
 

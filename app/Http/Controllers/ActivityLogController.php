@@ -13,7 +13,8 @@ class ActivityLogController extends Controller
     {
         $activityLog = $this->queryActivityLogs()
             ->orderBy('activity_logs.created_at', 'desc')
-            ->paginate(25, ['*'], 'indexPage');
+            ->paginate(25, ['*'], 'indexPage')
+            ->onEachSide(1);
 
         $this->formatTimestamps($activityLog);
 
@@ -27,7 +28,8 @@ class ActivityLogController extends Controller
         $activityLog = $this->queryActivityLogs()
             ->where('activity_logs.activity', 'like', '%' . $filter . '%')
             ->orderBy('activity_logs.created_at', 'desc')
-            ->paginate(25, ['*'], 'filterPage');
+            ->paginate(25, ['*'], 'filterPage')
+            ->onEachSide(1);
 
         $this->formatTimestamps($activityLog);
 
@@ -47,7 +49,8 @@ class ActivityLogController extends Controller
                     ->orWhere('activity_logs.activity', 'like', '%' . $search . '%');
             })
             ->orderBy('activity_logs.created_at', 'desc')
-            ->paginate(25, ['*'], 'searchPage');
+            ->paginate(25, ['*'], 'searchPage')
+            ->onEachSide(1);
 
         $this->formatTimestamps($activityLog);
 

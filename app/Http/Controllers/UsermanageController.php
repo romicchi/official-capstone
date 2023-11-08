@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Image;
 use App\Models\ArchiveUser;
+use App\Models\Journal;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -161,9 +162,9 @@ class UsermanageController extends Controller
     //display all users in the database
     public function show(Request $request)
     {
-        $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page');
-        $existingUsers = User::with('role')->where('verified', true)->paginate(11, ['*'], 'existing_page');
-        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10, ['*'], 'archive_page');
+        $pendingUsers = User::with('role')->where('verified', false)->paginate(10, ['*'], 'pending_page')->onEachSide(1);
+        $existingUsers = User::with('role')->where('verified', true)->paginate(11, ['*'], 'existing_page')->onEachSide(1);
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10, ['*'], 'archive_page')->onEachSide(1);
         $calculateExpiryDate = self::calculateExpiryDate($request->year_level);
 
         $existingUsersQuery = User::with('role')->where('verified', true);
@@ -171,7 +172,7 @@ class UsermanageController extends Controller
         // Sorting
         $sortOrder = $request->input('sort_order', 'asc'); // Default to ascending order
         $existingUsersQuery->orderBy('lastname', $sortOrder);
-        $existingUsers = $existingUsersQuery->paginate(11);
+        $existingUsers = $existingUsersQuery->paginate(11)->onEachSide(1);
 
         $activeTab = 'existing';
         $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
@@ -208,7 +209,17 @@ class UsermanageController extends Controller
     public function delete($id) 
     {  
         $userdata = User::findOrFail($id);
-        $userdata->delete();
+        
+        if ($userdata) {
+            // Delete the associated journals
+            $journals = Journal::where('user_id', $userdata->id)->get();
+            foreach ($journals as $journal) {
+                $journal->delete();
+            }
+            
+            // Delete the user
+            $userdata->delete();
+        }
 
         $activeTab = 'existing';
 
@@ -369,14 +380,14 @@ class UsermanageController extends Controller
         }
         
         // Paginate the results and pass the current page
-        $existingUsers = $existingUsersQuery->paginate(10, ['*'], 'existing_page')->withQueryString();
+        $existingUsers = $existingUsersQuery->paginate(10, ['*'], 'existing_page')->withQueryString()->onEachSide(1);
 
         $pendingUsers = User::with('role')
             ->where('verified', false)
-            ->paginate(10);
+            ->paginate(10)->onEachSide(1);
 
         $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
-        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10);
+        $archiveViewableUsers = ArchiveUser::where('archived', true)->paginate(10)->onEachSide(1);
         
         $activeTab = 'existing';
         
@@ -403,7 +414,7 @@ class UsermanageController extends Controller
             $pendingUsersQuery->where('role_id', $roleFilter);
         }
 
-        $pendingUsers = $pendingUsersQuery->paginate(10)->withQueryString();
+        $pendingUsers = $pendingUsersQuery->paginate(10)->withQueryString()->onEachSide(1);
 
         $existingUsers = User::with('role')
             ->where('verified', true)
@@ -436,7 +447,7 @@ class UsermanageController extends Controller
             $archiveViewableUsersQuery->where('role_id', $roleFilter);
         }
 
-        $archiveViewableUsers = $archiveViewableUsersQuery->paginate(10)->withQueryString();
+        $archiveViewableUsers = $archiveViewableUsersQuery->paginate(10)->withQueryString()->onEachSide(1);
 
         $pendingUsers = User::with('role')
             ->where('verified', false)
@@ -467,7 +478,7 @@ class UsermanageController extends Controller
         $archiveViewableUsers = ArchiveUser::with('role')
             ->where('archived', true)
             ->orderBy('lastname', $sortOrder) // Sort by created_at column
-            ->paginate(10)->withQueryString();
+            ->paginate(10)->withQueryString()->onEachSide(1);
     
         $pendingUsers = User::with('role')
             ->where('verified', false)
@@ -506,7 +517,7 @@ class UsermanageController extends Controller
         $existingUsers = User::with('role')
             ->where('verified', true)
             ->orderBy('lastname', $sortOrder) // Sort by created_at column
-            ->paginate(10);
+            ->paginate(10)->onEachSide(1);
     
         $roles = Role::whereNotIn('role', ['super-admin', 'admin'])->get();
     
@@ -533,7 +544,7 @@ class UsermanageController extends Controller
         $pendingUsers = User::with('role')
             ->where('verified', false)
             ->orderBy('lastname', $sortOrder) // Sort by created_at column
-            ->paginate(10);
+            ->paginate(10)->onEachSide(1);
     
         $existingUsers = User::with('role')
             ->where('verified', true)
@@ -554,7 +565,7 @@ class UsermanageController extends Controller
 
     public function archiveViewable()
     {
-    $archiveViewableUsers = ArchiveUser::where('archived', true)->with('role')->paginate(10);
+    $archiveViewableUsers = ArchiveUser::where('archived', true)->with('role')->paginate(10)->onEachSide(1);
 
     return view('administrator.usermanage', ['archiveViewableUsers' => $archiveViewableUsers]);
     }
@@ -583,6 +594,15 @@ public function archive($id)
    $archiveUser->url = $user->url; // Add URL
    $archiveUser->archived_at = now(); // Add the current date and time
    $archiveUser->save();
+
+   // Retrieve the journals of the user being archived
+   $journals = Journal::where('user_id', $user->id)->get();
+   
+   // Attach journals to the archive user
+   foreach ($journals as $journal) {
+       $journal->user_id = $archiveUser->user_id;
+       $journal->save();
+    }
 
     // Delete the original user record
     $user->delete();
@@ -637,6 +657,15 @@ public function reactivate($id)
 
     $user->save();
 
+    // Retrieve the journals of the archived user
+    $journals = Journal::where('user_id', $archivedUser->user_id)->get();
+    
+    // Attach journals to the newly created user
+    foreach ($journals as $journal) {
+        $journal->user_id = $user->id;
+        $journal->save();
+    }
+
     // Delete the archived user
     $archivedUser->delete();
 
@@ -661,12 +690,17 @@ public function reactivate($id)
     }
 }
 
-// Delete user function in UsermanageController.php
 public function deleteArchive($id) 
 {  
     $userdata = ArchiveUser::find($id);
 
     if ($userdata) {
+        // Delete the associated journals
+        $journals = Journal::where('user_id', $userdata->user_id)->get();
+        foreach ($journals as $journal) {
+            $journal->delete();
+        }
+
         // User exists, force delete it
         $userdata->forceDelete();
     }

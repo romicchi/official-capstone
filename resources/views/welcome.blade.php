@@ -18,8 +18,9 @@
 <body class="antialiased">
 
     <!-- Jumbotron -->
-    <div class="jumbotron" data-aos="fade-down" style="background-image: url({{ asset('assets/img/Background.png') }})" loading="lazy" width="150">
-    </div>
+    <div class="jumbotron" data-aos="fade-down" style="margin-top: 0;">
+    <img src="{{ asset('assets/img/Background.png') }}" class="img-fluid" alt="Background Image" loading="lazy">
+</div>
 
     <!-- About Section -->
     <section class="about" id="about-container">
@@ -114,7 +115,7 @@
                 </div>
                 <div class="col-lg-3">
                     <h5><strong>Address</strong></h5>
-                    <p><strong>Leyte Normal University</strong><br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
+                    <p>Leyte Normal University<br>Paterno St, Downtown, Tacloban City, Leyte, 6500</p>
                 </div>
             </div>
             <div class="row">

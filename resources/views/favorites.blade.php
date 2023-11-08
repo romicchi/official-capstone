@@ -49,7 +49,7 @@
                         <tr>
                             <td>
                                 <a class="hover" href="{{ route('resource.show', $resource->id) }}">
-                                    {{ $resource->title }}
+                                {{ Str::limit($resource->title, 50) }}
                                 </a>
                             </td>
                             <td>{{ $resource->author }}</td>
@@ -64,7 +64,7 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
-                        </td>
+                            </td>
                         </tr>
                     @endforeach
                 @endif

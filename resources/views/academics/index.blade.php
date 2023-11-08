@@ -98,7 +98,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}</div>
+        <div class="d-flex justify-content-center my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}</div>
     </div>
 </div>
 
@@ -154,7 +154,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="my-3">{{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}</div>
+        <div class="d-flex justify-content-center my-3">{{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}</div>
     </div>
 </div>
 

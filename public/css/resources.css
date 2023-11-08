@@ -1,5 +1,5 @@
 body {
-  padding-top: 4rem;
+  padding-top: 2.5rem;
   padding-left: 17rem;
   padding-right: 2rem;
 }
@@ -19,6 +19,23 @@ button.toggle-favorite {
 .card-body {
   height: 55rem;
   overflow: auto;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.table th,
+.table td {
+text-align: left;
+}
+
+.hover:hover {
+  color: #070372;
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 991.33px) { 

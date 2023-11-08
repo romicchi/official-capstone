@@ -5,10 +5,24 @@
     <title>Resources Report</title>
     <!-- Include Bootstrap CSS for styling -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/generatereport.css') }}">
 </head>
+<style>
+    /* PDF Report Style */
+.header {
+    text-align: center;
+}
+.header .logo {
+    display: inline-block;
+    margin-left: 0;
+
+}
+.header .info {
+    display: inline-block;
+    vertical-align: top;
+}
+</style>
 <body>
-    <div class="container">
+<div class="container">
         <!-- Header with logo and university information -->
         <div class="header">
             <div class="logo">

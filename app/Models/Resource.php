@@ -63,5 +63,9 @@ class Resource extends Model
         return $this->belongsTo(Resource::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -46,11 +46,11 @@
                 @else
                 @foreach ($resources as $resource)
                 <tr>
-                    <!-- time in 10:00am format -->
-                    <td>{{ $resource->created_at->format('h:i A') }}</td>
+                    <!-- time in oct 10:00am format -->
+                    <td>{{ $resource->created_at->format('M d, h:i A') }}</td>
                     <td>
                         <a class="hover" href="{{ route('resource.show', $resource->id) }}">
-                            {{ $resource->title }}
+                            {{ Str::limit($resource->title, 35) }}
                         </a>
                     </td>
                     <td>{{ $resource->author }}</td>

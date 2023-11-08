@@ -49,7 +49,7 @@
                                                 <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
+                                                    <button type="submit" class="btn btn-danger delete-resource-confirm">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -59,7 +59,7 @@
                         </table>
                     </div>
                     <!-- Pagination links -->
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center my-3">
                         {{ $resources->onEachSide(3)->links('pagination::bootstrap-4') }}
                     </div>
                 </div>

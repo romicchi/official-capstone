@@ -44,17 +44,3 @@ cursor: pointer;
 .btn-primary:hover {
 background-color: #45a049;
 }
-
-/* PDF Report Style */
-.header {
-    text-align: center;
-}
-.header .logo {
-    display: inline-block;
-    margin-left: 0;
-
-}
-.header .info {
-    display: inline-block;
-    vertical-align: top;
-}
