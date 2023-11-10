@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             // Send the user's query to the Flask API
-            const flaskUrl = 'http://127.0.0.1:8080/ask'; // Update the URL
+            const flaskUrl = 'http://192.168.1.10:8080/ask'; // Update the URL
             const response = await fetch(flaskUrl, {
                 method: "POST",
                 headers: {

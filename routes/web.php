@@ -260,8 +260,7 @@ Route::get('/get-recommendations', [ChartController::class, 'getRecommendations'
 
 Route::post('/askChatbot', [ChartController::class, 'askChatbot'])->name('askChatbot');
 
-Route::post('/autofill/keywords-discipline', [ResourceController::class, 'autofillKeywordsAndDiscipline']);
-Route::post('/summarize', [ResourceController::class, 'autofillSummary']);
+Route::post('/autofill', [ResourceController::class, 'autofill']);
 
 
 

@@ -96,7 +96,6 @@ button.toggle-favorite {
                             <a href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
                         </h4>
                         <p><strong>Author:</strong> {{ $resource->author }}</p>
-                        <p><strong>Topic:</strong> {{ $resource->topic }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>
                     <td class="justified-text">{{ $resource->description }}</td>

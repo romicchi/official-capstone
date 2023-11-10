@@ -174,7 +174,12 @@ class ResourceController extends Controller
         $colleges = College::all();
         $courses = Course::all();
         $subjects = Subject::all();
-        return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects'));
+
+        $disciplines = Discipline::pluck('disciplineName', 'id'); // Assuming you have a Discipline model
+
+       // $colleges = College::pluck('collegeName', 'id');
+
+        return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines'));
     }
 
     // Update resource function STAR STAR STAR STAR
@@ -185,34 +190,53 @@ class ResourceController extends Controller
         return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
     }
 
-    // Summarizer AutoFill
-    public function autofillKeywordsAndDiscipline(Resource $resource)
-{
-    $pdfUrl = $resource->url; // Assuming 'url' is the column name for the PDF URL
-
-    // Make a request to the Flask API using the $pdfUrl
-    $client = new \GuzzleHttp\Client();
-    $response = $client->post('http://192.168.1.16:5000/predict', [
-        'form_params' => [
-            'pdf_url' => $pdfUrl,
-        ],
-    ]);
-
-    return $response->getBody();
-}
-
-    public function autofillSummary(Request $request)
+    public function autofill(Request $request)
     {
-    // Use Guzzle or other HTTP client to make a request to your Flask API
-    $client = new \GuzzleHttp\Client();
-    $response = $client->post('http://127.0.0.1:8080/summarize', [
-        'json' => [
-            'title' => $request->input('title'),
-        ],
-    ]);
-
-    return $response->getBody();
-    }
+        $title = $request->title;
+        $resource = Resource::where('title', $title)->first();
+    
+        if (!$resource) {
+            return response()->json(['error' => 'Resource not found'], 404);
+        }
+    
+        $summary = ''; // Your logic to get the summary goes here
+    
+        $disciplineId = $resource->discipline_id;
+        $discipline = Discipline::find($disciplineId);
+    
+        if (!$discipline) {
+            $isDisciplineValid = false;
+            $disciplineName = null;
+        } else {
+            $isDisciplineValid = true;
+            $disciplineName = $discipline->name;
+        }
+    
+        // Retrieve the college_id and college_name from the resource
+        $collegeId = $resource->college_id;
+        $college = College::find($collegeId);
+    
+        if (!$college) {
+            $isCollegeValid = false;
+            $collegeName = null;
+        } else {
+            $isCollegeValid = true;
+            $collegeName = $college->collegeName;
+        }
+    
+        $keywords = $resource->keywords;
+    
+        $response = [
+            'discipline' => $isDisciplineValid,
+            'discipline_name' => $disciplineName,
+            'college' => $isCollegeValid,
+            'collegeName' => $collegeName,
+            'keywords' => $keywords,
+            'summary' => $summary,
+        ];
+    
+        return response()->json($response);
+    }    
 
     //---------DEPARTMENTCHAIR-PROGCOORDINATOR-ADMIN----------------//
     public function showResourceManage(Request $request)

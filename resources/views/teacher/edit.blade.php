@@ -26,19 +26,26 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="author">{{ __('Author') }}</label>
-                                <input type="text" class="form-control" name="author" value="{{ $resource->author }}" required>
+                                <label for="keywords">{{ __('Keywords') }}</label>
+                                <input type="text" class="form-control" name="keywords" id="keywords" value="{{ $resource->keywords }}" required>
                             </div>
-
-                            <div class="form-group">
-                                 <label for="keywords">{{ __('Keywords') }}</label>
-                                 <input type="text" class="form-control" name="keywords" value="{{ $resource->keywords }}" required>
-                             </div>
                             
-                             <div class="form-group">
-                                 <label for="discipline">{{ __('Discipline') }}</label>
-                                 <input type="text" class="form-control" name="discipline" value="{{ $resource->discipline }}" required>
-                             </div>
+                            <div>  Discipline </div>
+                            <select class="form-control" name="discipline_id" id="discipline_id" required>
+                                <option value="" @if(empty($resource->discipline_id)) selected @endif></option>
+                                @foreach($disciplines as $id => $name)
+                                    <option value="{{ $id }}" @if($resource->discipline_id === $id) selected @endif>{{ $name }}</option>
+                                @endforeach
+                            </select>
+
+                            <div>College</div>
+<select class="form-control" name="college_id" id="college_id" required>
+    <option value="" @if(empty($resource->college_id)) selected @endif></option>
+    @foreach($colleges as $college)
+        <option value="{{ $college->id }}" @if($resource->college_id == $college->id) selected @endif>{{ $college->collegeName }}</option>
+    @endforeach
+</select>
+
 
                             <div class="form-group">
                                 <label for="description">{{ __('Description') }}</label>
@@ -50,8 +57,7 @@
                                 <button type="button" id="autofillButton" class="btn btn-primary">Autofill</button>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-secondary">Cancel</a>
                             </div>
-
-                           
+                    
                         </form>
                     </div>
                 </div>
@@ -59,97 +65,100 @@
         </div>
     </div>
 
-<script>
+    <script>
+    var dynamicDisciplineMapping = {
+        'Computer Science': 1,
+        'Mathematics': 2,
+        'Natural Sciences': 3,
+        'The Arts': 4,
+        'Sports': 5,
+        'Applied Sciences': 6,
+        'Social Sciences': 7,
+        'Language': 8,
+        'Linguistics': 9,
+        'Literature': 10,
+        'Geography': 11,
+        'Management': 12,
+        'Philosophy': 13,
+        'Psychology': 14,
+        'History': 15
+    };
+
+    // Function to convert discipline name to discipline_id
+    function getDisciplineId(disciplineName) {
+        return dynamicDisciplineMapping[disciplineName] || null;
+    }
+
+    var dynamicCollegeMapping = {
+        'CME': 1,
+        'CAS': 2,
+        'COE': 3
+    };
+
+    // Function to convert college name to college_id
+    function getCollegeId(collegeName) {
+        return dynamicCollegeMapping[collegeName] || null;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var descriptionField = document.getElementById('description');
+    var keywordsField = document.getElementById('keywords');
+    var disciplineField = document.getElementById('discipline_id');
+    var collegeField = document.getElementById('college_id');
+    var errorMessage = document.getElementById('errorMessage');
+    var autofillButton = document.getElementById('autofillButton');
+
     document.getElementById('autofillButton').addEventListener('click', function () {
-        var descriptionField = document.getElementById('description'); // Get the description field
-        var keywordsField = document.getElementById('keywords'); // Get the keywords field
-        var disciplineField = document.getElementById('discipline'); // Get the discipline field
-        var errorMessage = document.getElementById('errorMessage'); // Get the error message div
-
-        // Check if the description field is empty
-        if (descriptionField.value.trim() === '') {
-            // Make a request to Flask for description
-            fetch('http://127.0.0.1:8080/summarize', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title: '{{ $resource->title }}' }), // Pass the title
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.summary) {
-                        // Update the description field only if it's empty
-                        descriptionField.value = data.summary;
-                    } else {
-                        // Display an error message
-                        errorMessage.innerText = 'Summary not available.';
-                        errorMessage.style.display = 'block';
-                        errorMessage.style.color = 'red';
-                    }
-                })
-                .catch((error) => {
-                    console.error('Description autofill request failed:', error);
-                });
-        }
-
-        if (keywordsField.value.trim() === '') {
-    // Make a request to Flask for keywords using the PDF URL
-    fetch('http://192.168.1.16:5000/predict', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ pdf_url: pdfUrl }), // Use the fetched PDF URL
-    })
+    // Check if the fields are empty
+    if (
+        descriptionField.value.trim() === '' ||
+        keywordsField.value.trim() === '' ||
+        disciplineField.value.trim() === '' ||
+        collegeField.value.trim() === ''
+    ) {
+        // Make a request to Flask for autofill
+        fetch('http://192.168.1.11:5000/autofill', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ title: '{{ $resource->title }}' }),
+        })
         .then((response) => response.json())
         .then((data) => {
-            if (data.keywords) {
-                keywordsField.value = data.keywords.join(', ');
+            if (data) {
+                if (data.summary) {
+                    descriptionField.value = data.summary;
+                }
+                if (data.keywords) {
+                    var keywordsString = data.keywords.join(', ');
+                    keywordsField.value = keywordsString;
+                }
+                if (data.discipline) {
+                    // Convert discipline name to discipline_id
+                    var disciplineId = getDisciplineId(data.discipline);
+                    disciplineField.value = disciplineId;
+                }
+                if (data.college) {
+                    // Convert college name to college_id
+                    var collegeId = getCollegeId(data.college);
+                    collegeField.value = collegeId;
+                }
             } else {
-                errorMessage.innerText = 'Keywords not available.';
+                errorMessage.innerText = 'Autofill data not available.';
                 errorMessage.style.display = 'block';
                 errorMessage.style.color = 'red';
             }
         })
         .catch((error) => {
-            console.error('Keywords autofill request failed:', error);
+            console.error('Autofill request failed:', error);
         });
+    } else {
+        errorMessage.innerText = 'Fields are not empty.';
+        errorMessage.style.display = 'block';
+        errorMessage.style.color = 'red';
     }
-
-    if (disciplineField.value.trim() === '') {
-    // Make a request to Flask for discipline using the PDF URL
-    fetch('http://192.168.1.16:5000/predict', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ pdf_url: pdfUrl }), // Use the fetched PDF URL
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.discipline) {
-                disciplineField.value = data.discipline;
-            } else {
-                errorMessage.innerText = 'Discipline not available.';
-                errorMessage.style.display = 'block';
-                errorMessage.style.color = 'red';
-            }
-        })
-        .catch((error) => {
-            console.error('Discipline autofill request failed:', error);
-        });
-    }
-
-        // Display an error message if any of the fields are not empty
-        if (
-            descriptionField.value.trim() !== '' ||
-            keywordsField.value.trim() !== '' ||
-            disciplineField.value.trim() !== ''
-        ) {
-            errorMessage.innerText = 'Fields are not empty.';
-            errorMessage.style.display = 'block';
-            errorMessage.style.color = 'red';
-        }
     });
+});
 </script>
+
