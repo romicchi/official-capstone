@@ -67,16 +67,18 @@ class ResourceController extends Controller
 
     // Store resource function for Teacher
     public function storeResource(Request $request)
-    {
-        // Validate the form data
-        $validatedData = $request->validate([
-            'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
-            'title' => 'required',
-            'keywords' => 'required',
-            'description' => 'required',
-            'college' => 'required',
-            'discipline' => 'required',
-        ]);
+{
+    // Validate the form data
+    $validatedData = $request->validate([
+        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
+        'title' => 'required',
+        'topic' => 'nullable',
+        'keywords' => 'nullable',
+        'author' => 'nullable',
+        'description' => 'nullable',
+        'college' => 'nullable',
+        'discipline' => 'nullable',
+    ]);
 
         // Upload the file to Google Drive
         $file = $request->file('file');
@@ -135,20 +137,28 @@ class ResourceController extends Controller
         // Fetch the firstname and lastname of the teacher who uploaded the resource
         $author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
 
-        // Create a new resource instance
-        $resource = new Resource();
-        $resource->title = $validatedData['title'];
-        $resource->keywords = $validatedData['keywords'];
         $resource->author = $author;
-        $resource->description = $validatedData['description'];
-        $resource->url = $fileUrl;
-        $resource->college_id = $validatedData['college'];
-        $resource->discipline_id = $validatedData['discipline'];
-        $resource->save();
 
-        // Redirect or perform additional actions as needed
-        return redirect()->back()->with('success', 'Resource added successfully.');
-    }
+    // Create a new resource instance
+    $resource = new Resource();
+    $resource->title = $validatedData['title'];
+   // $resource->topic = $validatedData['topic'];
+   // $resource->keywords = $validatedData['keywords'];
+        $author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+   // $resource->description = $validatedData['description'];
+    $resource->url = $fileUrl;
+   // $resource->college_id = $validatedData['college'];
+   // $resource->discipline_id = $validatedData['discipline'];
+    $resource->save();
+
+   if ($resource) {
+       // Redirect to the edit page for the newly uploaded resource
+       return redirect()->route('resources.edit', $resource)->with('success', 'Resource uploaded successfully');
+   } else {
+       // Handle the case where no resource was found
+       return redirect()->route('teachermanage')->with('error', 'Resource not found.');
+   }
+}
 
 
         /**
@@ -195,15 +205,96 @@ class ResourceController extends Controller
         $colleges = College::all();
         $courses = Course::all();
         $subjects = Subject::all();
-        return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects'));
+
+        $disciplines = Discipline::pluck('disciplineName', 'id'); // Assuming you have a Discipline model
+
+       // $colleges = College::pluck('collegeName', 'id');
+
+        return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines'));
     }
 
-    // Update resource function
+    // Update resource function STAR STAR STAR STAR
     public function update(Request $request, Resource $resource)
     {
         $resource->update($request->all());
 
         return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
+    }
+
+    public function autofill(Request $request)
+    {
+        $title = $request->title;
+        $resource = Resource::where('title', $title)->first();
+    
+        if (!$resource) {
+            return response()->json(['error' => 'Resource not found'], 404);
+        }
+    
+        $summary = ''; // Your logic to get the summary goes here
+    
+        $disciplineId = $resource->discipline_id;
+        $discipline = Discipline::find($disciplineId);
+    
+        if (!$discipline) {
+            $isDisciplineValid = false;
+            $disciplineName = null;
+        } else {
+            $isDisciplineValid = true;
+            $disciplineName = $discipline->name;
+        }
+    
+        // Retrieve the college_id and college_name from the resource
+        $collegeId = $resource->college_id;
+        $college = College::find($collegeId);
+    
+        if (!$college) {
+            $isCollegeValid = false;
+            $collegeName = null;
+        } else {
+            $isCollegeValid = true;
+            $collegeName = $college->collegeName;
+        }
+    
+        $keywords = $resource->keywords;
+    
+        $response = [
+            'discipline' => $isDisciplineValid,
+            'discipline_name' => $disciplineName,
+            'college' => $isCollegeValid,
+            'collegeName' => $collegeName,
+            'keywords' => $keywords,
+            'summary' => $summary,
+        ];
+    
+        return response()->json($response);
+    }    
+
+    //---------DEPARTMENTCHAIR-PROGCOORDINATOR-ADMIN----------------//
+    public function showResourceManage(Request $request)
+    {
+        $resources = Resource::paginate(10);
+        $colleges = College::all();
+        $courses = Course::all();
+        $subjects = Subject::all();
+    
+        return view('resourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
+    }
+    
+    public function searchResources(Request $request)
+    {
+        $query = $request->input('query');
+
+        $resources = Resource::where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
+                ->orWhere('author', 'LIKE', '%' . $query . '%')
+                ->orWhere('created_at', 'LIKE', '%' . $query . '%');
+        })
+        ->orWhereHas('subject', function ($queryBuilder) use ($query) {
+            $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
+        })
+        ->paginate(10);
+
+        return view('resourcemanage', compact('resources'));
     }
 
      //--------------ADMIN-----------------//

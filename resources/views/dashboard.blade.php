@@ -13,6 +13,7 @@
 	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+            <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
@@ -99,83 +100,11 @@
     </header>
 	<main>
 		
-<!-- Content Row -->
-<div class="row">
-    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-        <!-- card -->
-        <div class="card h-100 card-lift">
-            <!-- card body -->
-            <div class="card-body">
-                <!-- heading -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div>
-                        <h4 class="mb-0">Projects</h4>
-                    </div>
-                    <div class="icon-shape icon-md bg-primary-soft text-primary rounded-2">
-                        <i  data-feather="briefcase" height="20" width="20"></i>
-                    </div>
-                </div>
-                <!-- project number -->
-                <div class="lh-1">
-                    <h1 class=" mb-1 fw-bold">18</h1>
-                    <p class="mb-0"><span class="text-dark me-2">2</span>Completed</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-        <!-- card -->
-        <div class="card h-100 card-lift">
-            <!-- card body -->
-            <div class="card-body">
-                <!-- heading -->
-                <div class="d-flex justify-content-between align-items-center
-                mb-3">
-                <div>
-                    <h4 class="mb-0">Active Task</h4>
-                </div>
-                <div class="icon-shape icon-md bg-primary-soft text-primary
-                rounded-2">
-                <i  data-feather="list" height="20" width="20"></i>
-            </div>
-        </div>
-        <!-- project number -->
-        <div class="lh-1">
-            <h1 class="  mb-1 fw-bold">132</h1>
-            <p class="mb-0"><span class="text-dark me-2">28</span>Completed</p>
-        </div>
-    </div>
-</div>
-</div>
-<div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
-    <!-- card -->
-    <div class="card h-100 card-lift">
-        <!-- card body -->
-        <div class="card-body">
-            <!-- heading -->
-            <div class="d-flex justify-content-between align-items-center
-            mb-3">
-            <div>
-                <h4 class="mb-0">Teams</h4>
-            </div>
-            <div class="icon-shape icon-md bg-primary-soft text-primary
-            rounded-2">
-            <i  data-feather="users" height="20" width="20"></i>
-        </div>
-    </div>
-    <!-- project number -->
-    <div class="lh-1">
-        <h1 class="  mb-1 fw-bold">12</h1>
-        <p class="mb-0"><span class="text-dark me-2">1</span>Completed</p>
-    </div>
-</div>
-</div>
-</div>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Talk to Gener</div>
+                    <div class="card-header"><strong>Talk to Gener</strong></div>
                     <div class="card-body">
                         <!-- Chatbot container -->
                         <div class="chatbot-container">
@@ -185,6 +114,7 @@
                             </div>
                             <div class="chatbot-input">
                                 <form method="GET" action="{{ route('getRecommendations') }}">
+                                <form method="POST" action="{{ route('askChatbot') }}">
                                     @csrf
                                     <div style="display: flex;">
                                     <input type="text" name="query" id="user-input" placeholder="Type your message...">
@@ -280,31 +210,36 @@
 </body>
 </html>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const recommendationsContainer = document.getElementById("recommendations-container");
-        const loadingSpinner = document.getElementById("loading-spinner");
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        document.querySelector("form").addEventListener("submit", function (e) {
+<script>
+    $(document).ready(function () {
+        const recommendationsContainer = $("#recommendations-container");
+        const loadingSpinner = $("#loading-spinner");
+
+        $("form").on("submit", function (e) {
             e.preventDefault();
-            const query = document.getElementById("user-input").value;
+            const query = $("#user-input").val();
 
             // Display loading spinner while fetching recommendations
-            loadingSpinner.style.display = "inline-block";
+            loadingSpinner.css("display", "inline-block");
 
-            // Fetch recommendations based on the user's query
-            fetch(`/get-recommendations?query=${encodeURIComponent(query)}`)
-                .then((response) => response.text())
-                .then((html) => {
+            // Fetch recommendations based on the user's query using jQuery
+            $.ajax({
+                url: `/get-recommendations?query=${encodeURIComponent(query)}`,
+                method: "GET",
+                success: function (html) {
                     // Hide loading spinner
-                    loadingSpinner.style.display = "none";
+                    loadingSpinner.css("display", "none");
 
                     // Update the recommendations container with the fetched HTML
-                    recommendationsContainer.innerHTML = html;
-                })
-                .catch((error) => {
+                    recommendationsContainer.html(html);
+                },
+                error: function (error) {
                     console.error("Error fetching recommendations:", error);
-                });
+                },
+            });
         });
     });
 </script>
@@ -317,96 +252,76 @@ document.addEventListener("DOMContentLoaded", function () {
     const loadingSpinner = document.getElementById("loading-spinner");
     const tipElement = document.getElementById("tip");
 
-    // Function to add a message to the chatbot messages container
-    function addMessage(message, className) {
+    function addMessage(message, role) {
         const messageElement = document.createElement("div");
-        messageElement.className = className;
-        messageElement.innerText = message;
+        messageElement.classList.add(role + "-message");
+        messageElement.textContent = message;
         chatbotMessages.appendChild(messageElement);
     }
 
-    // Function to toggle the loading spinner and send button
     function toggleLoading(isLoading) {
-        if (isLoading) {
-            sendButton.style.display = "none";
-            loadingSpinner.style.display = "block";
-        } else {
-            sendButton.style.display = "block";
-            loadingSpinner.style.display = "none";
-        }
+        sendButton.style.display = isLoading ? "none" : "block";
+        loadingSpinner.style.display = isLoading ? "inline-block" : "none";
     }
 
-    // Function to show the tip
     function showTip() {
         tipElement.style.display = "block";
         setTimeout(function () {
             tipElement.style.display = "none";
-        }, 5000); // Hide the tip after 5 seconds
+        }, 5000);
     }
 
-    // Event listener for clicking the text box
-    userInput.addEventListener("click", function () {
-        showTip();
-    });
+    async function sendMessageToChatbot(query) {
+        addMessage(query, "user");
+        toggleLoading(true);
 
-    // Function to send user input to the Flask API and display the response
-    async function sendMessageToChatbot(query, modelType, muteStream, hideSource) {
-        addMessage(query, "user-message");
-        toggleLoading(true); // Loading spinner and hide send button
-
-        // API request to Flask
         try {
-            const response = await fetch("http://localhost:8080/api/chat", {
+            // Send the user's query to the Flask API
+            const flaskUrl = 'http://192.168.1.10:8080/ask'; // Update the URL
+            const response = await fetch(flaskUrl, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    query,
-                    model_type: modelType,
-                    mute_stream: muteStream,
-                    hide_source: hideSource,
+                    query: query,
                 }),
             });
 
             if (response.ok) {
                 const data = await response.json();
-                const chatbotResponse = data.answer || "Chatbot didn't respond.";
-                addMessage(chatbotResponse, "chatbot-message");
-            } 
-            
-            else {
-                addMessage("Error: Unable to communicate with the chatbot.", "chatbot-message");
+                const chatbotResponse = data.answers[0];
+                addMessage(chatbotResponse, "chatbot");
+            } else {
+                addMessage("Error: Unable to communicate with the chatbot", "chatbot");
             }
         } catch (error) {
             console.error("Error:", error);
-            addMessage("Error: Unable to communicate with the chatbot.", "chatbot-message");
+            addMessage("Error: Unable to communicate with the chatbot", "chatbot");
         } finally {
-            toggleLoading(false); // Hide loading spinner and show send button
+            toggleLoading(false);
         }
 
-        userInput.value = ""; // Clear the user input field
+        userInput.value = "";
     }
 
-    // Event listener for the send button
     sendButton.addEventListener("click", () => {
         const query = userInput.value;
-        const modelType = "GPT4All";
-        const muteStream = false;
-        const hideSource = false;
-        sendMessageToChatbot(query, modelType, muteStream, hideSource);
+        if (query.trim() !== "") {
+            sendMessageToChatbot(query);
+        }
     });
 
-    // Event listener for pressing Enter key in the input field
     userInput.addEventListener("keydown", (event) => {
         if (event.key === "Enter") {
             const query = userInput.value;
-            const modelType = "GPT4All";
-            const muteStream = false;
-            const hideSource = false;
-            sendMessageToChatbot(query, modelType, muteStream, hideSource);
+            if (query.trim() !== "") {
+                sendMessageToChatbot(query);
+            }
         }
     });
-});
 
+    showTip();
+});
 </script>
+

@@ -86,6 +86,7 @@
 @show
 
 <script>
+// toggle favorite
     $(document).ready(function () {
         $('.toggle-favorite').click(function () {
             var resourceId = $(this).data('resource-id');
@@ -93,25 +94,26 @@
 
             // Add the CSRF token to the data
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            var requestData = {
-                resourceId: resourceId,
-                _token: csrfToken, // Include the CSRF token
-            };
 
             $.ajax({
                 url: '{{ route('resource.toggleFavorite') }}',
                 type: 'POST',
-                data: requestData, // Send the updated data with the CSRF token
+                data: { resourceId: resourceId, _token: csrfToken },
                 success: function (data) {
-                    if (data.isFavorite) {
-                        $starIcon.removeClass('far').addClass('fas');
+                    // Toggle the star icon
+                    $starIcon.toggleClass('fas far');
+
+                    // Update the number of favorites in the view
+                    var $favoritesCount = $('.favorites-count');
+                    if ($starIcon.hasClass('fas')) {
+                        $favoritesCount.text(parseInt($favoritesCount.text()) + 1);
                     } else {
-                        $starIcon.removeClass('fas').addClass('far');
+                        $favoritesCount.text(parseInt($favoritesCount.text()) - 1);
                     }
-                },
+                }
             });
         });
-});
+    });
 
     // Track download of user
     function trackDownload(resourceId) {

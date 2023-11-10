@@ -10,7 +10,7 @@
         "google/apiclient": "^2.14",
         "google/cloud-firestore": "^1.30",
         "google/cloud-storage": "^1.31",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.5",
         "illuminate/mail": "*",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
