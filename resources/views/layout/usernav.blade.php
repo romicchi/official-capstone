@@ -66,7 +66,6 @@
         </li>
                 <li class="nav-item">
                   <a class="nav-link {{ $currentRoute === 'discussions.index' ? 'active' : 'inactive' }}" href="{{ route('discussions.index') }}"><img class="images1">Forum</a>
-
                 </li>
                 
                 <!-- Button available for the teacher role only -->
@@ -78,7 +77,6 @@
 
                 <li class="nav-item">
                   <a class="nav-link {{ $currentRoute === 'settings' ? 'active' : 'inactive' }}" href="{{ route('settings') }}"><img class="images1">Settings</a>
-
                 </li>
 
                 <!-- Divider -->

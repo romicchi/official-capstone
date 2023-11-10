@@ -20,7 +20,7 @@
             <!-- Channels -->
             @yield('Channel-Add')
             <div class="col-md-8 my-2">
-                <a href="{{ URL::previous() }}" class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
+                <a href="{{ route('discussions.index') }}" class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
                 <div class="card">
                     @include('partials.discussion-header')
                     <!-- To display the content of the discussion -->

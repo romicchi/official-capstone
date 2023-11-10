@@ -39,23 +39,23 @@
                 <h1>Register</h1>
                 <div class="form-group">
                     <label for="firstname">Firstname:</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" autocomplete="off" required>
+                    <input type="text" class="form-control" maxlength="50" id="firstname" name="firstname" placeholder="Enter Firstname" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="lastname">Lastname:</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" autocomplete="off" required>
+                    <input type="text" class="form-control" maxlength="50" id="lastname" name="lastname" placeholder="Enter Lastname" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                    <input type="text" class="form-control" maxlength="50" id="email" name="email" placeholder="Enter Email" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+                    <input type="password" class="form-control" maxlength="100" id="password" name="password" placeholder="Enter Password" required>
                 </div>
                 <div class="form-group">
                     <label for="password_confirmation">Confirm Password:</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+                    <input type="password" class="form-control" maxlength="100" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
                 </div>
 
                 <div class="form-group">

@@ -44,12 +44,12 @@
           <h1>Login</h1>
           <div class="form-group">
             <label for="email_or_student_number">Email/Student ID:</label>
-            <input type="text" class="form-control" id="email_or_student_number" name="email_or_student_number" placeholder="Email/Student Number" required>
+            <input type="text" class="form-control" id="email_or_student_number" maxlength="50" name="email_or_student_number" placeholder="Email/Student Number" required>
           </div>
           <div class="form-group">
             <label for="password">Password:</label>
             <div class="input-group">
-              <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+              <input type="password" class="form-control" id="password" maxlength="100" name="password" placeholder="Enter Password" required>
               <span class="input-group-text">
                 <i class="fas fa-eye" id="togglePassword"></i>
               </span>

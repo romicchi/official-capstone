@@ -32,7 +32,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="title"><strong>Title</strong></label>
-                    <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}">
+                    <input type="text" name="title" id="title" maxlength="255" class="form-control" value="{{ old('title') }}">
                 </div>
 
                 <div class="form-group">
