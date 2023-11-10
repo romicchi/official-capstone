@@ -33,9 +33,9 @@
                         </button>
                     </div>
                     <div> <!-- Right-aligned button -->
-                        <button class="btn btn-primary p-2" onclick="window.location='{{ route('resource.download', ['resource' => $resource]) }}'">
-                            Download <i class="fas fa-download"></i>
-                        </button>
+                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})">
+                            <i class="fas fa-download"></i> Download
+                        </a>
                     </div>
                 </div>
                         
@@ -193,4 +193,16 @@ function handlePdfLoad() {
         });
     });
 });
+
+// Track download of user
+function trackDownload(resourceId) {
+    $.ajax({
+        url: '{{ route('resource.trackDownload') }}',
+        type: 'POST',
+        data: { resourceId: resourceId, _token: '{{ csrf_token() }}' },
+        success: function (data) {
+            // Handle success, e.g., show a message or update the UI.
+        }
+    });
+}
 </script>

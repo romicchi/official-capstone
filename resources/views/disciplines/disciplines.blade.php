@@ -114,17 +114,5 @@
             });
         });
     });
-
-    // Track download of user
-    function trackDownload(resourceId) {
-            $.ajax({
-                url: '{{ route('resource.trackDownload') }}',
-                type: 'POST',
-                data: { resourceId: resourceId, _token: '{{ csrf_token() }}' },
-                success: function (data) {
-                    // Handle success, e.g., show a message or update the UI.
-                }
-            });
-        }
 </script>
 

@@ -1,0 +1,64 @@
+th {
+    color: black;
+}
+td{
+    background-color: #fff !important;
+}
+h4 {
+    font-size: 20px;
+}
+p {
+    font-size: 16px;
+}
+.title{
+    /* text derocation none */
+    text-decoration: none !important;
+    color: black !important;
+}
+
+.button {
+display: inline-block;
+padding: 10px 20px;
+background-color: #007bff; /* You can change the background color to your preference */
+color: #fff;
+text-align: center;
+text-decoration: none;
+border-radius: 5px;
+margin: 5px;
+cursor: pointer;
+}
+
+.button:hover {
+background-color: #0056b3; /* Change the hover color as needed */
+}
+
+.thead {
+color: white !important;
+}
+
+.justified-text {
+text-align: justify;
+}
+
+button.toggle-favorite {
+background: none;
+color: #f1c40f;
+border: none;
+padding: 0;
+cursor: pointer;
+}  
+
+.toggle-favorite {
+display: inline-block;
+}
+
+.title-with-star {
+display: flex;
+align-items: center; /* Vertically align the star and title */
+}
+
+.add-to-favorites-hint {
+font-size: 12px; /* Adjust the font size as needed */
+color: #777; /* Grey color */
+margin-left: 5px; /* Add some spacing between the text and the star */
+}

@@ -1,75 +1,11 @@
-@if(auth()->user()->role_id == 3 || auth()->user()->role_id == 4)
-    @include('layout.adminnavlayout')
-@else
-    @include('layout.usernav')
-@endif
-
 <head>
     <meta charset="utf-8">
     <title>GENER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/recommendation.css')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-        <style>
-            th {
-                color: black;
-            }
-            h4 {
-                font-size: 20px;
-            }
-            p {
-                font-size: 16px;
-            }
-
-            .button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff; /* You can change the background color to your preference */
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.button:hover {
-    background-color: #0056b3; /* Change the hover color as needed */
-}
-
-.thead {
-    color: white !important;
-}
-
-.justified-text {
-    text-align: justify;
-}
-
-button.toggle-favorite {
-  background: none;
-  color: #f1c40f;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}  
-
-.toggle-favorite {
-        display: inline-block;
-    }
-
-    .title-with-star {
-        display: flex;
-        align-items: center; /* Vertically align the star and title */
-    }
-
-    .add-to-favorites-hint {
-        font-size: 12px; /* Adjust the font size as needed */
-        color: #777; /* Grey color */
-        margin-left: 5px; /* Add some spacing between the text and the star */
-    }
-
-    </style>
 
 @section('content')
     <div class="container">
@@ -77,7 +13,7 @@ button.toggle-favorite {
         <table class="table table-bordered">
         <thead>
         <tr>
-            <th class="thead"> </th>
+            <th class="thead">Title</th>
             <th class="thead">Description/Summary</th>
             <th class="thead">Action</th>
         </tr>
@@ -93,7 +29,7 @@ button.toggle-favorite {
                                 </button>
                                 <span class="add-to-favorites-hint">(Add to Favorites)</span>
                             </div>
-                            <a href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
+                            <a class="title" href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
                         </h4>
                         <p><strong>Author:</strong> {{ $resource->author }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
@@ -104,7 +40,6 @@ button.toggle-favorite {
                     <!-- download the resources-->
                     <a href="{{ route('resource.download', ['resource' => $resource]) }}"
                                 onclick="trackDownload('{{ $resource->id }}')" class="button">Download</a>
-
                     </td>
                 </tr>
             @endforeach

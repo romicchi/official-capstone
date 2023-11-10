@@ -5,6 +5,12 @@
     <title>GENER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
+<style>
+    .card-header{
+        background-color: #070372 !important;
+        color: white !important;
+    }
+</style>
 
 <div class="container my-5">
     
@@ -39,14 +45,13 @@
                             </select>
 
                             <div>College</div>
-<select class="form-control" name="college_id" id="college_id" required>
-    <option value="" @if(empty($resource->college_id)) selected @endif></option>
-    @foreach($colleges as $college)
-        <option value="{{ $college->id }}" @if($resource->college_id == $college->id) selected @endif>{{ $college->collegeName }}</option>
-    @endforeach
-</select>
-
-
+                            <select class="form-control" name="college_id" id="college_id" required>
+                                <option value="" @if(empty($resource->college_id)) selected @endif></option>
+                                @foreach($colleges as $college)
+                                <option value="{{ $college->id }}" @if($resource->college_id == $college->id) selected @endif>{{ $college->collegeName }}</option>
+                                @endforeach
+                            </select>
+                            
                             <div class="form-group">
                                 <label for="description">{{ __('Description') }}</label>
                                 <textarea class="form-control" id="description" name="description" required>{{ $resource->description }}</textarea>

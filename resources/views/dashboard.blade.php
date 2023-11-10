@@ -16,79 +16,6 @@
             <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-
-      </head>
-      <style>      
-    .chatbot-container {
-        width: 100%; /* Adjust the maximum width as needed */
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border-radius: 10px;
-    }
-
-    /* Style the chatbot messages and user input */
-    .chatbot-messages {
-        height: 400px; /* Adjust the height as needed */
-        overflow-y: scroll;
-        border: 1px solid #ccc;
-        padding: 10px;
-        background-color: #fff;
-        border-radius: 5px;
-    }
-
-    .chatbot-input input[type=text] {
-        width: 90%;
-        height: 40px;
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        resize: vertical;
-        }
-
-    button#send-button {
-        width: 10%;
-        height: 40px;
-        margin-top: 10px; 
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #007bff;
-        color: #fff;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    /* Define styles for chatbot messages and user messages */
-    .chatbot-message {
-        background-color: #007bff;
-        color: #fff;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    .user-message {
-        background-color: #f5f5f5;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    .tip-message {
-        display: none;
-        position: absolute;
-        background-color: #D4D4D4;
-        color: #151515;
-        padding: 10px;
-        border-radius: 5px;
-        margin-top: -40px; 
-        margin-left: 10px; 
-        z-index: 1;
-    }
-
-      </style>
-    <body>
 <body>
   <!-- Nav Bar -->
   @yield('usernav')
@@ -98,7 +25,6 @@
           <h2>Welcome, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
 		</div>
     </header>
-	<main>
 		
     <div class="container">
         <div class="row justify-content-center">
@@ -117,7 +43,7 @@
                                 
                                     @csrf
                                     <div style="display: flex;">
-                                    <input type="text" name="query" id="user-input" placeholder="Type your message...">
+                                    <input type="text" name="query" id="user-input" placeholder="Type your message..." autocomplete="off" required>
                                     <button type="submit" id="send-button">&#10148;</button>
                                 </form>
                                 <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
@@ -140,11 +66,6 @@
             </div>
         </div>
     </div>
-</main>
-    </body>
-         <footer>    
-
-     </footer>
 <div class="row">
     <!-- Most Favorite Resources Table -->
     <div class="col-md-12 col-lg-6">
