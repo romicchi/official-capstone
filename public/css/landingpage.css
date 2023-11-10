@@ -29,32 +29,29 @@ body {
 }
 
 .gener:hover {
-  transform: scale(1.1); /* Increase the size by 10% on hover */
-  transition: transform 0.2s ease; /* Smooth transition */
+  transform: scale(1.05); /* Increase the size by 10% on hover */
+  transition: transform 0.6s ease; /* Smooth transition */
 }
 
 /* gener-image */
 .gener-image {
   border-radius: 15px;
   box-shadow: 5px 10px 29px 0 rgba(68, 88, 144, 0.2);
+  width: 30%;
+  height: auto;
+  max-width: 30%;
 }
 
 /* Jumbotron styles */
 .jumbotron {
-  background-size: cover;
-  background-position: center center;
   height: 100vh; /* Set jumbotron height to 100% of the viewport height */
   color: #000;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
 }
 
 .jumbotron img {
-  width: 100%; /* Make the image fill the container */
-  height: auto; /* Automatically adjust the height while maintaining aspect ratio */
+  width: 100%;
+  height: auto;
 }
 
 .jumbotron h1 {
@@ -90,6 +87,12 @@ body {
   padding-top: 440px;
   background-size: cover;
   background-position: center;
+  height: 100%;
+}
+
+.img-wrap:hover {
+  transform: scale(1.01); /* Scale up by 5% on hover */
+  transition: transform 0.6s ease;
 }
 
 .about .bg-edit {
@@ -164,10 +167,12 @@ body {
 
 .features .card {
   margin-bottom: 3rem;
+  min-height: 23vh;
 }
 
 .features .card-body{
   box-shadow: 5px 10px 29px 0 rgba(68, 88, 144, 0.2) !important;
+  min-height: 23vh;
 }
 
 .features .card-title {
@@ -273,6 +278,10 @@ footer a {
   text-decoration: none;
 }
 
+strong {
+  color: rgb(224, 224, 71);
+}
+
 /* Media queries for responsiveness */
 @media screen and (max-width: 992px) {
   .jumbotron {
@@ -326,6 +335,7 @@ footer a {
 
   footer {
       font-size: 1rem;
+      text-align: center;
   }
 }
 
@@ -389,9 +399,9 @@ footer a {
 }
 
 @media screen and (max-width: 576px) {
-  .jumbotron {
+  .jumbotron img {
       height: 300px;
-      width: 100%;
+      width: 100vw;
   }
 
   .jumbotron h1 {

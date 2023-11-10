@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
 
 class AcademicsController extends Controller
 {
@@ -23,7 +25,6 @@ class AcademicsController extends Controller
     }
 
     // College
-
     public function createCollege()
     {
         return view('academics.create_college');
@@ -31,9 +32,15 @@ class AcademicsController extends Controller
 
     public function storeCollege(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'collegeName' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $college = new College();
         $college->collegeName = $request->input('collegeName');
@@ -50,9 +57,15 @@ class AcademicsController extends Controller
 
     public function updateCollege(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'collegeName' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $college = College::findOrFail($id);
         $college->collegeName = $request->input('collegeName');
@@ -81,11 +94,8 @@ class AcademicsController extends Controller
     
         return redirect()->route('academics.index')->with('success', 'Successfully deleted college, courses, and disciplines.');
     }
-    
-
 
     // Course
-
     public function createCourse()
     {
         return view('academics.create_course');

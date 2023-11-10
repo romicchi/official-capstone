@@ -6,6 +6,10 @@
   .nav-link.inactive {
     color: grey !important;
   }
+
+  .nav-link.inactive:hover {
+    color: white !important;
+  }
   
   .nav-link.personal:hover, .nav-link.active.personal {
     color: white !important;

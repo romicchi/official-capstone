@@ -13,11 +13,31 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Google_Client;
+use Google_Service_Drive;
+use Google\Cloud\Storage\StorageClient;
+use Session;
+use Google\Client as GoogleClient;
+use Google\Service\Drive as GoogleDriveService;
 use Carbon\Carbon;
 use PDF;
 
 class AdminController extends Controller
 {
+
+    private static function getGoogleDriveAccessToken()
+    {
+        $jsonKeyFilePath = base_path('resources/credentials/generapp-c64fbc26723c.json'); // Replace with the path to your JSON key file
+        $jsonKey = file_get_contents($jsonKeyFilePath);
+
+        $googleClient = new GoogleClient();
+        $googleClient->setAuthConfig(json_decode($jsonKey, true));
+        $googleClient->setScopes([\Google_Service_Drive::DRIVE]);
+        $googleClient->fetchAccessTokenWithAssertion();
+
+        return $googleClient->getAccessToken()['access_token'];
+    }
+    
 
     public function dashboard()
     {
@@ -247,6 +267,11 @@ class AdminController extends Controller
             ];
         } elseif ($selectedReportType === 'resources_specific') {
             $selectedResourceType = $request->input('selected_resource_type'); // Get the selected resource type from the hidden input
+
+            // Initialize the Google Drive service
+            $googleClient = new GoogleClient();
+            $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+            $googleDrive = new GoogleDriveService($googleClient);
             
             // Fetch resources based on the selected resource type and date range
             $allowedExtensions = [];
@@ -255,19 +280,33 @@ class AdminController extends Controller
             if ($selectedResourceType === 'text_based') {
                 $allowedExtensions = ['pdf', 'docx', 'pptx'];
             } elseif ($selectedResourceType === 'video_based') {
-                $allowedExtensions = ['mp4', 'avi'];
+                $allowedExtensions = ['mp4', 'avi', 'mov', 'webm', 'mkv', 'flv', 'wmv', '3gp', 'm4v', 'ogg'];
             } elseif ($selectedResourceType === 'image_based') {
-                $allowedExtensions = ['png', 'jpg', 'jpeg'];
+                $allowedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp'];
             }
 
-            // Filter resources based on allowed file extensions
-            $resources = Resource::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
-                ->get()
-                ->filter(function ($resource) use ($allowedExtensions) {
-                    $fileUrl = $resource->url;
-                    $extension = pathinfo($fileUrl, PATHINFO_EXTENSION);
-                    return in_array(strtolower($extension), $allowedExtensions);
-                });
+    // Fetch resources and filter them based on the allowed file extensions
+    $resources = Resource::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+        ->get()
+        ->filter(function ($resource) use ($allowedExtensions, $googleDrive) {
+            $fileUrl = $resource->url;
+            $fileId = $this->getFileIdFromUrl($fileUrl);
+
+            // Use the Google Drive API to fetch file metadata
+            $fileMetadata = $googleDrive->files->get($fileId, ['fields' => 'fileExtension']);
+
+            if ($fileMetadata && isset($fileMetadata->fileExtension)) {
+                $extension = $fileMetadata->fileExtension;
+
+                // Check if the extension is in the allowed list
+                if (in_array(strtolower($extension), $allowedExtensions)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
     
             $data = [
                 'resources' => $resources,
@@ -299,6 +338,11 @@ class AdminController extends Controller
         $endDate = $request->input('end_date');
         $selectedReportType = $request->input('report_type');
         $selectedResourceType = $request->input('selected_resource_type'); // Get the selected resource type from the hidden input
+
+        // Initialize the Google Drive service
+        $googleClient = new GoogleClient();
+        $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+        $googleDrive = new GoogleDriveService($googleClient);
         
         // Fetch resources based on the selected resource type and date range
         $allowedExtensions = [];
@@ -307,19 +351,32 @@ class AdminController extends Controller
         if ($selectedResourceType === 'text_based') {
             $allowedExtensions = ['pdf', 'docx', 'pptx'];
         } elseif ($selectedResourceType === 'video_based') {
-            $allowedExtensions = ['mp4', 'avi'];
+            $allowedExtensions = ['mp4', 'avi', 'mov', 'webm', 'mkv', 'flv', 'wmv', '3gp', 'm4v', 'ogg'];
         } elseif ($selectedResourceType === 'image_based') {
-            $allowedExtensions = ['png', 'jpg', 'jpeg'];
+            $allowedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'webp'];
         }
 
-        // Filter resources based on allowed file extensions
-        $resources = Resource::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
-            ->get()
-            ->filter(function ($resource) use ($allowedExtensions) {
-                $fileUrl = $resource->url;
-                $extension = pathinfo($fileUrl, PATHINFO_EXTENSION);
-                return in_array(strtolower($extension), $allowedExtensions);
-            });
+    // Fetch resources and filter them based on the allowed file extensions
+    $resources = Resource::whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59'])
+        ->get()
+        ->filter(function ($resource) use ($allowedExtensions, $googleDrive) {
+            $fileUrl = $resource->url;
+            $fileId = $this->getFileIdFromUrl($fileUrl);
+
+            // Use the Google Drive API to fetch file metadata
+            $fileMetadata = $googleDrive->files->get($fileId, ['fields' => 'fileExtension']);
+
+            if ($fileMetadata && isset($fileMetadata->fileExtension)) {
+                $extension = $fileMetadata->fileExtension;
+
+                // Check if the extension is in the allowed list
+                if (in_array(strtolower($extension), $allowedExtensions)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
 
 
         // Fetch the data based on the selected report type and date range
@@ -386,18 +443,15 @@ class AdminController extends Controller
         }
     }
 
-    private static function getGoogleDriveAccessToken()
-    {
-        $jsonKeyFilePath = base_path('resources/credentials/generapp-c64fbc26723c.json'); // Replace with the path to your JSON key file
-        $jsonKey = file_get_contents($jsonKeyFilePath);
-
-        $googleClient = new GoogleClient();
-        $googleClient->setAuthConfig(json_decode($jsonKey, true));
-        $googleClient->setScopes([\Google_Service_Drive::DRIVE]);
-        $googleClient->fetchAccessTokenWithAssertion();
-
-        return $googleClient->getAccessToken()['access_token'];
+    // Helper function to extract the file ID from the Google Drive URL
+private function getFileIdFromUrl($fileUrl)
+{
+    $matches = [];
+    if (preg_match('/[?&]id=([^&]+)/', $fileUrl, $matches)) {
+        return $matches[1];
     }
+    return null;
+}
     
     
 }

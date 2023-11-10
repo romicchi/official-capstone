@@ -8,13 +8,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-
 <div class="card-header text-center">
     <!-- To display the author's email and the View and Delete buttons -->
     <div class="d-flex justify-content-between align-items-center">
-    <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
-        <strong>{{ $discussion->title }}</strong>
-    </a>
+        @if (Route::currentRouteName() === 'discussions.index')
+            <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
+                <strong>{{ Str::limit($discussion->title, $characterLimit) }}</strong>
+            </a>
+        @else
+            <strong>{{ Str::limit($discussion->title, $characterLimit) }}</strong>
+        @endif
         @if (auth()->check() && auth()->user()->id == $discussion->user_id)
          <div class="dots-container" onclick="toggleDropdown('dropdownMenu_{{ $discussion->id }}')">
                 <div class="dot"></div>

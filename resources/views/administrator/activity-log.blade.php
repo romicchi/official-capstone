@@ -20,9 +20,6 @@
                     <option value="login">Login</option>
                     <option value="logout">Logout</option>
                     <option value="register">Register</option>
-                    <option value="create">Create</option>
-                    <option value="update">Update</option>
-                    <option value="delete">Delete</option>
                 </select>
                 <button type="submit" class="btn btn-primary">Filter</button>
             </div>

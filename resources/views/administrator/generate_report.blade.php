@@ -2,55 +2,47 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/generatereport.css') }}">
 </head>
-<style>
-    .card-body {
-        height: 75rem;
-    }
-
-    .th-color {
-        /* font color black */
-        color: black;
-    }
-</style>
 
 @section('content')
 <div class="container">
-    <h1>Generate Report</h1>
-    <form action="{{ route('generate.pdf.report') }}" method="post" id="generateReportForm">
-        @csrf
+    <h1 class="text-center">Generate Report</h1>
+    <form action="{{ route('generate.pdf.report') }}" method="post" id="generateReportForm" class="styled-form">
+    @csrf
+    <div class="form-group">
+        <label for="report_type">Select Report Type:</label>
+        <select name="report_type" id="report_type" class="form-control" required>
+            <option value="" selected disabled>Select</option>
+            <option value="user">User Report</option>
+            <option value="resources">Resources Report</option>
+            <option value="resources_specific">Resources Report (Specific)</option>
+        </select>
+    </div>
+    <input type="hidden" name="selected_resource_type" id="selected_resource_type">
+    <div class="form-group" id="resource_type_section" style="display: none;">
+        <label for="resource_type">Select Resource Type:</label>
+        <select name="resource_type" id="resource_type" class="form-control">
+            <option value="" selected disabled>Select</option>
+            <option value="text_based">Text-Based</option>
+            <option value="video_based">Video-Based</option>
+            <option value="image_based">Image-Based</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="report_period">Select Report Period:</label>
         <div class="form-group">
-    <label for="report_type">Select Report Type:</label>
-    <select name="report_type" id="report_type" class="form-control">
-        <option value="" selected disabled>Select</option>
-        <option value="user">User Report</option>
-        <option value="resources">Resources Report</option>
-        <option value="resources_specific">Resources Report (Specific)</option>
-    </select>
-</div>
-<input type="hidden" name="selected_resource_type" id="selected_resource_type">
-<div class="form-group" id="resource_type_section" style="display: none;">
-    <label for="resource_type">Select Resource Type:</label>
-    <select name="resource_type" id="resource_type" class="form-control">
-        <option value="" selected disabled>Select</option>
-        <option value="text_based">Text-Based</option>
-        <option value="video_based">Video-Based</option>
-        <option value="image_based">Image-Based</option>
-    </select>
-</div>
-        <div class="form-group">
-            <label for="report_period">Select Report Period:</label>
-            <div class="form-group">
-                <label for="start_date">Select Start Date:</label>
-                <input type="date" name="start_date" id="start_date" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="end_date">Select End Date:</label>
-                <input type="date" name="end_date" id="end_date" class="form-control" required>
-            </div>
+            <label for="start_date">Select Start Date:</label>
+            <input type="date" name="start_date" id="start_date" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Generate Report</button>
-    </form>
+        <div class="form-group">
+            <label for="end_date">Select End Date:</label>
+            <input type="date" name="end_date" id="end_date" class="form-control" required>
+        </div>
+    </div>
+    <button type="submit" id="generate-button" class="btn btn-primary">Generate Report</button>
+</form>
+
 
     <div class="card">
         <div class="card-header">Report Results</div>
@@ -66,6 +58,7 @@
     </div>
 </div>
 
+@include('loader')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Function to update the report table
@@ -91,14 +84,27 @@
                 _token: "{{ csrf_token() }}",
                 start_date: startDate,
                 end_date: endDate,
-                report_type: selectedReportType // Correctly pass the report_type variable
+                report_type: selectedReportType,
+                selected_resource_type: $('#selected_resource_type').val()
             },
             success: function (data) {
                 $('#report-table tbody').html(data);
+
+                // Hide the loader in case of an error
+                $('.loader-container').hide();
+
+                // Re-enable the "Generate Report" button
+                document.getElementById('generate-button').disabled = false;
             },
             error: function (error) {
                 console.error('Error occurred:', error);
                 console.log(error);
+                
+                // Hide the loader in case of an error
+                $('.loader-container').hide();
+
+                // Re-enable the "Generate Report" button
+                document.getElementById('generate-button').disabled = false;
             }
         });
     }
@@ -121,17 +127,35 @@
         });
     });
 
-        // Function to update the selected resource type
-        function updateSelectedResourceType() {
-        var selectedResourceType = $('#resource_type').val(); // Get the selected resource type
-        $('#selectedResourceType').text('Resource Type: ' + selectedResourceType);
-    }
-
+    // Selected Resource Type Read
+    $('#resource_type').change(function () {
+        var selectedResourceType = $(this).val();
+        $('#selected_resource_type').val(selectedResourceType);
+    });
     // Listen for changes in the select element
     $(document).ready(function () {
         $('#resource_type').change(function () {
             updateSelectedResourceType(); // Call the function to update the resource type
         });
+    });
+
+    // JavaScript to Show Loader When Generate Button is Clicked
+    document.getElementById('generate-button').addEventListener('click', function (event) {
+        const report_type = document.getElementById('report_type').value;
+        const start_date = document.getElementById('start_date').value;
+        const end_date = document.getElementById('end_date').value;
+        const resource_type = document.getElementById('resource_type').value;
+        const selected_resource_type = document.getElementById('selected_resource_type').value;
+
+        if (report_type.trim() !== '' && start_date.trim() !== '' && end_date.trim() !== '') {
+            event.preventDefault(); // Prevent the form submission
+            // Show the loader and change the button text
+            document.querySelector('.loader-container').style.display = 'block';
+            this.disabled = true; // Disable the button
+
+            // Submit the form
+            this.closest('form').submit();
+        }
     });
 </script>
 @show

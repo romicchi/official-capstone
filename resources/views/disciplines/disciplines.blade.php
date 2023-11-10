@@ -21,38 +21,65 @@
         <div class="mb-3">
         </div>
 
+        <div class="d-flex justify-content-between align-items-center">
+    <!-- Sort -->
+    <form action="{{ route('disciplines.sort', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
+        <div class="input-group">
+            <select class="form-control" name="sort" id="sort">
+                <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title</option>
+                <option value="author" {{ request('sort') === 'author' ? 'selected' : '' }}>Author</option>
+                <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Date</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </div>
+    </form>
+    <!-- Search -->
+    <form action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
+        <div class="input-group">
+            <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+
         <div class="card">
         <div class="card-body">
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Resource Name</th>
+                        <th>Title</th>
                         <th>Author</th>
-                        <th>Description</th>
-                        <th>File</th>
-                        <th>Action</th>
+                        <th>Date</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($discipline->resources as $resource)
+                    @foreach ($resources as $resource)
                         <tr>
-                            <td>{{ $resource->title }}</td>
-                            <td>{{ $resource->author }}</td>
-                            <td>{{ $resource->description }}</td>
-                            <td><a href="{{ $resource->url }}" target="_blank">{{ Str::limit($resource->url, 30) }}</a></td>
                             <td>
-                                <a href="{{ route('resource.show', $resource->id) }}">View</a> |
-                                <!-- download the resources-->
-                                <a href="{{ route('resource.download', ['resource' => $resource]) }}"
-                                onclick="trackDownload('{{ $resource->id }}')">Download</a>
+                            <a class="hover" href="{{ route('resource.show', $resource->id) }}">{{ Str::limit($resource->title, 50) }}</a>
+                            </td>
+                            <td>{{ $resource->author }}</td>
+                            <td>
+                                <!-- created_at in Oct 25, 2023 format -->
+                                {{ \Carbon\Carbon::parse($resource->created_at)->format('M d, Y') }}
+                            </td>
+                            <td>
+                            <div class="d-flex justify-content-end">
                                 <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
                                     <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-star"></i>
                                 </button>
+                            </div>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+            <!-- pagination -->
+            <div class="d-flex justify-content-center my-3">
+                {{ $resources->appends(['sort' => request('sort'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </div>
 </div>

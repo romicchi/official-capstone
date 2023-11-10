@@ -63,8 +63,8 @@ class JournalController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
-            'content' => 'nullable',
+            'title' => 'required|max:100',
+            'content' => 'nullable|max:65535',
             'college_id' => 'required',
             'discipline_id' => 'required',
         ]);
@@ -243,9 +243,35 @@ class JournalController extends Controller
         if ($user->id !== $journal->user_id) {
             abort(403, 'Unauthorized');
         }
-        
+    
+        // Parse the content to find the image URL
+        preg_match('/<img src="(https:\/\/drive\.google\.com\/uc\?id=([^"]+))"/', $journal->content, $matches);
+    
+        if (count($matches) === 3) {
+            // Extract the image URL and its file ID
+            $imageUrl = $matches[1];
+            $imageFileId = $matches[2];
+    
+            // Use the same code to get Google Drive access token
+            $googleAccessToken = $this->getGoogleDriveAccessToken();
+    
+            // Initialize the Google Drive client
+            $googleClient = new GoogleClient();
+            $googleClient->setAccessToken($googleAccessToken);
+            $googleDrive = new Drive($googleClient);
+    
+            // Delete the image from Google Drive
+            try {
+                $googleDrive->files->delete($imageFileId);
+            } catch (\Exception $e) {
+                // Handle any errors if the image couldn't be deleted
+                return redirect()->back()->withErrors(['error' => 'Failed to delete the image from Google Drive: ' . $e->getMessage()]);
+            }
+        }
+    
+        // Now, you can safely delete the journal
         $journal->delete();
-
+    
         return redirect()->route('journals.index');
     }
 

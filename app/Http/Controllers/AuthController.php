@@ -212,16 +212,19 @@ class AuthController extends Controller
     function logout(){
         
         // Log the 'logout' activity before logging out
-        $user = Auth::user();
-        \DB::table('activity_logs')->insert([
-            'user_id' => $user->id,
-            'activity' => 'has logout',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        Session::flush();
-        Auth::logout();
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            \DB::table('activity_logs')->insert([
+                'user_id' => $user->id,
+                'activity' => 'has logout',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+            
+            Session::flush();
+            Auth::logout();
+        }
         
         
         return redirect(route('login'))->with('logout_message', true);

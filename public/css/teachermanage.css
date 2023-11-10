@@ -15,3 +15,38 @@ html {
 .btn {
     margin-bottom: 0;
 }
+
+a {
+    color: #000; /* Set the color to black */
+    text-decoration: none; /* Remove underline */
+}
+
+.hover:hover {
+    color: #070372;
+    text-decoration: underline;
+  }
+
+@media (max-width: 576px) {
+    /* Files Upload Table */
+    html {
+        margin-bottom: 2rem; /* Example: Reduce margin on the bottom */
+    }
+
+    .card.shadow.mb-5 {
+        height: auto;
+        padding: 10px;
+    }
+
+    .card-body {
+        height: auto;
+    }
+
+    .btn {
+        margin-bottom: 1rem;
+    }
+
+    .hover:hover {
+        color: #007bff; /* Blue color */
+        text-decoration: underline;
+    }
+}

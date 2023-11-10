@@ -12,8 +12,6 @@
         "google/cloud-storage": "^1.31",
         "guzzlehttp/guzzle": "^7.2",
         "illuminate/mail": "*",
-        "kreait/firebase-php": "*",
-        "kreait/laravel-firebase": "^5.2",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/slack-notification-channel": "^3.0",

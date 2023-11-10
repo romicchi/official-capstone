@@ -1,3 +1,10 @@
+body {
+    padding-left: 15rem; /* Set padding top equal to navbar height */
+    padding-top: 1rem;
+    padding-right: 2rem;
+    font-family: 'Roboto', sans-serif;
+}
+
 /* Style for rating overlay */
 .rating-overlay {
     display: none;
@@ -27,4 +34,39 @@
 
 .rating-overlay .star.hovered {
     color: #f8b739;
+}
+
+.resource-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.resource-author {
+    font-size: 16px;
+    color: #777;
+}
+
+.resource-info {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+@media screen and (max-width: 993px) {
+    body {
+          padding-left: 1rem;
+      }
+  }
+
+  @media screen and (max-width: 480px) {
+    .col-md-8 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .full-width-embed {
+        width: 100vw;
+        max-width: 100vw;
+    }
 }

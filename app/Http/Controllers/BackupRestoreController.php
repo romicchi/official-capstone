@@ -68,10 +68,8 @@ class BackupRestoreController extends Controller
         // Store the uploaded backup file in a temporary directory
         $backupFile = $request->file('backup_file');
         $temporaryPath = $backupFile->storeAs('temp', 'backup');
-    
         // Path to the temporary backup file
         $temporaryBackupPath = storage_path('app/' . $temporaryPath);
-    
         // Check the file extension to determine the type
         $extension = $backupFile->getClientOriginalExtension();
     

@@ -13,8 +13,9 @@
     @yield('css')
 </head>
 <body>
-
-    <div class="container card my-3">
+<main class="container py-4">
+    <a href="{{ URL::previous() }}" class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
+    <div class="container card">
         <div class="card-header">Edit Discussion</div>
         <div class="card-body">
             <form action="{{ route('discussions.update', $discussion->id) }}" method="post">
@@ -36,9 +37,10 @@
             </form>
         </div>
     </div>
+</main>
 
-    <!-- Trix Editor JS -->
-    @yield('js')
+<!-- Trix Editor JS -->
+@yield('js')
 
 </body>
 </html>

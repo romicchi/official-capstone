@@ -33,7 +33,9 @@ form {
 		width: 80%;
 		margin: 2rem auto;
 	}
-	
+}
+
+@media (max-width: 480px) {
 	.background {
 		background-image: none !important; /* This will hide the background image on mobile devices */
 	}

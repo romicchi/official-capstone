@@ -16,7 +16,6 @@
 <div class="alert alert-danger">{{ $message }}</div>
 @enderror
 
-
 <div class="container card">
     <h2 class="card-header">Create New Journal</h2>
     <form action="{{ route('journals.store') }}" method="post" enctype="multipart/form-data">
@@ -26,21 +25,21 @@
             <input type="text" name="title" id="title" class="form-control">
         </div>
         <div class="form-group">
-              <label for="college">College</label>
-              <select class="form-control" id="college" name="college_id" required>
+            <label for="college">College</label>
+            <select class="form-control" id="college" name="college_id" required>
                 <option value="">Select College</option>
                 @foreach ($colleges as $college)
                 <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
                 @endforeach
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="discipline">Discipline</label>
-              <select class="form-control" id="discipline" name="discipline_id" required>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="discipline">Discipline</label>
+            <select class="form-control" id="discipline" name="discipline_id" required>
                 <option value="">Select Discipline</option>
-              </select>
-            </div>
+            </select>
+        </div>
         <div class="form-group ckeditor-container">
             <label for="content">Content:</label>
             <textarea id="editor" name="content"></textarea>
@@ -49,10 +48,11 @@
         <a href="{{ route('journals.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
+
+<script src="{{ asset('js/fetch.js') }}"></script>
 <script>
     ClassicEditor
-        .create(document.querySelector('#editor'),
-        {
+        .create(document.querySelector('#editor'),{
             ckfinder:
             {
                 uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
@@ -62,4 +62,3 @@
             console.error(error);
         });
 </script>
-<script src="{{ asset('js/fetch.js') }}"></script>

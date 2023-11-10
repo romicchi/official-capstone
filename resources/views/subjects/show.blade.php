@@ -19,26 +19,38 @@
         <body>
         <div class="row">
             <div class="col-md-8">
-
-            <div class="text-center">
-            <h2>Title: {{ $resource->title }}</h2>
-            <p>Author: {{ $resource->author }}</p>
-            </div>
-            <p>Description: {{ $resource->description }}</p>
-
-            <a href="{{ route('resource.rate') }}" class="rate-resource" data-resource-id="{{ $resource->id }}">Rate</a>
-            <div class="rating-overlay">
-                <h3>{{ $resource->title }}</h3>
-                <div class="stars-container">
-                    <span class="star" data-rating="1">&#9733;</span>
-                    <span class="star" data-rating="2">&#9733;</span>
-                    <span class="star" data-rating="3">&#9733;</span>
-                    <span class="star" data-rating="4">&#9733;</span>
-                    <span class="star" data-rating="5">&#9733;</span>
-                    <div class="success-message"></div>
-                    <div class="error-message"></div>
+                
+                <div class="text-center resource-info">
+                    <h2 class="resource-title">{{ $resource->title }}</h2>
+                    <p class="resource-author">Author: {{ $resource->author }}</p>
                 </div>
-            </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
+                    <div> <!-- Left-aligned buttons -->
+                        <a href="{{ URL::previous() }}" class="btn btn-primary mr-2"><i class="fas fa-arrow-left"></i> Back</a>
+                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}">
+                            Rate
+                        </button>
+                    </div>
+                    <div> <!-- Right-aligned button -->
+                        <button class="btn btn-primary p-2" onclick="window.location='{{ route('resource.download', ['resource' => $resource]) }}'">
+                            Download <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                        
+                <div class="rating-overlay">
+                    <h3>{{ $resource->title }}</h3>
+                    <div class="stars-container">
+                        <span class="star" data-rating="1">&#9733;</span>
+                        <span class="star" data-rating="2">&#9733;</span>
+                        <span class="star" data-rating="3">&#9733;</span>
+                        <span class="star" data-rating="4">&#9733;</span>
+                        <span class="star" data-rating="5">&#9733;</span>
+                        <div class="success-message"></div>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
             
             <div id="loading-spinner" class="text-center" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
                 <div class="spinner-border text-primary" role="status">
@@ -46,12 +58,12 @@
                 </div>
             </div>
 
-            <div id="pptx-container" style="width: 100%; height: 50rem;"> <!-- Set a fixed height for pptx-container -->
-            <embed id="pdf-embed" src="{{ $resource->url }}" width="100%" height="100%" onload="handlePdfLoad()">
-        </div>
+            <div class="full-width-embed" id="pptx-container" style="width: 100%; height: 50rem;"> <!-- To set a fixed height for pptx-container -->
+                <embed id="pdf-embed" src="{{ $resource->url }}" width="100%" height="100%" onload="handlePdfLoad()">
+            </div>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 comment-container">
                 @include('subjects.comment')
                 @include('subjects.comment_form')
             </div>
@@ -117,7 +129,7 @@ function handlePdfLoad() {
             $('.rating-overlay').hide();
 
             // Show the rating overlay for the clicked resource
-            var overlay = $(this).siblings('.rating-overlay');
+            var overlay = $(this).closest('.content').find('.rating-overlay');
             overlay.fadeIn();
 
             // Handle star rating selection within the overlay
@@ -164,4 +176,21 @@ function handlePdfLoad() {
         
         // ...
     });
+
+    $(document).ready(function () {
+    var commentContainer = $('.comment-container');
+
+    commentContainer.on('click', '.pagination a', function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+
+        $.ajax({
+            url: url,
+            success: function (data) {
+                commentContainer.html(data);
+            },
+        });
+    });
+});
 </script>

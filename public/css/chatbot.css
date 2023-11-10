@@ -237,3 +237,56 @@
   overflow: hidden;
   z-index: 10;
 }
+
+/* Existing styles remain the same */
+
+/* Add media query for responsiveness at 576px */
+@media screen and (max-width: 576px) {
+  .chatbot-container {
+      width: 100%;
+      max-width: 100%;
+      bottom: 0;
+      right: 0;
+      border-radius: 0;
+  }
+
+  #chatbot {
+      height: 45vh;
+      max-height: calc(100vh - 100px);
+  }
+
+  #header {
+      font-size: 0.9em;
+  }
+
+  .chatbot-message {
+      font-size: 14px;
+      padding: 5px;
+  }
+
+  .chatbot-text {
+      font-size: 0.9em;
+      padding: 10px;
+  }
+
+  #input-form {
+      padding: 5px;
+  }
+
+  #input-field {
+      height: 20px;
+      font-size: 12px;
+  }
+
+  #submit-button {
+      background-color: transparent;
+  }
+
+  .suggestion {
+      font-size: 14px;
+      margin-right: 5px;
+      padding: 0;
+  }
+
+  /* Adjust any other styles as needed for mobile view */
+}

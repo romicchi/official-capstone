@@ -39,7 +39,7 @@ class ResourceController extends Controller
     //--------------TEACHER-----------------//
     public function showTeacherManage()
     {
-        $resources = Resource::paginate(10);
+        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)->paginate(15)->onEachSide(1);
     
         return view('teacher.teachermanage', compact('resources'));
     }
@@ -67,62 +67,88 @@ class ResourceController extends Controller
 
     // Store resource function for Teacher
     public function storeResource(Request $request)
-{
-    // Validate the form data
-    $validatedData = $request->validate([
-        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
-        'title' => 'required',
-        'topic' => 'required',
-        'keywords' => 'required',
-        'author' => 'required',
-        'description' => 'required',
-        'college' => 'required',
-        'discipline' => 'required',
-    ]);
+    {
+        // Validate the form data
+        $validatedData = $request->validate([
+            'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
+            'title' => 'required',
+            'keywords' => 'required',
+            'description' => 'required',
+            'college' => 'required',
+            'discipline' => 'required',
+        ]);
 
-    // Upload the file to Google Drive
-    $file = $request->file('file');
-    $extension = $file->getClientOriginalExtension();
-    $filename = uniqid() . '.' . $extension;
+        // Upload the file to Google Drive
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        $originalFilename = $file->getClientOriginalName();
 
-    // Set access token for the Google client
-    $googleClient = new GoogleClient();
-    $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+        // Map file extensions to folder IDs
+        $folderIds = [
+            // Text-Based
+            'pdf' => '14jKZwtjsbdiTgGcs-P5fB5jhxg9N8PP_',
+            'docx' => '14jKZwtjsbdiTgGcs-P5fB5jhxg9N8PP_',
+            'pptx' => '14jKZwtjsbdiTgGcs-P5fB5jhxg9N8PP_',
+            // Video-Based
+            'mp4' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'avi' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'mov' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'webm' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'mkv' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'flv' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'wmv' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            '3gp' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            'ogg' => '1aNBhQlxIoGTSwFp487DdKkAsaH-LJx1A',
+            // Image-Based
+            'jpeg' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+            'jpg' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+            'png' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+            'gif' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+            'bmp' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+            'tiff' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+            'webp' => '1DFnA8EogYagN7VNXPk8ISY6avEQ7zIyJ',
+        ];
 
-    // Initialize the Google Drive service
-    $googleDrive = new GoogleDriveService($googleClient);
+        // Set access token for the Google client
+        $googleClient = new GoogleClient();
+        $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
 
-    // File metadata
-    $fileMetadata = new \Google_Service_Drive_DriveFile([
-        'name' => $filename,
-        'parents' => ['1rB94wMkHFoUvZbkTUC8TqHJEWGCMBS2U'], // Replace with the folder ID where you want to upload the file
-    ]);
+        // Initialize the Google Drive service
+        $googleDrive = new GoogleDriveService($googleClient);
 
-    // Upload the file and get the file ID
-    $uploadedFile = $googleDrive->files->create($fileMetadata, [
-        'data' => file_get_contents($file->getPathname()),
-        'uploadType' => 'multipart',
-        'fields' => 'id, webViewLink',
-    ]);
+        // File metadata
+        $fileMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $originalFilename, // Use the original file name
+            'parents' => [$folderIds[$extension]], // Folder ID of the destination folder
+        ]);
 
-    // Get the file URL from the file ID
-    $fileUrl = 'https://drive.google.com/uc?id=' . $uploadedFile->id;
+        // Upload the file and get the file ID
+        $uploadedFile = $googleDrive->files->create($fileMetadata, [
+            'data' => file_get_contents($file->getPathname()),
+            'uploadType' => 'multipart',
+            'fields' => 'id, webViewLink',
+        ]);
 
-    // Create a new resource instance
-    $resource = new Resource();
-    $resource->title = $validatedData['title'];
-    $resource->topic = $validatedData['topic'];
-    $resource->keywords = $validatedData['keywords'];
-    $resource->author = $validatedData['author'];
-    $resource->description = $validatedData['description'];
-    $resource->url = $fileUrl;
-    $resource->college_id = $validatedData['college'];
-    $resource->discipline_id = $validatedData['discipline'];
-    $resource->save();
+        // Get the file URL from the file ID
+        $fileUrl = 'https://drive.google.com/uc?id=' . $uploadedFile->id;
 
-    // Redirect or perform additional actions as needed
-    return redirect()->back()->with('success', 'Resource added successfully.');
-}
+        // Fetch the firstname and lastname of the teacher who uploaded the resource
+        $author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+
+        // Create a new resource instance
+        $resource = new Resource();
+        $resource->title = $validatedData['title'];
+        $resource->keywords = $validatedData['keywords'];
+        $resource->author = $author;
+        $resource->description = $validatedData['description'];
+        $resource->url = $fileUrl;
+        $resource->college_id = $validatedData['college'];
+        $resource->discipline_id = $validatedData['discipline'];
+        $resource->save();
+
+        // Redirect or perform additional actions as needed
+        return redirect()->back()->with('success', 'Resource added successfully.');
+    }
 
 
         /**
@@ -180,38 +206,10 @@ class ResourceController extends Controller
         return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
     }
 
-    //---------DEPARTMENTCHAIR-PROGCOORDINATOR-ADMIN----------------//
-    public function showResourceManage(Request $request)
-    {
-        $resources = Resource::paginate(10);
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
-    
-        return view('resourcemanage', compact('resources', 'colleges', 'courses', 'subjects'));
-    }
-    
-    public function searchResources(Request $request)
-    {
-        $query = $request->input('query');
-
-        $resources = Resource::where(function ($queryBuilder) use ($query) {
-            $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
-                ->orWhere('author', 'LIKE', '%' . $query . '%')
-                ->orWhere('created_at', 'LIKE', '%' . $query . '%');
-        })
-        ->orWhereHas('subject', function ($queryBuilder) use ($query) {
-            $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
-        })
-        ->paginate(10);
-
-        return view('resourcemanage', compact('resources'));
-    }
-
      //--------------ADMIN-----------------//
     public function showAdminResourceManage()
     {
-        $resources = Resource::paginate(10);
+        $resources = Resource::paginate(10)->onEachSide(1);
     
         return view('administrator.adminresourcemanage', compact('resources'));
     }
@@ -228,21 +226,13 @@ class ResourceController extends Controller
         ->orWhereHas('subject', function ($queryBuilder) use ($query) {
             $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
         })
-        ->paginate(10);
+        ->paginate(10)
+        ->onEachSide(1);
 
         return view('administrator.adminresourcemanage', compact('resources'));
     }
 
     //---------Subject Resources----------//
-    public function showEmbed(Request $request, $id)
-    {
-        // Retrieve the resource based on the given ID
-        $resource = Resource::find($id);
-    
-        // Pass the resource to the 'embed' view
-        return view('embed', compact('resource'));
-    }
-
     public function subjects(Request $request)
     {
         $courseId = $request->query('course_id');
@@ -261,7 +251,7 @@ class ResourceController extends Controller
         return view('subjects.resources', compact('resources', 'subject'));
     }
 
-    public function download(Resource $resource) 
+    public function download(Resource $resource)
     {
         // Extract the file ID from the Google Drive URL
         $urlParts = parse_url($resource->url);
@@ -279,12 +269,13 @@ class ResourceController extends Controller
             // Get the file from Google Drive
             $file = $googleDrive->files->get($fileId, ['alt' => 'media']);
     
-            // Determine the MIME type based on the file extension
-            $fileExtension = pathinfo($resource->url, PATHINFO_EXTENSION);
-            $fileMimeType = $this->getMimeTypeByExtension($fileExtension);
-    
-            // Get the file contents
+            // Determine the MIME type based on the file contents
             $fileContents = $file->getBody()->getContents();
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $fileMimeType = $finfo->buffer($fileContents);
+    
+            // Get the file extension for naming the downloaded file
+            $fileExtension = $this->getExtensionFromMimeType($fileMimeType);
     
             // Create a new Laravel HTTP response and set the file contents
             $response = new \Illuminate\Http\Response($fileContents);
@@ -301,18 +292,31 @@ class ResourceController extends Controller
         }
     }
     
-
-    // Function to map file extensions to MIME types
-    private function getMimeTypeByExtension($extension) 
+    private function getExtensionFromMimeType($mimeType)
     {
-        $mimeTypes = [
-            'pdf' => 'application/pdf',
-            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        $extensions = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/bmp' => 'bmp',
+            'image/tiff' => 'tiff',
+            'image/webp' => 'webp',
+            'video/mp4' => 'mp4',
+            'video/x-msvideo' => 'avi',
+            'video/quicktime' => 'mov',
+            'video/webm' => 'webm',
+            'video/x-matroska' => 'mkv',
+            'video/x-flv' => 'flv',
+            'video/x-ms-wmv' => 'wmv',
+            'video/3gpp' => '3gp',
+            'video/ogg' => 'ogg',
+            'application/pdf' => 'pdf',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'pptx',
         ];
-
-        return $mimeTypes[$extension] ?? 'application/octet-stream'; // Default to binary stream
+    
+        return $extensions[$mimeType] ?? 'bin';
     }
-
     
 
     public function toggleFavorite(Request $request)
@@ -340,7 +344,7 @@ class ResourceController extends Controller
     }
     
     // display the selected resources/subject
-    public function show(Resource $resource)
+    public function show(Resource $resource, Request $request)
     {
         // Record the resource view in the history
         $user = auth()->user();
@@ -350,9 +354,18 @@ class ResourceController extends Controller
             $user->history()->create(['resource_id' => $resource->id]);
         }
 
+            // Check if the user has already viewed this resource in the current session
+    if (!$request->session()->has('viewed_resource_' . $resource->id)) {
+        // If not viewed in this session, increment the view count and mark as viewed
         $resource->increment('view_count');
+        $request->session()->put('viewed_resource_' . $resource->id, true);
+    }
 
-        $comments = $resource->comments()->paginate(10);
+        $comments = $resource->comments()->latest()->paginate(7);
+
+        if ($request->ajax()) {
+            return view('subjects.comment', compact('comments', 'resource'));
+        }
 
         return view('subjects.show', compact('comments', 'resource'));
     }
@@ -361,7 +374,8 @@ class ResourceController extends Controller
     {
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
-        $resources = $discipline->resources;
+        // resource
+        $resources = $discipline->resources()->paginate(18);
 
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
@@ -396,5 +410,47 @@ class ResourceController extends Controller
         return response()->json(['message' => 'Download counted successfully']);
     }
 
+    // search resource in disciplines.discipline based on selected discipline
+    public function searchDisciplineResources(Request $request, $college_id, $discipline_id)
+    {
+        $query = $request->input('query');
+    
+        $college = College::findOrFail($college_id);
+        $discipline = Discipline::findOrFail($discipline_id);
+    
+        $resources = $discipline->resources()
+            ->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->orWhere('title', 'LIKE', '%' . $query . '%')
+                    ->orWhere('author', 'LIKE', '%' . $query . '%')
+                    ->orWhere('description', 'LIKE', '%' . $query . '%');
+            })
+            ->paginate(18);
+    
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
+    }
 
+    public function sortDisciplineResources(Request $request, $college_id, $discipline_id)
+    {
+        $sortBy = $request->input('sort', 'title'); // Get the selected sorting criteria (default to 'title' if not provided)
+    
+        $college = College::findOrFail($college_id);
+        $discipline = Discipline::findOrFail($discipline_id);
+    
+        $resources = $discipline->resources();
+    
+        // Handle different sorting options
+        if ($sortBy === 'title') {
+            $resources->orderBy('title', 'asc');
+        } elseif ($sortBy === 'author') {
+            $resources->orderBy('author', 'asc');
+        } elseif ($sortBy === 'created_at') {
+            $resources->orderBy('created_at', 'desc');
+        }
+    
+        $resources = $resources->paginate(18);
+    
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
+    }
+
+    
 }

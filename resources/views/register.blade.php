@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div class="background" style="background-image: url({{ asset('assets/img/Background.png') }}" loading="lazy">
+<div class="background" style="background-image: url({{ asset('assets/img/Background.png') }})" loading="lazy">
     <div class="container">
         <div class="col">
             <form action="{{ route('register.post') }}" method="post" enctype="multipart/form-data">
@@ -19,45 +19,45 @@
 
                 <!-- Error Message -->
                 @if($errors->any())
-                    <div class="col-12">
-                        @foreach($errors->all() as $error)
-                            <div class="alert alert-danger">{{ $error }}</div>
-                        @endforeach
-                    </div>
+                <div class="col-12">
+                    @foreach($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+                    @endforeach
+                </div>
                 @endif
 
                 <!-- Session Error -->
                 @if(session()->has('error'))
-                    <div class="alert alert-danger">{{ session('error') }}</div>
+                <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
 
                 <!-- Success Message -->
                 @if(session()->has('success'))
-                    <div class="alert alert-success">{{ session('success') }}</div>
+                <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
                 <h1>Register</h1>
                 <div class="form-group">
                     <label for="firstname">Firstname:</label>
-                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter Firstname" autocomplete="off" required>
+                    <input type="text" class="form-control" maxlength="50" id="firstname" name="firstname" placeholder="Enter Firstname" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="lastname">Lastname:</label>
-                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Lastname" autocomplete="off" required>
+                    <input type="text" class="form-control" maxlength="50" id="lastname" name="lastname" placeholder="Enter Lastname" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                    <input type="text" class="form-control" maxlength="50" id="email" name="email" placeholder="Enter Email" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+                    <input type="password" class="form-control" maxlength="100" id="password" name="password" placeholder="Enter Password" required>
                 </div>
                 <div class="form-group">
                     <label for="password_confirmation">Confirm Password:</label>
-                    <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+                    <input type="password" class="form-control" maxlength="100" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="role">I am a:</label>
                     <select class="form-control" id="role" name="role">
@@ -89,7 +89,7 @@
                     <select class="form-control" id="college_id" name="college_id">
                         <option disabled selected>Please select your college</option>
                         @foreach($colleges as $college)
-                            <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
+                        <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <button type="submit" id="signup-button" class="btn btn-primary my-2">Sign Up</button>
-                <p><a href="/login">Already have an account?</a></p>
+                <p><a href="{{ route('login') }}">Already have an account?</a></p>
             </form>
         </div>
     </div>
@@ -129,9 +129,27 @@
     });
 
     // JavaScript to Show Loader When Sign Up Button is Clicked
-    document.getElementById('signup-button').addEventListener('click', function () {
-        // Show the loader
-        document.querySelector('.loader-container').style.display = 'block';
+    document.getElementById('signup-button').addEventListener('click', function (event) {
+        const firstname = document.getElementById('firstname').value;
+        const lastname = document.getElementById('lastname').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const password_confirmation = document.getElementById('password_confirmation').value;
+        const role = document.getElementById('role').value;
+        const year_level = document.getElementById('year_level').value;
+        const student_number = document.getElementById('student_number').value;
+        const college_id = document.getElementById('college_id').value;
+        const id = document.getElementById('id').value;
+        
+        if (firstname.trim() !== '' && lastname.trim() !== '' && email.trim() !== '' && password.trim() !== '' && password_confirmation.trim() !== '' && role.trim() !== '' && college_id.trim() !== '' && id.trim() !== '') {
+            event.preventDefault(); // Prevent the form submission
+            // Show the loader and change the button text
+            document.querySelector('.loader-container').style.display = 'block';
+            this.disabled = true; // Disable the button
+
+            // Submit the form
+            this.closest('form').submit();
+        }
     });
 </script>
 

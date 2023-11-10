@@ -16,6 +16,7 @@
 .card-link {
   text-decoration: none;
   color: inherit;
+  overflow: auto;
 }
 
 .pagination {
@@ -64,6 +65,7 @@
 
 .card-body {
   background-color: rgb(255, 255, 255) !important;
+  overflow: auto;
 }
 
 .layout-body {

@@ -18,12 +18,10 @@ class FavoriteController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->get('query');
+        $query = $request->input('query');
+
         $user = auth()->user();
-        $resources = $user->favorites()
-            ->where('title', 'like', '%' . $search . '%')
-            ->orWhere('author', 'like', '%' . $search . '%')
-            ->paginate(10);
+        $resources = $user->favorites()->where('title', 'LIKE', "%$query%")->paginate(10);
 
         return view('favorites', compact('resources', 'user'));
     }

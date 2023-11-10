@@ -1,5 +1,5 @@
 body {
-    padding-left: 18rem; /* Set padding top equal to navbar height */
+    padding-left: 17rem; /* Set padding top equal to navbar height */
     padding-top: 4rem;
     padding-right: 2rem;
     font-family: 'Roboto', sans-serif;
@@ -22,6 +22,25 @@ th {
   color: #fff;
 }
 
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+.hover:hover {
+  color: #070372;
+  text-decoration: underline;
+}
+
+.table th,
+.table td {
+text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(7, 3, 114, 0.1);
+}
+
 /* when at lower screen sizes decrease the padding-left of body */
 
 @media screen and (max-width: 993px) {
@@ -33,6 +52,15 @@ th {
 @media (max-width: 576px) {
   body {
     padding-left: 1rem; /* 0px */
-}
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .card.shadow.mb-4 {
+    height: auto;
+    padding: 10px;
+  }
 }
 

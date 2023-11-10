@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resource extends Model
 {
+    protected $dates = ['created_at', 'updated_at'];
+
     protected $fillable = [
         'title',
         'topic',
@@ -63,5 +65,9 @@ class Resource extends Model
         return $this->belongsTo(Resource::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -40,7 +40,7 @@ function generateResponse(input) {
   // Parse the datasets JSON
   const datasets = [
     {
-      "keywords": ["resources", "educational resources", "textbooks", "research"],
+      "keywords": ["resources", "educational resources", "textbooks", "research", "resource"],
       "response": "Our web application provides a wide range of educational resources, including textbooks, lecture notes, video lectures, research papers, and more. You can explore resources from various colleges, courses, and subjects to support your learning."
     },
     {

@@ -74,17 +74,29 @@
                         <label for="password">Password</label>
                         <input type="password" name="password" class="form-control" required>
                     </div>
-                    <button type="submit" id="login-button" class="btn btn-primary my-3">Login</button>
+                    <button type="submit" id="super-login-button" class="btn btn-primary my-3">Login</button>
                 </form>
             </div>
         </div>
     </div>
-</body>
-</html>
 
 @include('loader')
-<script src="{{ asset('js/loader.js') }}"></script>
-
 <script>
-
+    document.getElementById('super-login-button').addEventListener('click', function (event) {
+        const email = document.querySelector('input[name="email"]').value;
+        const password = document.querySelector('input[name="password"]').value;
+        
+        if (email.trim() !== '' && password.trim() !== '') {
+            event.preventDefault(); // Prevent the form submission
+            // Show the loader and change the button text
+            document.querySelector('.loader-container').style.display = 'block';
+            this.disabled = true; // Disable the button
+            this.innerHTML = this.getAttribute('data-loading-text'); // Change button text
+            document.querySelector('form').submit(); // Submit the form
+        }
+    });
 </script>
+
+</body>
+</html>
+    
