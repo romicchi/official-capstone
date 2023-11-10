@@ -114,7 +114,7 @@
                             </div>
                             <div class="chatbot-input">
                                 <form method="GET" action="{{ route('getRecommendations') }}">
-                                <form method="POST" action="{{ route('askChatbot') }}">
+                                
                                     @csrf
                                     <div style="display: flex;">
                                     <input type="text" name="query" id="user-input" placeholder="Type your message...">

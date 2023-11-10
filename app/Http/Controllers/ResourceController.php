@@ -137,14 +137,12 @@ class ResourceController extends Controller
         // Fetch the firstname and lastname of the teacher who uploaded the resource
         $author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
 
-        $resource->author = $author;
-
     // Create a new resource instance
     $resource = new Resource();
     $resource->title = $validatedData['title'];
    // $resource->topic = $validatedData['topic'];
    // $resource->keywords = $validatedData['keywords'];
-        $author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+   $resource->author = $author;
    // $resource->description = $validatedData['description'];
     $resource->url = $fileUrl;
    // $resource->college_id = $validatedData['college'];

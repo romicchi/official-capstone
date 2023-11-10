@@ -238,13 +238,14 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 
 // -------------------------- FILE-READER --------------------------------//
 
+
+
+
+});
+});
+
+
 Route::get('/get-recommendations', [ChartController::class, 'getRecommendations'])->name('getRecommendations');
-
-
-});
-});
-
-
 
 
 

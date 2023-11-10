@@ -36,30 +36,7 @@
               <label for="title">Title</label>
               <input type="text" class="form-control" id="title" name="title" required>
             </div>
-            <div class="form-group">
-              <label for="keywords">Keywords</label>
-              <input type="text" class="form-control" id="keywords" name="keywords" required>
-            </div>
-            <div class="form-group">
-              <label for="description">Description/Summary</label>
-              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="college">College</label>
-              <select class="form-control" id="college" name="college" required>
-                <option value="">Select College</option>
-                @foreach ($colleges as $college)
-                <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
-                @endforeach
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="discipline">Discipline</label>
-              <select class="form-control" id="discipline" name="discipline" required>
-                <option value="">Select Discipline</option>
-              </select>
-            </div>
+
 
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
