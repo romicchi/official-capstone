@@ -326,8 +326,8 @@ public function update(Request $request, Resource $resource)
     ]);
 
     // Update resource data
-    $resource->update($validatedData);
-
+    $resource->update($request->all());
+    
     // Generate unique JSON file name
     $jsonFileName = $this->generateUniqueJsonFileNameAfterUpdate($resource);
 
@@ -364,8 +364,17 @@ public function update(Request $request, Resource $resource)
 // Updated helper function to generate unique JSON file name
 private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
 {
-    // Get discipline name based on discipline_id
-    $disciplineName = Discipline::find($resource->discipline_id)->disciplineName;
+        // Get discipline based on discipline_id
+        $discipline = Discipline::find($resource->discipline_id);
+
+        // Check if the discipline is found
+        if ($discipline) {
+            // Get discipline name
+            $disciplineName = $discipline->disciplineName;
+        } else {
+            // Set a default value or handle the situation as needed
+            $disciplineName = 'UnknownDiscipline';
+        }
 
     // Get unique identifier based on resource ID
     $uniqueIdNo = $resource->id;
