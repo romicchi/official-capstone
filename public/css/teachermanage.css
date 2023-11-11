@@ -12,6 +12,11 @@ html {
     overflow: auto;
 }
 
+.card-body.add {
+    height: 25rem;
+    overflow: auto;
+}
+
 .btn {
     margin-bottom: 0;
 }

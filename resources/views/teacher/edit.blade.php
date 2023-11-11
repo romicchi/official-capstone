@@ -60,6 +60,7 @@
                             <div class="form-group my-2">
                                 <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
                                 <button type="button" id="autofillButton" class="btn btn-primary">Autofill</button>
+                                <a href="{{ route('teacher.manage') }}" class="btn btn-danger" id="cancelButton">Delete</a>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-secondary">Cancel</a>
                             </div>
                     
@@ -69,7 +70,40 @@
             </div>
         </div>
     </div>
-
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var cancelButton = document.getElementById('cancelButton');
+    var errorMessage = document.getElementById('errorMessage');
+    
+    cancelButton.addEventListener('click', function() {
+        var resourceId = {{ $resource->id }};
+        
+        // Make a request to delete the resource and associated files
+        fetch(`{{ route('resources.destroy', $resource) }}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                // Redirect to teacher.manage after successful deletion
+                window.location.href = '{{ route('teacher.manage') }}';
+            } else {
+                // Display an error message if deletion fails
+                errorMessage.innerText = data.error || 'Failed to delete the resource.';
+                errorMessage.style.display = 'block';
+                errorMessage.style.color = 'red';
+            }
+        })
+        .catch((error) => {
+            console.error('Resource deletion request failed:', error);
+        });
+    });
+});
+</script>
     <script>
     var dynamicDisciplineMapping = {
         'Computer Science': 1,

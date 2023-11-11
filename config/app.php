@@ -197,11 +197,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Backup\BackupServiceProvider::class,
 
-        /*
-         * Firebase Service Providers...
-         */
-         Kreait\Laravel\Firebase\ServiceProvider::class,
-
         // Generate pdf Service
          Barryvdh\DomPDF\ServiceProvider::class,
 

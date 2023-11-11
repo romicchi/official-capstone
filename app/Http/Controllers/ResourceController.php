@@ -19,6 +19,7 @@ use Google\Cloud\Storage\StorageClient;
 use Session;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDriveService;
+use Spatie\PdfToText\Pdf;
 
 
 class ResourceController extends Controller
@@ -70,7 +71,7 @@ class ResourceController extends Controller
 {
     // Validate the form data
     $validatedData = $request->validate([
-        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,docx,pdf,pptx|max:25600',
+        'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,pdf|max:25600',
         'title' => 'required',
         'topic' => 'nullable',
         'keywords' => 'nullable',
@@ -149,13 +150,100 @@ class ResourceController extends Controller
    // $resource->discipline_id = $validatedData['discipline'];
     $resource->save();
 
-   if ($resource) {
+    if ($resource) {
+        // Process PDF file and create JSON file
+        if ($extension === 'pdf') {
+            $pdfContent = file_get_contents($file->getPathname());
+            $jsonContent = $this->convertPdfToJson($pdfContent);
+            $jsonFileName = $this->generateUniqueJsonFileName($resource->title);
+            
+            // Store the JSON file in a separate folder on Google Drive
+            $jsonFolderId = '1auvNaRyQOiHvnOYRs8E831c83GC523L1';  // Replace with your Google Drive folder ID for JSON files
+            $jsonFileId = $this->uploadJsonToGoogleDrive($jsonFileName, $jsonContent, $jsonFolderId);
+
+            // Update the resource with the JSON file URL
+            $resource->json_url = 'https://drive.google.com/uc?id=' . $jsonFileId;
+            $resource->save();
+        }
+
        // Redirect to the edit page for the newly uploaded resource
        return redirect()->route('resources.edit', $resource)->with('success', 'Resource uploaded successfully');
    } else {
        // Handle the case where no resource was found
        return redirect()->route('teachermanage')->with('error', 'Resource not found.');
    }
+}
+
+private function convertPdfToJson($pdfContent)
+{
+    try {
+        // Use the PDF parser from the Spatie\PdfToText\Pdf library
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseContent($pdfContent);
+
+        // Extract text from each page of the PDF
+        $text = '';
+        foreach ($pdf->getPages() as $page) {
+            $text .= $page->getText();
+        }
+
+        // Check if the text is not empty before attempting to encode to JSON
+        if (!empty($text)) {
+            // Your logic to convert text to JSON goes here
+            // For example, you can use json_encode if the text structure allows it
+            $json = json_encode(['content' => $text]);
+
+            return $json;
+        } else {
+            // Handle the case where the text is empty
+            return null;
+        }
+    } catch (\Exception $e) {
+        // Handle the exception if PDF parsing fails
+        return null;
+    }
+}
+
+private function generateUniqueJsonFileName($title)
+{
+    // Your logic to generate a unique JSON file name goes here
+    // For example, you can use a combination of timestamp and the title
+    return time() . '_' . str_replace(' ', '_', strtolower($title)) . '.json';
+}
+
+private function uploadJsonToGoogleDrive($jsonFileName, $jsonContent, $jsonFolderId)
+{
+    // Your logic to upload JSON content to Google Drive goes here
+
+    // Set access token for the Google client
+    $googleClient = new \Google_Client();
+    $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+
+    // Initialize the Google Drive service
+    $googleDrive = new \Google_Service_Drive($googleClient);
+
+    // File metadata
+    $fileMetadata = new \Google_Service_Drive_DriveFile([
+        'name' => $jsonFileName,
+        'parents' => [$jsonFolderId],
+    ]);
+
+    // Create a stream for the JSON content
+    $stream = fopen('php://memory', 'r+');
+    fwrite($stream, $jsonContent);
+    rewind($stream);
+
+    // Upload the JSON file and get the file ID
+    $uploadedFile = $googleDrive->files->create($fileMetadata, [
+        'data' => stream_get_contents($stream),
+        'uploadType' => 'multipart',
+        'fields' => 'id',
+    ]);
+
+    // Close the stream
+    fclose($stream);
+
+    return $uploadedFile->id;
 }
 
 
@@ -165,36 +253,53 @@ class ResourceController extends Controller
      * @param  int  $resource
      * @return \Illuminate\Http\Response
      */
-    // Delete resource function
-    public function destroy($resource)
-    {
-        $resource = Resource::findOrFail($resource);
-    
-        // Extract the file ID from the Google Drive URL
-        $urlParts = parse_url($resource->url);
-        parse_str($urlParts['query'], $queryParameters);
-        $fileId = $queryParameters['id'];
-    
-          // Set access token for the Google client
-         $googleClient = new GoogleClient();
-         $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+ // Delete resource function
+public function destroy($resourceId)
+{
+    $resource = Resource::findOrFail($resourceId);
 
-         // Initialize the Google Drive service
-         $googleDrive = new GoogleDriveService($googleClient);
-    
-        try {
-            // Delete the file from Google Drive
-            $googleDrive->files->delete($fileId);
-        } catch (\Exception $e) {
-            // Handle any errors that occur during file deletion from Google Drive
-            return redirect()->back()->with('error', 'Failed to delete the file from Google Drive.');
-        }
-    
-        // Delete the resource from the database
-        $resource->delete();
-    
-        return redirect()->back()->with('success', 'Resource deleted successfully.');
+    // Extract the file ID from the Google Drive URL for the resource file
+    $urlParts = parse_url($resource->url);
+    parse_str($urlParts['query'], $queryParameters);
+    $fileId = $queryParameters['id'];
+
+    // Set access token for the Google client
+    $googleClient = new GoogleClient();
+    $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+
+    // Initialize the Google Drive service
+    $googleDrive = new GoogleDriveService($googleClient);
+
+    try {
+        // Delete the resource file from Google Drive
+        $googleDrive->files->delete($fileId);
+    } catch (\Exception $e) {
+        // Handle any errors that occur during file deletion from Google Drive
+        return redirect()->back()->with('error', 'Failed to delete the resource file from Google Drive.');
     }
+
+    // Check if the resource has a JSON file associated with it
+    if (!empty($resource->json_url)) {
+        // Extract the JSON file ID from the Google Drive URL for the JSON file
+        $jsonUrlParts = parse_url($resource->json_url);
+        parse_str($jsonUrlParts['query'], $jsonQueryParameters);
+        $jsonFileId = $jsonQueryParameters['id'];
+
+        try {
+            // Delete the JSON file from Google Drive
+            $googleDrive->files->delete($jsonFileId);
+        } catch (\Exception $e) {
+            // Handle any errors that occur during JSON file deletion from Google Drive
+            return redirect()->back()->with('error', 'Failed to delete the JSON file from Google Drive.');
+        }
+    }
+
+    // Delete the resource from the database
+    $resource->delete();
+
+    return redirect()->back()->with('success', 'Resource and associated files deleted successfully.');
+}
+
 
     // Edit resource function
     public function edit(Resource $resource)
@@ -211,13 +316,64 @@ class ResourceController extends Controller
         return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines'));
     }
 
-    // Update resource function STAR STAR STAR STAR
-    public function update(Request $request, Resource $resource)
-    {
-        $resource->update($request->all());
+// Update resource function
+public function update(Request $request, Resource $resource)
+{
+    // Validate the form data
+    $validatedData = $request->validate([
+        'title' => 'required',
+        // Add other validation rules as needed
+    ]);
 
-        return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
+    // Update resource data
+    $resource->update($validatedData);
+
+    // Generate unique JSON file name
+    $jsonFileName = $this->generateUniqueJsonFileNameAfterUpdate($resource);
+
+    // Check if the resource has a JSON file associated with it
+    if (!empty($resource->json_url)) {
+        // Extract the JSON file ID from the Google Drive URL for the JSON file
+        $jsonUrlParts = parse_url($resource->json_url);
+        parse_str($jsonUrlParts['query'], $jsonQueryParameters);
+        $jsonFileId = $jsonQueryParameters['id'];
+
+        // Set access token for the Google client
+        $googleClient = new GoogleClient();
+        $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+
+        // Initialize the Google Drive service
+        $googleDrive = new GoogleDriveService($googleClient);
+
+        try {
+            // Fetch the existing file metadata
+            $fileMetadata = $googleDrive->files->get($jsonFileId, ['fields' => 'name']);
+
+            // Update the JSON file name on Google Drive
+            $fileMetadata->setName($jsonFileName);
+            $googleDrive->files->update($jsonFileId, $fileMetadata);
+        } catch (\Exception $e) {
+            // Handle any errors that occur during JSON file update on Google Drive
+            return redirect()->back()->with('error', 'Failed to update the JSON file name on Google Drive.');
+        }
     }
+
+    return redirect()->route('teacher.manage')->with('success', 'Resource updated successfully.');
+}
+
+// Updated helper function to generate unique JSON file name
+private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
+{
+    // Get discipline name based on discipline_id
+    $disciplineName = Discipline::find($resource->discipline_id)->disciplineName;
+
+    // Get unique identifier based on resource ID
+    $uniqueIdNo = $resource->id;
+
+    // Combine the elements to form the unique JSON file name
+    return "{$disciplineName}_{$resource->title}-{$uniqueIdNo}.json";
+}
+
 
     public function autofill(Request $request)
     {

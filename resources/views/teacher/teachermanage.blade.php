@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col-md-4">
       <div class="card">
-        <div class="card-body">
+        <div class="card-body add">
           <h4 class="card-title">Add Resource</h4>
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
@@ -36,7 +36,6 @@
               <label for="title">Title</label>
               <input type="text" class="form-control" id="title" name="title" required>
             </div>
-
 
             <div class="form-group row">
                 <div class="col-md-9 offset-md-3">
@@ -79,8 +78,8 @@
                         </a>
                       </td>
                       <td>{{ $resource->author }}</td>
-                      <td>{{ $resource->college->collegeName }}</td>
-                      <td>{{ $resource->discipline->disciplineName }}</td>
+                      <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
+                      <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
                       <td>
                         <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
                           <i class="fas fa-eye"></i>
@@ -118,9 +117,20 @@
 <script src="{{ asset('js/fetch.js') }}"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
 <script>
-  // JavaScript to Show Loader When Login Button is Clicked
-  document.getElementById('upload-button').addEventListener('click', function () {
-    // Show the loader
-    document.querySelector('.loader-container').style.display = 'block';
-  });
+    // JavaScript to Show Loader When Upload Button is Clicked
+    document.getElementById('upload-button').addEventListener('click', function (event) {
+        const title = document.getElementById('title').value;
+        const file = document.getElementById('file').value;
+
+          if (title.trim() !== '' && file.trim() !== '') {
+
+            event.preventDefault(); // Prevent the form submission
+            // Show the loader and change the button text
+            document.querySelector('.loader-container').style.display = 'block';
+            this.disabled = true; // Disable the button
+
+            // Submit the form
+            this.closest('form').submit();
+        }
+    });
 </script>
