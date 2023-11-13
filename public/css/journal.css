@@ -30,6 +30,10 @@ html {
   overflow-y: auto;
 }
 
+.card-body.show {
+  background-color: #fff;
+}
+
 .content-scroll {
   max-height: 750px;
   overflow-y: auto;

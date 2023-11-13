@@ -181,7 +181,7 @@
 <div class="row">
     <!-- Most Favorite Resources Table -->
     <div class="col-md-6">
-        <div class="table-container shadow">
+        <div class="table-container-admin shadow">
             <p class="h4 mb-0 text-gray-800">Top Resources</p>
             <div class="d-flex justify-content-between align-items-center">
             </div>
@@ -210,7 +210,7 @@
 
     <!-- Most Replied Discussions Table -->
     <div class="col-md-6">
-        <div class="table-container shadow">
+        <div class="table-container-admin shadow">
             <p class="h4 mb-0 text-gray-800">Top Discussions</p>
             <div class="d-flex justify-content-between align-items-center">
             </div>

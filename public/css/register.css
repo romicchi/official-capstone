@@ -17,7 +17,8 @@ html {
 form {
 	border: 2px solid black;
 	border-radius: 20px;
-	padding: 5% 3%;
+	padding: 2% 2%;
+	margin: 2rem 2rem;
 	background-color: #F0F0F0;
 }
 

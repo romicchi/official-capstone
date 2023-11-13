@@ -16,7 +16,7 @@
 <div class="alert alert-danger">{{ $message }}</div>
 @enderror
 
-<div class="container card">
+<div class="container card shadow">
     <h2 class="card-header">Create New Journal</h2>
     <form action="{{ route('journals.store') }}" method="post" enctype="multipart/form-data">
         @csrf

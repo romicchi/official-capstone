@@ -11,8 +11,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
 	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
             <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
@@ -29,7 +27,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header"><strong>Talk to Gener</strong></div>
                     <div class="card-body">
                         <!-- Chatbot container -->
@@ -69,7 +67,7 @@
 <div class="row">
     <!-- Most Favorite Resources Table -->
     <div class="col-md-12 col-lg-6">
-        <div class="table-container shadow">
+        <div class="table-container-user shadow">
             <p class="h4 mb-0 text-gray-800 text-center mb-2">Top Resources</p>
             <table class="table">
                 <thead>
@@ -77,18 +75,15 @@
                         <th class="text-center">Title</th>
                         <th class="text-center">Author</th>
                         <th class="text-center">Favorited</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($mostFavoriteResources as $resource)
                         <tr>
-                            <td class="text-center">{{ Str::limit($resource->title, 30) }}</td>
+                            <td class="text-center hover" onclick="window.location='{{ route('resource.show', $resource->id) }}'" style="cursor: pointer;"
+                            >{{ Str::limit($resource->title, 30) }}</td>
                             <td class="text-center">{{ $resource->author }}</td>
                             <td class="text-center">{{ $resource->favorited_by_count }}</td>
-                            <td>
-                                <a class="text-decoration" href="{{ route('resource.show', $resource->id) }}">View</a>
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -98,22 +93,21 @@
 
     <!-- Most Replied Discussions Table -->
     <div class="col-md-12 col-lg-6">
-        <div class="table-container shadow">
+        <div class="table-container-user shadow">
             <p class="h4 mb-0 text-gray-800 text-center mb-2">Top Discussions</p>
             <table class="table">
                 <thead>
                     <tr>
                         <th class="text-center">Title</th>
                         <th class="text-center">Replied</th>
-                        <th class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($mostRepliedDiscussions as $discussion)
                         <tr>
-                            <td class="text-center">{{ Str::limit($discussion->title, 50) }}</td>
+                            <td class="text-center hover" onclick="window.location='{{ route('discussions.show', $discussion->slug, ['id' => $discussion->id]) }}'" style="cursor: pointer;"
+                            >{{ Str::limit($discussion->title, 50) }}</td>
                             <td class="text-center">{{ $discussion->replies_count }}</td>
-                            <td><a class="text-decoration" href="{{ route('discussions.show', $discussion->slug, ['id' => $discussion->id]) }}">View</a></td>
                         </tr>
                     @endforeach
                 </tbody>

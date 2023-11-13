@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.css') }}">
 </head>
+<style>
+    .card-header{
+        background-color: #070372 !important;
+        color: #fff !important;
+    }
+</style>
 <body>
 <div class="container mt-4">
     <div class="row justify-content-center">

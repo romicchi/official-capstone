@@ -52,13 +52,12 @@
                     </div>
                 </div>
             
-            <div id="loading-spinner" class="text-center" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+            <div class="full-width-embed shadow mb-5" id="pptx-container" style="width: 100%; height: 50rem;"> <!-- To set a fixed height for pptx-container -->
+                <div id="loading-spinner" class="text-center" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
-            </div>
-
-            <div class="full-width-embed" id="pptx-container" style="width: 100%; height: 50rem;"> <!-- To set a fixed height for pptx-container -->
                 <embed id="pdf-embed" src="{{ $resource->url }}" width="100%" height="100%" onload="handlePdfLoad()">
             </div>
 

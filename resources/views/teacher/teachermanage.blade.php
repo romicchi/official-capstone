@@ -14,7 +14,7 @@
   <h2>Resource Management</h2>
   <div class="row">
     <div class="col-md-4">
-      <div class="card">
+      <div class="card shadow">
         <div class="card-body add">
           <h4 class="card-title">Add Resource</h4>
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
@@ -51,7 +51,7 @@
     <div class="col-md-8 my-1">
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
+          <div class="card shadow">
             <div class="card-body">
               <h4 class="card-title">Your File Uploads</h4>
                 <table class="table">
@@ -113,8 +113,6 @@
 
 @include('loader')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
-<script src="{{ asset('js/loader.js') }}"></script>
-<script src="{{ asset('js/fetch.js') }}"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
 <script>
     // JavaScript to Show Loader When Upload Button is Clicked

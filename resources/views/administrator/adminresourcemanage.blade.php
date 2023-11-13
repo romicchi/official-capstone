@@ -42,14 +42,18 @@
                                             <td><strong>{{ $resource->title }}</strong></td> 
                                             <td>{{ $resource->author }}</td> 
                                             <td>{{ \Carbon\Carbon::parse($resource->created_at)->format('F j, Y') }}</td>
-                                            <td>{{ $resource->college->collegeName }}</td>
-                                            <td>{{ $resource->discipline->disciplineName }}</td>
+                                            <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
+                                            <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{{ route('resource.show', $resource->id) }}">View</a> |
+                                                <a class="btn btn-primary" href="{{ route('resource.show', $resource->id) }}">
+                                                    <i class="fas fa-eye p-1"></i>
+                                                </a> |
                                                 <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger delete-resource-confirm">Delete</button>
+                                                    <button type="submit" class="btn btn-danger delete-resource-confirm">
+                                                        <i class="fas fa-trash-alt p-1"></i>
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>

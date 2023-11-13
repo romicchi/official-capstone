@@ -144,7 +144,7 @@ footer {
       border-left: 0.25rem solid #f6c23e !important;
   }
   
-  .table-container {
+  .table-container-user {
     border: 1px solid #ccc;
     background-color: #fff !important;
     border-radius: 5px;
@@ -152,6 +152,22 @@ footer {
     margin-top: 2rem;
     margin-bottom: 2rem;
     height: 35rem;
+}
+
+.table-container-admin {
+  border: 1px solid #ccc;
+  background-color: #fff !important;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 2rem;
+  height: 35rem;
+}
+
+/* hover title */
+.hover:hover {
+  color: #070372;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 /* Style the table headers */

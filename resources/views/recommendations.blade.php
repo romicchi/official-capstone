@@ -10,7 +10,7 @@
 @section('content')
     <div class="container">
         <h2>Relevant Resources</h2>
-        <table class="table table-bordered">
+        <table class="table table-bordered shadow">
         <thead>
         <tr>
             <th class="thead">Title</th>

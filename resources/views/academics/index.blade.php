@@ -31,12 +31,18 @@
                     <tr>
                         <td>{{ $college->collegeName }}</td>
                         <td>
-                            <a href="{{ route('academics.editCollege', $college->id) }}" class="btn btn-primary">Edit</a>
-                            <form action="{{ route('academics.destroyCollege', $college->id) }}" method="POST" style="display: inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
-                            </form>
+                            <div class="p-1 my-1">
+                                <a href="{{ route('academics.editCollege', $college->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit p-1"></i>
+                                </a>
+                                <form class="d-inline" action="{{ route('academics.destroyCollege', $college->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                        <i class="fas fa-trash-alt p-1"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -87,12 +93,18 @@
                         <td>{{ $course->courseName }}</td>
                         <td>{{ $course->college->collegeName }}</td>
                         <td>
-                            <a href="{{ route('academics.editCourse', $course->id) }}" class="btn btn-primary">Edit</a>
-                            <form action="{{ route('academics.destroyCourse', $course->id) }}" method="POST" style="display: inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
-                            </form>
+                            <div class="p-1 my-1">
+                                <a href="{{ route('academics.editCourse', $course->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit p-1"></i>
+                                </a>
+                                <form class="d-inline" action="{{ route('academics.destroyCourse', $course->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                        <i class="fas fa-trash-alt p-1"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -143,12 +155,18 @@
                         <td>{{ $discipline->disciplineName }}</td>
                         <td>{{ $discipline->college->collegeName }}</td>
                         <td>
-                            <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">Edit</a>
-                            <form action="{{ route('academics.destroyDiscipline', $discipline->id) }}" method="POST" style="display: inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
-                            </form>
+                            <div class="p-1 my-1">
+                                <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit p-1"></i>
+                                </a>
+                                <form class="d-inline" action="{{ route('academics.destroyDiscipline', $discipline->id) }}" method="POST" style="display: inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                        <i class="fas fa-trash-alt p-1"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

@@ -31,13 +31,25 @@ body {
   color: white;
 }
 
-.navbar a:hover {
-  color: rgb(255, 255, 255);
+.navbar-links a:hover {
+  color: rgb(180, 180, 180);
+}
+
+.navbar-nav a:hover {
+  color: rgb(180, 180, 180);
 }
 
 .active {
   background-color: #4CAF50;
   color: white;
+}
+
+.navbar-links {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 20rem;
+  align-items: center;
+  flex: 1;
 }
 
 .navbar a.nav-link {
@@ -72,4 +84,3 @@ body {
       padding-right: 1rem;
   }
 }
-  
