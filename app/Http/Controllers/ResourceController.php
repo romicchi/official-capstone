@@ -301,20 +301,56 @@ public function destroy($resourceId)
 }
 
 
-    // Edit resource function
-    public function edit(Resource $resource)
-    {    
-        $resources = Resource::all();
-        $colleges = College::all();
-        $courses = Course::all();
-        $subjects = Subject::all();
+// Edit resource function
+public function edit(Resource $resource)
+{
+    $resources = Resource::all();
+    $colleges = College::all();
+    $courses = Course::all();
+    $subjects = Subject::all();
 
-        $disciplines = Discipline::pluck('disciplineName', 'id'); // Assuming you have a Discipline model
+    $disciplines = Discipline::pluck('disciplineName', 'id'); // Assuming you have a Discipline model
 
-       // $colleges = College::pluck('collegeName', 'id');
+    // Fetch the file information from Google Drive
+    $fileExtension = $this->getFileExtensionFromGoogleDrive($resource->url);
 
-        return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines'));
+    // Determine if the resource is an image or video
+    $isImageOrVideo = in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'avi', 'mov', 'webm', 'mkv', 'flv', 'wmv', '3gp', 'ogg']);
+
+    // Pass the information to the view
+    return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines', 'isImageOrVideo'));
+}
+
+// Helper function to get file extension from Google Drive
+private function getFileExtensionFromGoogleDrive($fileUrl)
+{
+    // Extract file ID from the Google Drive URL
+    $urlParts = parse_url($fileUrl);
+    parse_str($urlParts['query'], $queryParameters);
+    $fileId = $queryParameters['id'];
+
+    // Set access token for the Google client
+    $googleClient = new GoogleClient();
+    $googleClient->setAccessToken(self::getGoogleDriveAccessToken());
+
+    // Initialize the Google Drive service
+    $googleDrive = new GoogleDriveService($googleClient);
+
+    try {
+        // Fetch file metadata
+        $fileMetadata = $googleDrive->files->get($fileId, ['fields' => 'name']);
+
+        // Get the file name and extract the extension
+        $fileName = $fileMetadata->getName();
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+
+        return $fileExtension;
+    } catch (\Exception $e) {
+        // Handle any errors that occur during file metadata retrieval
+        return null;
     }
+}
+
 
 // Update resource function
 public function update(Request $request, Resource $resource)
@@ -326,8 +362,8 @@ public function update(Request $request, Resource $resource)
     ]);
 
     // Update resource data
-    $resource->update($validatedData);
-
+    $resource->update($request->all());
+    
     // Generate unique JSON file name
     $jsonFileName = $this->generateUniqueJsonFileNameAfterUpdate($resource);
 
@@ -377,8 +413,8 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
 
     public function autofill(Request $request)
     {
-        $title = $request->title;
-        $resource = Resource::where('title', $title)->first();
+        $url = $request->url;
+        $resource = Resource::where('url', $url)->first();
     
         if (!$resource) {
             return response()->json(['error' => 'Resource not found'], 404);
