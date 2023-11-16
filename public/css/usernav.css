@@ -47,11 +47,26 @@
   font-size: 18px;
 }
 
+.nav-item {
+  margin-left: 1rem;
+}
+
+.logout {
+  margin-left: 1.5rem;
+}
+
 @media (min-width: 992px) {
   .navbar {
     max-width: 220px;
   }  
 }
+
+@media screen and (max-width: 992px) {
+  .nav-link {
+    margin-left: 0;
+  }
+}
+
 
 @media screen and (max-width: 576px) {
   .new-user-guide-card {
@@ -93,18 +108,39 @@
     background-color: #ccc;
 }
 
+.nav-link {
+  font-size: 16px;
+}
+
+.navbar-text {
+  font-size: 16px;
+  text-decoration: none;
+}
+
+/* media 476 */
+@media screen and (max-width: 476px) {
+  .nav-item {
+    margin-left: 0rem;
+  }
+}
+
 @media screen and (max-width: 1176px) {
+
 
   .logo-image {
     width: 6.3rem; /* adjust the width to your desired size */
 }
 
   .nav-link {
-    font-size: 16px;
+    font-size: 10px;
+  }
+  
+  .navbar-text {
+    font-size: 10px;
   }
 
   .navbar-nav .nav-link {
-    padding: 10px;
+    padding: 8px;
     padding-left: 15px;
     color: #fff;
   }

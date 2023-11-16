@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<div class="card-header text-center">
+<div class="card-header text-center header">
     <!-- To display the author's email and the View and Delete buttons -->
     <div class="d-flex justify-content-between align-items-center">
         @if (Route::currentRouteName() === 'discussions.index')

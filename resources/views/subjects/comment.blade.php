@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{ asset('css/comment.css') }}">
 
-<div class="comments">
+<div class="comments shadow">
     <h3>Comments</h3>
 
     @if ($comments->count() > 0)

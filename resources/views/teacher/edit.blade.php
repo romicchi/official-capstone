@@ -17,7 +17,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
             <div class="alert alert-danger" id="errorMessage" style="display: none;"></div>
-                <div class="card">
+                <div class="card shadow">
                     <div class="card-header">{{ __('Edit Resource') }}</div>
 
                     <div class="card-body">
@@ -32,10 +32,17 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="keywords">{{ __('Keywords') }}</label>
-                                <input type="text" class="form-control" name="keywords" id="keywords" value="{{ $resource->keywords }}" required>
+                                @if ($isImageOrVideo)
+                                    {{-- Hide the input field for image and video-based resources --}}
+                                    <input type="hidden" name="keywords" value="{{ $resource->keywords }}">
+                                    <p class="form-control-static">{{ $resource->keywords }}</p>
+                                @else
+                                    {{-- Display the input field for other resource types --}}
+                                    <label for="keywords">{{ __('Keywords') }}</label>
+                                    <input type="text" class="form-control" name="keywords" id="keywords" value="{{ $resource->keywords }}" required>
+                                @endif
                             </div>
-                            
+
                             <div>  Discipline </div>
                             <select class="form-control" name="discipline_id" id="discipline_id" required>
                                 <option value="" @if(empty($resource->discipline_id)) selected @endif></option>
@@ -59,7 +66,7 @@
 
                             <div class="form-group my-2">
                                 <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
-                                <button type="button" id="autofillButton" class="btn btn-primary">Autofill</button>
+                                <button type="button" id="autofillButton" class="btn btn-primary" @if ($isImageOrVideo) style="display:none" @endif>Autofill</button>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-danger" id="cancelButton">Delete</a>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-secondary">Cancel</a>
                             </div>

@@ -14,22 +14,31 @@
 </head>
 <body>
 <main class="container py-4">
-    <a href="{{ URL::previous() }}" class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
-    <div class="container card">
-        <div class="card-header">Edit Discussion</div>
+    @error('title')
+    <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
+    @error('content')
+    <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+    <a
+        href="{{ route('discussions.show', $discussion->slug) }}"
+    class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
+    <div class="container card shadow">
+        <div class="card-header"><strong>Edit Discussion</strong></div>
         <div class="card-body">
             <form action="{{ route('discussions.update', $discussion->id) }}" method="post">
                 @csrf
                 @method('PATCH')
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" name="title" class="form-control" value="{{ $discussion->title }}">
+                    <input type="text" name="title" maxlength="255" class="form-control" value="{{ $discussion->title }}">
                 </div>
 
                 <div class="form-group">
                     <label for="content">Content:</label>
                     <br>
-                    <input id="content" type="hidden" name="content" value="{{ $discussion->content }}">
+                    <input id="content" type="hidden" maxlength="3500" name="content" value="{{ $discussion->content }}">
                     <trix-editor class="content-scroll" input="content"></trix-editor>
                 </div>
 

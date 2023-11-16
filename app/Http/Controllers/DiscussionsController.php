@@ -58,7 +58,7 @@ class DiscussionsController extends Controller
             $query->orderBy('created_at', 'desc'); // Default to newest
         }
     
-        $discussions = $query->paginate(10);
+        $discussions = $query->paginate(7)->onEachSide(1);
         $discussions->appends($request->query());
 
         $characterLimit = 100;
@@ -110,7 +110,7 @@ class DiscussionsController extends Controller
     //Note: $discussion is found at the database
     public function show(Discussion $discussion) //default: show(string $id)
     {
-        $replies = $discussion->replies()->paginate(3); // Fetch replies and paginate
+        $replies = $discussion->replies()->paginate(3)->onEachSide(1); // Fetch replies and paginate
 
         $characterLimit = 300;
 
@@ -144,7 +144,7 @@ class DiscussionsController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
+            'content' => 'required|string|max:3500',
         ]);
     
         // Only update the slug if the title has changed

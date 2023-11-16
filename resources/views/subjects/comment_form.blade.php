@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ asset('css/comment.css') }}">
 
 @auth
-    <div class="comment-form card mt-4">
+    <div class="comment-form card mt-4 shadow">
         <div class="card-body">
             <h4 class="card-title">Add a Comment</h4>
             <form method="POST" action="{{ route('comments.store') }}">

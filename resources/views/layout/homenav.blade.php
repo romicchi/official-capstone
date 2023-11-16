@@ -10,10 +10,21 @@
         <a class="navbar-brand" href="{{ url('/') }}">
             <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="logo-image">
         </a>
+
+        <!-- Hides link when in login and register blade -->
+        @if(!in_array(request()->route()->getName(), ['login', 'register'])) 
+        <div class="navbar-links">
+            <a href="#">Home</a>
+            <a href="#about-container">About</a>
+            <a href="#features-container">Features</a>
+            <a href="#chatbot-container">Chatbot</a>
+            <a href="#footer-container">Address</a>
+        </div>
+        @endif
         <div class=" justify-content-end" id="navbarNav">
             <ul class="navbar-nav flex-column">
                 @guest
-                <a class="nav-link ml-auto" href="{{ route('login') }}">Log in</a>
+                    <a class="nav-link ml-auto" href="{{ route('login') }}">Log in</a>
                 @else
                     @if (Auth::user()->role_id == 3)
                         <li class="nav-item">

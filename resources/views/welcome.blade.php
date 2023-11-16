@@ -107,7 +107,7 @@
                     <h5><strong>Links</strong></h5>
                     <ul class="list-unstyled">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#about-container">About Us</a></li>
+                        <li><a href="#about-container">About</a></li>
                         <li><a href="#features-container">Features</a></li>
                         <li><a href="#chatbot-container">Chatbot</a></li>
                         <li><a href="#footer-container">Address</a></li>

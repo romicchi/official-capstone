@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
-<div class="container">
     <a href="{{ route('journals.index') }}" class="back-button">← Back</a>
     <div class="card mb-3 my-3">
         <div class="card-header">
@@ -24,12 +23,11 @@
                 </div>
             </div>
         </div>
-        <div class="card-body shadow">
+        <div class="card-body show shadow">
             <p>{!! $journal->content !!}</p>
             <p class="card-text"><small class="text-muted">Created at: {{ $journal->created_at->format('F d, Y') }}</small></p>
         </div>
     </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

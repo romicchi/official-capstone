@@ -35,6 +35,11 @@
                                 <!-- To display the content of the discussion -->
                                 <div class="card-body shadow">
                                     <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
+                                        <!-- content with Str limit -->
+                                        <div class="card-text">
+                                            {!! nl2br(Str::limit(strip_tags($discussion->content), 350)) !!}
+                                        </div>
+                                        <hr>
                                         <div>
                                             @if ($discussion->author)
                                             Author: {{ $discussion->author->firstname }} {{ $discussion->author->lastname }}
@@ -52,7 +57,7 @@
                                 </div>
                             </div>
                         @endforeach
-                        <!-- This will display the links above ex. https:librar-e.com/discussions?channel=bsit-channel&page=2 -->
+                        <!-- This will display the links above .com/discussions?channel=bsit-channel&page=2 -->
                         {{ $discussions->appends(request()->query())->links() }}
                     @endif
                 </div>

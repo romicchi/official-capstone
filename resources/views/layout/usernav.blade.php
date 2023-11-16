@@ -80,18 +80,23 @@
                 </li>
                 @endif
 
-                <li class="nav-item">
-                  <a class="nav-link {{ $currentRoute === 'settings' ? 'active' : 'inactive' }}" href="{{ route('settings') }}"><img class="images1">Settings</a>
-                </li>
-
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
 
-                <li class="nav-item">
-                        <a class="nav-link" href="{{ route('logout') }}">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
-                    </li>
+                <div class="navbar-text text-white text-center mt-4 clickable" onclick="window.location='{{ route('settings') }}';" style="cursor: pointer;">
+                  <div>
+                    <strong>{{ auth()->user()->firstname }}</strong>
+                  </div>
+                  <div>
+                    {{ auth()->user()->email }}
+                  </div>
+                </div>
+
+                <li class="nav-item logout">
+                  <a class="nav-link" href="{{ route('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                  </a>
+                </li>
               </ul>
             </div>
           </nav>

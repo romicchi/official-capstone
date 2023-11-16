@@ -44,7 +44,7 @@
 
                 <h4 class="mt-4">Comments</h4>
                 @foreach($replies as $reply)
-                <div class="card my-2">
+                <div class="card my-2 shadow">
                     @php
                     $replyHeaderClass = auth()->check() && auth()->user()->id == $reply->owner->id ? 'yellow' : 'green';
                     @endphp
@@ -64,7 +64,8 @@
                     <div class="card-body">
                         {!! $reply->content !!}
                         <br>
-                        <p class="card-text"><small class="text-muted">Created at: {{ $reply->created_at->format('F d, Y') }}</small></p>
+                        <p class="card-text"><small class="text-muted">{{ $reply->created_at->diffForHumans() }}</small></p>
+                        
                     </div>
                 </div>
                 @endforeach
@@ -73,7 +74,7 @@
                     {{ $replies->links('pagination::bootstrap-4') }}
                 </div>
 
-                <div class="card my-4">
+                <div class="card my-4 shadow">
                     <div class="card-header">
                         <strong>Reply</strong>
                     </div>

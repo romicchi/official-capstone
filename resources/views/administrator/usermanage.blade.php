@@ -113,8 +113,12 @@
                   @endif
                 </td>
                 <td>
-                  <button type="submit" class="btn btn-primary approve-button" name="verified_users[]" value="{{ $user->id }}">Approve</button>
-                  <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">Reject</button>
+                  <button type="submit" class="btn btn-primary approve-button" name="verified_users[]" value="{{ $user->id }}">
+                    Approve <i class="fas fa-check p-1"></i>
+                  </button>
+                  <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">
+                    Reject <i class="fas fa-times p-1"></i>
+                  </button>
                 </td>
               </tr>
               @endif
@@ -266,9 +270,15 @@
                             </a>
                         </td>
                         <td>
-                        <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">Edit</a>
-                        <a type="submit" class="btn btn-secondary archive-button" href="{{ route('archive', ['id' => $user->id]) }}">Archive</a>
-                        <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete', ['id' => $user->id]) }}">Delete</a>
+                        <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">
+                          <i class="fas fa-edit p-1"></i>
+                        </a>
+                        <a type="submit" class="btn btn-secondary archive-button" href="{{ route('archive', ['id' => $user->id]) }}">
+                          <i class="fas fa-archive p-1"></i>
+                        </a>
+                        <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete', ['id' => $user->id]) }}">
+                          <i class="fas fa-trash-alt p-1"></i>
+                        </a>
                         </td>
                     </tr>
                     @endif
