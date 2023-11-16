@@ -1,3 +1,4 @@
+@extends('layout.usernav')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -111,6 +112,11 @@
         #close-button:hover {
             color: red !important;
         }
+        #legend {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
 </style>
 <body>
 <div class="container">
@@ -128,6 +134,7 @@
      <button onclick="zoomIn()">Zoom In</button>
     <button onclick="zoomOut()">Zoom Out</button>
     <button onclick="autoCenter()">Center</button>
+    <div id="legend"></div>
     <select id="view-select" onchange="changeView(this.value)">
          <option value="fixed">Fixed</option>
          <option value="activity">Activity</option>
@@ -246,7 +253,30 @@
     }
 
     function shouldLinkNodes(resource1, resource2) {
-        return true; 
+        // If either keywords property is undefined, return false
+        if (!resource1.keywords || !resource2.keywords) {
+            return false;
+        }
+        // Split the keywords string into an array of keywords
+        var keywords1 = resource1.keywords.split(', ');
+        var keywords2 = resource2.keywords.split(', ');
+
+        console.log('keywords1:', keywords1);  // Debugging line
+        console.log('keywords2:', keywords2);  // Debugging line
+
+        // Check if any keyword in keywords1 is also in keywords2
+        for (var i = 0; i < keywords1.length; i++) {
+            for (var j = 0; j < keywords2.length; j++) {
+                if (keywords1[i].toLowerCase() === keywords2[j].toLowerCase()) {
+                    console.log('Common keyword found:', keywords1[i]);  // Debugging line
+                    return true;  // Return true if a common keyword is found
+                }
+            }
+        }
+
+        console.log('No common keyword found');  // Debugging line
+        // If no common keyword was found, return false
+        return false;
     }
 
     // Create SVG element and set its viewbox
@@ -280,10 +310,64 @@
         .attr("d", "M0,-5L10,0L0,5")
         .attr("fill", "#000");
 
+        //SVG for the legend
+    var legendSvg = d3.select("#legend").append("svg")
+        .attr("width", 150)
+        .attr("height", 90);
+    
+    // Define the elements for the legend
+    var elements = [
+        {color: "blue", shape: "circle", label: "Node"},
+        {color: "green", shape: "circle", label: "Selected Node"},
+        {color: "black", shape: "line", label: "Relevancy"}
+    ];
+    
+    // Create the legend elements
+    elements.forEach(function(element, i) {
+        var g = legendSvg.append("g")
+            .attr("transform", "translate(0," + i * 30 + ")");
+    
+        if (element.shape === "circle") {
+            g.append("circle")
+                .attr("r", 10)
+                .attr("cx", 10)
+                .attr("cy", 10)
+                .style("fill", element.color);
+        } else if (element.shape === "line") {
+            g.append("line")
+                .attr("x1", 0)
+                .attr("y1", 10)
+                .attr("x2", 20)
+                .attr("y2", 10)
+                .style("stroke", element.color)
+                .style("stroke-width", 2);
+        }
+    
+        g.append("text")
+            .attr("x", 30)
+            .attr("y", 10)
+            .attr("dy", ".35em")
+            .text(element.label);
+    });
+
+    // Create the simulation with a force for the links, a charge force, and a centering force
     var simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(function(d) { return d.id; }).distance(100)) // Increase distance between nodes
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+    .force("link", d3.forceLink(links).id(d => d.id).distance(50))  // Decrease distance
+    .force("charge", d3.forceManyBody().strength(-50))  // Increase strength
+    .force("center", d3.forceCenter(width / 2, height / 2));
+
+    // In the tick function, update the positions of the nodes and the links
+    simulation.on("tick", () => {
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+    
+        node
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y);
+        });
 
     var link = svg.append("g")
         .selectAll("line")
@@ -378,7 +462,7 @@
 
     // Select nodes
        
-        var clickedNode = d3.select(this);// Store a reference to the clicked node
+    var clickedNode = d3.select(this);// Store a reference to the clicked node
 
     // If there is a last clicked node, reset its color
     if (lastClickedNode) {
@@ -487,26 +571,45 @@
             console.warn('Search term is empty');
         }
     }
+
+    function shouldLinkNodes2(nodeA, nodeB) {
+        return true; 
+    }
+
+    if (shouldLinkNodes2(filteredNodes[i], filteredNodes[j], searchTerm)) {
+        filteredLinks.push({ source: filteredNodes[i], target: filteredNodes[j] });
+        console.log('Link created:', filteredLinks[filteredLinks.length - 1]); // Log each link created
+    }
+
     // Function to visualize the graph based on search results
     function visualizeGraph(searchResults) {
-        // Clear existing graph visualization
-        clearGraph();
+    // Clear existing graph visualization
+    clearGraph();
 
-        // Extract the titles of the resources from the search results
-        var searchTitles = searchResults.map(resource => resource.title);
+    // Extract the titles of the resources from the search results
+    var searchTitles = searchResults.map(resource => resource.title);
+    console.log('Search Titles:', searchTitles); // Log search titles
 
-        // Filter nodes based on whether they are in the search results
-        var filteredNodes = nodes.filter(node => searchTitles.includes(node.title));
+    // Filter nodes based on whether they are in the search results
+    var filteredNodes = nodes.filter(node => searchTitles.includes(node.title));
+    console.log('Filtered Nodes:', filteredNodes); // Log filtered nodes
 
-        // Create links based on the filtered nodes
-        var filteredLinks = [];
-        for (var i = 0; i < filteredNodes.length; i++) {
-            for (var j = i + 1; j < filteredNodes.length; j++) {
-                if (shouldLinkNodes(filteredNodes[i], filteredNodes[j])) {
-                    filteredLinks.push({ source: i, target: j });
-                }
+    // Create a map of nodes for easy lookup
+    var nodeMap = {};
+    filteredNodes.forEach(node => nodeMap[node.title] = node);
+
+    // Create links based on the filtered nodes
+    var filteredLinks = [];
+    for (var i = 0; i < filteredNodes.length; i++) {
+        for (var j = i + 1; j < filteredNodes.length; j++) {
+            if (shouldLinkNodes2(filteredNodes[i], filteredNodes[j])) {
+                filteredLinks.push({ source: filteredNodes[i], target: filteredNodes[j] });
+                console.log('Link created:', filteredLinks[filteredLinks.length - 1]); // Log each link created
             }
         }
+    }
+    console.log('Filtered Links:', filteredLinks); // Log all filtered links
+
 
         // Add new links
         var links = svg.selectAll("line")
