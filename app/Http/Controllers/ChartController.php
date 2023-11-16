@@ -63,23 +63,28 @@ class ChartController extends Controller
     // Explode the query into individual words, remove stopwords, and make the remaining words unique
     $keywords = array_unique(array_diff(explode(' ', strtolower($query)), $stopwords));
 
-    // Initialize $resources with an empty array
-    $resources = [];
-
     // Use a raw SQL query to search for resources based on keywords and the captured resource ID
     $resources = Resource::where(function ($queryBuilder) use ($keywords, $resourceId) {
-        foreach ($keywords as $keyword) {
-            $queryBuilder->orWhereRaw("LOWER(topic) LIKE '%$keyword%'")
-                ->orWhereRaw("LOWER(title) LIKE '%$keyword%'")
-                ->orWhereRaw("LOWER(keywords) LIKE '%$keyword%'");
-        }
+        // Use WHERE IN for a more concise query
+        $queryBuilder->whereIn('id', function ($subquery) use ($keywords) {
+            $subquery->select('id')
+                ->from('resources')
+                ->whereRaw("LOWER(CONCAT(',', TRIM(keywords), ',')) LIKE ?", ['%,' . implode(',%', $keywords) . ',%'])
+                ->orWhere(function ($orWhere) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $orWhere->orWhereRaw("LOWER(title) LIKE ?", ["%$keyword%"])
+                            ->orWhereRaw("LOWER(keywords) LIKE ?", ["%$keyword%"]);
+                    }
+                });
+        });
+
         // Add a condition to filter by the captured resource ID
-        $queryBuilder->where('id', $resourceId);
+        $queryBuilder->orWhere('id', $resourceId);
     })->select('id', 'title', 'url', 'author', 'topic', 'keywords', 'description', 'college_id', 'discipline_id')
         ->paginate(5);
 
     return view('recommendations', compact('resources'));
-    }
+}
 
     public function resources(Request $request)
     {

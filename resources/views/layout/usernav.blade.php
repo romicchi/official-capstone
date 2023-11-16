@@ -64,6 +64,11 @@
             <a class="dropdown-item" href="{{ route ('favorites') }}">Favorites</a>
           </ul>
         </li>
+
+                <li class="nav-item">
+                  <a class="nav-link {{ $currentRoute === 'nexus.index' ? 'active' : 'inactive' }}" href="{{ route('nexus.index') }}"><img class="images1">Nexus Maps</a>
+                </li>
+
                 <li class="nav-item">
                   <a class="nav-link {{ $currentRoute === 'discussions.index' ? 'active' : 'inactive' }}" href="{{ route('discussions.index') }}"><img class="images1">Forum</a>
                 </li>

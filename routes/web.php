@@ -19,6 +19,7 @@ use App\Http\Controllers\UsermanageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NexusController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\SettingsController;
@@ -246,6 +247,14 @@ Route::group(['middleware' => ['auth', 'Authenticated']], function () {
 
 
 Route::get('/get-recommendations', [ChartController::class, 'getRecommendations'])->name('getRecommendations');
+
+Route::get('/nexus', [NexusController::class, 'index'])->name('nexus.index');
+Route::post('/nexus', [NexusController::class, 'search'])->name('nexus.search');
+
+Route::get('/initial-data', [NexusController::class, 'getInitialData']);
+
+Route::post('/fetch_metadata', [NexusController::class, 'fetch'])->name('fetch_metadata');
+
 
 
 
