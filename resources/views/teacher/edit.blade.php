@@ -4,12 +4,32 @@
     <meta charset="utf-8">
     <title>GENER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </head>
 <style>
-    .card-header{
-        background-color: #070372 !important;
-        color: white !important;
-    }
+.card-header{
+    background-color: #070372 !important;
+    color: white !important;
+}
+
+.note-container {
+    background-color: #f0f0f0;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 90%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.note {
+    color: #555;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.4;
+}
 </style>
 
 <div class="container my-5">
@@ -32,30 +52,23 @@
                             </div>
 
                             <div class="form-group">
-                                @if ($isImageOrVideo)
-                                    {{-- Hide the input field for image and video-based resources --}}
-                                    <input type="hidden" name="keywords" value="{{ $resource->keywords }}">
-                                    <p class="form-control-static">{{ $resource->keywords }}</p>
-                                @else
-                                    {{-- Display the input field for other resource types --}}
-                                    <label for="keywords">{{ __('Keywords') }}</label>
-                                    <input type="text" class="form-control" name="keywords" id="keywords" value="{{ $resource->keywords }}" required>
-                                @endif
+                                <label for="keywords">{{ __('Keywords') }}</label>
+                                <input type="text" class="form-control" name="keywords" id="keywords" value="{{ $resource->keywords }}" required>
                             </div>
-
-                            <div>  Discipline </div>
-                            <select class="form-control" name="discipline_id" id="discipline_id" required>
-                                <option value="" @if(empty($resource->discipline_id)) selected @endif></option>
-                                @foreach($disciplines as $id => $name)
-                                    <option value="{{ $id }}" @if($resource->discipline_id === $id) selected @endif>{{ $name }}</option>
-                                @endforeach
-                            </select>
 
                             <div>College</div>
                             <select class="form-control" name="college_id" id="college_id" required>
                                 <option value="" @if(empty($resource->college_id)) selected @endif></option>
                                 @foreach($colleges as $college)
                                 <option value="{{ $college->id }}" @if($resource->college_id == $college->id) selected @endif>{{ $college->collegeName }}</option>
+                                @endforeach
+                            </select>
+
+                            <div>Discipline</div>
+                            <select class="form-control" name="discipline_id" id="discipline_id" required>
+                                <option value="" @if(empty($resource->discipline_id)) selected @endif></option>
+                                @foreach($disciplines as $id => $name)
+                                    <option value="{{ $id }}" @if($resource->discipline_id === $id) selected @endif>{{ $name }}</option>
                                 @endforeach
                             </select>
                             
@@ -66,11 +79,15 @@
 
                             <div class="form-group my-2">
                                 <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
-                                <button type="button" id="autofillButton" class="btn btn-primary" @if ($isImageOrVideo) style="display:none" @endif>Autofill</button>
+                                <button type="button" id="autofillButton" class="btn btn-primary" @if ($isImageOrVideo) disabled @endif>Autofill</button>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-danger" id="cancelButton">Delete</a>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-secondary">Cancel</a>
                             </div>
-                    
+                            @if ($isImageOrVideo)
+                            <div class="note-container">
+                                <p class="note">Note: "Autofill" only works with text-based resources (e.g., PDF).</p>
+                            </div>
+                            @endif
                         </form>
                     </div>
                 </div>
