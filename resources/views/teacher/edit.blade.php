@@ -156,12 +156,12 @@ document.addEventListener('DOMContentLoaded', function() {
         collegeField.value.trim() === ''
     ) {
         // Make a request to Flask for autofill
-        fetch('http://192.168.1.11:5000/autofill', {
+        fetch('https://generflask.online/autofill', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ title: '{{ $resource->title }}' }),
+            body: JSON.stringify({ url: '{{ $resource->url }}' }),
         })
         .then((response) => response.json())
         .then((data) => {

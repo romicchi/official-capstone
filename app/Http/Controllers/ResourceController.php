@@ -386,8 +386,8 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
 
     public function autofill(Request $request)
     {
-        $title = $request->title;
-        $resource = Resource::where('title', $title)->first();
+        $url = $request->url;
+        $resource = Resource::where('url', $url)->first();
     
         if (!$resource) {
             return response()->json(['error' => 'Resource not found'], 404);

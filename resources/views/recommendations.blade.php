@@ -13,7 +13,8 @@
         <table class="table table-bordered">
         <thead>
         <tr>
-            <th class="thead">Title</th>
+            <th class="thead"> </th>
+            <th class="thead">Keywords</th>
             <th class="thead">Description/Summary</th>
             <th class="thead">Action</th>
         </tr>
@@ -31,9 +32,10 @@
                             </div>
                             <a class="title" href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
                         </h4>
-                        <p><strong>Author:</strong> {{ $resource->author }}</p>
+                        <p><strong>Uploader:</strong> {{ $resource->author }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>
+                    <td>{{ $resource->keywords }}</td>
                     <td class="justified-text">{{ $resource->description }}</td>
                     <td>
                     <a href="{{ url('resource/show', $resource->id) }}" class="button">View</a>
