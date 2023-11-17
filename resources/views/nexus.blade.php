@@ -51,6 +51,10 @@
             outline: none;
         }
 
+        .card {
+            padding-bottom: 25px;
+        }
+
         button:hover {
             background-color: #0056b3; /* Darker blue on hover */
         }
@@ -88,6 +92,7 @@
             background-color: #fff; /* White background */
             border: 1px solid #d1d1d1; /* Light gray border */
             display: none;
+            overflow: auto;
         }
 
         button#send-button {
@@ -117,6 +122,24 @@
             top: 10px;
             right: 10px;
         }
+
+        @media (max-width: 767px) {
+            form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #search-input {
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
 </style>
 <body>
 <div class="container">
@@ -142,20 +165,17 @@
         <div id="nexus"></div>
     </div>
     
-    <!-- Recommendations container -->
-    <div class="recommendations-container" id="recommendations-container">
-        <!-- Relevant resource URLs will appear here -->
-                                    </div>
+</div>
+<!-- Recommendations container -->
+<div class="recommendations-container" id="recommendations-container">
+    <!-- Relevant resource URLs will appear here -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-<!-- Recommendations container -->
-<div class="recommendations-container" id="recommendations-container">
-        <!-- Relevant resource URLs will appear here -->
-    </div>
+
 
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -497,7 +517,7 @@
                 var metadataContent = '<button id="close-button" style="position: absolute; top: 0; right: 0; background: transparent; font-weight: bold; color: black;">x</button>' +
                   '<strong>Title:</strong> ' + data.title + '<br><strong>Uploader:</strong> ' + data.author + 
                   '<br><strong>Keywords:</strong><br>' + keywords +
-                  '<br><a href="http://192.168.1.10:8000/resource/show/' + data.id + '" target="_blank">View Resource</a>';
+                  '<br><a href="http://gener-lnulib.site/resource/show/' + data.id + '" target="_blank">View Resource</a>';
                             
                 // Set the metadata content in the metadataBox
                 metadataBox.html(metadataContent);

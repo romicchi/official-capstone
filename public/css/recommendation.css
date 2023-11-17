@@ -1,5 +1,5 @@
 th {
-    color: black;
+    color: white;
 }
 td{
     background-color: #fff !important;
@@ -37,6 +37,9 @@ color: white !important;
 
 .justified-text {
 text-align: justify;
+max-width: 200px; 
+overflow: hidden; 
+text-overflow: ellipsis;
 }
 
 button.toggle-favorite {
@@ -60,4 +63,8 @@ align-items: center; /* Vertically align the star and title */
 font-size: 12px; /* Adjust the font size as needed */
 color: #777; /* Grey color */
 margin-left: 5px; /* Add some spacing between the text and the star */
+}
+
+.card-body {
+    overflow: auto;
 }

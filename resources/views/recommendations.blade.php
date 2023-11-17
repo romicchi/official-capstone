@@ -13,7 +13,7 @@
         <table class="table table-bordered shadow">
         <thead>
         <tr>
-            <th class="thead"> </th>
+            <th class="thead">Resource</th>
             <th class="thead">Keywords</th>
             <th class="thead">Description/Summary</th>
             <th class="thead">Action</th>
@@ -36,13 +36,15 @@
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>
                     <td>{{ $resource->keywords }}</td>
-                    <td class="justified-text">{{ $resource->description }}</td>
+                    <td class="justified-text">{{ Str::limit($resource->description, 500) }}</td>
                     <td>
-                    <a href="{{ url('resource/show', $resource->id) }}" class="button">View</a>
+                    <button class="btn btn-success mx-1 button" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
+                        <i class="fas fa-eye"></i>
+                    </button>
                     <!-- download the resources-->
-                    <a href="{{ route('resource.download', ['resource' => $resource]) }}"
-                                onclick="trackDownload('{{ $resource->id }}')" class="button">Download</a>
-                    </td>
+                    <a href="{{ route('resource.download', $resource->id) }}" class="btn btn-primary mx-1 button" onclick="trackDownload({{ $resource->id }})">
+                        <i class="fas fa-download"></i>
+                    </a>
                 </tr>
             @endforeach
         </tbody>

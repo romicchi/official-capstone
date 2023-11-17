@@ -55,11 +55,13 @@
                             </div>
                         </div>
 
-                        <!-- Recommendations container -->
-                        <div class="recommendations-container" id="recommendations-container">
-                            <!-- Relevant resource URLs will appear here -->
-                        </div>
                     </div>
+                        <div class="card-body">
+                            <!-- Recommendations container -->
+                            <div class="recommendations-container" id="recommendations-container">
+                                <!-- Relevant resource URLs will appear here -->
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
