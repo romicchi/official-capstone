@@ -139,6 +139,13 @@
             button {
                 width: 100%;
             }
+
+            text {
+                pointer-events: none;
+            }
+            line {
+                pointer-events: none;
+            }
         }
 </style>
 <body>
@@ -253,13 +260,23 @@
     var width = 800;
     var height = 320;
 
-    // Define aspect ratio
-    var aspect = width / height;
-
     // Convert your resources into a format suitable for D3.js
     var nodes = resources.map(function(resource, index) {
         return { id: index, title: resource.title };
     });
+
+    // Create a scale for the x-force
+var xScale = d3.scaleSqrt()
+    .domain([0, nodes.length]) // The domain is the range of the index
+    .range([0, width]); // The range is the width of the SVG
+
+// Create a scale for the y-force
+var yScale = d3.scaleLinear()
+    .domain([0, nodes.length]) // The domain is the range of the index
+    .range([height, 0]); // The range is the height of the SVG
+
+       // Define aspect ratio
+       var aspect = width / height;
 
     // Define how to create links based on common keywords
     var links = [];
@@ -373,8 +390,12 @@
     // Create the simulation with a force for the links, a charge force, and a centering force
     var simulation = d3.forceSimulation(nodes)
     .force("link", d3.forceLink(links).id(d => d.id).distance(50))  // Decrease distance
-    .force("charge", d3.forceManyBody().strength(-50))  // Increase strength
-    .force("center", d3.forceCenter(width / 2, height / 2));
+    .force("charge", d3.forceManyBody().strength(-5000)) // Increase the strength to make nodes repel each other more
+    .force("center", d3.forceCenter(width / 2, height / 2))
+    .force("y", d3.forceY().strength(0.5).y((d, i) => yScale(i))) // Use the scale for the y-force
+    .force("x", d3.forceX().strength(0.5).x((d, i) => xScale(i))) // Add an x-force that pushes nodes to the right based on their index
+    .force("collide", d3.forceCollide().radius(10)); // Add a collision force to prevent nodes from overlapping
+
 
     // In the tick function, update the positions of the nodes and the links
     simulation.on("tick", () => {
@@ -393,7 +414,7 @@
         .selectAll("line")
         .data(links)
         .enter().append("line")
-        .attr("stroke", "#000") // Set the color of the line
+        .attr("stroke", "#D3D3D3") // Set the color of the line
         .attr("stroke-width", 2); // Set the width of the line
 
     var node = svg.append("g")
@@ -637,14 +658,14 @@
         var links = svg.selectAll("line")
             .data(filteredLinks)
             .enter().append("line")
-            .attr("stroke", "#000")
+            .attr("stroke", "#D3D3D3") // Set the color of the line
             .attr("stroke-width", 1.5);
 
         // Add new nodes
         var newNodes = svg.selectAll("circle")
             .data(filteredNodes)
             .enter().append("circle")
-            .attr("r", 5)
+            .attr("r", 10)
             .attr("fill", "steelblue")
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -655,8 +676,10 @@
         // Add new labels
         var labels = svg.selectAll("text")
             .data(filteredNodes)
-            .enter().append("text")
-            .text(function (d) { return d.title; });
+        .enter().append("text")
+        .text(function(d) { return d.title; })
+        .attr("dx", -10) // Adjust the horizontal position
+        .attr("dy", 20); // Adjust the vertical position for space
 
         // Update the simulation with the filtered nodes and links
         simulation.nodes(filteredNodes).force("link").links(filteredLinks);
@@ -686,7 +709,7 @@
             .selectAll("circle")
             .data(filteredNodesArray)
             .enter().append("circle")
-            .attr("r", 5)
+            .attr("r", 10)
             .attr("fill", "steelblue")
             .call(d3.drag()
                 .on("start", dragstarted)
