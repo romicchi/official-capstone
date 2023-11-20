@@ -70,32 +70,4 @@
 </body>
 </html>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const channelSelect = document.getElementById('channel');
-        const courseSelect = document.getElementById('course');
-
-        channelSelect.addEventListener('change', function() {
-            const selectedChannelId = this.value;
-            fetchCourses(selectedChannelId);
-        });
-
-        function fetchCourses(channelId) {
-            const url = `/get-courses/${channelId}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    courseSelect.innerHTML = '';
-
-                    data.forEach(course => {
-                        const option = document.createElement('option');
-                        option.value = course.id;
-                        option.textContent = course.courseName;
-                        courseSelect.appendChild(option);
-                    });
-                })
-                .catch(error => console.error(error));
-        }
-    });
-</script>
+<script src="{{ asset('js/discussions.js') }}"></script>

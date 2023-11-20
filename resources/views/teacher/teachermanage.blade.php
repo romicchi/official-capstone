@@ -20,6 +20,12 @@
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
+          @if(session('error'))
+          <div class="alert alert-danger">
+            {{ session('error') }}
+          </div>
+          @endif
+
           <div class="form-group row my-3">
                 <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
                 <div class="col-md-9">
@@ -114,21 +120,4 @@
 @include('loader')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
-<script>
-    // JavaScript to Show Loader When Upload Button is Clicked
-    document.getElementById('upload-button').addEventListener('click', function (event) {
-        const title = document.getElementById('title').value;
-        const file = document.getElementById('file').value;
-
-          if (title.trim() !== '' && file.trim() !== '') {
-
-            event.preventDefault(); // Prevent the form submission
-            // Show the loader and change the button text
-            document.querySelector('.loader-container').style.display = 'block';
-            this.disabled = true; // Disable the button
-
-            // Submit the form
-            this.closest('form').submit();
-        }
-    });
-</script>
+<script src="{{ asset('js/teacher.js') }}"></script>

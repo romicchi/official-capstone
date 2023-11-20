@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
 	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <title>Gener Title</title>
+    <title>Gener | Nexus Map</title>
 </head>
 <style>
         body {
@@ -394,13 +394,13 @@
         .data(links)
         .enter().append("line")
         .attr("stroke", "#000") // Set the color of the line
-        .attr("stroke-width", 1.5); // Set the width of the line
+        .attr("stroke-width", 2); // Set the width of the line
 
     var node = svg.append("g")
         .selectAll("circle")
         .data(nodes)
         .enter().append("circle")
-        .attr("r", 5)
+        .attr("r", 10)
         .attr("fill", "steelblue")
         .call(d3.drag()
             .on("start", dragstarted)
@@ -412,7 +412,9 @@
         .selectAll("text")
         .data(nodes)
         .enter().append("text")
-        .text(function(d) { return d.title; });
+        .text(function(d) { return d.title; })
+        .attr("dx", -10) // Adjust the horizontal position
+        .attr("dy", 20); // Adjust the vertical position for space
 
     var interactionEnabled = true;
 

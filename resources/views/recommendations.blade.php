@@ -16,7 +16,6 @@
             <th class="thead">Resource</th>
             <th class="thead">Keywords</th>
             <th class="thead">Description/Summary</th>
-            <th class="thead">Action</th>
         </tr>
     </thead>
         <tbody>
@@ -37,61 +36,14 @@
                     </td>
                     <td>{{ $resource->keywords }}</td>
                     <td class="justified-text">{{ Str::limit($resource->description, 500) }}</td>
-                    <td>
-                    <button class="btn btn-success mx-1 button" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <!-- download the resources-->
-                    <a href="{{ route('resource.download', $resource->id) }}" class="btn btn-primary mx-1 button" onclick="trackDownload({{ $resource->id }})">
-                        <i class="fas fa-download"></i>
-                    </a>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
 
+<div id="toggleFavorite" data-toggle-favorite="{{ route('resource.toggleFavorite') }}"></div>
 @show
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    // Toggle favorite
-$(document).ready(function () {
-    $('.toggle-favorite').click(function () {
-        var resourceId = $(this).data('resource-id');
-        var $starIcon = $(this).find('i');
-
-        // Add the CSRF token to the data
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-        $.ajax({
-            url: '{{ route('resource.toggleFavorite') }}',
-            type: 'POST',
-            data: { resourceId: resourceId, _token: csrfToken },
-            success: function (data) {
-                // Toggle the class of the star icon
-                $starIcon.toggleClass('fas far');
-
-                // Update the number of favorites in the UI
-                var $favoritesCount = $('.favorites-count');
-                if ($favoritesCount.length) {
-                    // Ensure the element exists before updating it
-                    $favoritesCount.text(data.favoritesCount);
-                }
-            }
-        });
-    });
-});
-
-    // Track download of user
-    function trackDownload(resourceId) {
-            $.ajax({
-                url: '{{ route('resource.trackDownload') }}',
-                type: 'POST',
-                data: { resourceId: resourceId, _token: '{{ csrf_token() }}' },
-                success: function (data) {
-                    // Handle success, e.g., show a message or update the UI.
-                }
-            });
-        }
-</script>
+<script src="{{ asset('js/recommendation.js') }}"></script>
