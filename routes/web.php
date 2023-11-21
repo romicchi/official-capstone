@@ -219,6 +219,8 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 Route::group(['middleware' => ['auth', 'Authenticated']], function () {
     Route::group(['middleware' => ['role:2,3,4']], function () {
         Route::get('/teachermanage', 'App\Http\Controllers\ResourceController@showTeacherManage')->name('teacher.manage');
+        Route::get('/resources/search', [ResourceController::class, 'searchteacherResources'])->name('teacher.search');
+
         
         // -------------------------- TEACHER UPLOAD --------------------------------//
         Route::post('/teachermanage/upload', [ResourceController::class, 'storeResource'])->name('resources.store');

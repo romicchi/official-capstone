@@ -60,6 +60,15 @@
           <div class="card shadow">
             <div class="card-body">
               <h4 class="card-title">Your File Uploads</h4>
+              <!-- Search Form -->
+              <form action="{{ route('teacher.search') }}" method="GET">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="search" name="search" placeholder="Search...">
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary py-2">Search</button>
+                  </div>
+                </div>
+              </form>
                 <table class="table">
                   <thead>
                     <tr>
@@ -73,7 +82,7 @@
                   <tbody>
                     @if(count($resources) === 0)
                     <tr>
-                      <td colspan="7">No uploaded material/resource.</td>
+                      <td colspan="7">No resource found.</td>
                     </tr>
                     @else
                     @foreach($resources as $resource)
@@ -107,7 +116,7 @@
                   </tbody>
                 </table>
                 <div class="d-flex justify-content-center">
-                  {{ $resources->links('pagination::bootstrap-4') }}
+                  {{ $resources->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
                 </div>
             </div>
           </div>
