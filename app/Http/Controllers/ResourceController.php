@@ -45,6 +45,30 @@ class ResourceController extends Controller
         return view('teacher.teachermanage', compact('resources'));
     }
 
+    public function searchTeacherResources(Request $request)
+    {
+        $searchQuery = $request->input('search');
+
+        // Query to filter resources based on search query
+        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('title', 'LIKE', "%$searchQuery%")
+                    ->orWhere('author', 'LIKE', "%$searchQuery%")
+                    ->orWhereHas('college', function ($q) use ($searchQuery) {
+                        $q->where('collegeName', 'LIKE', "%$searchQuery%");
+                    })
+                    ->orWhereHas('discipline', function ($q) use ($searchQuery) {
+                        $q->where('disciplineName', 'LIKE', "%$searchQuery%");
+                    });
+            })
+            ->paginate(15)
+            ->onEachSide(1);
+
+            $resources->appends(['search' => $searchQuery]);
+
+        return view('teacher.teachermanage', compact('resources'));
+    }
+
     public function getDisciplinesByCollege($collegeId)
     {
         $disciplines = Discipline::where('college_id', $collegeId)->get();

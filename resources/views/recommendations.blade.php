@@ -34,7 +34,7 @@
                         <p><strong>Uploader:</strong> {{ $resource->author }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>
-                    <td>{{ $resource->keywords }}</td>
+                    <td class="justified-text">{{ $resource->keywords }}</td>
                     <td class="justified-text">{{ Str::limit($resource->description, 500) }}</td>
                 </tr>
             @endforeach
