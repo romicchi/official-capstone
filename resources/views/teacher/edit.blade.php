@@ -58,7 +58,7 @@
 
                             <div class="form-group">
                                 <label for="title">{{ __('Title') }}</label>
-                                <input type="text" class="form-control" name="title" value="{{ $resource->title }}" required>
+                                <input type="text" id="title" class="form-control" name="title" value="{{ $resource->title }}" required>
                             </div>
 
                             <div class="form-group">
@@ -84,11 +84,11 @@
                             
                             <div class="form-group">
                                 <label for="description">{{ __('Description') }}</label>
-                                <textarea class="form-control" id="description" name="description" required>{{ $resource->description }}</textarea>
+                                <textarea class="form-control" id="description" name="description" rows="5" required>{{ $resource->description }}</textarea>
                             </div>
 
                             <div class="form-group my-2">
-                                <button type="submit" class="btn btn-primary">{{ __('Update') }}</button>
+                                <button type="submit" id="updateButton" class="btn btn-primary">{{ __('Update') }}</button>
                                 <button type="button" id="autofillButton" class="btn btn-primary" @if ($isImageOrVideo) disabled @endif>Autofill</button>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-danger" id="cancelButton">Delete</a>
                                 <a href="{{ route('teacher.manage') }}" class="btn btn-secondary">Cancel</a>
@@ -104,6 +104,24 @@
             </div>
         </div>
     </div>
+    @include('loader')
+    <script>
+            document.getElementById('updateButton').addEventListener('click', function (event) {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const keywords = document.getElementById('keywords').value;
+            const discipline = document.getElementById('discipline_id').value;
+            const college = document.getElementById('college_id').value;
+
+        if (title.trim() !== '' && description.trim() !== '' && keywords.trim() !== '' && discipline.trim() !== '' && college.trim() !== '') {
+            event.preventDefault();
+            document.querySelector('.loader-container').style.display = 'block'; // Show the loader
+            this.disabled = true; // Disable the button
+                    // Submit the form
+        this.closest('form').submit();
+        }
+    });
+    </script>
     <script>
         const collegeSelect = document.getElementById('college_id');
 const disciplineSelect = document.getElementById('discipline_id');
@@ -219,6 +237,9 @@ document.addEventListener('DOMContentLoaded', function() {
         disciplineField.value.trim() === '' ||
         collegeField.value.trim() === ''
     ) {
+        document.querySelector('.loader-container').style.display = 'block'; // Show the loader
+        this.disabled = true; // Disable the button
+
         // Make a request to Flask for autofill
         fetch('https://generflask.online/autofill', {
             method: 'POST',
@@ -255,7 +276,12 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch((error) => {
             console.error('Autofill request failed:', error);
-        });
+        })
+        .finally(() => {
+                // Hide loader regardless of the result
+                document.querySelector('.loader-container').style.display = 'none';
+                this.disabled = false; // Enable the "Autofill" button
+            });
     } else {
         errorMessage.innerText = 'Fields are not empty.';
         errorMessage.style.display = 'block';
