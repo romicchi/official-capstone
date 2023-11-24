@@ -1,4 +1,4 @@
-@include('layout.usernav')
+@extends('layout.usernav')
 
 <head>
     <meta charset="utf-8">
@@ -24,14 +24,13 @@
         <form action="{{ route('favorites.search') }}" method="GET" class="ml-3">
             <div class="input-group">
                 <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
-                <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
     </div>
 
         <div class="card shadow mb-4">
             <div class="card-body">
-        <table class="table table-hover">
+        <table class="table table-hover" id="favoriteTable">
             <thead class="table-dark">
                 <tr>
                     <th>Title</th>
@@ -42,7 +41,7 @@
             <tbody>
                 @if ($resources->isEmpty())
                     <tr>
-                        <td colspan="5">Your added favorite resources appears here.</td>
+                        <td colspan="5">Your added favorite resources appear here.</td>
                     </tr>
                 @else
                 @foreach ($resources as $resource)
@@ -76,6 +75,7 @@
     </div>
 @show
 
+<script src="{{ asset('js/favoritesManagesearch.js') }}"></script>
 <script>
     // Initialize Bootstrap popovers
     $(function () {
