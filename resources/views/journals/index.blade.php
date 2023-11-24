@@ -33,9 +33,8 @@
 
     <form action="{{ route('journals.index') }}" method="GET" class="mb-3">
         <div class="input-group">
-            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Search by title" value="{{ $search }}">
+            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Search by Title..." value="{{ $search }}">
             <div class="input-group-append">
-                <button class="btn btn-primary" type="submit">Search</button>
             </div>
         </div>
     </form>

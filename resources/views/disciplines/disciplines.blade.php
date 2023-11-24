@@ -34,7 +34,7 @@
             <!-- Search -->
             <form action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
                 <div class="input-group">
-                    <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
+                    <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
                 </div>
             </form>
         </div>

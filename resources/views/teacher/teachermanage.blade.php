@@ -63,9 +63,8 @@
                             <!-- Search Form -->
                             <form action="{{ route('teacher.search') }}" method="GET">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search...">
+                                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search by Title...">
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-primary py-2">Search</button>
                                     </div>
                                 </div>
                             </form>
