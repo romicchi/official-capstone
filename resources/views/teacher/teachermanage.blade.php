@@ -63,66 +63,68 @@
                             <!-- Search Form -->
                             <form action="{{ route('teacher.search') }}" method="GET">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="search" name="search" placeholder="Search...">
+                                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search...">
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-primary py-2">Search</button>
                                     </div>
                                 </div>
                             </form>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>College</th>
-                                        <th>Discipline</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if(count($resources) === 0)
-                                    <tr>
-                                        <td colspan="7">No resource found.</td>
-                                    </tr>
-                                    @else
-                                    @foreach($resources as $resource)
-                                    <tr>
-                                        <td>
-                                            <a class="hover" href="{{ route('resource.show', $resource->id) }}">
-                                                <strong>{{ Str::limit($resource->title, 35) }}</strong>
-                                            </a>
-                                        </td>
-                                        <td>{{ $resource->author }}</td>
-                                        <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
-                                        <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
-                                        <td>
-                                            <button class="btn btn-primary mx-1" 
-                                                onclick="window.location='{{ route('resources.edit', $resource->id) }}'"
-                                                data-bs-toggle="popover"
-                                                data-bs-trigger="hover focus"
-                                                data-placement="top"
-                                                title="Edit"
-                                                data-content="Click to edit this resource">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger delete-resource-confirm" 
+                            <div class="table-responsive">
+                                <table class="table" id="resourceTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Author</th>
+                                            <th>College</th>
+                                            <th>Discipline</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if(count($resources) === 0)
+                                        <tr>
+                                            <td colspan="7">No resource found.</td>
+                                        </tr>
+                                        @else
+                                        @foreach($resources as $resource)
+                                        <tr>
+                                            <td>
+                                                <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                                                    <strong>{{ Str::limit($resource->title, 35) }}</strong>
+                                                </a>
+                                            </td>
+                                            <td>{{ $resource->author }}</td>
+                                            <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
+                                            <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
+                                            <td>
+                                                <button class="btn btn-primary mx-1" 
+                                                    onclick="window.location='{{ route('resources.edit', $resource->id) }}'"
                                                     data-bs-toggle="popover"
                                                     data-bs-trigger="hover focus"
                                                     data-placement="top"
-                                                    title="Delete"
-                                                    data-content="Click to delete this resource">
-                                                    <i class="fas fa-trash-alt"></i>
+                                                    title="Edit"
+                                                    data-content="Click to edit this resource">
+                                                    <i class="fas fa-edit"></i>
                                                 </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
+                                                <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger delete-resource-confirm" 
+                                                        data-bs-toggle="popover"
+                                                        data-bs-trigger="hover focus"
+                                                        data-placement="top"
+                                                        title="Delete"
+                                                        data-content="Click to delete this resource">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
                             <div class="d-flex justify-content-center">
                                 {{ $resources->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
                             </div>
@@ -138,6 +140,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
 <script src="{{ asset('js/teacher.js') }}"></script>
+<script src="{{ asset('js/resourceManagesearch.js') }}"></script>
 <script>
     // Initialize Bootstrap popovers
     $(function () {
