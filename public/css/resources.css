@@ -6,9 +6,10 @@ body {
 
 button.toggle-favorite {
   background: none;
-  color: #f1c40f;
+  color: #f10f0f;
   border: none;
   cursor: pointer;
+  font-size: 22px;
 }  
 
 .card.shadow.mb-5 {

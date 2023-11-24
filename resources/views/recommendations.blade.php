@@ -23,9 +23,9 @@
                 <tr>
                     <td>
                         <h4>
-                            <div class="title-with-star">
+                            <div class="title-with-heart">
                                 <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
-                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas fa-star' : 'far fa-star' }}"></i>
+                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas fa-heart' : 'far fa-heart' }}"></i>
                                 </button>
                                 <span class="add-to-favorites-hint">(Add to Favorites)</span>
                             </div>
@@ -38,6 +38,7 @@
                     <td class="justified-text">{{ Str::limit($resource->description, 500) }}</td>
                 </tr>
             @endforeach
+
         </tbody>
     </table>
 </div>

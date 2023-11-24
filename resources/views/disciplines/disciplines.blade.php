@@ -55,25 +55,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($resources as $resource)
-                        <tr>
-                            <td>
+                @foreach ($resources as $resource)
+                    <tr>
+                        <td>
                             <a class="hover" href="{{ route('resource.show', $resource->id) }}">{{ Str::limit($resource->title, 50) }}</a>
-                            </td>
-                            <td>{{ $resource->author }}</td>
-                            <td>
-                                <!-- created_at in Oct 25, 2023 format -->
-                                {{ \Carbon\Carbon::parse($resource->created_at)->format('M d, Y') }}
-                            </td>
-                            <td>
+                        </td>
+                        <td>{{ $resource->author }}</td>
+                        <td>
+                            <!-- created_at in Oct 25, 2023 format -->
+                            {{ \Carbon\Carbon::parse($resource->created_at)->format('M d, Y') }}
+                        </td>
+                        <td>
                             <div class="d-flex justify-content-end">
                                 <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
-                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-star"></i>
+                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-heart"></i>
                                 </button>
                             </div>
-                            </td>
-                        </tr>
-                    @endforeach
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
             <!-- pagination -->
