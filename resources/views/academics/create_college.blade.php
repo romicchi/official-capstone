@@ -13,7 +13,10 @@
                         @csrf
                         <div class="form-group">
                             <label for="collegeName">College Name</label>
-                            <input type="text" class="form-control" id="collegeName" name="collegeName" autocomplete="off" required>
+                            <input type="text" class="form-control" id="collegeName" name="collegeName" autocomplete="off">
+                            @error('collegeName')
+                            <small _ngcontent-irw-c66 class="text-danger">* College Name is required.</small>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary my-3">Create</button>
                         <a href="{{ route('academics.index') }}?activeTab=colleges" class="btn btn-secondary m-1">Cancel</a>

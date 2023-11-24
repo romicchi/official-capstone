@@ -3,6 +3,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/homenav.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/global.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 @section('navbar')

@@ -39,6 +39,9 @@
                             <div class="form-group">
                                 <label for="backup_file">Select Backup ZIP/Sql File:</label>
                                 <input type="file" class="form-control" id="backup_file" name="backup_file">
+                                @error('backup_file')
+                                <small _ngcontent-irw-c66 class="text-danger">* Backup File is required.</small>
+                                @enderror
                             </div>
                             <button type="submit" id="restore-button" class="btn btn-primary my-3">Restore</button>
                         </form>

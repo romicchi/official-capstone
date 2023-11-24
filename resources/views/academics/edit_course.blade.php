@@ -12,7 +12,10 @@
                 @method('PUT')
                 <div class="form-group">
                     <label for="courseName">Course Name</label>
-                    <input type="text" class="form-control" id="courseName" name="courseName" value="{{ $course->courseName }}" autocomplete="off" required>
+                    <input type="text" class="form-control" id="courseName" name="courseName" value="{{ $course->courseName }}" autocomplete="off">
+                    @error('courseName')
+                    <small _ngcontent-irw-c66 class="text-danger">* Course Name is required.</small>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="college_id">College</label>
@@ -21,6 +24,9 @@
                             <option value="{{ $col->id }}" {{ $col->id == $course->college_id ? 'selected' : '' }}>{{ $col->collegeName }}</option>
                         @endforeach
                     </select>
+                    @error('college_id')
+                    <small _ngcontent-irw-c66 class="text-danger">* College is required.</small>
+                    @enderror
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary m-1">Update</button>

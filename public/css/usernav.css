@@ -1,3 +1,7 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
 .sidebar-divider {
     border-top: 2px solid white;
     margin: 0 1rem 1rem;

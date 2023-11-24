@@ -90,13 +90,27 @@ class ResourceController extends Controller
         return response()->json($subjects);
     }
 
+    public function flaskquery()
+    {
+        $resources = Resource::all();
+
+        $resourcesArray = $resources->map(function ($resource) {
+            return [
+                'title' => $resource->title,
+                'json_url' => $resource->json_url,
+            ];
+        })->toArray();
+
+        return response()->json($resourcesArray);
+    }
+
     // Store resource function for Teacher
     public function storeResource(Request $request)
 {
     // Validate the form data
     $validatedData = $request->validate([
         'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,pdf|max:25600',
-        'title' => 'required',
+        'title' => 'required|max:100',
         'topic' => 'nullable',
         'keywords' => 'nullable',
         'author' => 'nullable',

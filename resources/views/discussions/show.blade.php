@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <h4 class="mt-4">Comments</h4>
+                <h4 class="mt-5 font-poppins-bold">Comments</h4>
                 @foreach($replies as $reply)
                 <div class="card my-2 shadow">
                     @php

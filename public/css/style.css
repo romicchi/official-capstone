@@ -38,7 +38,6 @@ body {
   margin-top: 10px;
   float: right;
   margin-left: 5px;
-  font-family: 'FontAwesome';
 }
 
 .dropdown-submenu:hover > a:after {
@@ -206,7 +205,6 @@ footer a {
   margin-top: 10px;
   float: right;
   margin-left: 5px;
-  font-family: 'FontAwesome';
 }
 
 .dropdown-submenu:hover > a:after {
@@ -227,7 +225,6 @@ footer a {
   .nav-link {
     font-size: 10px;
     font-weight: bold;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     margin-top: 10px;
     margin-left: 10%;
   }
@@ -272,7 +269,6 @@ footer a {
   .nav-link {
     font-size: 24px;
     font-weight: bold;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     margin-top: 10px;
     margin-left: 10%;
   }
@@ -293,7 +289,6 @@ footer a {
     margin-bottom: 25px;
     padding-left: 10px;
     font-size: 35px;
-    font-family: Arial, sans-serif;
     font-weight: bolder;
   }
 }

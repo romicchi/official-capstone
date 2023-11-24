@@ -2,7 +2,6 @@ body {
     padding-left: 16rem; /* Set padding top equal to navbar height */
     padding-top: 4rem;
     padding-right: 2rem;
-    font-family: 'Roboto', sans-serif;
   }
 
   .sidebar-divider {
@@ -47,10 +46,6 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-  }
-  
-  nav li {
-    margin-left: 20px;
   }
   
   nav a {
@@ -173,7 +168,6 @@ body {
     .nav-link {
       font-size: 18px;
       font-weight: bold;
-      font-family: "Trebuchet MS", Helvetica, sans-serif;
       margin-top: 10px;
       margin-left: 10%;
     }
@@ -193,7 +187,6 @@ body {
       margin-bottom: 25px;
       padding-left: 10px;
       font-size: 35px;
-      font-family: Arial, sans-serif;
       font-weight: bolder;
     }
   }
@@ -221,7 +214,6 @@ body {
   .nav-link {
     font-size: 10px;
     font-weight: bold;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
     margin-top: 10px;
     margin-left: 10%;
   }

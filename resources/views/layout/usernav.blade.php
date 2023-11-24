@@ -6,7 +6,10 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
   <link rel="stylesheet" type="text/css" href="{{ asset('css/usernav.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/global.css')}}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
       <div class="container-fluid">
         <div class="row">

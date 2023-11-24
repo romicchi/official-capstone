@@ -20,12 +20,6 @@
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
-          @if(session('error'))
-          <div class="alert alert-danger">
-            {{ session('error') }}
-          </div>
-          @endif
-
           <div class="form-group row my-3">
                 <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
                 <div class="col-md-9">
@@ -40,7 +34,10 @@
             
             <div class="form-group">
               <label for="title">Title</label>
-              <input type="text" class="form-control" id="title" name="title" required>
+              <input type="text" class="form-control" id="title" name="title" maxlength="100" value="{{ old('title') }}">
+              @error('title')
+              <small _ngcontent-irw-c66 class="text-danger">* Title is required.</small>
+              @enderror
             </div>
 
             <div class="form-group row">

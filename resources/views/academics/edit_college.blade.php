@@ -13,7 +13,10 @@
                 @method('PUT')
                 <div class="form-group">
                     <label for="collegeName">College Name</label>
-                    <input type="text" class="form-control" id="collegeName" name="collegeName" value="{{ $college->collegeName }}" autocomplete="off" required>
+                    <input type="text" class="form-control" id="collegeName" name="collegeName" value="{{ $college->collegeName }}" autocomplete="off">
+                    @error('collegeName')
+                    <small _ngcontent-irw-c66 class="text-danger">* College Name is required.</small>
+                    @enderror
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary m-1">Update</button>

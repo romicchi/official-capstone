@@ -8,14 +8,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
 </head>
 
-@error('title')
-    <div class="alert alert-danger">{{ $message }}</div>
-@enderror
-
-@error('content')
-    <div class="alert alert-danger">{{ $message }}</div>
-@enderror
-
 <div class="container card shadow">
     <h3>Edit Note</h3>
     <form action="{{ route('journals.update', $journal) }}" method="post">
@@ -24,10 +16,16 @@
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" name="title" id="title" class="form-control" value="{{ $journal->title }}">
+            @error('title')
+            <small _ngcontent-irw-c66 class="text-danger">* Title is required.</small>
+            @enderror
         </div>
         <div class="form-group ckeditor-container">
             <label for="content">Content:</label>
             <textarea id="editor" name="content">{{ $journal->content }}</textarea>
+            @error('content')
+            <small _ngcontent-irw-c66 class="text-danger">* Content is required.</small>
+            @enderror
         </div>
         <button type="submit" class="btn btn-primary my-2">Save</button>
         <a href="{{ route('journals.show', $journal) }}" class="btn btn-secondary">Cancel</a>

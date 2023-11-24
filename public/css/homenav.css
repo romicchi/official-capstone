@@ -1,6 +1,9 @@
 body {
-  font-family: Arial, sans-serif;
   height: 0;
+}
+
+* {
+  font-family: "Poppins", sans-serif;
 }
 
 .navbar-brand {

@@ -145,7 +145,6 @@ class AcademicsController extends Controller
     public function destroyCourse($id)
     {
         $course = Course::findOrFail($id);
-        $course->discipline()->delete();
         $course->delete();
 
         // Set active tab to "courses"

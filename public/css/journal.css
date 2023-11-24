@@ -12,6 +12,10 @@ html {
   margin-bottom: 2rem;
 }
 
+.text-danger {
+  font-style: italic;
+}
+
 .ckeditor-container {
   max-height: 800px;
   overflow-y: auto;

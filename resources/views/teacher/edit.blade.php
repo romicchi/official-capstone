@@ -41,16 +41,6 @@
                     <div class="card-header">{{ __('Edit Resource') }}</div>
 
                     <div class="card-body">
-
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
                         
                         <form action="{{ route('resources.update', $resource) }}" method="POST">
                             @csrf
@@ -58,12 +48,18 @@
 
                             <div class="form-group">
                                 <label for="title">{{ __('Title') }}</label>
-                                <input type="text" id="title" class="form-control" name="title" value="{{ $resource->title }}" required>
+                                <input type="text" id="title" class="form-control" name="title" value="{{ $resource->title }}">
+                                @error('title')
+                                <small _ngcontent-irw-c66 class="text-danger">* Title is required.</small>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="keywords">{{ __('Keywords') }}</label>
                                 <input type="text" class="form-control" name="keywords" id="keywords" value="{{ $resource->keywords }}" required>
+                                @error('keywords')
+                                <small _ngcontent-irw-c66 class="text-danger">* Keyword is required.</small>
+                                @enderror
                             </div>
 
                             <div>College</div>
@@ -73,6 +69,9 @@
                                 <option value="{{ $college->id }}" @if($resource->college_id == $college->id) selected @endif>{{ $college->collegeName }}</option>
                                 @endforeach
                             </select>
+                            @error('college_id')
+                            <small _ngcontent-irw-c66 class="text-danger">* College is required.</small>
+                            @enderror
 
                             <div>Discipline</div>
                             <select class="form-control" name="discipline_id" id="discipline_id" required>
@@ -81,10 +80,16 @@
                                     <option value="{{ $id }}" @if($resource->discipline_id === $id) selected @endif>{{ $name }}</option>
                                 @endforeach
                             </select>
+                            @error('discipline_id')
+                            <small _ngcontent-irw-c66 class="text-danger">* Discpline is required.</small>
+                            @enderror
                             
                             <div class="form-group">
                                 <label for="description">{{ __('Description') }}</label>
                                 <textarea class="form-control" id="description" name="description" rows="5" required>{{ $resource->description }}</textarea>
+                                @error('description')
+                                <small _ngcontent-irw-c66 class="text-danger">* Description is required.</small>
+                                @enderror
                             </div>
 
                             <div class="form-group my-2">

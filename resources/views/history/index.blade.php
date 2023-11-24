@@ -6,15 +6,17 @@
     <title>GENER | History</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/history.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
     <div class="container">
+    <h2 class="text-center">Notes History</h2>
 
         <div class="d-flex justify-content-between align-items-center">
         <!-- Clear History -->
         <form action="{{ route('history.clear') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-danger">
+            <button type="submit" class="btn btn-danger clear-history">
                 <i class="fas fa-broom"></i>
                 Clear</button>
         </form>
@@ -55,13 +57,10 @@
                     </td>
                     <td>{{ $resource->author }}</td>
                     <td>
-                        <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                            <i class="fas fa-eye"></i>
-                        </button>
                         <form action="{{ route('history.destroy', $resource->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger mx-1">
+                            <button type="submit" class="btn btn-danger mx-1 delete-history">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -78,3 +77,6 @@
     </div>
     </div>
 @show
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>

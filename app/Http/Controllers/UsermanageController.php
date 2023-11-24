@@ -235,37 +235,53 @@ class UsermanageController extends Controller
 
     //update/edit user function
     public function update(Request $req) 
-    {  
-        $userdata = User::find($req->id);
-        $userdata->firstname = $req->firstname;
-        $userdata->lastname = $req->lastname;
-        $userdata->email = $req->email;
+{  
+    $userdata = User::find($req->id);
+
+    $req->validate([
+        'firstname' => 'required|string|max:255',
+        'lastname' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email,'.$userdata->id,
+        'password' => 'nullable|string|min:6', // Adjust the validation as needed for your password requirements
+        'role' => 'required|numeric|in:1,2,3', // Adjust the validation for role as needed
+        'college_id' => 'required|exists:college,id',
+    ]);
+
+    $userdata->firstname = $req->firstname;
+    $userdata->lastname = $req->lastname;
+    $userdata->email = $req->email;
+
+    if ($req->has('password')) {
         $userdata->password = Hash::make($req->password);
-        $userdata->role_id = $req->role;
-        $userdata->college_id = $req->college_id;
-        $userdata->updated_at = now();
-        $userdata->expiration_date = null;
-
-        // Check if the role is "Student" and update the student number if provided
-        if ($req->role == 1) {
-            $req->validate([
-                'student_number' => 'required|numeric|digits:7|unique:users,student_number,'.$userdata->id, // Ensure it's unique for the current user
-                'year_level' => 'required_if:role,1|in:1,2,3,4', // Add validation for year level
-                'college_id' => 'required|exists:college,id',
-            ]);
-            
-            $userdata->year_level = $req->input('year_level');
-            $userdata->expiration_date = Carbon::now()->addYear()->month(6)->day(15);
-            $userdata->student_number = $req->student_number;
-        }
-
-        $userdata->save();
-
-        $activeTab = 'existing';
-
-        return redirect()->route('usermanage', compact('activeTab'))->with('success', 'User updated successfully.');
-
     }
+
+    $userdata->role_id = $req->role;
+    $userdata->college_id = $req->college_id;
+    $userdata->updated_at = now();
+    $userdata->expiration_date = null;
+
+    // Check if the role is "Student" and update the student number if provided
+    if ($req->role == 1) {
+        $req->validate([
+            'student_number' => 'required|numeric|digits:7|unique:users,student_number,'.$userdata->id, // Ensure it's unique for the current user
+            'year_level' => 'required|in:1,2,3,4',
+        ]);
+        
+        $userdata->year_level = $req->input('year_level');
+        $userdata->expiration_date = Carbon::now()->addYear()->month(6)->day(15);
+        $userdata->student_number = $req->student_number;
+    } else {
+        $userdata->year_level = null;
+        $userdata->expiration_date = null;
+        $userdata->student_number = null;
+    }
+
+    $userdata->save();
+
+    $activeTab = 'existing';
+
+    return redirect()->route('usermanage', compact('activeTab'))->with('success', 'User updated successfully.');
+}
 
     public function search(Request $request)
     {

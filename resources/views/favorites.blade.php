@@ -5,6 +5,7 @@
     <title>GENER | Favorite</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/favorite.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
 @section('content')
@@ -15,7 +16,7 @@
         <!-- Clear History -->
         <form action="{{ route('favorites.clear') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-danger">
+            <button type="submit" class="btn btn-danger clear-favorite">
                 <i class="fas fa-broom"></i>
                 Clear</button>
         </form>
@@ -54,13 +55,10 @@
                             </td>
                             <td>{{ $resource->author }}</td>
                             <td>
-                                <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                                    <i class="fas fa-eye"></i>
-                                </button>
                             <form action="{{ route('favorites.destroy', $resource->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" class="btn btn-danger delete-favorite">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -77,3 +75,6 @@
     </div>
     </div>
 @show
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>

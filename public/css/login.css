@@ -1,7 +1,3 @@
-* {
-  font-family: 'Gilroy-Bold', sans-serif;
-}
-
 html {
   background-color: #f8f9fa;;
 }
@@ -16,6 +12,10 @@ html {
   max-width: 100%; /* Set maximum width to ensure the image doesn't exceed its natural size */
 }
 
+.text-danger {
+  font-style: italic;
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -24,16 +24,16 @@ html {
 }
 
 form {
-  border: 2px solid black;
   border-radius: 20px;
   position: absolute;
   top: 50%;
   transform: translate(50%, -50%);
-  background-color: #F0F0F0;
+  background-color: #FFFFFF;
   width: 60%;
   max-width: 400px;
   padding: 10vh 2vw;
   right: 30%;
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
 }
   
 .message {

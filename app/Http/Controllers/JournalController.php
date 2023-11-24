@@ -64,7 +64,7 @@ class JournalController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|max:100',
-            'content' => 'nullable|max:65535',
+            'content' => 'required|max:65535',
             'college_id' => 'required',
             'discipline_id' => 'required',
         ]);
@@ -185,7 +185,7 @@ class JournalController extends Controller
     
         $validatedData = $request->validate([
             'title' => 'required|max:100', // Set the maximum length as per your requirement
-            'content' => 'nullable',
+            'content' => 'required',
         ]);
     
         // Check if the title exceeds the maximum length
