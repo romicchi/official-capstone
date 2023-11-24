@@ -8,85 +8,73 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/history.css') }}">
 </head>
 
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
         <!-- Clear History -->
         <form action="{{ route('history.clear') }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-danger">
                 <i class="fas fa-broom"></i>
-                Clear
-            </button>
+                Clear</button>
         </form>
 
         <!-- Search -->
-        <form method="GET" class="ml-3">
+        <form action="{{ route('history.search') }}" method="GET" class="ml-3">
             <div class="input-group">
                 <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
     </div>
-
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <table class="table table-hover" id="resourceTable">
-                <thead class="table-dark">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($resources->isEmpty())
                     <tr>
-                        <th></th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th></th>
+                        <td colspan="5">Your added history appears here.</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @if ($resources->isEmpty())
-                        <tr>
-                            <td colspan="5">Your added history appears here.</td>
-                        </tr>
-                    @else
-                        @foreach ($resources as $resource)
-                            <tr>
-                                <!-- time in oct 10:00am format -->
-                                <td>{{ $resource->created_at->format('M d, h:i A') }}</td>
-                                <td>
-                                    <a class="hover" href="{{ route('resource.show', $resource->id) }}">
-                                        {{ Str::limit($resource->title, 35) }}
-                                    </a>
-                                </td>
-                                <td>{{ $resource->author }}</td>
-                                <td>
-                                    <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <form action="{{ route('history.destroy', $resource->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mx-1">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
-            <div class="d-flex justify-content-center">
-                {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
-            </div>
+                @else
+                @foreach ($resources as $resource)
+                <tr>
+                    <!-- time in oct 10:00am format -->
+                    <td>{{ $resource->created_at->format('M d, h:i A') }}</td>
+                    <td>
+                        <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                            {{ Str::limit($resource->title, 35) }}
+                        </a>
+                    </td>
+                    <td>{{ $resource->author }}</td>
+                    <td>
+                        <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <form action="{{ route('history.destroy', $resource->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger mx-1">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+                @endif
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
         </div>
     </div>
-</div>
+    </div>
+    </div>
 @show
-
-<!-- Include the JavaScript file -->
-<script src="{{ asset('js/resourceManagesearch.js') }}"></script>
-
-<script>
-    // Ensure the DOM is ready before attaching the event listener
-    document.addEventListener('DOMContentLoaded', function () {
-        // LIVE SEARCH FUNCTIONALITY
-        document.getElementById("searchInput").addEventListener("keyup", searchResources);
-    });
-</script>
