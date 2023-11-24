@@ -45,28 +45,26 @@
                         <td colspan="5">Your added favorite resources appears here.</td>
                     </tr>
                 @else
-                    @foreach ($resources as $resource)
-                        <tr>
-                            <td>
-                                <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                @foreach ($resources as $resource)
+                    <tr>
+                        <td>
+                            <a class="hover" href="{{ route('resource.show', $resource->id) }}" data-toggle="popover" title="Resource Details" data-content="Click to view details">
                                 {{ Str::limit($resource->title, 50) }}
-                                </a>
-                            </td>
-                            <td>{{ $resource->author }}</td>
-                            <td>
-                                <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                            </a>
+                        </td>
+                        <td>{{ $resource->author }}</td>
+                        <td>
                             <form action="{{ route('favorites.destroy', $resource->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" class="btn btn-danger" data-bs-toggle="popover" data-bs-trigger="hover focus" title="Delete" data-content="Click to remove from favorites">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
-                            </td>
-                        </tr>
-                    @endforeach
+                        </td>
+                    </tr>
+                @endforeach
+
                 @endif
             </tbody>
         </table>
@@ -77,3 +75,10 @@
     </div>
     </div>
 @show
+
+<script>
+    // Initialize Bootstrap popovers
+    $(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>
