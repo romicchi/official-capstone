@@ -35,8 +35,8 @@ class AuthController extends Controller
     function loginPost(Request $request)
     {
         $request->validate([
-            'email_or_student_number' => 'required',
-            'password' => 'required'
+            'email_or_student_number' => 'required|email',
+            'password' => 'required|min:8'
         ]);
     
         $emailOrStudentNumber = $request->input('email_or_student_number'); // Get the input from the form
@@ -83,7 +83,9 @@ class AuthController extends Controller
             return redirect()->intended(route('dashboard'));
         }
     
-        return redirect()->back()->withErrors(['email_or_student_number' => '* Input a valid Email/Student Number.'])->withInput($request->except('password'));
+        return redirect()->back()->withErrors([
+            'password' => 'Invalid password. Please try again.',
+        ])->withInput($request->except('password'));
     }
 
     private function getGoogleDriveAccessToken()
@@ -103,8 +105,8 @@ class AuthController extends Controller
     {
         $request->validate([
             'id' => 'required|file|mimes:jpeg,jpg,png|max:8192',
-            'firstname' => 'required|min:2',
-            'lastname' => 'required|min:2',
+            'firstname' => 'required|regex:/^[A-Za-z\s]+$/|min:2',
+            'lastname' => 'required|regex:/^[A-Za-z\s]+$/|min:2',
             'suffix' => 'nullable|min:2',
             'email' => ['required', 'email', new ValidEmailDomain, 'unique:users'],
             'password' => 'required|min:8|confirmed',

@@ -20,9 +20,9 @@ class ChartController extends Controller
     public function showDashboard(Request $request)
     {
         // Retrieve the top 10 most favorite resources
-        $mostFavoriteResources = Resource::withCount('favoritedBy') // Use 'favoritedBy' instead of 'favorites'
-        ->orderBy('favorited_by_count', 'desc') // Use 'favorited_by_count' instead of 'favorites_count'
-        ->take(10) // You can change this number as needed
+        $mostFavoriteResources = Resource::withCount('favoritedBy')
+        ->orderBy('favorited_by_count', 'desc')
+        ->take(10)
         ->get();
         
         // Retrieve the top 10 most replied discussion

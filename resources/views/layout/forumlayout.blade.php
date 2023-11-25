@@ -52,7 +52,7 @@
                             <option value="oldest" @if(request()->get('sort') == 'oldest') selected @endif>Oldest to Newest</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-secondary my-2">Apply Filters</button>
+                    <button type="submit" class="btn btn-primary my-2">Apply Filters</button>
                 </form>
             </div>
         </div>

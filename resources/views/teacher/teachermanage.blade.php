@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/table.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/teachermanage.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/global.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
@@ -93,16 +94,13 @@
                       <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
                       <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
                       <td>
-                        <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                        <button class="btn btn-primary mx-1" onclick="window.location='{{ route('resources.edit', $resource->id) }}'">
+                        <button class="btn mx-1" onclick="window.location='{{ route('resources.edit', $resource->id) }}'" title="Edit">
                           <i class="fas fa-edit"></i>
                         </button>
                         <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                           @csrf
                           @method('DELETE')
-                          <button type="submit" class="btn btn-danger delete-resource-confirm">
+                          <button type="submit" class="btn delete-resource-confirm" title="Delete">
                             <i class="fas fa-trash-alt"></i>
                           </button>
                         </form>
@@ -112,11 +110,11 @@
                     @endif
                   </tbody>
                 </table>
-                <div class="d-flex justify-content-center">
-                  {{ $resources->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
-                </div>
+              </div>
             </div>
-          </div>
+            <div class="d-flex justify-content-center my-4">
+              {{ $resources->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
+            </div>
         </div>
       </div>
     </div>

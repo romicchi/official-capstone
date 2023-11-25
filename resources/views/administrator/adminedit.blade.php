@@ -34,7 +34,12 @@
       @if(auth()->user()->role_id == 4)
       <div class="form-group">
         <label for="password">Password:</label>
-        <input class="form-control rounded-0" type="text" id="password" name="password" value="{{ $users->password }}">
+        <div class="input-group">
+        <input class="form-control rounded-0" type="password" id="password" name="password" value="{{ $users->password }}">
+        <span class="input-group-text">
+          <i class="fas fa-eye" id="togglePassword"></i>
+        </span>
+        </div>
         @error('password')
         <small _ngcontent-irw-c66 class="text-danger">* Password is required.</small>
         @enderror
@@ -93,3 +98,4 @@
 </div>
 
 <script src="{{ asset('js/admin.js') }}"></script>
+<script src="{{ asset('js/togglepass.js') }}"></script>

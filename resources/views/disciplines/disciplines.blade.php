@@ -76,11 +76,11 @@
                     @endforeach
                 </tbody>
             </table>
-            <!-- pagination -->
-            <div class="d-flex justify-content-center my-3">
-                {{ $resources->appends(['sort' => request('sort'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
-            </div>
         </div>
+    </div>
+    <!-- pagination -->
+    <div class="d-flex justify-content-center my-3">
+        {{ $resources->appends(['sort' => request('sort'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
     </div>
 </div>
 @show

@@ -8,7 +8,6 @@ html {
 }
 
 .card-body {
-    height: 55rem;
     overflow: auto;
 }
 

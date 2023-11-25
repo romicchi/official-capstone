@@ -40,7 +40,7 @@ class ResourceController extends Controller
     //--------------TEACHER-----------------//
     public function showTeacherManage()
     {
-        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)->paginate(15)->onEachSide(1);
+        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)->paginate(10)->onEachSide(1);
     
         return view('teacher.teachermanage', compact('resources'));
     }
@@ -61,7 +61,7 @@ class ResourceController extends Controller
                         $q->where('disciplineName', 'LIKE', "%$searchQuery%");
                     });
             })
-            ->paginate(15)
+            ->paginate(10)
             ->onEachSide(1);
 
             $resources->appends(['search' => $searchQuery]);
@@ -690,12 +690,13 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     }
 
         $comments = $resource->comments()->latest()->paginate(7);
+        $discipline = $resource->discipline;
 
         if ($request->ajax()) {
-            return view('subjects.comment', compact('comments', 'resource'));
+            return view('subjects.comment', compact('comments', 'resource', 'discipline'));
         }
 
-        return view('subjects.show', compact('comments', 'resource'));
+        return view('subjects.show', compact('comments', 'resource', 'discipline'));
     }
 
     public function disciplines(Request $request, $college_id, $discipline_id)
@@ -703,7 +704,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
         // resource
-        $resources = $discipline->resources()->paginate(18);
+        $resources = $discipline->resources()->paginate(10);
 
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
@@ -752,7 +753,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
                     ->orWhere('author', 'LIKE', '%' . $query . '%')
                     ->orWhere('description', 'LIKE', '%' . $query . '%');
             })
-            ->paginate(18);
+            ->paginate(10);
     
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
@@ -775,7 +776,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
             $resources->orderBy('created_at', 'desc');
         }
     
-        $resources = $resources->paginate(18);
+        $resources = $resources->paginate(10);
     
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }

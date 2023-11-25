@@ -32,13 +32,13 @@
                         <td>{{ $college->collegeName }}</td>
                         <td>
                             <div class="p-1 my-1">
-                                <a href="{{ route('academics.editCollege', $college->id) }}" class="btn btn-primary">
+                                <a href="{{ route('academics.editCollege', $college->id) }}" title="Edit" class="btn">
                                     <i class="fas fa-edit p-1"></i>
                                 </a>
                                 <form class="d-inline" action="{{ route('academics.destroyCollege', $college->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                    <button type="submit" class="btn delete-confirm" title="Delete">
                                         <i class="fas fa-trash-alt p-1"></i>
                                     </button>
                                 </form>
@@ -48,7 +48,9 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="my-3">{{ $colleges->links('pagination::bootstrap-4', ['paginator' => $colleges]) }}</div>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+        {{ $colleges->links('pagination::bootstrap-4', ['paginator' => $colleges]) }}
     </div>
 </div>
 
@@ -94,13 +96,13 @@
                         <td>{{ $course->college->collegeName }}</td>
                         <td>
                             <div class="p-1 my-1">
-                                <a href="{{ route('academics.editCourse', $course->id) }}" class="btn btn-primary">
+                                <a href="{{ route('academics.editCourse', $course->id) }}" title="Edit" class="btn">
                                     <i class="fas fa-edit p-1"></i>
                                 </a>
                                 <form class="d-inline" action="{{ route('academics.destroyCourse', $course->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                    <button type="submit" class="btn delete-confirm" title="Delete">
                                         <i class="fas fa-trash-alt p-1"></i>
                                     </button>
                                 </form>
@@ -110,7 +112,9 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}</div>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+        {{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}
     </div>
 </div>
 
@@ -156,13 +160,13 @@
                         <td>{{ $discipline->college->collegeName }}</td>
                         <td>
                             <div class="p-1 my-1">
-                                <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">
+                                <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn" title="Edit">
                                     <i class="fas fa-edit p-1"></i>
                                 </a>
                                 <form class="d-inline" action="{{ route('academics.destroyDiscipline', $discipline->id) }}" method="POST" style="display: inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                    <button type="submit" class="btn delete-confirm" title="Delete">
                                         <i class="fas fa-trash-alt p-1"></i>
                                     </button>
                                 </form>
@@ -172,7 +176,9 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center my-3">{{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}</div>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+        {{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}
     </div>
 </div>
 

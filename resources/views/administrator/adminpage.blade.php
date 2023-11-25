@@ -197,7 +197,9 @@
                         <tbody>
                             @foreach ($mostFavoriteResources as $resource)
                                 <tr>
-                                    <td class="text-center">{{ Str::limit($resource->title, 30) }}</td>
+                                    <td class="text-center hover" onclick="window.location='{{ route('resource.show', $resource->id) }}'" style="cursor: pointer;">
+                                        {{ Str::limit($resource->title, 30) }}
+                                    </td>
                                     <td class="text-center">{{ $resource->author }}</td>
                                     <td class="text-center">{{ $resource->favorited_by_count }}</td>
                                 </tr>

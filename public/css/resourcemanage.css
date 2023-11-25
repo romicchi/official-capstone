@@ -1,11 +1,21 @@
 .card.shadow.mb-5 {
-    height: 48rem;
     padding: 20px;
 }
 
-.card-body {
-    height: 55rem;
+.card {
+    margin-bottom: 3rem;
+    color: #000;
 }
+
+.hover {
+    color: #000;
+    text-decoration: none;
+}
+
+.hover:hover {
+    color: #070372;
+    text-decoration: underline;
+  }
 
 .table-responsive {
     overflow-y: hidden;

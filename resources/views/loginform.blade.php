@@ -36,7 +36,7 @@
             <label for="email_or_student_number">Email/Student ID:</label>
             <input type="text" class="form-control" id="email_or_student_number" maxlength="50" name="email_or_student_number" placeholder="Email/Student Number">
             @error('email_or_student_number')
-            <small _ngcontent-irw-c66 class="text-danger">{{ $message }}</small>
+            <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
             @enderror
           </div>
           <div class="form-group">
@@ -49,7 +49,7 @@
             </div>
           </div>
           @error('password')
-          <small _ngcontent-irw-c66 class="text-danger">* Password is required.</small>
+          <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
           @enderror
           <div class="form-group">
             <div class="custom-control custom-checkbox">

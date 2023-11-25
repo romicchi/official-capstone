@@ -18,7 +18,7 @@ class HistoryController extends Controller
         $resourceIds = $history->pluck('resource_id');
 
         // Retrieve the actual resources based on the extracted IDs
-        $resources = Resource::whereIn('id', $resourceIds)->paginate(20);
+        $resources = Resource::whereIn('id', $resourceIds)->paginate(1);
 
         return view('history.index', compact('resources'));
     }

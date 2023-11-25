@@ -27,14 +27,16 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
                     <div> <!-- Left-aligned buttons -->
-                        <a href="{{ URL::previous() }}" class="btn btn-primary mr-2"><i class="fas fa-arrow-left"></i> Back</a>
-                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}">
+                        <a href="{{ route('show.disciplines', ['college_id' => $discipline->college_id, 'discipline_id' => $discipline->id]) }}" class="btn btn-primary mr-2">
+                            <i class="fas fa-arrow-left">
+                            </i> Back</a>
+                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}" title="Rate">
                             Rate
                         </button>
                     </div>
                     <div> <!-- Right-aligned button -->
-                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})">
-                            <i class="fas fa-download"></i> Download
+                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})" title="Download">
+                            <i class="fas fa-download"></i>
                         </a>
                     </div>
                 </div>

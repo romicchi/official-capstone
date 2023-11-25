@@ -28,7 +28,7 @@
         <!-- Search -->
         <form action="{{ route('activity-log.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
+                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Student number/name" aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
@@ -58,8 +58,8 @@
         </tbody>
     </table>
     </div>
-    <!-- pagination bootstrap center-->
-    <div class="d-flex justify-content-center my-3">
-    {{ $activityLog->appends(['activity_filter' => request('activity_filter'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
-    </div>
+</div>
+<!-- pagination bootstrap center-->
+<div class="d-flex justify-content-center my-3">
+{{ $activityLog->appends(['activity_filter' => request('activity_filter'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
 </div>

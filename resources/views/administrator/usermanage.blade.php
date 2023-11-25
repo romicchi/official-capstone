@@ -113,11 +113,11 @@
                   @endif
                 </td>
                 <td>
-                  <button type="submit" class="btn btn-primary approve-button" name="verified_users[]" value="{{ $user->id }}">
-                    Approve <i class="fas fa-check p-1"></i>
+                  <button type="submit" class="btn approve-button" title="Approve" name="verified_users[]" value="{{ $user->id }}">
+                    <i class="fas fa-check p-1"></i>
                   </button>
-                  <button type="submit" name="rejected_users[]" value="{{ $user->id }}" class="btn btn-danger">
-                    Reject <i class="fas fa-times p-1"></i>
+                  <button type="submit" title="Reject" name="rejected_users[]" value="{{ $user->id }}" class="btn">
+                    <i class="fas fa-times p-1"></i>
                   </button>
                 </td>
               </tr>
@@ -127,11 +127,11 @@
         </tbody>
       </table>
     </div>
-    <!-- Pagination links for Pending Users -->
-    <div class="d-flex justify-content-center my-3">
-      {{ $pendingUsers->links('pagination::bootstrap-4') }}
-    </div>
   </div>
+</div>
+<!-- Pagination links for Pending Users -->
+<div class="d-flex justify-content-center">
+  {{ $pendingUsers->links('pagination::bootstrap-4') }}
 </div>
   </form>
 
@@ -171,7 +171,9 @@
 <div class="d-flex justify-content-between align-items-center">
 <div class="d-flex align-items-center">
   <!-- Add User Button -->
-  <a href="{{ route('adminadd') }}" class="btn btn-success mb-3">+Add User</a>
+  <a href="{{ route('adminadd') }}" class="btn btn-success mb-3 py-2 px-3">
+    <i class="fas fa-plus"></i>
+  </a>
 
 <!-- Role Filter Dropdown -->
 <form class="form-inline" type="GET" action="{{ route('filterByRole') }}">
@@ -270,13 +272,13 @@
                             </a>
                         </td>
                         <td>
-                        <a type="submit" class="btn btn-primary" href="{{ route('adminedit', ['id' => $user->id]) }}">
+                        <a type="submit" class="btn" title="Edit" href="{{ route('adminedit', ['id' => $user->id]) }}">
                           <i class="fas fa-edit p-1"></i>
                         </a>
-                        <a type="submit" class="btn btn-secondary archive-button" href="{{ route('archive', ['id' => $user->id]) }}">
+                        <a type="submit" class="btn archive-button" title="Archive" href="{{ route('archive', ['id' => $user->id]) }}">
                           <i class="fas fa-archive p-1"></i>
                         </a>
-                        <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete', ['id' => $user->id]) }}">
+                        <a type="submit" class="btn delete-confirm" title="Delete" href="{{ route('delete', ['id' => $user->id]) }}">
                           <i class="fas fa-trash-alt p-1"></i>
                         </a>
                         </td>
@@ -286,12 +288,12 @@
             </tbody>
         </table>
       </div>
-        <!-- Pagination links for Existing Users -->
-        <div class="d-flex justify-content-center my-3">
-            {{ $existingUsers->links('pagination::bootstrap-4') }}
-        </div>
     </form>
+  </div>
 </div>
+<!-- Pagination links for Existing Users -->
+<div class="d-flex justify-content-center">
+    {{ $existingUsers->links('pagination::bootstrap-4') }}
 </div>
 @else
 <div class="card shadow mb-4">
@@ -417,20 +419,24 @@
                         <td>{{ $user->archived_at }}</td>
                         <td>
                             <!-- Add Reactivate and Delete buttons -->
-                            <a type="submit" id="reactivate-button" class="btn btn-success" href="{{ route('reactivate', ['id' => $user->id]) }}">Reactivate</a>
-                            <a type="submit" class="btn btn-danger delete-confirm" href="{{ route('delete-archive', ['id' => $user->id]) }}">Delete</a>
+                            <a type="submit" id="reactivate-button" title="Reactivate" class="btn" href="{{ route('reactivate', ['id' => $user->id]) }}">
+                              <i class="fas fa-undo p-1"></i>
+                            </a>
+                            <a type="submit" class="btn delete-confirm" title="Delete" href="{{ route('delete-archive', ['id' => $user->id]) }}">
+                              <i class="fas fa-trash-alt p-1"></i>
+                            </a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
           </div>
-        <!-- Pagination links for Archived Viewable Users -->
-        <div class="d-flex justify-content-center my-3">
-            {{ $archiveViewableUsers->appends(['activeTab' => 'archive'])->links('pagination::bootstrap-4') }}
         </div>
       </div>
-    </div>
+      <!-- Pagination links for Archived Viewable Users -->
+      <div class="d-flex justify-content-center">
+          {{ $archiveViewableUsers->appends(['activeTab' => 'archive'])->links('pagination::bootstrap-4') }}
+      </div>
     </form>
     @else
     <div class="card shadow mb-4">

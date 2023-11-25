@@ -13,20 +13,20 @@
     <h2 class="text-center">Notes History</h2>
 
         <div class="d-flex justify-content-between align-items-center">
-        <!-- Clear History -->
-        <form action="{{ route('history.clear') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-danger clear-history">
-                <i class="fas fa-broom"></i>
-                Clear</button>
-        </form>
-
         <!-- Search -->
         <form action="{{ route('history.search') }}" method="GET" class="ml-3">
             <div class="input-group">
                 <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
+        </form>
+
+        <!-- Clear History -->
+        <form action="{{ route('history.clear') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger clear-history">
+                <i class="fas fa-broom"></i>
+                Clear</button>
         </form>
     </div>
         <div class="card shadow mb-4">
@@ -60,7 +60,7 @@
                         <form action="{{ route('history.destroy', $resource->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger mx-1 delete-history">
+                            <button type="submit" class="btn mx-1 delete-history" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -70,11 +70,11 @@
                 @endif
             </tbody>
         </table>
-        <div class="d-flex justify-content-center">
-            {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
-        </div>
     </div>
-    </div>
+</div>
+<div class="d-flex justify-content-center">
+    {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
+</div>
     </div>
 @show
 

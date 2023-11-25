@@ -37,6 +37,9 @@
                                     <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
                                         <!-- content with Str limit -->
                                         <div class="card-text">
+                                            <div class="font-poppins-bold">
+                                                Description: 
+                                            </div>
                                             {!! nl2br(Str::limit(strip_tags($discussion->content), 350)) !!}
                                         </div>
                                         <hr>

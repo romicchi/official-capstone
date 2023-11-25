@@ -11,7 +11,7 @@ class FavoriteController extends Controller
     public function showFavorites()
     {
         $user = auth()->user();
-        $resources = $user->favorites()->paginate(10);
+        $resources = $user->favorites()->paginate(1);
         
         return view('favorites', compact('resources', 'user'));
     }

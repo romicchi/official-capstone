@@ -13,7 +13,7 @@
     <div class="d-flex justify-content-between align-items-center">
         @if (Route::currentRouteName() === 'discussions.index')
             <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
-                <strong>{{ Str::limit($discussion->title, $characterLimit) }}</strong>
+                <strong>Title: {{ Str::limit($discussion->title, $characterLimit) }}</strong>
             </a>
         @else
             <strong>{{ Str::limit($discussion->title, $characterLimit) }}</strong>
