@@ -2,6 +2,10 @@ html {
     margin-bottom: 4rem;
 }
 
+body {
+    padding-top: 5rem;
+}
+
 .card.shadow.mb-5 {
     height: 48rem;
     padding: 20px;

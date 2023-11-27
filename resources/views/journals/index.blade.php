@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
 </head>
 
-<h1>Study Journal</h1>
+<div class="h4 font-poppins-bold">Study Journal</div>
 
 <div class="container shadow">
     <form action="{{ route('journals.index') }}" method="GET">

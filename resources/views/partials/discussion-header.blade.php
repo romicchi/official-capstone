@@ -16,7 +16,9 @@
                 <strong>Title: {{ Str::limit($discussion->title, $characterLimit) }}</strong>
             </a>
         @else
+        <div class="card-link">
             <strong>{{ Str::limit($discussion->title, $characterLimit) }}</strong>
+        </div>
         @endif
         @if (auth()->check() && auth()->user()->id == $discussion->user_id)
          <div class="dots-container" onclick="toggleDropdown('dropdownMenu_{{ $discussion->id }}')">

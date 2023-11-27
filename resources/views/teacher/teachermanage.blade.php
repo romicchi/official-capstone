@@ -17,14 +17,13 @@
     <div class="col-md-4">
       <div class="card shadow">
         <div class="card-body add">
-          <h4 class="card-title">Add Resource</h4>
+          <h4 class="card-title text-center">Add Resource</h4>
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
-          <div class="form-group row my-3">
-                <label for="file" class="col-md-3 col-form-label text-md-right">{{ __('Choose File') }}</label>
+          <div class="form-group row my-3 justify-content-center">
                 <div class="col-md-9">
-                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" required>
+                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" style="width: 100%;" required>
                     @error('file')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

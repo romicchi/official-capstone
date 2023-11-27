@@ -14,12 +14,6 @@
       </head>
     <body>
 
-    <header>
-		<div class="logo">
-            <h4 class="font-poppins-regular">Primary</h4>
-            <div class="h2 font-poppins-bold">DASHBOARD</div>
-		</div>
-	</header>
 	<main>
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-end mb-4">
@@ -227,7 +221,7 @@
                     <tbody>
                         @foreach ($mostRepliedDiscussions as $discussion)
                             <tr class="font-poppins-bold">
-                                <td class="text-center">{{ Str::limit($discussion->title, 50) }}</td>
+                                <td class="text-center">{{ Str::limit($discussion->title, 30) }}</td>
                                 <td class="text-center">{{ $discussion->replies_count }}</td>
                             </tr>
                         @endforeach
@@ -244,6 +238,7 @@
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
             <span><p>Copyright &copy; 2023 {{config('app.name')}}. All rights reserved.</p></span>
+            <p>LNU GENER V.1.0.0 | Maintained and Managed by PancitCantonEnjoyers</p>
         </div>
     </div>
 </footer>

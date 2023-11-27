@@ -30,21 +30,16 @@
           @if(session()->has('success'))
           <div class="alert alert-success">{{session('success')}}</div>
           @endif
-
-          <!-- Error Message -->
-          @if(session()->has('error'))
-          <div class="alert alert-danger">{{session('error')}}</div>
-          @endif
           
-          <h2 class="font-poppins-bold">Login</h2>
-          <div class="form-group">
+          <div class="h2 font-poppins-bold">Login</div>
+          <div class="form-group mb-2">
             <label for="email_or_student_number">Email/Student ID:</label>
             <input type="text" class="form-control" id="email_or_student_number" maxlength="50" name="email_or_student_number" placeholder="Email/Student Number">
             @error('email_or_student_number')
             <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
             @enderror
           </div>
-          <div class="form-group">
+          <div class="form-group mb-2">
             <label for="password">Password:</label>
             <div class="input-group">
               <input type="password" class="form-control" id="password" maxlength="100" name="password" placeholder="Enter Password" autocomplete="off">

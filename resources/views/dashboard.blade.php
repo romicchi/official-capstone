@@ -18,15 +18,9 @@
   <!-- Nav Bar -->
   @yield('usernav')
   <!-- Content -->
-    <header>
-      <div class="dashboard">
-          <h2>Welcome, <strong>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</strong></h2>
-		</div>
-    </header>
-
     <div class="container">
            <!-- Content Row -->
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center mt-4">
         <!-- only teacher can view card Uploads -->
         @if(auth()->user()->role_id == 2)
         <div class="col-xl-3 col-lg-6 col-md-12 col-12 mb-5">
@@ -221,7 +215,7 @@
                     @foreach ($mostRepliedDiscussions as $discussion)
                         <tr class="font-poppins-bold">
                             <td class="text-center hover" onclick="window.location='{{ route('discussions.show', $discussion->slug, ['id' => $discussion->id]) }}'" style="cursor: pointer;"
-                            >{{ Str::limit($discussion->title, 50) }}</td>
+                            >{{ Str::limit($discussion->title, 30) }}</td>
                             <td class="text-center">{{ $discussion->replies_count }}</td>
                         </tr>
                     @endforeach
@@ -241,5 +235,4 @@
 </html>
 
 <!-- Include jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/dashboard.js') }}"></script>

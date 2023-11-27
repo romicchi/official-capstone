@@ -108,6 +108,11 @@ class User extends Authenticatable
         return $this->hasMany(Resource::class, 'author', 'firstname');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     // ...
 
     /**

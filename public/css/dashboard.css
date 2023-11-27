@@ -155,6 +155,7 @@ footer {
     margin-top: 2rem;
     margin-bottom: 2rem;
     color: #303030;
+    overflow: auto;
 }
 
 .table-container-admin {
@@ -213,9 +214,6 @@ a {
 }
 
 /* Chatbot */
-.container {
-  margin-top: 2rem;
-}
 
 .chatbot-container {
   width: 100%; /* Adjust the maximum width as needed */

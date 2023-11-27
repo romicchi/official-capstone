@@ -65,6 +65,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-success my-2">Create Discussion</button>
+                <a href="{{ route('discussions.index') }}" class="btn btn-secondary my-2">Cancel</a>
             </form>
         </div>
     </div>

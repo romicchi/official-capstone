@@ -17,7 +17,7 @@
     <div class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-8">
-            <div class="h4 font-poppins-bold">Settings</div>
+            <div class="h4 font-poppins-bold">Profile Settings</div>
             <div class="card">
                 <div class="card-header font-poppins-bold">{{ __('Update Profile Information') }}</div>
 

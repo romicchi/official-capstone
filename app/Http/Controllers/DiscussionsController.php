@@ -62,6 +62,13 @@ class DiscussionsController extends Controller
         $discussions->appends($request->query());
 
         $characterLimit = 100;
+
+        $query = $request->input('search');
+        $discussions = Discussion::query()
+            ->when($query, function ($q) use ($query) {
+                return $q->where('title', 'like', '%' . $query . '%');
+            })
+            ->paginate(10);
     
         return view('discussions.index', [
             'discussions' => $discussions,
@@ -110,7 +117,7 @@ class DiscussionsController extends Controller
     //Note: $discussion is found at the database
     public function show(Discussion $discussion) //default: show(string $id)
     {
-        $replies = $discussion->replies()->paginate(3)->onEachSide(1); // Fetch replies and paginate
+        $replies = $discussion->replies()->paginate(5)->onEachSide(1); // Fetch replies and paginate
 
         $characterLimit = 300;
 

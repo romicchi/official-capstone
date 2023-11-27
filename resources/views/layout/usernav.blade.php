@@ -1,4 +1,5 @@
 @section('usernav')
+@include('layout.topbar')
 
 <head>
   <meta charset="utf-8">
@@ -90,23 +91,17 @@
                 </li>
                 @endif
 
-                <!-- Divider -->
+                Divider
                 <hr class="sidebar-divider my-0">
 
-                <div class="navbar-text text-white text-center mt-4 clickable" onclick="window.location='{{ route('settings') }}';" style="cursor: pointer;">
+                <!-- Date and Time -->
+                <div class="navbar-text text-white text-center mt-4">
                   <div>
-                    <strong>{{ auth()->user()->firstname }}</strong>
+                    <strong>{{ date('F d, Y') }}</strong>
                   </div>
                   <div>
-                    {{ auth()->user()->email }}
+                    {{ date('h:i A') }}
                   </div>
-                </div>
-
-                <li class="nav-item logout">
-                  <a class="nav-link" href="{{ route('logout') }}">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                  </a>
-                </li>
               </ul>
             </div>
           </nav>
