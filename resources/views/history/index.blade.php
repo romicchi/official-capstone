@@ -10,13 +10,13 @@
 </head>
 
     <div class="container">
-    <h2 class="text-center">Notes History</h2>
+    <div class="h4 font-poppins-bold">Notes History</div>
 
         <div class="d-flex justify-content-between align-items-center">
         <!-- Search -->
         <form action="{{ route('history.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
+                <input type="text" class="form-control rounded-0" name="query" size="30" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
@@ -32,7 +32,7 @@
         <div class="card shadow mb-4">
             <div class="card-body">
         <table class="table table-hover">
-            <thead class="table-dark">
+            <thead class="table">
                 <tr>
                     <th></th>
                     <th>Title</th>
@@ -47,7 +47,7 @@
                     </tr>
                 @else
                 @foreach ($resources as $resource)
-                <tr>
+                <tr class="font-poppins-bold">
                     <!-- time in oct 10:00am format -->
                     <td>{{ $resource->created_at->format('M d, h:i A') }}</td>
                     <td>

@@ -74,7 +74,7 @@ class User extends Authenticatable
     public function resourceRatings()
     {
         return $this->hasMany(ResourceRating::class);
-    }    
+    }
 
     //This part is for the RepliesController. Means that a user can have many replies
     public function replies()
@@ -101,6 +101,11 @@ class User extends Authenticatable
     public function history()
     {
         return $this->hasMany(History::class);
+    }
+
+    public function uploads()
+    {
+        return $this->hasMany(Resource::class, 'author', 'firstname');
     }
 
     // ...

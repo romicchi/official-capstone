@@ -19,6 +19,13 @@ class ChartController extends Controller
 {
     public function showDashboard(Request $request)
     {
+        $user = auth()->user();
+        $userFullName = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+$uploads = Resource::where('author', $userFullName)->count();
+        $journals = $user->journals()->count();
+        $favorites = $user->favorites()->count();
+        $discussions = $user->discussions()->count();
+
         // Retrieve the top 10 most favorite resources
         $mostFavoriteResources = Resource::withCount('favoritedBy')
         ->orderBy('favorited_by_count', 'desc')
@@ -33,7 +40,7 @@ class ChartController extends Controller
 
         $studentsCount = User::where('role_id', 1)->count();
         $teachersCount = User::where('role_id', 2)->count();
-        return view('dashboard', compact('studentsCount','teachersCount','mostFavoriteResources','mostRepliedDiscussions'));
+        return view('dashboard', compact('uploads', 'journals', 'favorites', 'discussions', 'studentsCount','teachersCount','mostFavoriteResources','mostRepliedDiscussions'));
     }
 
     public function ask(Request $request)

@@ -9,8 +9,8 @@
 
 @section('content')
     <div class="container">
-        <h2>Relevant Resources</h2>
-        <table class="table table-bordered shadow">
+        <div class="h3 font-poppins-bold">Relevant Resources</div>
+        <table class="table shadow">
         <thead>
         <tr>
             <th class="thead">Resource</th>
@@ -29,13 +29,13 @@
                                 </button>
                                 <span class="add-to-favorites-hint">(Add to Favorites)</span>
                             </div>
-                            <a class="title" href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
+                            <a class="title font-poppins-bold" href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
                         </h4>
                         <p><strong>Uploader:</strong> {{ $resource->author }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>
-                    <td class="justified-text">{{ $resource->keywords }}</td>
-                    <td class="justified-text">{{ Str::limit($resource->description, 500) }}</td>
+                    <td class="justified-text">{{ Str::limit($resource->keywords,200) }}</td>
+                    <td class="justified-text">{{ Str::limit($resource->description, 200) }}</td>
                 </tr>
             @endforeach
         </tbody>

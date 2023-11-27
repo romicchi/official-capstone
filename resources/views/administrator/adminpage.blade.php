@@ -16,18 +16,18 @@
 
     <header>
 		<div class="logo">
-            <h4>Primary</h4>
-            <h2>DASHBOARD</h2>
+            <h4 class="font-poppins-regular">Primary</h4>
+            <div class="h2 font-poppins-bold">DASHBOARD</div>
 		</div>
 	</header>
 	<main>
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-end mb-4">
             <a href="{{ route('generate.report') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <i class="fas fa-download fa-sm text-white-50 font-poppins-bold"></i> Generate Report</a>
         </div>
         <div class="card p-4">
-            <p class="h4 mb-0 text-gray-800">Today's Data</p>
+            <p class="h4 mb-0 font-poppins-bold">Today's Data</p>
 <!-- Content Row -->
 <div class="row">
 
@@ -37,12 +37,12 @@
         <div class="card-body">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                    <div class="text-xs font-poppins-bold text-primary text-uppercase mb-1">
                         Users (Verified)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $verifiedUsersCount }}</div>
+                        <div class="h5 mb-0 font-poppins-bold">{{ $verifiedUsersCount }}</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-user fa-2x text-gray-300"></i>
+                        <i class="fas fa-user fa-2x text-gray-300 icon"></i>
                     </div>
                 </div>
             </div>
@@ -54,12 +54,12 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <div class="text-xs font-poppins-bold text-success text-uppercase mb-1">
                             Resources (Total)</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalResourcesCount }}</div>
+                            <div class="h5 mb-0 font-poppins-bold">{{ $totalResourcesCount }}</div>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-book fa-2x text-gray-300"></i>
+                            <i class="fas fa-book fa-2x text-gray-300 icon"></i>
                         </div>
                     </div>
                 </div>
@@ -72,18 +72,18 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            <div class="text-xs font-poppins-bold text-info text-uppercase mb-1">
                                 Active Users</div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $activeUsersCount }}</div>
+                                        <div class="h5 mb-0 mr-3 font-poppins-bold">{{ $activeUsersCount }}</div>
                                     </div>
                                     <div class="col">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300 icon"></i>
                             </div>
                         </div>
                     </div>
@@ -96,12 +96,12 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                <div class="text-xs font-poppins-bold text-warning text-uppercase mb-1">
                                     Pending Users</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $pendingUsersCount }}</div>
+                                    <div class="h5 mb-0 font-poppins-bold">{{ $pendingUsersCount }}</div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="fas fa-user-plus fa-2x text-gray-300"></i>
+                                    <i class="fas fa-user-plus fa-2x text-gray-300 icon"></i>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                 <!-- Card Header - Dropdown -->
                 <div
                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold">Resources Uploaded</h6>
+                <h6 class="m-0 font-poppins-bold">Resources Uploaded</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" role="button" id="dropdownMenuLink"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -154,7 +154,7 @@
             <!-- Card Header -->
             <div
             class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold">Users</h6>
+            <h6 class="m-0 font-poppins-bold">Users</h6>
 
 </div>
 <!-- Card Body -->
@@ -182,7 +182,7 @@
     <!-- Most Favorite Resources Table -->
     <div class="col-md-6">
         <div class="table-container-admin shadow">
-            <p class="h4 mb-0 text-gray-800">Top Resources</p>
+            <p class="h4 mb-0 text-gray-800 font-poppins-bold">Top Resources</p>
             <div class="d-flex justify-content-between align-items-center">
             </div>
                 <div class="table-responsive">
@@ -196,7 +196,7 @@
                         </thead>
                         <tbody>
                             @foreach ($mostFavoriteResources as $resource)
-                                <tr>
+                                <tr class="font-poppins-bold">
                                     <td class="text-center hover" onclick="window.location='{{ route('resource.show', $resource->id) }}'" style="cursor: pointer;">
                                         {{ Str::limit($resource->title, 30) }}
                                     </td>
@@ -213,7 +213,7 @@
     <!-- Most Replied Discussions Table -->
     <div class="col-md-6">
         <div class="table-container-admin shadow">
-            <p class="h4 mb-0 text-gray-800">Top Discussions</p>
+            <p class="h4 mb-0 text-gray-800 font-poppins-bold">Top Discussions</p>
             <div class="d-flex justify-content-between align-items-center">
             </div>
             <div class="table-responsive">
@@ -226,7 +226,7 @@
                     </thead>
                     <tbody>
                         @foreach ($mostRepliedDiscussions as $discussion)
-                            <tr>
+                            <tr class="font-poppins-bold">
                                 <td class="text-center">{{ Str::limit($discussion->title, 50) }}</td>
                                 <td class="text-center">{{ $discussion->replies_count }}</td>
                             </tr>

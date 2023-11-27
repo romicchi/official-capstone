@@ -3,7 +3,7 @@
     background-color: #f1f1f1;
     border: 1px solid #ccc;
     border-bottom: none;
-    border-radius: 5px 0 0 0;
+    border-radius: 5px 5px 0 0;
 }
 
 .tab button {
@@ -31,10 +31,10 @@
 
 /* Additional styles for the table container */
 .table-container {
-    border: 1px solid #ccc;
-    background-color: #fff !important;
     border-radius: 5px;
-    padding: 20px;
+    border: none !important;
+    padding: 2rem;
+    background-color: #f4f4f4 !important;
 }
 
 /* Add this CSS to highlight the active tab */
@@ -44,19 +44,19 @@
 }
 
 table th {
-    background-color: #070372;
-    padding: 10px;
     color: #fff;
     text-align: center;
+    color: #585858;
+    opacity: 0.6;
+    padding: 10px;
+    border: none;
   }
 
   table td {
     text-align: center;
+    color: #303030;
+    border: none;
   }
-
-tr:nth-child(even) {
-    background-color: rgba(7, 3, 114, 0.1);
-}
 
 button {
     padding-top: 10px;

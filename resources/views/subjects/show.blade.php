@@ -21,8 +21,12 @@
             <div class="col-md-8">
                 
                 <div class="text-center resource-info">
-                    <h2 class="resource-title">{{ $resource->title }}</h2>
+                    <h2 class="resource-title font-poppins-bold">{{ $resource->title }}</h2>
                     <p class="resource-author">Author: {{ $resource->author }}</p>
+                    <!-- rating given -->
+                    @if($userRating)
+                    <p>Your Rating: {{ $userRating->rating }}</p>
+                    @endif
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
@@ -154,7 +158,7 @@ function handlePdfLoad() {
                             // You can update the UI to reflect the new rating here if needed
                         } else {
                             // Display the error message within the overlay
-                            overlay.find('.error-message').html('Failed to submit rating.');
+                            overlay.find('.error-message').html('You have already rated this resource.');
                         }
                     },
                     error: function () {

@@ -5,7 +5,7 @@ body {
 }
   
 header {
-  background-color: rgba(7, 3, 114, 0.9) !important;
+  background-color: #779ECB !important;
   color: #fff;
   display: flex;
   flex-direction: row;
@@ -106,7 +106,7 @@ input[type=submit]:hover {
 }
 
 .card-header {
-  background-color: rgba(7, 3, 114, 0.9) !important;
+  background-color: #779ECB !important;
   color: #fff !important;
 }
 
@@ -116,6 +116,10 @@ h6 {
 
 .fas.fa-ellipsis-v.fa-sm.fa-fw.text-gray-400 {
   color: #fff !important;
+}
+
+.icon {
+  color: #303030 !important;
 }
 
 footer {
@@ -150,6 +154,7 @@ footer {
     padding: 20px;
     margin-top: 2rem;
     margin-bottom: 2rem;
+    color: #303030;
 }
 
 .table-container-admin {
@@ -158,6 +163,12 @@ footer {
   border-radius: 5px;
   padding: 20px;
   margin-bottom: 2rem;
+}
+
+.table-container-admin table th,
+.table-container-admin table td {
+    border: none;
+    padding: 12px;
 }
 
 /* hover title */
@@ -174,7 +185,7 @@ table {
 }
 
 th {
-    background-color: #070372 !important;
+    background-color: #779ECB !important;
     color: #fff;
     padding: 10px;
     text-align: left;
@@ -186,12 +197,8 @@ tr {
 }
 
 td {
+    color: #303030;
     padding: 10px;
-}
-
-/* Style the odd rows with a different background color */
-tr:nth-child(even) {
-  background-color: rgba(7, 3, 114, 0.1);
 }
 
 /* Style links within the table */

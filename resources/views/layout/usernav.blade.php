@@ -37,7 +37,8 @@
                 <li class="nav-item dropend">
                   <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.disciplines' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
-                  <img class="images">Resources
+                  <i class="fas fa-book"></i>
+                  Resources
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown01">
                   @foreach ($colleges as $college)
@@ -58,8 +59,8 @@
                 
           <li class="nav-item dropend">
           <a class="nav-link {{ in_array($currentRoute, ['journals.index', 'notes.index', 'history.index']) ? 'active personal' : 'personal' }} dropdown-toggle" id="dropdown2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-            <img>Personal
+          <i class="fas fa-user-circle"></i>
+            Personal
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown2">
             <a class="dropdown-item" href="{{ route('history.index') }}">Notes History</a>
@@ -69,17 +70,23 @@
         </li>
 
                 <li class="nav-item">
-                  <a class="nav-link {{ $currentRoute === 'nexus.index' ? 'active' : 'inactive' }}" href="{{ route('nexus.index') }}"><img class="images1">Nexus Maps</a>
+                  <a class="nav-link {{ $currentRoute === 'nexus.index' ? 'active' : 'inactive' }}" href="{{ route('nexus.index') }}"><img class="images1">
+                  <i class="fas fa-project-diagram" style="font-size: .8em;"></i>
+                  Nexus Maps</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link {{ $currentRoute === 'discussions.index' ? 'active' : 'inactive' }}" href="{{ route('discussions.index') }}"><img class="images1">Forum</a>
+                  <a class="nav-link {{ $currentRoute === 'discussions.index' ? 'active' : 'inactive' }}" href="{{ route('discussions.index') }}"><img class="images1">
+                  <i class="fas fa-comments"></i>
+                  Forum</a>
                 </li>
                 
                 <!-- Button available for the teacher role only -->
                 @if (auth()->user()->role_id === 2)
                 <li class="nav-item">
-                  <a class="nav-link {{ $currentRoute === 'teacher.manage' ? 'active' : 'inactive' }}" href="{{ route('teacher.manage') }}"><img class="images1">Uploads</a>
+                  <a class="nav-link {{ $currentRoute === 'teacher.manage' ? 'active' : 'inactive' }}" href="{{ route('teacher.manage') }}"><img class="images1">
+                  <i class="fas fa-plus"></i>
+                  Uploads</a>
                 </li>
                 @endif
 
@@ -111,7 +118,7 @@
       <div class="new-user-guide-overlay" style="display: none;">
           <div class="new-user-guide-card">
               <div class="new-user-guide-content">
-                  <h3>Welcome, New User!</h3>
+                  <div class="h4 font-poppins-bold">Welcome, New User!</div>
                   <p id="guide-text">Here's what each navbar link does:</p>
               </div>
               <div class="new-user-guide-buttons">
@@ -143,6 +150,7 @@
         "Dashboard: Access GENER and ask anything.",
         "Resources: Access educational resources.",
         "Personal: Manage your history, study journal, and favorites.",
+        "Nexus Maps: Access the Nexus Maps and search connected resources.",
         "Forum: Join discussions and interact with other students & teachers.",
         @if (auth()->user()->role_id === 2)
         "Uploads: Upload educational resources and manage uploaded content.",

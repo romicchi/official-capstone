@@ -11,7 +11,7 @@
     <a href="{{ route('journals.index') }}" class="back-button">← Back</a>
     <div class="card mb-3 my-3">
         <div class="card-header">
-            <h3 class="card-title">{{ $journal->title }}</h3>
+            <h3 class="card-title font-poppins-bold">{{ $journal->title }}</h3>
             <div class="dots-container" onclick="toggleDropdown()">
                 <div class="dot"></div>
                 <div class="dot"></div>

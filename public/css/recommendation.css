@@ -11,14 +11,18 @@ p {
     font-size: 16px;
 }
 .title{
-    /* text derocation none */
     text-decoration: none !important;
+    color: #585858;
+}
+
+.title:hover{
+    color: #92B9E7;
 }
 
 .button {
 display: inline-block;
 padding: 10px 20px;
-background-color: #007bff; /* You can change the background color to your preference */
+background-color: #007bff;
 color: #fff;
 text-align: center;
 text-decoration: none;
@@ -28,7 +32,7 @@ cursor: pointer;
 }
 
 .button:hover {
-background-color: #0056b3; /* Change the hover color as needed */
+background-color: #0056b3;
 }
 
 .thead {
@@ -56,13 +60,13 @@ display: inline-block;
 
 .title-with-star {
 display: flex;
-align-items: center; /* Vertically align the star and title */
+align-items: center;
 }
 
 .add-to-favorites-hint {
-font-size: 12px; /* Adjust the font size as needed */
-color: #777; /* Grey color */
-margin-left: 5px; /* Add some spacing between the text and the star */
+font-size: 12px;
+color: #777;
+margin-left: 5px;
 }
 
 .card-body {

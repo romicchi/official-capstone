@@ -12,9 +12,23 @@ table {
     border-collapse: collapse;
 }
 
+/* Remove borders from the table */
+.card table {
+    border-collapse: collapse;
+    border: none;
+}
+
+/* Remove borders and background from table cells */
+.card table th,
+.card table td {
+    border: none;
+    padding: 12px;
+}
+
+
 th {
-    background-color: #070372;
-    color: #fff;
+    color: #585858;
+    opacity: 0.6;
     padding: 10px;
     text-align: left;
 }
@@ -25,12 +39,15 @@ tr {
 }
 
 td {
+    color: #303030;
     padding: 10px;
 }
 
-/* Style the odd rows with a different background color */
-tr:nth-child(even) {
-    background-color: rgba(7, 3, 114, 0.1);
+.card {
+    /* no border line */
+    border: none !important;
+    padding: 2rem;
+    background-color: #fdfdfd !important;
 }
 
 /* Style links within the table */

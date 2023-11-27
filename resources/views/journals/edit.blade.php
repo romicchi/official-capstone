@@ -9,7 +9,7 @@
 </head>
 
 <div class="container card shadow">
-    <h3>Edit Note</h3>
+    <div class="h4 font-poppins-bold">Edit Note</div>
     <form action="{{ route('journals.update', $journal) }}" method="post">
         @csrf
         @method('PUT')

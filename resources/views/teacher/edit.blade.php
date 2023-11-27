@@ -38,7 +38,7 @@
             <div class="col-md-8">
             <div class="alert alert-danger" id="errorMessage" style="display: none;"></div>
                 <div class="card shadow">
-                    <div class="card-header">{{ __('Edit Resource') }}</div>
+                    <div class="card-header font-poppins-bold">{{ __('Edit Resource') }}</div>
 
                     <div class="card-body">
                         

@@ -20,6 +20,16 @@
 
 <div class="d-flex justify-content-between align-items-center">
 <div class="d-flex align-items-center">
+    <!-- Search Bar -->
+    <form class="form-inline" type="GET" action="{{ route('searchPending') }}">
+    <div class="input-group" style="max-width: 250px;">
+      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+      <div class="input-group-append">
+        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+      </div>
+    </div>
+  </form>
+
     <!-- Role Filter Dropdown -->
     <form class="form-inline" type="GET" action="{{ route('filterPendingByRole') }}">
         <div class="input-group mx-3" style="max-width: 250px;">
@@ -37,7 +47,7 @@
 </div>
 <!-- Sorting -->
 <form class="form-inline" type="GET" action="{{ route('sortPending') }}">
-    <div class="input-group mx-3" style="max-width: 250px;">
+    <div class="input-group" style="max-width: 250px;">
         <select class="form-control rounded-0" name="sort_order">
             <option value="asc">Name A-Z</option>
             <option value="desc">Name Z-A</option>
@@ -47,15 +57,6 @@
         </div>
     </div>
 </form>
-  <!-- Search Bar -->
-  <form class="form-inline" type="GET" action="{{ route('searchPending') }}">
-    <div class="input-group" style="max-width: 250px;">
-      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
-      <div class="input-group-append">
-        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
-      </div>
-    </div>
-  </form>
 </div>
 @if ($pendingUsers->count() > 0)
 
@@ -170,10 +171,15 @@
 
 <div class="d-flex justify-content-between align-items-center">
 <div class="d-flex align-items-center">
-  <!-- Add User Button -->
-  <a href="{{ route('adminadd') }}" class="btn btn-success mb-3 py-2 px-3">
-    <i class="fas fa-plus"></i>
-  </a>
+    <!-- Search Bar -->
+    <form class="form-inline" type="GET" action="{{ route('search') }}">
+    <div class="input-group" style="max-width: 250px;">
+      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+      <div class="input-group-append">
+        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+      </div>
+    </div>
+  </form>
 
 <!-- Role Filter Dropdown -->
 <form class="form-inline" type="GET" action="{{ route('filterByRole') }}">
@@ -204,15 +210,10 @@
     </div>
 </form>
 
-  <!-- Search Bar -->
-  <form class="form-inline" type="GET" action="{{ route('search') }}">
-    <div class="input-group" style="max-width: 250px;">
-      <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
-      <div class="input-group-append">
-        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
-      </div>
-    </div>
-  </form>
+  <!-- Add User Button -->
+  <a href="{{ route('adminadd') }}" class="btn btn-success mb-3 py-2 px-3">
+    <i class="fas fa-plus"></i>
+  </a>
 </div>
 
 @if ($existingUsers->count() > 0)
@@ -328,6 +329,16 @@
 
 <div class="d-flex justify-content-between align-items-center">
 <div class="d-flex align-items-center">
+  <!-- Search Bar for Archive Tab -->
+  <form class="form-inline justify-content-end" type="GET" action="{{ route('searchArchive') }}">
+      <div class="input-group" style="max-width: 250px;">
+          <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
+          <div class="input-group-append">
+              <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+          </div>
+      </div>
+  </form>
+
     <!-- Role Filter Dropdown -->
     <form class="form-inline" type="GET" action="{{ route('filterArchiveByRole') }}">
         <div class="input-group mx-3" style="max-width: 250px;">
@@ -346,23 +357,13 @@
 
 <!-- Sorting -->
 <form class="form-inline" type="GET" action="{{ route('sortArchive') }}">
-    <div class="input-group mx-3" style="max-width: 250px;">
+    <div class="input-group" style="max-width: 250px;">
         <select class="form-control rounded-0" name="sort_order">
             <option value="asc">Name A-Z</option>
             <option value="desc">Name Z-A</option>
         </select>
         <div class="input-group-append">
             <button class="btn btn-primary rounded-0" type="submit" id="sort-btn">Sort</button>
-        </div>
-    </div>
-</form>
-
-<!-- Search Bar for Archive Tab -->
-<form class="form-inline justify-content-end" type="GET" action="{{ route('searchArchive') }}">
-    <div class="input-group" style="max-width: 250px;">
-        <input type="search" class="form-control rounded-0" name="query" placeholder="Search user" aria-label="Search" aria-describedby="search-btn" autocomplete="off">
-        <div class="input-group-append">
-            <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
         </div>
     </div>
 </form>

@@ -9,10 +9,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/resourcemanage.css') }}">
 </head>
 
+<div class="h4 font-poppins-bold">
+    Resource Management
+</div>
 <div class="card">
-    <div class="card-header">
-        Resource Management
-    </div>
     <div class="card-body">
         <center>
             <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
@@ -38,7 +38,7 @@
                                     </tr>
                                 @else
                                     @foreach($resources as $resource)
-                                        <tr>
+                                        <tr class="font-poppins-bold">
                                             <td>
                                                 <a class="hover font-poppins-bold" href="{{ route('resource.show', $resource->id) }}">
                                                     {{ Str::limit($resource->title, 35) }}

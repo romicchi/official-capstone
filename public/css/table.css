@@ -36,24 +36,23 @@ font-size: 14px;
 
 .table th,
 .table td {
-padding: 8px;
-text-align: left;
-vertical-align: top;
-border: px solid #dee2e6;
-text-align: center;
+  border: none;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+  text-align: center;
 }
 
 .table thead th {
-background-color: #070372;
-color: #fff;
-}
-
-.table tbody tr:nth-child(even) {
-  background-color: rgba(7, 3, 114, 0.1);
+color: #585858;
+opacity: 0.6;
+padding: 10px;
 }
 
 td {
   height: 40px;
+  color: #303030;
+  padding: 10px;
 }
 
 form {

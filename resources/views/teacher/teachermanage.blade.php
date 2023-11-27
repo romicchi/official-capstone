@@ -12,7 +12,7 @@
 
     <!-- Teacher Resource Table -->
     <section class="resource-management">
-  <h2>Resource Management</h2>
+  <div class="h4 font-poppins-bold">Resource Management</div>
   <div class="row">
     <div class="col-md-4">
       <div class="card shadow">
@@ -84,11 +84,16 @@
                     </tr>
                     @else
                     @foreach($resources as $resource)
-                    <tr>
+                    <tr class="font-poppins-bold">
                       <td>
+                        <!-- if College and Discipline is null then title link is not clickable -->
+                        @if(!is_null($resource->college))
                         <a class="hover" href="{{ route('resource.show', $resource->id) }}">
                           <strong>{{ Str::limit($resource->title, 35) }}</strong>
                         </a>
+                        @else
+                        <strong>{{ Str::limit($resource->title, 35) }}</strong>
+                        @endif
                       </td>
                       <td>{{ $resource->author }}</td>
                       <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>

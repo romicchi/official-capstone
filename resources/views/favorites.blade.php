@@ -10,13 +10,13 @@
 
 @section('content')
     <div class="container">
-        <h2 class="text-center">Favorite Resources</h2>
-
+        
+        <div class="h4 font-poppins-bold">Favorite Resources</div>
         <div class="d-flex justify-content-between align-items-center">
         <!-- Search -->
         <form action="{{ route('favorites.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
+                <input type="search" class="form-control rounded-0" name="query" size="30" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
@@ -33,7 +33,7 @@
         <div class="card shadow mb-4">
             <div class="card-body">
         <table class="table table-hover">
-            <thead class="table-dark">
+            <thead class="table">
                 <tr>
                     <th>Title</th>
                     <th>Author</th>
@@ -47,7 +47,7 @@
                     </tr>
                 @else
                     @foreach ($resources as $resource)
-                        <tr>
+                        <tr class="font-poppins-bold">
                             <td>
                                 <a class="hover" href="{{ route('resource.show', $resource->id) }}">
                                 {{ Str::limit($resource->title, 50) }}

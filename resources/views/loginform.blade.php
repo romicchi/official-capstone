@@ -30,6 +30,11 @@
           @if(session()->has('success'))
           <div class="alert alert-success">{{session('success')}}</div>
           @endif
+
+          <!-- Error Message -->
+          @if(session()->has('error'))
+          <div class="alert alert-danger">{{session('error')}}</div>
+          @endif
           
           <h2 class="font-poppins-bold">Login</h2>
           <div class="form-group">

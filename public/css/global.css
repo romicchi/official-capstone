@@ -10,6 +10,10 @@ html {
     font-weight: 100;
 }
 
+.font-poppins-regular {
+    font-weight: 400;
+}
+
 .font-poppins-bold {
     font-weight: bold;
 }
@@ -39,4 +43,5 @@ html {
     border-radius: 10px;
     border-color: rgb(158, 158, 158);
     margin-right: 0.5rem;
+    color: #313131;
 }
