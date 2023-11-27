@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
+
+    use HasFactory;
+
     protected $table = 'subject'; // Name of the subjects table in the database
 
     // Relationship with course

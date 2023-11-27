@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ResourceRating extends Model
 {
+
+    use HasFactory;
+
     protected $fillable = ['user_id', 'resource_id', 'rating'];
 
     public function user()
