@@ -63,6 +63,15 @@ body {
   z-index: 999;
 }
 
+@media (max-width: 992px) {
+  .logo-image {
+    width: 6rem;
+    height: auto;
+    margin-right: 10px;
+  }
+}
+
+
 @media (max-width: 767px) {
   .navbar-collapse {
       position: relative;
@@ -86,4 +95,5 @@ body {
       padding-left: 1rem;
       padding-right: 1rem;
   }
+  
 }

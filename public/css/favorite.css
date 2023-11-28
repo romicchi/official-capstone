@@ -1,5 +1,5 @@
 body {
-    padding-left: 17rem; /* Set padding top equal to navbar height */
+    padding-left: 17rem !important; /* Set padding top equal to navbar height */
     padding-top: 5rem;
     padding-right: 2rem;
 }
@@ -27,13 +27,13 @@ td {
 }
 
 a {
-  color: #000;
-  text-decoration: none;
+  color: #000 !important;
+  text-decoration: none !important;
 }
 
 .hover:hover {
-  color: #070372;
-  text-decoration: underline;
+  color: #070372 !important;
+  text-decoration: underline !important;
 }
 
 .table th,
@@ -47,7 +47,7 @@ padding: 12px;
 
 @media screen and (max-width: 993px) {
   body {
-        padding-left: 1rem; /* 0px */
+        padding-left: 1rem !important; /* 0px */
     }
 }
 
