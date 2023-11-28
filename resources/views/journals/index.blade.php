@@ -12,7 +12,7 @@
 <div class="container shadow">
     <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <a href="{{ route('journals.create') }}" class="btn btn-primary mx-2">+ Create Journal</a>
+            <a href="{{ route('journals.create') }}" class="btn btn-primary mx-2">+ Create Entry</a>
         </div>
     </div>
     <hr>

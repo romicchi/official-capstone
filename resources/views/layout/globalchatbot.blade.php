@@ -6,17 +6,19 @@
 
 <body>
     <!-- Global chatbot button -->
-    <button id="global-chatbot-button"><i class="fa-solid fa-user-graduate" Title="ChatBot" style="color: #3e547a; font-size: 1.5em;"></i></button>
+<button id="global-chatbot-button">
+    <img src="{{ asset('assets/img/gener2.png') }}" alt="ChatBot" style="width: 60px; height: 60px; border-radius: 50%;">
+</button>
     
     <!-- Chatbot container -->
-    <div id="chatbot-container">
-        <div class="chatbot-header">Talk to Gener</div>
-        <div id="notification-icon" Title="Resource Recommendation" style="display: none;"><i class="fa-solid fa-bell"></i></div>
+    <div id="chatbot-container" >
+    <div class="chatbot-header"><i class="fa-regular fa-comments" style="#ffffff"></i>   Talk to  <span style="border: 2px solid yellow; padding: 2px">GENER</span></div>
+        <div id="notification-icon" Title="Resource Recommendation"><i class="fa-solid fa-bell"></i></div>
         <button id="close-chatbot-button" title="Minimize"><i class="fa-solid fa-caret-down"></i></button>
         <div id="chatbot-messages"></div>
         <div id="chatbot-form-container">
             <form id="chatbot-form">
-                <input type="text" id="user-input" Title="Please fill out this field" placeholder="Type your message...">
+                <textarea id="user-input" Title="Please fill out this field" placeholder="Type your message..."></textarea>
                 <button type="submit" id="send-button" title="Send">&#10148;</button>
             </form>
         </div>
@@ -28,6 +30,13 @@
         <!-- Relevant resource URLs will appear here -->
     </div>
 </div>
+
+<!-- Add the tip element with an initial hidden state -->
+<div id="tip" class="tip-message" style="display: none;">
+                                     <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
+                                 </div>
+                            </div>
+                        </div>
             
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

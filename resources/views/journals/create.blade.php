@@ -17,7 +17,7 @@
 @enderror
 
 <div class="container card shadow">
-    <h2 class="card-header">Create New Journal</h2>
+    <h2 class="card-header">Create New Entry</h2>
     <form action="{{ route('journals.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
