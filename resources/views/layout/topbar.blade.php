@@ -29,6 +29,10 @@
 }
 </style>
 
+@php
+    $unreadNotifications = auth()->user()->notifications->where('read', false)->take(5);
+@endphp
+
 <div class="container-fluid px-0 bg-white shadow-sm position-fixed w-100" style="top: 0;">
     <div class="container py-3">
         <div class="row">
@@ -60,14 +64,14 @@
                                 </span>
                             </span>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="notificationDropdownButton" id="notificationsDropdown">
+                        <div class="dropdown-menu" aria-labelledby="notificationDropdownButton" id="notificationsDropdown" style="max-height: 200px; overflow-y: auto;">
                             <!-- Loop through notifications and display them -->
-                            @foreach(auth()->user()->notifications->where('read', false) as $notification)
+                            @foreach($unreadNotifications as $notification)
                                 <form action="{{ route('markAsRead', $notification) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item" onclick="redirectToDiscussion('{{ route('discussions.show', $notification->discussion_slug) }}')">
                                         <small>{{ $notification->created_at->diffForHumans() }}: </small>
-                                        {{ $notification->message }}
+                                        {{ Str::limit ($notification->message, 30) }}
                                     </button>
                                 </form>
                             @endforeach
@@ -75,7 +79,7 @@
                             @if(auth()->user()->notifications->where('read', false)->count() > 0)
                                 <form action="{{ route('markAllAsRead') }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">Mark All as Read</button>
+                                    <button type="submit" class="dropdown-item text-center">Mark All as Read</button>
                                 </form>
                             @else
                             <!-- If there are no notifications -->

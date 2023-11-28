@@ -19,6 +19,10 @@
   overflow: auto;
 }
 
+.card.mb-3.center {
+  margin-left: 1.5rem;
+}
+
 .pagination {
   justify-content: center;
 }
@@ -118,7 +122,6 @@
 
     /* Adjust styles for each section within the card-body */
     .card-body > div {
-        width: calc(33.33% - 10px); /* Adjust the width as needed */
         margin-bottom: 10px; /* Add margin between sections */
     }
 

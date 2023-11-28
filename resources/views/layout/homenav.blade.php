@@ -27,7 +27,7 @@
         <div class=" justify-content-end" id="navbarNav">
             <ul class="navbar-nav flex-column">
                 @guest
-                    <a class="nav-link ml-auto" href="{{ route('login') }}">Log in</a>
+                    <a class="nav-link ml-auto" href="{{ route('login') }}">Sign in</a>
                 @else
                     @if (Auth::user()->role_id == 3)
                         <li class="nav-item">

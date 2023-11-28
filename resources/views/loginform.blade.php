@@ -31,8 +31,8 @@
           <div class="alert alert-success">{{session('success')}}</div>
           @endif
           
-          <div class="h2 font-poppins-bold">Login</div>
-          <div class="form-group mb-2">
+          <div class="h2 font-poppins-bold">Sign in</div>
+          <div class="form-group mt-3 mb-2">
             <label for="email_or_student_number">Email/Student ID:</label>
             <input type="text" class="form-control" id="email_or_student_number" maxlength="50" name="email_or_student_number" placeholder="Email/Student Number">
             @error('email_or_student_number')

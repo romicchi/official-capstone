@@ -165,6 +165,8 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     // discussion-discussionid-replies: This means that the replies will depend to discussions
     Route::resource('discussions/{discussion}/replies', 'App\Http\Controllers\RepliesController');
     Route::get('/get-courses/{channel}', [DiscussionsController::class, 'getCoursesByChannel'])->name('get-courses');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('index');
+    Route::get('/get-notifications', [NotificationController::class, 'getNotifications'])->name('get.notifications');
     Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
     Route::post('/mark-as-read/{notification}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
 
