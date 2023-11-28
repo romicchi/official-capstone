@@ -204,7 +204,7 @@ td {
 
 /* Style links within the table */
 a {
-    color: #007bff;
+    color: #779ECB;
     text-decoration: none;
 }
 
@@ -250,7 +250,7 @@ button#send-button {
   margin-left: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #779ECB;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
