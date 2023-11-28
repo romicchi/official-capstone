@@ -19,7 +19,7 @@
         </tr>
     </thead>
         <tbody>
-            @foreach ($resources as $resource)
+        @forelse ($resources as $resource)
                 <tr>
                     <td>
                         <h4>
@@ -37,7 +37,11 @@
                     <td class="justified-text">{{ $resource->keywords }}</td>
                     <td class="justified-text">{{ Str::limit($resource->description, 500) }}</td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="3" style="text-align: center; vertical-align: middle;"><i>No Available Related Resource</i></td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

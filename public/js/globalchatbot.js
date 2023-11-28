@@ -14,6 +14,7 @@ $(document).ready(function () {
     function addMessage(message, role) {
         const messageElement = $("<div></div>").addClass(role + "-message").text(message);
         chatbotMessages.append(messageElement);
+        chatbotMessages.scrollTop(chatbotMessages[0].scrollHeight); // Scroll to the bottom
     }
 
     function toggleLoading(isLoading) {
@@ -38,7 +39,7 @@ $(document).ready(function () {
 
         try {
             // Send the user's query to the Flask API
-            const flaskUrl = 'https://generflask.online/ask'; // Update the URL
+            const flaskUrl = 'https://generflask.osssssnline/ask'; // Update the URL
             const response = await fetch(flaskUrl, {
                 method: "POST",
                 headers: {
@@ -75,35 +76,66 @@ $(document).ready(function () {
         if (query.trim() !== "") {
             sendMessageToChatbot(query);
         }
+    
+            // Display loading spinner while fetching recommendations
+            loadingSpinner.show();
 
-        // Display loading spinner while fetching recommendations
-        loadingSpinner.show();
+            // Add a click event listener to the notification icon
+            $('#notification-icon').click(function() {
+                // Stop the swing animation and change the color of the icon to dark grey
+                $(this).css('animation', 'none');
+                $(this).css('color', 'darkgrey');
+            });
 
-        // Fetch recommendations based on the user's query using jQuery
-        $.ajax({
-            url: `/get-recommendations?query=${encodeURIComponent(query)}`,
-            method: "GET",
-            success: function (html) {
-                // Update the recommendations container with the fetched HTML
-                recommendationsContainer.html(html);
-                
-                // Show the recommendations container
-                recommendationsContainer.show();
-            },
-            error: function (error) {
-                console.error("Error fetching recommendations:", error);
-            },
+            // Fetch recommendations based on the user's query using jQuery
+            $.ajax({
+                url: `/get-recommendations?query=${encodeURIComponent(query)}`,
+                method: "GET",
+                success: function (html) {
+                    // Insert the recommendations into the card
+                    $('#recommendations-card').html(html);
+                    
+                    // Only start the swing animation if there are available related resources
+                    if (!html.includes("No Available Related Resource")) {
+                    // Show the recommendations card
+                    $('#notification-icon').show();
+                    // Apply the swing animation to the notification icon
+                    // Start the swing animation and change the color of the icon back to its original color
+                     $('#notification-icon').css('animation', 'swing 1s');
+                     $('#notification-icon').css('animation-iteration-count', 'infinite');
+                     $('#notification-icon').css('color', 'red'); // Replace '' with the original color of the icon
+                    }
+                },
+                error: function (error) {
+                    console.error("Error fetching recommendations:", error);
+                },
+            });
         });
-    });
-
+    
     tipElement.css("display", "block");
     setTimeout(function () {
         tipElement.css("display", "none");
     }, 8000);
 
-    $('#toggle-chatbot').click(function() {
-        $('#chatbot-contents').slideToggle();
-        $(this).find('i').toggleClass('fa-chevron-circle-up fa-chevron-circle-down');
-    });
+    var isChatbotOpened = false; // Add this line at the start of your script
+
+$('#global-chatbot-button').click(function() {
+    $('#chatbot-container').slideDown();
+    $('#global-chatbot-button').fadeOut();
+
+    if (!isChatbotOpened) {
+        addMessage("Hi I'm Gener, Ask me anything!", "chatbot");
+        isChatbotOpened = true;
+    }
 });
 
+    $('#close-chatbot-button').click(function() {
+        $('#chatbot-container').slideUp(); // Hide the chatbot container with a sliding effect
+        $('#global-chatbot-button').fadeIn(); // Make the button reappear
+    });
+
+    $('#notification-icon').click(function() {
+        // Toggle the visibility of the recommendations card when the notification icon is clicked
+        $('#recommendations-card').toggle();
+    });
+});

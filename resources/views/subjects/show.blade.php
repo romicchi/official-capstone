@@ -67,7 +67,9 @@
                 @include('subjects.comment_form')
             </div>
         </div>
-                
+
+        @include('layout.globalchatbot') 
+
         </body>
         </html>
     </div>

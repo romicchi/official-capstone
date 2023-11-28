@@ -28,11 +28,14 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card shadow">
-                    <div class="card-header"><strong>Talk to Gener</strong></div>
+                    <div class="card-header"><strong>Talk to Gener</strong>
+                    <button id="toggle-chatbot" style="float: right; color: white; background: transparent; border: none;"><i class="fas fa-chevron-circle-up"></i></button>
+                </div>
                     <div class="card-body">
                         <!-- Chatbot container -->
-                        <div class="chatbot-container">
-                            <!-- Include an empty container for file recommendations -->
+                        <div class="chatbot-container" id="chatbot-container">
+                            <!-- Wrap the contents of the chatbot in a div -->
+                                <div id="chatbot-contents">
                             <div class="chatbot-messages" id="chatbot-messages">
                                 <!-- Chatbot messages will appear here -->
                             </div>
@@ -42,7 +45,7 @@
                                     @csrf
                                     <div style="display: flex;">
                                     <input type="text" name="query" id="user-input" placeholder="Type your message..." autocomplete="off" required>
-                                    <button type="submit" id="send-button">&#10148;</button>
+                                    <button type="submit" id="send-button" title="Click to send">&#10148;</button>
                                 </form>
                                 <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
                                     <span class="sr-only">Loading...</span>
@@ -66,6 +69,10 @@
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
+</div>
 <div class="row">
     <!-- Most Favorite Resources Table -->
     <div class="col-md-12 col-lg-6">
@@ -130,3 +137,5 @@
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{{ asset('js/dashboard.js') }}"></script>
+
+

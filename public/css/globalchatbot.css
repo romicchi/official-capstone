@@ -1,0 +1,156 @@
+* {
+    box-sizing: border-box;
+}
+
+.chatbot-header {
+    background-color: #f5f5f5;
+    padding: 5px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#chatbot-container {
+    display: none;
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    width: 340px;
+    height: 500px;
+    overflow: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 10px;
+    overflow: hidden;
+    z-index: 999;
+}
+
+#global-chatbot-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: black;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#chatbot-form-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px; /* Adjust as necessary */
+    background-color: #f5f5f5; /* Adjust as necessary */
+} 
+
+#chatbot-form {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    align-items: center;
+    height: 100%;
+    padding: 10px;
+}
+
+#user-input {
+    width: 100%; /* Adjust as ndecessary */
+    box-sizing: border-box;
+}
+
+#send-button {
+    width: 80px; /* Adjust as necessary */
+    border: 1px solid #ccc;
+    margin-left: 10px;
+}
+
+#send-button:hover {
+    background-color:  rgb(30, 48, 80); 
+    color: white;
+}
+
+#chatbot-messages {
+    height: calc(100% - 50px); /* Subtract the height of the form container */
+    overflow-y: auto; /* Add a scrollbar if necessary */
+}
+
+.user-message, .chatbot-message {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 80%;
+    display: inline-block;
+}
+
+.user-message {
+    background-color: #e6e6e6;
+    float: right;
+    clear: both;
+    text-align: right; 
+}
+
+.chatbot-message {
+    background-color: #d9d9d9;
+    float: left;
+    clear: both;
+}
+
+#close-chatbot-button {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    color: rgb(48, 48, 48); 
+    background: transparent;
+    border: none;
+    z-index: 1001;
+}
+#close-chatbot-button:hover {
+    color: red;
+}
+
+#notification-alert {
+    position: absolute;
+    top: -10px; 
+    right: -10px; 
+    width: 20px; 
+    height: 20px; 
+    background-color: red; 
+    border-radius: 50%; 
+    display: none; 
+}
+
+#recommendations-card {
+    position: fixed;
+    background-color: white;
+    left: 19%;
+    top: 0;
+    width: 45rem;
+    height: 100%;
+    overflow: auto;
+}
+
+#recommendations-card table tr:first-child {
+    background-color: #070372;
+}
+
+#notification-icon {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: red;
+    font-size: 20px;
+}
+
+@keyframes swing {
+    0% { transform: rotate(0deg); }
+    20% { transform: rotate(-10deg); }
+    40% { transform: rotate(10deg); }
+    60% { transform: rotate(-10deg); }
+    80% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+}
