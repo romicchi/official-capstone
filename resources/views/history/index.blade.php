@@ -16,7 +16,7 @@
         <!-- Search -->
         <form action="{{ route('history.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="text" class="form-control rounded-0" name="query" size="30" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
+                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>

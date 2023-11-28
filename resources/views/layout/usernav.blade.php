@@ -64,7 +64,7 @@
             Personal
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown2">
-            <a class="dropdown-item" href="{{ route('history.index') }}">Notes History</a>
+            <a class="dropdown-item" href="{{ route('history.index') }}">View History</a>
             <a class="dropdown-item" href="{{ route('journals.index') }}">Study Journal</a>
             <a class="dropdown-item" href="{{ route ('favorites') }}">Favorites</a>
           </ul>

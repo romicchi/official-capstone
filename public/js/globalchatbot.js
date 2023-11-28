@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     function toggleLoading(isLoading) {
         sendButton.css("display", isLoading ? "none" : "block");
-        loadingSpinnerChatbot.css("display", isLoading ? "block" : "none");
+        loadingSpinnerChatbot.css("display", "none"); // Always hide the loading spinner
     }
 
     async function sendMessageToChatbot(query) {
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
         try {
             // Send the user's query to the Flask API
-            const flaskUrl = 'https://generflask.osssssnline/ask'; // Update the URL
+            const flaskUrl = 'https://generflask.online/ask'; // Update the URL
             const response = await fetch(flaskUrl, {
                 method: "POST",
                 headers: {
@@ -97,13 +97,13 @@ $(document).ready(function () {
                     
                     // Only start the swing animation if there are available related resources
                     if (!html.includes("No Available Related Resource")) {
-                    // Show the recommendations card
-                    $('#notification-icon').show();
-                    // Apply the swing animation to the notification icon
-                    // Start the swing animation and change the color of the icon back to its original color
-                     $('#notification-icon').css('animation', 'swing 1s');
-                     $('#notification-icon').css('animation-iteration-count', 'infinite');
-                     $('#notification-icon').css('color', 'red'); // Replace '' with the original color of the icon
+                        // Show the recommendations card
+                        $('#notification-icon').show();
+                        // Apply the swing animation to the notification icon
+                        // Start the swing animation and change the color of the icon back to its original color
+                        $('#notification-icon').css('animation', 'swing 1s');
+                        $('#notification-icon').css('animation-iteration-count', 'infinite');
+                        $('#notification-icon').css('color', 'red'); // Change the color to red
                     }
                 },
                 error: function (error) {
