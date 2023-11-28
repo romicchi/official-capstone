@@ -11,7 +11,7 @@
 @section('navbar')
     <nav class="navbar navbar-expand-lg">
         <a class="navbar-brand" href="{{ url('/') }}">
-            <img src="{{ asset('assets/img/logo.png') }}" alt="Logo" class="logo-image">
+            <img src="{{ asset('assets/img/home-logo.png') }}" alt="Logo" class="logo-image">
         </a>
 
         <!-- Hides link when in login and register blade -->
