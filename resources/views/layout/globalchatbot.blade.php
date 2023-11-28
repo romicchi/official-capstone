@@ -16,6 +16,10 @@
         <div id="notification-icon" Title="Resource Recommendation"><i class="fa-solid fa-bell"></i></div>
         <button id="close-chatbot-button" title="Minimize"><i class="fa-solid fa-caret-down"></i></button>
         <div id="chatbot-messages"></div>
+        <!-- Add the tip element with an initial hidden state -->
+<div id="tip" class="tip-message" style="display: none;">
+                                     <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
+                                 </div>
         <div id="chatbot-form-container">
             <form id="chatbot-form">
                 <textarea id="user-input" Title="Please fill out this field" placeholder="Type your message..."></textarea>
@@ -30,13 +34,6 @@
         <!-- Relevant resource URLs will appear here -->
     </div>
 </div>
-
-<!-- Add the tip element with an initial hidden state -->
-<div id="tip" class="tip-message" style="display: none;">
-                                     <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
-                                 </div>
-                            </div>
-                        </div>
             
     <!-- Include jQuery library -->
     <script src="{{ asset('js/globalchatbot.js') }}"></script>

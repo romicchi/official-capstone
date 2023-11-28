@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     function toggleLoading(isLoading) {
         sendButton.css("display", isLoading ? "none" : "block");
-        loadingSpinnerChatbot.css("display", "none"); // Always hide the loading spinner
+        loadingSpinnerChatbot.css("display", isLoading ? "block" : "none");
     }
 
     async function sendMessageToChatbot(query) {
@@ -97,13 +97,13 @@ $(document).ready(function () {
                     
                     // Only start the swing animation if there are available related resources
                     if (!html.includes("No Available Related Resource")) {
-                        // Show the recommendations card
-                        $('#notification-icon').show();
-                        // Apply the swing animation to the notification icon
-                        // Start the swing animation and change the color of the icon back to its original color
-                        $('#notification-icon').css('animation', 'swing 1s');
-                        $('#notification-icon').css('animation-iteration-count', 'infinite');
-                        $('#notification-icon').css('color', 'red'); // Change the color to red
+                    // Show the recommendations card
+                    $('#notification-icon').show();
+                    // Apply the swing animation to the notification icon
+                    // Start the swing animation and change the color of the icon back to its original color
+                     $('#notification-icon').css('animation', 'swing 1s');
+                     $('#notification-icon').css('animation-iteration-count', 'infinite');
+                     $('#notification-icon').css('color', 'red'); // Replace '' with the original color of the icon
                     }
                 },
                 error: function (error) {
@@ -111,11 +111,6 @@ $(document).ready(function () {
                 },
             });
         });
-    
-    tipElement.css("display", "block");
-    setTimeout(function () {
-        tipElement.css("display", "none");
-    }, 8000);
 
     var isChatbotOpened = false; // Add this line at the start of your script
 
@@ -125,6 +120,10 @@ $('#global-chatbot-button').click(function() {
 
     if (!isChatbotOpened) {
         addMessage("Hi I'm Gener, Ask me anything!", "chatbot");
+        tipElement.css("display", "block");
+    setTimeout(function () {
+        tipElement.css("display", "none");
+    }, 8000);
         isChatbotOpened = true;
     }
 });
@@ -138,4 +137,5 @@ $('#global-chatbot-button').click(function() {
         // Toggle the visibility of the recommendations card when the notification icon is clicked
         $('#recommendations-card').toggle();
     });
+    
 });
