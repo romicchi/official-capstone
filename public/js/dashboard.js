@@ -1,5 +1,6 @@
 $(document).ready(function () {
     const recommendationsContainer = $("#recommendations-container");
+    $('#chatbot-messages').append('<div class="chatbot-message">Hi I\'m Gener, Ask me anything!</div>');
     const loadingSpinner = $("#loading-spinner");
 
     // Hide the recommendations container initially
@@ -102,8 +103,18 @@ $(document).ready(function () {
     }, 8000);
 
     $('#toggle-chatbot').click(function() {
-        $('#chatbot-contents').slideToggle();
         $(this).find('i').toggleClass('fa-chevron-circle-up fa-chevron-circle-down');
+    
+        $('#chatbot-contents').slideToggle(function() {
+            // Check the visibility of the chatbot
+            if ($('#chatbot-contents').is(':visible')) {
+                // If the chatbot is visible, hide the message
+                $('#hidden-chatbot-message').hide();
+            } else {
+                // If the chatbot is not visible, show the message
+                $('#hidden-chatbot-message').show();
+            }
+        });
     });
 });
-
+ 

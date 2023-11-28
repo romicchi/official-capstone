@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
             <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -150,8 +151,8 @@
                                 <form method="GET" action="{{ route('getRecommendations') }}">
                                 
                                     @csrf
-                                    <div style="display: flex;">
-                                    <input type="text" name="query" id="user-input" placeholder="Type your message..." autocomplete="off" required>
+                                    <div style="display: flex; padding-top:30px">
+                                    <textarea name="query" id="user-input" placeholder="Type your message..." autocomplete="off" required></textarea>
                                     <button type="submit" id="send-button" title="Click to send">&#10148;</button>
                                 </form>
                                 <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
@@ -171,6 +172,7 @@
                             <div class="recommendations-container" id="recommendations-container">
                                 <!-- Relevant resource URLs will appear here -->
                             </div>
+                            <div id="hidden-chatbot-message" style="display: none;">Gener Chat is currently minimized. Click the the top right button to maximize.</div>
                         </div>
                 </div>
             </div>
