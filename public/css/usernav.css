@@ -1,3 +1,11 @@
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  padding-top: 5rem;
+}
+
 .sidebar-divider {
     border-top: 2px solid white;
     margin: 0 1rem 1rem;
@@ -58,6 +66,7 @@
 @media (min-width: 992px) {
   .navbar {
     max-width: 220px;
+    z-index: 9999;
   }  
 }
 

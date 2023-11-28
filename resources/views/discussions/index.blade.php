@@ -17,19 +17,36 @@
     <!-- This will display the Channels in the Providers/AppServiceProvider -->
     @auth
         <main class="container py-4">
+            <!-- Search -->
             <div class="row">
                 <!-- Channels -->
                 @yield('Channel-Add')
-                <div class="col-md-8">
-                    @if($discussions->isEmpty())
-                        <div class="card my-4">
-                            <div class="card-body">
-                                <div class="alert alert-info mb-0 text-center">Channel is currently empty.</div>
-                            </div>
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <!-- Search -->
+                            <form action="" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" size="40" placeholder="Search by title">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    @if($discussions->isEmpty())
+                    <div class="card my-4">
+                        <div class="card-body d-flex justify-content-center align-items-center"> <!-- Utilizing flexbox classes -->
+                        <div class="alert alert-info mb-0 text-center">Empty.</div>
+                    </div>
+                </div>
                     @else
                         @foreach($discussions as $discussion)
-                            <div class="card mb-3">
+                            <div class="card mb-3 center">
                                 <!-- To display the author email/name and display the title. Note: check the Discussion.php to see the function -->
                                 @include('partials.discussion-header')
                                 <!-- To display the content of the discussion -->
@@ -37,6 +54,9 @@
                                     <a href="{{ route('discussions.show', $discussion->slug) }}" class="card-link"> 
                                         <!-- content with Str limit -->
                                         <div class="card-text">
+                                            <div class="font-poppins-bold">
+                                                Description: 
+                                            </div>
                                             {!! nl2br(Str::limit(strip_tags($discussion->content), 350)) !!}
                                         </div>
                                         <hr>

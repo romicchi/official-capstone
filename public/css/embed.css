@@ -1,7 +1,6 @@
 body {
     padding-left: 15rem; /* Set padding top equal to navbar height */
-    padding-top: 1rem;
-    font-family: 'Roboto', sans-serif;
+    padding-top: 5rem;
 }
 
 /* Style for rating overlay */
@@ -37,8 +36,7 @@ body {
 
 .resource-title {
     font-size: 24px;
-    font-weight: bold;
-    color: #000000;
+    color: #303030;
     margin-bottom: 10px;
 }
 

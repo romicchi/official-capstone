@@ -20,67 +20,71 @@
         <div class="mb-3"></div>
 
         <div class="d-flex justify-content-between align-items-center">
-            <!-- Sort -->
-            <form action="{{ route('disciplines.sort', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
-                <div class="input-group">
-                    <select class="form-control" name="sort" id="sort">
-                        <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title</option>
-                        <option value="author" {{ request('sort') === 'author' ? 'selected' : '' }}>Author</option>
-                        <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Date</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary">Sort</button>
-                </div>
-            </form>
-            <!-- Search -->
-            <form action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
-                <div class="input-group">
-                    <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
-                </div>
-            </form>
-        </div>
+        <!-- Search -->
+        <form action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
+            <div class="input-group">
+                <input type="search" class="form-control rounded-0" name="query" id="searchInput" size="30" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
+            </div>
+        </form>
+        <!-- Sort -->
+        <form action="{{ route('disciplines.sort', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
+            <div class="input-group">
+                <select class="form-control" name="sort" id="sort">
+                    <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title</option>
+                    <option value="author" {{ request('sort') === 'author' ? 'selected' : '' }}>Author</option>
+                    <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Date</option>
+                    <option value="rating" {{ request('sort') === 'rating' ? 'selected' : '' }}>Rating</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Sort</button>
+            </div>
+        </form>
+    </div>
+
 
         <div class="card shadow">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table" id="resourceTable">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Date</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($resources as $resource)
-                                <tr>
-                                    <td>
-                                        <a class="hover" href="{{ route('resource.show', $resource->id) }}">{{ Str::limit($resource->title, 50) }}</a>
-                                    </td>
-                                    <td>{{ $resource->author }}</td>
-                                    <td>
-                                        <!-- created_at in Oct 25, 2023 format -->
-                                        {{ \Carbon\Carbon::parse($resource->created_at)->format('M d, Y') }}
-                                    </td>
-                                    <td>
-                                        <div class="d-flex justify-content-end">
-                                            <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
-                                                <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-heart"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!-- pagination -->
-                <div class="d-flex justify-content-center my-3">
-                    {{ $resources->appends(['sort' => request('sort'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
-                </div>
-            </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Rating</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($resources as $resource)
+                        <tr>
+                            <td>
+                            <a class="hover" href="{{ route('resource.show', $resource->id) }}">{{ Str::limit($resource->title, 50) }}</a>
+                            </td>
+                            <td>{{ $resource->author }}</td>
+                            <td>
+                                {{ number_format($resource->resourceRatings->avg('rating'), 2) }}
+                            </td>
+                            <td>
+                                <!-- created_at in Oct 25, 2023 format -->
+                                {{ \Carbon\Carbon::parse($resource->created_at)->format('M d, Y') }}
+                            </td>
+                            <td>
+                            <div class="d-flex justify-content-end">
+                                <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
+                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-star"></i>
+                                </button>
+                            </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
+    <!-- pagination -->
+    <div class="d-flex justify-content-center my-3">
+        {{ $resources->appends(['sort' => request('sort'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
+    </div>
+</div>
 @show
 
 <script>

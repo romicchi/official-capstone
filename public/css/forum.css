@@ -19,6 +19,10 @@
   overflow: auto;
 }
 
+.card.mb-3.center {
+  margin-left: 1.5rem;
+}
+
 .pagination {
   justify-content: center;
 }
@@ -53,6 +57,11 @@
   display: block;
 }
 
+.card-body.d-flex.justify-content-between.align-items-center {
+  /* border radius */
+  border-radius: 20px;
+}
+
 /* disccusion-layout */
 .card-header {
   background-color: rgb(255, 255, 255) !important;
@@ -73,13 +82,13 @@
 }
 
 .reply-header.green {
-  background-color: rgb(207, 255, 220) !important;
+  background-color: #77DD77 !important;
   display: flex;
   justify-content: space-between;
 }
 
 .reply-header.yellow {
-  background-color: yellow !important;
+  background-color: #FDFD96 !important;
   display: flex;
   justify-content: space-between;
 }
@@ -91,4 +100,36 @@
 
 .trix-container {
   max-width: 100%;
+}
+
+    /* Hide labels on mobile screens */
+    @media (max-width: 767px) {
+      label {
+          display: none;
+      }
+
+      .hide-label-xs {
+        display: none;
+    }
+  }
+
+  @media screen and (min-width: 480px) {
+    .card-body.header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    /* Adjust styles for each section within the card-body */
+    .card-body > div {
+        margin-bottom: 10px; /* Add margin between sections */
+    }
+
+    /* Add styles for the "Add Button" section */
+    .text-right {
+        margin-top: .2rem;
+        text-align: right;
+        height: 2.5rem;
+        width: 3rem;
+    }
 }

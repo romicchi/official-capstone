@@ -9,10 +9,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/resourcemanage.css') }}">
 </head>
 
+<div class="h4 font-poppins-bold">
+    Resource Management
+</div>
 <div class="card">
-    <div class="card-header">
-        Resource Management
-    </div>
     <div class="card-body">
         <center>
             <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
@@ -38,20 +38,21 @@
                                     </tr>
                                 @else
                                     @foreach($resources as $resource)
-                                        <tr>
-                                            <td><strong>{{ $resource->title }}</strong></td> 
+                                        <tr class="font-poppins-bold">
+                                            <td>
+                                                <a class="hover font-poppins-bold" href="{{ route('resource.show', $resource->id) }}">
+                                                    {{ Str::limit($resource->title, 35) }}
+                                                </a>
+                                            </td> 
                                             <td>{{ $resource->author }}</td> 
                                             <td>{{ \Carbon\Carbon::parse($resource->created_at)->format('F j, Y') }}</td>
                                             <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
                                             <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
                                             <td>
-                                                <a class="btn btn-primary" href="{{ route('resource.show', $resource->id) }}">
-                                                    <i class="fas fa-eye p-1"></i>
-                                                </a> |
                                                 <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger delete-resource-confirm">
+                                                    <button type="submit" class="btn delete-resource-confirm" title="Delete">
                                                         <i class="fas fa-trash-alt p-1"></i>
                                                     </button>
                                                 </form>
@@ -62,10 +63,10 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- Pagination links -->
-                    <div class="d-flex justify-content-center my-3">
-                        {{ $resources->onEachSide(3)->links('pagination::bootstrap-4') }}
-                    </div>
+                </div>
+                <!-- Pagination links -->
+                <div class="d-flex justify-content-center my-3">
+                    {{ $resources->onEachSide(3)->links('pagination::bootstrap-4') }}
                 </div>
             </div>
         </center>

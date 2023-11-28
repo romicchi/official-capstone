@@ -14,13 +14,6 @@
 </head>
 <body>
 <main class="container py-4">
-    @error('title')
-    <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-
-    @error('content')
-    <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
     <a
         href="{{ route('discussions.show', $discussion->slug) }}"
     class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
@@ -33,6 +26,9 @@
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" name="title" maxlength="255" class="form-control" value="{{ $discussion->title }}">
+                    @error('title')
+                    <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -40,6 +36,9 @@
                     <br>
                     <input id="content" type="hidden" maxlength="3500" name="content" value="{{ $discussion->content }}">
                     <trix-editor class="content-scroll" input="content"></trix-editor>
+                    @error('content')
+                    <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn btn-success my-3">Update Discussion</button>

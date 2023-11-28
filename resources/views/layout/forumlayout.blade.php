@@ -11,54 +11,60 @@
 @endsection
 
 @section('Channel-Add')
-<div class="col-md-4">
-<a href="{{ route('discussions.create') }}" class="btn btn-info my-2 btn-style">+Create Discussion</a> 
-            <div class="card">
-                <div class="card-header layout-header"><strong>Channels</strong></div>
-            <div class="card-body layout-body shadow">
-                <ul class="list-group">
-                    @foreach($channels as $channel)
-                        <li class="list-group-item">    
-                            <a class="channel-a" href="{{ route('discussions.index') }}?channel={{ $channel->slug }}">
-                                {{ $channel->name }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-
-        <div class="card my-2">
-            <div class="card-header layout-header">
-                <strong>Filter & Sort Discussions</strong>
-            </div>
-            <div class="card-body layout-body shadow">
+<div class="col-md-12">
+    <div class="card mb-3">
+        <div class="card-header h4 font-poppins-bold">Discussion</div>
+        <div class="card-body header">
+            <!-- Channels -->
+            <div class="mb-3">
                 <form action="{{ route('discussions.index') }}" method="GET">
-                    <div class="form-group">
-                        <label for="course">Select a Course:</label>
+                    <div class="form-group d-flex justify-content-center">
+                        <label class="hide-label-xs">Select a Channel:</label>
+                        <select name="channel" id="channel" class="form-control">
+                            <option value="">All Channels</option>
+                            @foreach($channels as $channel)
+                                <option value="{{ $channel->slug }}" @if(request()->get('channel') == $channel->slug) selected @endif>
+                                    {{ $channel->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-primary ml-2">Apply</button>
+                    </div>
+                </form>
+            </div>
+
+             <!-- Sort Discussions -->
+             <form action="{{ route('discussions.index') }}" method="GET">
+                    <div class="form-group d-flex justify-content-center">
+                    <label class="hide-label-xs">Select a Course:</label>
                         <select name="course" id="course" class="form-control">
                             <option value="">All Courses</option>
                             @foreach ($courses as $course)
-                            <option value="{{ $course->id }}" @if(request()->get('course') == $course->id) selected @endif>
-                                {{ $course->courseName }}
-                            </option>
+                                <option value="{{ $course->id }}" @if(request()->get('course') == $course->id) selected @endif>
+                                    {{ $course->courseName }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="sort">Sort Discussions:</label>
-                        <select name="sort" id="sort" class="form-control">
+                </form>
+
+
+                <form action="{{ route('discussions.index') }}" method="GET">
+                    <div class="form-group d-flex justify-content-center">
+                    <label class="hide-label-xs">Sort Discussions:</label>
+                        <select name="sort" id="sort" class="form-control mr-2">
                             <option value="newest" @if(request()->get('sort') == 'newest') selected @endif>Newest to Oldest</option>
                             <option value="oldest" @if(request()->get('sort') == 'oldest') selected @endif>Oldest to Newest</option>
                         </select>
+                        <button type="submit" class="btn btn-primary">Apply</button>
                     </div>
-                    <button type="submit" class="btn btn-secondary my-2">Apply Filters</button>
                 </form>
-            </div>
+
+            <!-- Add Button -->
+                <a href="{{ route('discussions.create') }}" class="btn btn-info text-right" title="Create Discussion">+</a>
         </div>
     </div>
-
-    
+</div>
 @endsection
 
 

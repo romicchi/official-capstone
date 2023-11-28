@@ -7,18 +7,20 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/journal.css') }}">
 </head>
 
-<h1>Study Journal</h1>
+<div class="h4 font-poppins-bold">Study Journal</div>
 
 <div class="container shadow">
+    <form action="{{ route('journals.index') }}" method="GET">
     <div class="d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-            <a href="{{ route('journals.create') }}" class="btn btn-primary mx-2">+ Create Journal</a>
-        </div>
-    </div>
-    <hr>
-
-    <form action="{{ route('journals.index') }}" method="GET" class="my-3">
-        <div class="input-group">
+    <div class="d-flex align-items-center">
+        <!-- Search -->
+        <form action="{{ route('journals.index') }}" method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="search" class="form-control" id="searchInput" placeholder="Search by Title..." value="{{ $search }}">            
+            </div>
+        </form>
+        <!-- Filter -->
+        <div class="input-group mx-5">
             <select name="discipline" class="form-control">
                 <option value="">All Disciplines</option>
                 @foreach ($disciplines as $discipline)
@@ -30,14 +32,13 @@
             </div>
         </div>
     </form>
-
-    <form action="{{ route('journals.index') }}" method="GET" class="mb-3">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Search by Title..." value="{{ $search }}">
-            <div class="input-group-append">
-            </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <a href="{{ route('journals.create') }}" class="btn btn-primary mx-2">+</a>
         </div>
-    </form>
+    </div>
+    </div>
 
     <div id="journal-list">
         @if ($journals->count() > 0)
@@ -45,7 +46,7 @@
                 <a href="{{ route('journals.show', $journal) }}" class="card-link">
                     <div class="card mb-3">
                         <div class="card-body shadow">
-                            <h5 class="card-title">{{ $journal->title }}</h5>
+                            <h5 class="card-title font-poppins-bold">{{ $journal->title }}</h5>
                             <p class="card-text p1">{{ $journal->discipline->disciplineName }}</p>
                             <p class="card-text p1">{{ $journal->created_at->format('F d, Y') }}</p>
                         </div>

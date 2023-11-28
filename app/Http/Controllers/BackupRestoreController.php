@@ -24,8 +24,11 @@ class BackupRestoreController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+        
         if (Auth::attempt($credentials)) {
             // Check if the authenticated user has the super-admin role
             if (Auth::user()->role_id == 4) {

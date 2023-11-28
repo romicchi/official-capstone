@@ -13,15 +13,22 @@
                         @csrf
                         <div class="form-group">
                             <label for="courseName">Course Name</label>
-                            <input type="text" class="form-control" id="courseName" name="courseName" autocomplete="off" required>
+                            <input type="text" class="form-control" id="courseName" name="courseName" autocomplete="off" value="{{ old('courseName') }}">
+                            @error('courseName')
+                            <small _ngcontent-irw-c66 class="text-danger">* Course Name is required.</small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="college_id">College</label>
-                            <select class="form-control" id="college_id" name="college_id" required>
+                            <select class="form-control" id="college_id" name="college_id">
+                                <option disabled selected>Select College</option>
                                 @foreach($colleges as $college)
                                     <option value="{{ $college->id }}">{{ $college->collegeName }}</option>
                                 @endforeach
                             </select>
+                            @error('college_id')
+                            <small _ngcontent-irw-c66 class="text-danger">* College is required.</small>
+                            @enderror
                         </div>
                         <button type="submit" class="btn btn-primary my-3">Create</button>
                         <a href="{{ route('academics.index') }}?activeTab=courses" class="btn btn-secondary m-1">Cancel</a>

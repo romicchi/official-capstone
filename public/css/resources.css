@@ -18,7 +18,6 @@ button.toggle-favorite {
 }
 
 .card-body {
-  height: 55rem;
   overflow: auto;
 }
 

@@ -9,23 +9,40 @@
       
       <div class="form-group">
         <label for="firstname">Firstname:</label>
-        <input class="form-control rounded-0" type="text" id="firstname" name="firstname" value="{{ $users->firstname }}" required>
+        <input class="form-control rounded-0" type="text" id="firstname" name="firstname" value="{{ $users->firstname }}">
+        @error('firstname')
+        <small _ngcontent-irw-c66 class="text-danger">* Firstname is required.</small>
+        @enderror
       </div>
       
       <div class="form-group">
         <label for="lastname">Lastname:</label>
-        <input class="form-control rounded-0" type="text" id="lastname" name="lastname" value="{{ $users->lastname }}" required>
+        <input class="form-control rounded-0" type="text" id="lastname" name="lastname" value="{{ $users->lastname }}">
+        @error('lastname')
+        <small _ngcontent-irw-c66 class="text-danger">* Lastname is required.</small>
+        @enderror
       </div>
       
       <div class="form-group">
         <label for="email">Email:</label>
-        <input class="form-control rounded-0" type="email" id="email" name="email" value="{{ $users->email }}" required>
+        <input class="form-control rounded-0" type="email" id="email" name="email" value="{{ $users->email }}">
+        @error('email')
+        <small _ngcontent-irw-c66 class="text-danger">* Email is required.</small>
+        @enderror
       </div>
 
       @if(auth()->user()->role_id == 4)
       <div class="form-group">
         <label for="password">Password:</label>
-        <input class="form-control rounded-0" type="text" id="password" name="password" value="{{ $users->password }}" required>
+        <div class="input-group">
+        <input class="form-control rounded-0" type="password" id="password" name="password" value="{{ $users->password }}">
+        <span class="input-group-text">
+          <i class="fas fa-eye" id="togglePassword"></i>
+        </span>
+        </div>
+        @error('password')
+        <small _ngcontent-irw-c66 class="text-danger">* Password is required.</small>
+        @enderror
       </div>
       @endif
       
@@ -36,6 +53,9 @@
           <option value="2" {{ $users->role_id == 2 ? 'selected' : '' }}>Teacher</option>
           <option value="3" {{ $users->role_id == 3 ? 'selected' : '' }}>Admin</option>
         </select>
+        @error('role')
+        <small _ngcontent-irw-c66 class="text-danger">* Role is required.</small>
+        @enderror
       </div>
 
       <!-- Display Year Level input when the role is "Student" -->
@@ -64,6 +84,9 @@
           <option value="{{ $college->id }}" {{ $users->college_id == $college->id ? 'selected' : '' }}>{{ $college->collegeName }}</option>
           @endforeach
         </select>
+        @error('college_id')
+        <small _ngcontent-irw-c66 class="text-danger">* College is required.</small>
+        @enderror
       </div>
       
       <div class="d-flex justify-content-center">
@@ -75,3 +98,4 @@
 </div>
 
 <script src="{{ asset('js/admin.js') }}"></script>
+<script src="{{ asset('js/togglepass.js') }}"></script>

@@ -1,0 +1,47 @@
+html {
+    font-family: "Poppins", sans-serif;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+.font-poppins {
+    font-weight: 100;
+}
+
+.font-poppins-regular {
+    font-weight: 400;
+}
+
+.font-poppins-bold {
+    font-weight: bold;
+}
+
+.font-poppins-semibold {
+    font-weight: 600;
+}
+
+.form-control {
+    background-color: #F9FAFB; /* Light gray */
+    border-radius: 10px;
+  }
+  
+.form-control:focus {
+  border-color: black;
+  border-width: 2px;
+  outline: none;
+  box-shadow: none;
+}
+
+.form-group select,
+.form-group input[type="file"] {
+	border-radius: 10px;
+}
+
+.page-link {
+    border-radius: 10px;
+    border-color: rgb(158, 158, 158);
+    margin-right: 0.5rem;
+    color: #313131;
+}

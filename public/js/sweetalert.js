@@ -26,6 +26,126 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    var deleteHistoryButtons = document.querySelectorAll('.delete-history');
+
+    deleteHistoryButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var form = this.parentElement; // Get the parent form element
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will be removed from your history.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    });
+
+    var deleteHistoryButtons = document.querySelectorAll('.delete-favorite');
+
+    deleteHistoryButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var form = this.parentElement; // Get the parent form element
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will be removed from your favorites.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    });
+
+    var deleteHistoryButtons = document.querySelectorAll('.clear-favorite');
+
+    deleteHistoryButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var form = this.parentElement; // Get the parent form element
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will be clear your favorites.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, clear it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    });
+
+    var deleteHistoryButtons = document.querySelectorAll('.clear-history');
+
+    deleteHistoryButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var form = this.parentElement; // Get the parent form element
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will be clear your history.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, clear it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    });
+
+    var deleteHistoryButtons = document.querySelectorAll('.delete-option');
+
+    deleteHistoryButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var form = this.parentElement; // Get the parent form element
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This will be removed your comment from the discussion.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    });
 });
 
 // Function to show SweetAlert2 confirmation dialog

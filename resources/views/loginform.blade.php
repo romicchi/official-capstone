@@ -11,22 +11,16 @@
  
 		<link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{ asset ('css/login.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/global.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
   </head>
   <body>
 
   <div class="background" style="background-image: url('{{ asset('assets/img/Background.png') }}')" loading="lazy">
     <div class="container"> 
-      <div class="mt-5 message">
-        @if($errors->any())
-        <div class="col-12">
-          @foreach($errors->all() as $error)
-          <div class="alert alert-danger">{{ $error }}</div>
-          @endforeach
-        </div>
-        @endif  
-      </div>
       
       <div class="col">
         <form action="{{ route('login.post') }}" method="post">
@@ -37,24 +31,26 @@
           <div class="alert alert-success">{{session('success')}}</div>
           @endif
           
-          <!-- Session Error -->
-          @if(session()->has('error'))
-          <div class="alert alert-danger">{{session('error')}}</div>
-          @endif
-          <h1>Login</h1>
-          <div class="form-group">
+          <div class="h2 font-poppins-bold">Sign in</div>
+          <div class="form-group mt-3 mb-2">
             <label for="email_or_student_number">Email/Student ID:</label>
-            <input type="text" class="form-control" id="email_or_student_number" maxlength="50" name="email_or_student_number" placeholder="Email/Student Number" required>
+            <input type="text" class="form-control" id="email_or_student_number" maxlength="50" name="email_or_student_number" placeholder="Email/Student Number">
+            @error('email_or_student_number')
+            <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
+            @enderror
           </div>
-          <div class="form-group">
+          <div class="form-group mb-2">
             <label for="password">Password:</label>
             <div class="input-group">
-              <input type="password" class="form-control" id="password" maxlength="100" name="password" placeholder="Enter Password" required>
+              <input type="password" class="form-control" id="password" maxlength="100" name="password" placeholder="Enter Password" autocomplete="off">
               <span class="input-group-text">
                 <i class="fas fa-eye" id="togglePassword"></i>
               </span>
             </div>
           </div>
+          @error('password')
+          <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
+          @enderror
           <div class="form-group">
             <div class="custom-control custom-checkbox">
               <input class="form-check-input" type="checkbox" name="remember" id="remember">
@@ -73,6 +69,7 @@
   </div>
 @include('loader')
 <script src="{{ asset('js/loader.js') }}"></script>
+<script src="{{ asset('js/togglepass.js') }}"></script>
 </body>
 </html>
 

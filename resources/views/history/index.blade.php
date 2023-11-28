@@ -6,31 +6,33 @@
     <title>GENER | History</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/history.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
     <div class="container">
+    <div class="h4 font-poppins-bold">Notes History</div>
 
         <div class="d-flex justify-content-between align-items-center">
-        <!-- Clear History -->
-        <form action="{{ route('history.clear') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-danger">
-                <i class="fas fa-broom"></i>
-                Clear</button>
-        </form>
-
         <!-- Search -->
         <form action="{{ route('history.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
+                <input type="text" class="form-control rounded-0" name="query" size="30" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
+        </form>
+
+        <!-- Clear History -->
+        <form action="{{ route('history.clear') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-danger clear-history">
+                <i class="fas fa-broom"></i>
+                Clear</button>
         </form>
     </div>
         <div class="card shadow mb-4">
             <div class="card-body">
         <table class="table table-hover">
-            <thead class="table-dark">
+            <thead class="table">
                 <tr>
                     <th></th>
                     <th>Title</th>
@@ -45,7 +47,7 @@
                     </tr>
                 @else
                 @foreach ($resources as $resource)
-                <tr>
+                <tr class="font-poppins-bold">
                     <!-- time in oct 10:00am format -->
                     <td>{{ $resource->created_at->format('M d, h:i A') }}</td>
                     <td>
@@ -55,13 +57,10 @@
                     </td>
                     <td>{{ $resource->author }}</td>
                     <td>
-                        <button class="btn btn-success mx-1" onclick="window.location='{{ route('resource.show', $resource->id) }}'">
-                            <i class="fas fa-eye"></i>
-                        </button>
                         <form action="{{ route('history.destroy', $resource->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger mx-1">
+                            <button type="submit" class="btn mx-1 delete-history" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -71,10 +70,13 @@
                 @endif
             </tbody>
         </table>
-        <div class="d-flex justify-content-center">
-            {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
-        </div>
     </div>
-    </div>
+</div>
+<div class="d-flex justify-content-center">
+    {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
+</div>
     </div>
 @show
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>

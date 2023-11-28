@@ -14,11 +14,12 @@
     }
 </style>
 <body>
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+            <div class="h4 font-poppins-bold">Profile Settings</div>
             <div class="card">
-                <div class="card-header">{{ __('Update Profile Information') }}</div>
+                <div class="card-header font-poppins-bold">{{ __('Update Profile Information') }}</div>
 
                 <div class="card-body shadow">
                     <form method="POST" action="{{ route('update-profile') }}">
@@ -74,7 +75,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow">
-                <div class="card-header">{{ __('Change Password') }}</div>
+                <div class="card-header font-poppins-bold">{{ __('Change Password') }}</div>
                 
                 <div class="card-body">
                     <form method="POST" action="{{ route('changePassword') }}">

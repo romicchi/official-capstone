@@ -15,8 +15,6 @@
 </head>
 <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa; /* Light gray background */
             color: #343a40; /* Dark gray text color */
             margin: 0;
             padding: 0;

@@ -21,20 +21,26 @@
             <div class="col-md-8">
                 
                 <div class="text-center resource-info">
-                    <h2 class="resource-title">{{ $resource->title }}</h2>
+                    <h2 class="resource-title font-poppins-bold">{{ $resource->title }}</h2>
                     <p class="resource-author">Author: {{ $resource->author }}</p>
+                    <!-- rating given -->
+                    @if($userRating)
+                    <p>Your Rating: {{ $userRating->rating }}</p>
+                    @endif
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
                     <div> <!-- Left-aligned buttons -->
-                        <a href="{{ URL::previous() }}" class="btn btn-primary mr-2"><i class="fas fa-arrow-left"></i> Back</a>
-                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}">
+                        <a href="{{ route('show.disciplines', ['college_id' => $discipline->college_id, 'discipline_id' => $discipline->id]) }}" class="btn btn-primary mr-2">
+                            <i class="fas fa-arrow-left">
+                            </i> Back</a>
+                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}" title="Rate">
                             Rate
                         </button>
                     </div>
                     <div> <!-- Right-aligned button -->
-                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})">
-                            <i class="fas fa-download"></i> Download
+                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})" title="Download">
+                            <i class="fas fa-download"></i>
                         </a>
                     </div>
                 </div>
@@ -154,7 +160,7 @@ function handlePdfLoad() {
                             // You can update the UI to reflect the new rating here if needed
                         } else {
                             // Display the error message within the overlay
-                            overlay.find('.error-message').html('Failed to submit rating.');
+                            overlay.find('.error-message').html('You have already rated this resource.');
                         }
                     },
                     error: function () {

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 </head>
 
+<div class="h4 font-poppins-bold">Academics</div>
+
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'colleges')">Colleges</button>
     <button class="tablinks" onclick="openTab(event, 'courses')">Courses</button>
@@ -15,10 +17,12 @@
 </div>
 
 <div id="colleges" class="tabcontent">
-    <a href="{{ route('academics.createCollege') }}" class="btn btn-success mt-3 mb-4">+Add College</a>
+    <!-- put add at the right/end -->
+    <div class="d-flex justify-content-end align-items-center">
+    <a href="{{ route('academics.createCollege') }}" class="btn btn-success mb-4" title="Add College">+</a>
+    </div>
     <div class="table-container shadow">
         <!-- College Table -->
-        <h2>Colleges</h2>
         <table>
             <thead>
                 <tr>
@@ -28,17 +32,17 @@
             </thead>
             <tbody>
                 @foreach($colleges as $college)
-                    <tr>
+                    <tr class="font-poppins-bold">
                         <td>{{ $college->collegeName }}</td>
                         <td>
                             <div class="p-1 my-1">
-                                <a href="{{ route('academics.editCollege', $college->id) }}" class="btn btn-primary">
+                                <a href="{{ route('academics.editCollege', $college->id) }}" title="Edit" class="btn">
                                     <i class="fas fa-edit p-1"></i>
                                 </a>
                                 <form class="d-inline" action="{{ route('academics.destroyCollege', $college->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                    <button type="submit" class="btn delete-confirm" title="Delete">
                                         <i class="fas fa-trash-alt p-1"></i>
                                     </button>
                                 </form>
@@ -48,15 +52,22 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="my-3">{{ $colleges->links('pagination::bootstrap-4', ['paginator' => $colleges]) }}</div>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+        {{ $colleges->links('pagination::bootstrap-4', ['paginator' => $colleges]) }}
     </div>
 </div>
 
 <!-- Course Table -->
 <div id="courses" class="tabcontent">
     <div class="d-flex justify-content-between align-items-center">
+        <form action="{{ route('academics.searchCourse') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="course_search" class="form-control" placeholder="Search Courses" autocomplete="off" size="40">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
         <div class="d-flex align-items-center">
-            <a href="{{ route('academics.createCourse') }}" class="btn btn-success mb-3">+Add Course</a>
             <form action="{{ route('academics.filterCourses') }}" method="GET" class="ml-3">
                 <div class="input-group m-3">
                     <select name="college_filter" class="form-control">
@@ -69,16 +80,10 @@
                 </div>
             </form>
         </div>
-        <form action="{{ route('academics.searchCourse') }}" method="GET">
-            <div class="input-group">
-                <input type="text" name="course_search" class="form-control" placeholder="Search Courses" autocomplete="off">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
+        <a href="{{ route('academics.createCourse') }}" class="btn btn-success ml-3 mb-3" title="Add Course">+</a>
     </div>
 
     <div class="table-container shadow">
-        <h2>Courses</h2>
         <table>
             <thead>
                 <tr>
@@ -89,18 +94,18 @@
             </thead>
             <tbody>
                 @foreach($courses as $course)
-                    <tr>
+                    <tr class="font-poppins-bold">
                         <td>{{ $course->courseName }}</td>
                         <td>{{ $course->college->collegeName }}</td>
                         <td>
                             <div class="p-1 my-1">
-                                <a href="{{ route('academics.editCourse', $course->id) }}" class="btn btn-primary">
+                                <a href="{{ route('academics.editCourse', $course->id) }}" title="Edit" class="btn">
                                     <i class="fas fa-edit p-1"></i>
                                 </a>
                                 <form class="d-inline" action="{{ route('academics.destroyCourse', $course->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                    <button type="submit" class="btn delete-confirm" title="Delete">
                                         <i class="fas fa-trash-alt p-1"></i>
                                     </button>
                                 </form>
@@ -110,15 +115,22 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center my-3">{{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}</div>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+        {{ $courses->appends(['activeTab' => 'courses', 'college_filter' => request()->input('college_filter')])->onEachSide(1)->links('pagination::bootstrap-4', ['paginator' => $courses]) }}
     </div>
 </div>
 
 <!-- Discipline Table -->
 <div id="disciplines" class="tabcontent">
     <div class="d-flex justify-content-between align-items-center">
+        <form action="{{ route('academics.searchDiscipline') }}" method="GET">
+            <div class="input-group">
+                <input type="text" name="discipline_search" class="form-control" placeholder="Search Disciplines" autocomplete="off" size="40">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
         <div class="d-flex align-items-center">
-            <a href="{{ route('academics.createDiscipline') }}" class="btn btn-success mt-2 mb-4">+Add Discipline</a>
             <form action="{{ route('academics.filterDisciplines') }}" method="GET" class="ml-3">
                 <div class="input-group m-3">
                     <select name="college_filter" class="form-control">
@@ -131,16 +143,10 @@
                 </div>
             </form>
         </div>
-        <form action="{{ route('academics.searchDiscipline') }}" method="GET">
-            <div class="input-group">
-                <input type="text" name="discipline_search" class="form-control" placeholder="Search Disciplines" autocomplete="off">
-                <button type="submit" class="btn btn-primary">Search</button>
-            </div>
-        </form>
+        <a href="{{ route('academics.createDiscipline') }}" class="btn btn-success ml-3 mb-3" title="Add Discipline">+</a>
     </div>
 
     <div class="table-container shadow">
-        <h2>Disciplines</h2>
         <table>
             <thead>
                 <tr>
@@ -151,18 +157,18 @@
             </thead>
             <tbody>
                 @foreach($disciplines as $discipline)
-                    <tr>
+                    <tr class="font-poppins-bold">
                         <td>{{ $discipline->disciplineName }}</td>
                         <td>{{ $discipline->college->collegeName }}</td>
                         <td>
                             <div class="p-1 my-1">
-                                <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn btn-primary">
+                                <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn" title="Edit">
                                     <i class="fas fa-edit p-1"></i>
                                 </a>
                                 <form class="d-inline" action="{{ route('academics.destroyDiscipline', $discipline->id) }}" method="POST" style="display: inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger delete-confirm">
+                                    <button type="submit" class="btn delete-confirm" title="Delete">
                                         <i class="fas fa-trash-alt p-1"></i>
                                     </button>
                                 </form>
@@ -172,7 +178,9 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="d-flex justify-content-center my-3">{{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}</div>
+    </div>
+    <div class="d-flex justify-content-center my-3">
+        {{ $disciplines->appends(['activeTab' => 'disciplines', 'college_filter' => request()->input('college_filter')])->links('pagination::bootstrap-4', ['paginator' => $disciplines]) }}
     </div>
 </div>
 

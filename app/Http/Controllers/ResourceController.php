@@ -40,7 +40,7 @@ class ResourceController extends Controller
     //--------------TEACHER-----------------//
     public function showTeacherManage()
     {
-        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)->paginate(15)->onEachSide(1);
+        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)->paginate(10)->onEachSide(1);
     
         return view('teacher.teachermanage', compact('resources'));
     }
@@ -61,7 +61,7 @@ class ResourceController extends Controller
                         $q->where('disciplineName', 'LIKE', "%$searchQuery%");
                     });
             })
-            ->paginate(15)
+            ->paginate(10)
             ->onEachSide(1);
 
             $resources->appends(['search' => $searchQuery]);
@@ -90,13 +90,27 @@ class ResourceController extends Controller
         return response()->json($subjects);
     }
 
+    public function flaskquery()
+    {
+        $resources = Resource::all();
+
+        $resourcesArray = $resources->map(function ($resource) {
+            return [
+                'title' => $resource->title,
+                'json_url' => $resource->json_url,
+            ];
+        })->toArray();
+
+        return response()->json($resourcesArray);
+    }
+
     // Store resource function for Teacher
     public function storeResource(Request $request)
 {
     // Validate the form data
     $validatedData = $request->validate([
         'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,pdf|max:25600',
-        'title' => 'required',
+        'title' => 'required|max:100',
         'topic' => 'nullable',
         'keywords' => 'nullable',
         'author' => 'nullable',
@@ -676,12 +690,16 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     }
 
         $comments = $resource->comments()->latest()->paginate(7);
+        $discipline = $resource->discipline;
+        $userRating = ResourceRating::where('user_id', auth()->id())
+        ->where('resource_id', $resource->id)
+        ->first();
 
         if ($request->ajax()) {
-            return view('subjects.comment', compact('comments', 'resource'));
+            return view('subjects.comment', compact('userRating', 'comments', 'resource', 'discipline'));
         }
 
-        return view('subjects.show', compact('comments', 'resource'));
+        return view('subjects.show', compact('userRating', 'comments', 'resource', 'discipline'));
     }
 
     public function disciplines(Request $request, $college_id, $discipline_id)
@@ -689,7 +707,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
         // resource
-        $resources = $discipline->resources()->paginate(18);
+        $resources = $discipline->resources()->paginate(10);
 
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
@@ -700,14 +718,23 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
         $rating = $request->input('rating');
         $user = auth()->user();
     
-        // Check if the user has already rated this resource, if yes, update the rating, otherwise create a new rating
-        $user->resourceRatings()->updateOrCreate(
-            ['resource_id' => $resourceId],
-            ['rating' => $rating]
-        );
+        // Check if the user has already rated this specific resource
+        $existingRating = $user->resourceRatings()->where('resource_id', $resourceId)->first();
     
-        return response()->json(['success' => true]);
+        if ($existingRating) {
+            // User has already rated this resource, prevent re-rating
+            return response()->json(['success' => false, 'message' => 'You have already rated this resource.']);
+        } else {
+            // User has not rated this resource, create a new rating
+            $user->resourceRatings()->create([
+                'resource_id' => $resourceId,
+                'rating' => $rating,
+            ]);
+    
+            return response()->json(['success' => true]);
+        }
     }
+    
 
     public function trackDownload(Request $request)
     {
@@ -738,7 +765,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
                     ->orWhere('author', 'LIKE', '%' . $query . '%')
                     ->orWhere('description', 'LIKE', '%' . $query . '%');
             })
-            ->paginate(18);
+            ->paginate(10);
     
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
@@ -759,9 +786,14 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
             $resources->orderBy('author', 'asc');
         } elseif ($sortBy === 'created_at') {
             $resources->orderBy('created_at', 'desc');
+        } elseif ($sortBy === 'rating') {
+            // Sort by average rating using subquery
+            $resources->select('resources.*')
+                ->selectRaw('(SELECT AVG(rating) FROM resource_ratings WHERE resource_id = resources.id) as avg_rating')
+                ->orderBy('avg_rating', 'desc');
         }
     
-        $resources = $resources->paginate(18);
+        $resources = $resources->paginate(10);
     
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }

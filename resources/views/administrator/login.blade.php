@@ -31,27 +31,6 @@
     @extends('layout.adminnavlayout')
 
     <div class="container mt-5">
-        @if($errors->any())
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if(session()->has('error'))
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-danger">{{session('error')}}</div>
-            </div>
-        </div>
-        @endif
 
         @if(session()->has('success'))
         <div class="row">
@@ -64,15 +43,28 @@
         <div class="overlay">
             <div class="login-form shadow">
                 <h2 class="mb-4">Super-Admin Access</h2>
+                @if(session()->has('error'))
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger">{{session('error')}}</div>
+            </div>
+        </div>
+        @endif
                 <form action="{{ route('administrator.login.submit') }}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" class="form-control" autocomplete="off" required>
+                        <input type="email" name="email" class="form-control" autocomplete="off">
+                        @error('email')
+                        <small _ngcontent-irw-c66 class="text-danger">* Email is required.</small>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" name="password" class="form-control">
+                        @error('password')
+                        <small _ngcontent-irw-c66 class="text-danger">* Password is required.</small>
+                        @enderror
                     </div>
                     <button type="submit" id="super-login-button" class="btn btn-primary my-3">Login</button>
                 </form>

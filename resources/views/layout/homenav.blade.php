@@ -3,6 +3,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('css/homenav.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('css/global.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 @section('navbar')
@@ -24,7 +27,7 @@
         <div class=" justify-content-end" id="navbarNav">
             <ul class="navbar-nav flex-column">
                 @guest
-                    <a class="nav-link ml-auto" href="{{ route('login') }}">Log in</a>
+                    <a class="nav-link ml-auto" href="{{ route('login') }}">Sign in</a>
                 @else
                     @if (Auth::user()->role_id == 3)
                         <li class="nav-item">

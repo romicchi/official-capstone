@@ -1,15 +1,17 @@
 html {
-  padding-top: 2rem;
+  padding-top: 1rem;
   padding-left: 2rem;
   padding-right: 2rem;
 }
 
 .container {
-  border: 1px solid #ccc;
   background-color: #fff !important;
   border-radius: 5px;
   padding: 20px;
-  margin-bottom: 2rem;
+}
+
+.text-danger {
+  font-style: italic;
 }
 
 .ckeditor-container {

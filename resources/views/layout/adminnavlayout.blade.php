@@ -4,7 +4,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/admin1.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/global.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 
 <!-- NAV BAR -->
@@ -37,8 +40,8 @@
 
                             <a class="nav-link dropdown-toggle {{ $currentRoute === 'show.disciplines' ? 'active' : 'inactive' }}" id="dropdown01" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-
-                            <img class="images" src="">Resources
+                            <i class="fas fa-book fa-xs"></i>
+                            Resources
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown01">
                             @foreach ($colleges as $college)
@@ -58,23 +61,33 @@
                     </li>
 
                     <li class="nav-item">
-                    <a class="nav-link {{ $currentRoute === 'usermanage' ? 'active' : 'inactive' }}" href="{{ route('usermanage') }}?activeTab=existing">Manage User</a>
+                    <a class="nav-link {{ $currentRoute === 'usermanage' ? 'active' : 'inactive' }}" href="{{ route('usermanage') }}?activeTab=existing">
+                        <i class="fas fa-users fa-xs"></i>
+                        Manage User</a>
                     </li>
 
                     <li class="nav-item">
-                    <a class="nav-link {{ $currentRoute === 'adminresourcemanage' ? 'active' : 'inactive' }}" href="{{ route('adminresourcemanage') }}">Manage Resources</a>
+                    <a class="nav-link {{ $currentRoute === 'adminresourcemanage' ? 'active' : 'inactive' }}" href="{{ route('adminresourcemanage') }}">
+                            <i class="fas fa-book fa-xs"></i>
+                            Manage Resources</a>
                     <li class="nav-item">
 
                     <li class="nav-item">
-                        <a class="nav-link {{ $currentRoute === 'academics.index' ? 'active' : 'inactive' }}" href="{{ route('academics.index') }}?activeTab=colleges">Academics</a>
+                        <a class="nav-link {{ $currentRoute === 'academics.index' ? 'active' : 'inactive' }}" href="{{ route('academics.index') }}?activeTab=colleges">
+                            <i class="fas fa-graduation-cap fa-xs"></i>
+                            Academics</a>
                     <li class="nav-item">
 
                     <li class="nav-item">
-                        <a class="nav-link {{ $currentRoute === 'activity-log' ? 'active' : 'inactive' }}" href="{{ route('activity-log') }}?activeTab=colleges">Activity Logs</a>
+                        <a class="nav-link {{ $currentRoute === 'activity-log' ? 'active' : 'inactive' }}" href="{{ route('activity-log') }}?activeTab=colleges">
+                            <i class="fas fa-clipboard-list fa-xs"></i>
+                            Activity Logs</a>
                     <li class="nav-item">
 
                     <li class="nav-item">
-                        <a class="nav-link {{ $currentRoute === 'administrator.login' ? 'active' : 'inactive' }}" href="{{ route('administrator.login') }}">Backup & Restore</a>
+                        <a class="nav-link {{ $currentRoute === 'administrator.login' ? 'active' : 'inactive' }}" href="{{ route('administrator.login') }}">
+                            <i class="fas fa-window-restore fa-xs"></i>
+                            Backup & Restore</a>
                     </li>
 
                     <!-- Divider -->
@@ -82,7 +95,7 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                            <i class="fas fa-sign-out-alt fa-xs"></i> Logout
                         </a>
                     </li>
                     

@@ -20,6 +20,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\NexusController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\SettingsController;
@@ -146,6 +147,8 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
 
     Route::get('/usernav', [UsernavController::class, 'usernav'])->name('usernav');
     Route::post('/update-seen-guide', [UsernavController::class, 'updateSeenGuide'])->name('updateSeenGuide');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/get-notifications', [NotificationController::class, 'getNotifications'])->name('get.notifications');
 
     //FORUM/DISCUSSION
     Route::get('/create', function () {
@@ -162,6 +165,10 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     // discussion-discussionid-replies: This means that the replies will depend to discussions
     Route::resource('discussions/{discussion}/replies', 'App\Http\Controllers\RepliesController');
     Route::get('/get-courses/{channel}', [DiscussionsController::class, 'getCoursesByChannel'])->name('get-courses');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('index');
+    Route::get('/get-notifications', [NotificationController::class, 'getNotifications'])->name('get.notifications');
+    Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('markAllAsRead');
+    Route::post('/mark-as-read/{notification}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
 
     
     Route::get('/dashboard',[ChartController::class, 'showDashboard'])->name('dashboard');

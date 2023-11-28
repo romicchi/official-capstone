@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/comment.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
 
 <div class="comments shadow">
     <h3>Comments</h3>
@@ -47,4 +48,6 @@
     @endif
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/comment.js') }}"></script>
+<script src="{{ asset('js/sweetalert.js') }}"></script>

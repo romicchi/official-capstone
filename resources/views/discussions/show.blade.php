@@ -17,9 +17,7 @@
     @auth
     <main class="container py-4">
         <div class="row">
-            <!-- Channels -->
-            @yield('Channel-Add')
-            <div class="col-md-8 my-2">
+            <div class="col-md-12 my-2">
                 <a href="{{ route('discussions.index') }}" class="btn btn-primary mb-3"><i class="fas fa-arrow-left"></i> Back</a>
                 <div class="card">
                     @include('partials.discussion-header')
@@ -42,7 +40,7 @@
                     </div>
                 </div>
 
-                <h4 class="mt-4">Comments</h4>
+                <div class="mt-5 h5 font-poppins-bold">Comments</div>
                 @foreach($replies as $reply)
                 <div class="card my-2 shadow">
                     @php
