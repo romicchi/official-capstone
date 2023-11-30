@@ -38,7 +38,6 @@ return [
             'port' => 21,
             'root' => '/public_html',
             'passive' => true,
-            'visibility' => 'public',
             'ssl' => true,
             'timeout' => 60,
         ],
