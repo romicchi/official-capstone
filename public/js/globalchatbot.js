@@ -130,6 +130,7 @@ $('#global-chatbot-button').click(function() {
 
     $('#close-chatbot-button').click(function() {
         $('#chatbot-container').slideUp(); // Hide the chatbot container with a sliding effect
+        $('#recommendations-card').hide(); // Hide Recommendation container if open
         $('#global-chatbot-button').fadeIn(); // Make the button reappear
     });
 

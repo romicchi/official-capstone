@@ -33,8 +33,19 @@
     <div class="recommendations-container" id="recommendations-container">
         <!-- Relevant resource URLs will appear here -->
     </div>
+    <p id="no-recommendations" style="display: none;">Ask question first. Relevant Resources will display here.</p>
 </div>
             
     <!-- Include jQuery library -->
     <script src="{{ asset('js/globalchatbot.js') }}"></script>
+    <script>
+    window.onload = function() {
+        var container = document.getElementById('recommendations-container');
+        var message = document.getElementById('no-recommendations');
+
+        if (container.children.length === 0) {
+            message.style.display = 'block';
+        }
+    };
+</script>
 </body>

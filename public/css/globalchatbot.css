@@ -146,6 +146,18 @@
     display: none; 
 }
 
+#no-recommendations {
+    color: #333;
+    font-size: 20px; /* Increase the font size */
+    padding: 10px;
+    text-align: center; /* Center the text */
+    font-style: italic; /* Make the text italic */
+    position: absolute; /* Position the element */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for the element's own width and height */
+}
+
 #recommendations-card {
     position: fixed;
     background-color: white;
