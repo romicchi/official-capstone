@@ -50,7 +50,7 @@ class BackupRestoreController extends Controller
     {
         try {
             // Run the backup command using Artisan
-            \Artisan::call('backup:run');
+            \Artisan::call('backup:run', ['--only-db' => true, '--destination' => 'hostinger']);
 
             // Check if the backup command was successful
             if (\Artisan::output() === 'Backup completed successfully.') {
