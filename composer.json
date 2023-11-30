@@ -16,6 +16,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/slack-notification-channel": "^3.0",
         "laravel/tinker": "^2.8",
+        "league/flysystem-ftp": "^3.21",
         "league/flysystem-google-cloud-storage": "^3.15",
         "phpoffice/phpword": "^1.1",
         "robertogallea/laravel-python": "^0.1.1",
