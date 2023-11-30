@@ -60,12 +60,17 @@
                         </ul>
                     </li>
 
+                    <!-- Feature/Button available for the admin role only -->
+                    @if (auth()->user()->role_id === 3)
                     <li class="nav-item">
                     <a class="nav-link {{ $currentRoute === 'usermanage' ? 'active' : 'inactive' }}" href="{{ route('usermanage') }}?activeTab=existing">
                         <i class="fas fa-users fa-xs"></i>
                         Manage User</a>
                     </li>
+                    @endif
 
+                    <!-- Feature/Button available for the admin role only -->
+                    @if (auth()->user()->role_id === 3)
                     <li class="nav-item">
                     <a class="nav-link {{ $currentRoute === 'adminresourcemanage' ? 'active' : 'inactive' }}" href="{{ route('adminresourcemanage') }}">
                             <i class="fas fa-book fa-xs"></i>
@@ -77,6 +82,7 @@
                             <i class="fas fa-graduation-cap fa-xs"></i>
                             Academics</a>
                     <li class="nav-item">
+                    @endif
 
                     <li class="nav-item">
                         <a class="nav-link {{ $currentRoute === 'activity-log' ? 'active' : 'inactive' }}" href="{{ route('activity-log') }}?activeTab=colleges">

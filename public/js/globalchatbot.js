@@ -70,7 +70,7 @@ $(document).ready(function () {
         userInput.val("");
     }
 
-    $("form").on("submit", function (e) {
+    $("#chatbot-form").on("submit", function (e) {
         e.preventDefault();
         const query = userInput.val();
         if (query.trim() !== "") {

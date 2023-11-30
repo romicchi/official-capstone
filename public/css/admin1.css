@@ -98,7 +98,7 @@ body {
     margin-left: 10px;
   }
   
-  form {
+  .form-style {
     display: flex;
     flex-direction: column;
   }

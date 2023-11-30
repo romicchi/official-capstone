@@ -9,7 +9,7 @@
                     <h1 class="mb-0">Create Course</h1>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('academics.storeCourse') }}" method="POST">
+                    <form class="form-style" action="{{ route('academics.storeCourse') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="courseName">Course Name</label>

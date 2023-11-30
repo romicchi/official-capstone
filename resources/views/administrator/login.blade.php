@@ -50,7 +50,7 @@
             </div>
         </div>
         @endif
-                <form action="{{ route('administrator.login.submit') }}" method="post">
+                <form class="form-style" action="{{ route('administrator.login.submit') }}" method="post">
                     @csrf
                     <div class="form-group">
                         <label for="email">Email</label>

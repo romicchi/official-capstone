@@ -8,7 +8,7 @@
 @section('content')
 <div class="container">
     <h1 class="text-center">Generate Report</h1>
-    <form action="{{ route('generate.pdf.report') }}" method="post" id="generateReportForm" class="styled-form">
+    <form action="{{ route('generate.pdf.report') }}" method="post" id="generateReportForm" class="styled-form form-style">
     @csrf
     <div class="form-group">
         <label for="report_type">Select Report Type:</label>
@@ -90,7 +90,7 @@
             success: function (data) {
                 $('#report-table tbody').html(data);
 
-                // Hide the loader in case of an error
+                // Hide the loader
                 $('.loader-container').hide();
 
                 // Re-enable the "Generate Report" button
@@ -108,6 +108,22 @@
             }
         });
     }
+
+        $(document).ready(function () {
+        $('#generateReportForm').on('submit', function () {
+            // Show the loader when the form is submitted
+            $('.loader-container').show();
+        });
+
+        // Function to handle completion of download
+        $('#generateReportForm').on('submit', function () {
+            setTimeout(function () {
+                // Hide the loader after a delay (adjust delay as needed)
+                $('.loader-container').hide();
+            }, 1000); // Change the delay time as needed
+        });
+    });
+
 
     // Use jQuery to handle form input changes and trigger the updateReportTable function
     $(document).ready(function () {

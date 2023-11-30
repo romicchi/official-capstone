@@ -63,11 +63,7 @@
                     <td>{{ $resource->download_count }}</td>
                     <td>{{ $resource->comments->count() }}</td>
                     <td>
-                        @if ($resource->ratings)
-                            {{ $resource->ratings->avg('rating') }}
-                        @else
-                            No ratings
-                        @endif
+                        {{ number_format($resource->resourceRatings->avg('rating'), 2) }}
                     </td>
                 </tr>
             @endforeach

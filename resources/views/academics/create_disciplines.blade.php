@@ -9,7 +9,7 @@
                     <h1 class="mb-0">Create Discipline</h1>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('academics.storeDiscipline') }}" method="POST">
+                    <form class="form-style" action="{{ route('academics.storeDiscipline') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="discipline_Name">Discipline Name</label>

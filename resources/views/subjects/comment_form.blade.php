@@ -4,7 +4,7 @@
     <div class="comment-form card mt-4 shadow">
         <div class="card-body">
             <h4 class="card-title">Add a Comment</h4>
-            <form method="POST" action="{{ route('comments.store') }}">
+            <form class="form-style" method="POST" action="{{ route('comments.store') }}">
                 @csrf
                 <div class="form-group">
                     <textarea name="comment_text" class="form-control" rows="3" placeholder="Enter your comment" required></textarea>

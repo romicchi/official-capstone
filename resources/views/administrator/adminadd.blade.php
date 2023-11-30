@@ -5,7 +5,7 @@
 
 <div class="container">
   <div class="col">
-        <form class="bg-light" action="{{ route('add.user') }}" method="post" enctype="multipart/form-data">
+        <form class="bg-light form-style" action="{{ route('add.user') }}" method="post" enctype="multipart/form-data">
             @csrf
 
             <h1>Add User</h1>
