@@ -13,7 +13,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="discipline_Name">Discipline Name</label>
-                            <input type="text" class="form-control" id="discipline_Name" name="discipline_Name" autocomplete="off" required>
+                            <input type="text" class="form-control" id="disciplineName" name="disciplineName" autocomplete="off" required>
                         </div>
                         <div class="form-group">
                             <label for="college_id">College</label>

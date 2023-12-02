@@ -160,7 +160,7 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::patch('/discussions/{discussion}', [DiscussionsController::class, 'update'])->name('discussions.update');    
 
     // discussion-discussionid-replies: This means that the replies will depend to discussions
-    Route::resource('discussions/{discussion}/replies', 'App\Http\Controllers\RepliesController');
+    Route::resource('discussions.replies', 'App\Http\Controllers\RepliesController');
     Route::get('/get-courses/{channel}', [DiscussionsController::class, 'getCoursesByChannel'])->name('get-courses');
 
     

@@ -11,7 +11,7 @@ class DisciplineController extends Controller
     public function createDisciplineAndAssociateWithCollege()
     {
         // Create a new discipline
-        $discipline = Discipline::create(['name' => 'Computer Science']);
+        $discipline = Discipline::create(['disciplineName' => 'Computer Science']);
 
         // Associate a discipline with a college
         $college = College::find(1);

@@ -214,12 +214,12 @@ class AcademicsController extends Controller
     public function storeDiscipline(Request $request)
     {
         $request->validate([
-            'discipline_Name' => 'required',
+            'disciplineName' => 'required',
             'college_id' => 'required',
         ]);
 
         $discipline = new Discipline();
-        $discipline->disciplineName = $request->input('discipline_Name');
+        $discipline->disciplineName = $request->input('disciplineName');
         $discipline->college_id = $request->input('college_id');
 
         $discipline->save();

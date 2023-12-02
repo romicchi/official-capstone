@@ -35,4 +35,12 @@ class UserFactory extends Factory
             },
         ];
     }
+
+    public function withoutCollege()
+    {
+        return $this->state([
+            'college_id' => null,
+        ]);
+    }
+    
 }

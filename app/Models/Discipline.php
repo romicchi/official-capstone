@@ -7,12 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Discipline extends Model
 {
-
     use HasFactory;
 
     protected $table = 'disciplines'; // Name of the table in the database
 
-    protected $fillable = ['name']; // Fillable attributes
+    protected $fillable = ['disciplineName', 'college_id']; // Fillable attributes
 
     // Relationship with a single college
     public function college()
