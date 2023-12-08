@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\User;
+use Faker\Generator as Faker;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -18,11 +20,20 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'firstname' => $this->faker->firstName,
+            'lastname' => $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail,
+            'year_level' => $this->faker->randomElement([1, 2, 3, 4]), // Example for year level
+            'role_id' => 3, // Default role ID
+            'student_number' => $this->faker->unique()->randomNumber(8),
+            'url' => $this->faker->url,
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'),
+            'seen_guide' => 0,
             'remember_token' => Str::random(10),
+            'college_id' => function() {
+                return \App\Models\College::factory()->create()->id;
+            },
         ];
     }
 

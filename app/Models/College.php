@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class College extends Model
 {
+    use HasFactory;
+
     protected $table = 'college'; // Name of the colleges table in the database
     protected $with = ['college'];
 
