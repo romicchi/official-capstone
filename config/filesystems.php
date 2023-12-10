@@ -32,11 +32,13 @@ return [
         
         'hostinger' => [
             'driver' => 'ftp',
-            'host' => 'ftp://gener-lnulib.site',
+            'host' => 'gener-lnulib.site',
             'username' => 'u203878552',
             'password' => 'Generlnu123!',
             'port' => 21,
             'root' => '/public_html',
+            'passive' => true,
+            'ssl' => true,
             'timeout' => 60,
         ],
 

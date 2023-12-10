@@ -48,16 +48,18 @@ class BackupRestoreController extends Controller
 
     public function backup()
     {
-        $artisanPath = base_path('artisan');
-        $exitCode = null;
-        $output = null;
-        
-        exec("php \"$artisanPath\" backup:run", $output, $exitCode);
-        
-        if ($exitCode === 0) {
-            return redirect()->route('administrator.dashboard')->with('success', 'Backup completed successfully.');
-        } else {
-            return redirect()->back()->with('error', 'Backup operation failed.');
+        try {
+            // Run the backup command using Artisan
+            Artisan::call('backup:run');
+
+            // Check if the backup command was successful
+            if (\Artisan::output() === 'Backup completed successfully.') {
+                return redirect()->route('administrator.dashboard')->with('success', 'Backup completed successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Backup operation failed.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Backup operation failed: ' . $e->getMessage());
         }
     }
 
