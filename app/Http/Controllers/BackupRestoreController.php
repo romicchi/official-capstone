@@ -52,7 +52,7 @@ class BackupRestoreController extends Controller
         $exitCode = null;
         $output = null;
         
-        exec("php \"$artisanPath\" backup:run --only-db --destination=hostinger", $output, $exitCode);
+        exec("php \"$artisanPath\" backup:run", $output, $exitCode);
         
         if ($exitCode === 0) {
             return redirect()->route('administrator.dashboard')->with('success', 'Backup completed successfully.');
