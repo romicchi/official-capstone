@@ -29,18 +29,6 @@ return [
     */
 
     'disks' => [
-        
-        'hostinger' => [
-            'driver' => 'ftp',
-            'host' => 'gener-lnulib.site',
-            'username' => 'u203878552',
-            'password' => 'Generlnu123!',
-            'port' => 21,
-            'root' => '/public_html',
-            'passive' => true,
-            'ssl' => true,
-            'timeout' => 60,
-        ],
 
         'firebase' => [
             'driver' => 'firebase',

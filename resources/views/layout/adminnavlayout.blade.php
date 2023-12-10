@@ -66,8 +66,6 @@
                         Manage User</a>
                     </li>
 
-                    <!-- Feature/Button available for the admin role only -->
-                    @if (auth()->user()->role_id === 3)
                     <li class="nav-item">
                     <a class="nav-link {{ $currentRoute === 'adminresourcemanage' ? 'active' : 'inactive' }}" href="{{ route('adminresourcemanage') }}">
                             <i class="fas fa-book fa-xs"></i>
@@ -79,19 +77,12 @@
                             <i class="fas fa-graduation-cap fa-xs"></i>
                             Academics</a>
                     <li class="nav-item">
-                    @endif
 
                     <li class="nav-item">
                         <a class="nav-link {{ $currentRoute === 'activity-log' ? 'active' : 'inactive' }}" href="{{ route('activity-log') }}?activeTab=colleges">
                             <i class="fas fa-clipboard-list fa-xs"></i>
                             Activity Logs</a>
                     <li class="nav-item">
-
-                    <li class="nav-item">
-                        <a class="nav-link {{ $currentRoute === 'administrator.login' ? 'active' : 'inactive' }}" href="{{ route('administrator.login') }}">
-                            <i class="fas fa-window-restore fa-xs"></i>
-                            Backup & Restore</a>
-                    </li>
 
                     <!-- Divider -->
                     <hr class="sidebar-divider my-0">

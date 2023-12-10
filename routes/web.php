@@ -7,7 +7,6 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AcademicsController;
 use App\Http\Controllers\AuthenticatedController;
-use App\Http\Controllers\BackupRestoreController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
@@ -121,18 +120,6 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 
     Route::get('academics/filter-courses', [AcademicsController::class, 'filterCourses'])->name('academics.filterCourses');
     Route::get('academics/filter-disciplines', [AcademicsController::class, 'filterDisciplines'])->name('academics.filterDisciplines');
-
-    // -------------------------- BACKUP AND RESTORE --------------------------------//
-    Route::get('/backup-restore/login', [BackupRestoreController::class, 'showLoginForm'])->name('administrator.login');
-    Route::post('/backup-restore/login', [BackupRestoreController::class, 'login'])->name('administrator.login.submit');
-    Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
-    Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
-    
-    Route::middleware(['auth', 'role:4'])->group(function () {
-        Route::get('backup-restore/dashboard', [BackupRestoreController::class, 'dashboard'])->name('administrator.dashboard');
-        Route::post('/backup-restore/backup', [BackupRestoreController::class, 'backup'])->name('administrator.backup');
-        Route::post('/backup-restore/restore', [BackupRestoreController::class, 'restore'])->name('administrator.restore');
-    });
 
     // -------------------------- ACTIVITY LOGS --------------------------------//
     Route::get('/activity-log', [ActivityLogController::class, 'index'])->name('activity-log');
