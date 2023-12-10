@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Google_Client;
 use Google_Service_Drive;
 use Google\Cloud\Storage\StorageClient;
@@ -54,7 +55,9 @@ class AdminController extends Controller
         ->get();
 
         // Cards
-        $verifiedUsersCount = User::where('verified', true)->count();
+        $verifiedUsersCount = User::where('verified', true)
+        ->whereIn('role_id', [1, 2])
+        ->count();        
         $totalResourcesCount = Resource::count();
         $pendingUsersCount = User::where('verified', false)->count();
 
@@ -68,6 +71,12 @@ class AdminController extends Controller
         $teacherCount = User::where('role_id', 2)->count(); // Teacher Count
         $adminCount = User::where('role_id', 3)->count(); // Admin Count
 
+        $totalUsers = $studentCount + $teacherCount + $adminCount;
+
+        $studentsPercentage = $totalUsers > 0 ? ($studentCount / $totalUsers) * 100 : 0;
+        $teachersPercentage = $totalUsers > 0 ? ($teacherCount / $totalUsers) * 100 : 0;
+        $adminsPercentage = $totalUsers > 0 ? ($adminCount / $totalUsers) * 100 : 0;
+
         return view('administrator.adminpage', 
         compact(
             'verifiedUsersCount', 
@@ -78,7 +87,10 @@ class AdminController extends Controller
             'teacherCount', 
             'adminCount', 
             'mostFavoriteResources',
-            'mostRepliedDiscussions'));
+            'mostRepliedDiscussions', 
+            'studentsPercentage', 
+            'teachersPercentage', 
+            'adminsPercentage'));
     }
 
     public function getChartData(Request $request)

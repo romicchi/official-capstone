@@ -33,32 +33,28 @@
                 </form>
             </div>
 
-             <!-- Sort Discussions -->
+             <!-- Filter & Sort Discussions -->
              <form action="{{ route('discussions.index') }}" method="GET">
-                    <div class="form-group d-flex justify-content-center">
-                    <label class="hide-label-xs">Select a Course:</label>
-                        <select name="course" id="course" class="form-control">
-                            <option value="">All Courses</option>
-                            @foreach ($courses as $course)
-                                <option value="{{ $course->id }}" @if(request()->get('course') == $course->id) selected @endif>
-                                    {{ $course->courseName }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </form>
+                <div class="form-group d-flex justify-content-center">
+                    <label class="hide-label-xs">Select Course:</label>
+                    <select name="course" id="course" class="form-control select-height">
+                        <option value="">All Courses</option>
+                        @foreach ($courses as $course)
+                            <option value="{{ $course->id }}" @if(request()->get('course') == $course->id) selected @endif>
+                                {{ $course->courseName }}
+                            </option>
+                        @endforeach
+                    </select>
 
+                    <label class="hide-label-xs ml-3">Sort Discussions:</label>
+                    <select name="sort" id="sort" class="form-control select-height mr-2">
+                        <option value="newest" @if(request()->get('sort') == 'newest') selected @endif>Newest to Oldest</option>
+                        <option value="oldest" @if(request()->get('sort') == 'oldest') selected @endif>Oldest to Newest</option>
+                    </select>
 
-                <form action="{{ route('discussions.index') }}" method="GET">
-                    <div class="form-group d-flex justify-content-center">
-                    <label class="hide-label-xs">Sort Discussions:</label>
-                        <select name="sort" id="sort" class="form-control mr-2">
-                            <option value="newest" @if(request()->get('sort') == 'newest') selected @endif>Newest to Oldest</option>
-                            <option value="oldest" @if(request()->get('sort') == 'oldest') selected @endif>Oldest to Newest</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Apply</button>
-                    </div>
-                </form>
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                </div>
+            </form>
 
             <!-- Add Button -->
                 <a href="{{ route('discussions.create') }}" class="btn btn-info text-right" title="Create Discussion">+</a>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use App\Mail\RegistrationEmail;
 use App\Rules\ValidEmailDomain;
 use App\Models\User;
@@ -35,13 +36,38 @@ class AuthController extends Controller
     function loginPost(Request $request)
     {
         $request->validate([
-            'email_or_student_number' => 'required|email',
+            'email_or_student_number' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (!filter_var($value, FILTER_VALIDATE_EMAIL) && !is_numeric($value)) {
+                        $fail('The '.$attribute.' must be a valid email address or a student number.');
+                    }
+                },
+            ],
             'password' => 'required|min:8'
         ]);
     
         $emailOrStudentNumber = $request->input('email_or_student_number'); // Get the input from the form
         $password = $request->input('password');
         $remember = $request->has('remember'); // Check if "Remember Me" is checkeds
+
+        // Check if a user with the provided email or student number exists
+        $user = User::where('email', $emailOrStudentNumber)
+        ->orWhere('student_number', $emailOrStudentNumber)
+        ->first();
+
+        if (!$user) {
+        return back()->withErrors([
+        'email_or_student_number' => 'The provided email or student number does not exist in our system.',
+        ]);
+        }
+
+        // Check if the user's account is verified
+        if (!$user->verified) {
+            return back()->withErrors([
+                'email_or_student_number' => 'Your account is not verified. Please wait for an admin to verify your account.',
+            ]);
+        }
 
         $credentials = [
             'password' => $password

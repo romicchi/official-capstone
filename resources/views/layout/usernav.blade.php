@@ -96,11 +96,9 @@
 
                 <!-- Date and Time -->
                 <div class="navbar-text text-white text-center mt-4">
-                  <div>
-                    <strong>{{ date('F d, Y') }}</strong>
+                <div class="font-poppins-bold" id="date">
                   </div>
-                  <div>
-                    {{ date('h:i A') }}
+                  <div id="time">
                   </div>
               </ul>
             </div>
@@ -125,6 +123,18 @@
       </div>
           <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+          <script>
+          function updateDateTime() {
+            var now = new Date();
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString(undefined, options);
+            document.getElementById('time').textContent = now.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+          }
+
+          // Update the date and time immediately, then every second
+          updateDateTime();
+          setInterval(updateDateTime, 1000);
+        </script>
           <script>
               $(document).ready(function() {
               $('.dropdown-submenu a.dropdown-toggle').on("click", function(e) {

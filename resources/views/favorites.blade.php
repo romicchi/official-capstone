@@ -36,7 +36,7 @@
             <thead class="table">
                 <tr>
                     <th>Title</th>
-                    <th>Author</th>
+                    <th>Uploader</th>
                     <th></th>
                 </tr>
             </thead>

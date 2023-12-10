@@ -47,7 +47,7 @@
                 <thead>
                     <tr>
                         <th>Title</th>
-                        <th>Author</th>
+                        <th>Uploader</th>
                         <th>Rating</th>
                         <th>Date</th>
                         <th></th>
@@ -70,7 +70,7 @@
                             <td>
                             <div class="d-flex justify-content-end">
                                 <button class="toggle-favorite" data-resource-id="{{ $resource->id }}">
-                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas' : 'far' }} fa-star"></i>
+                                    <i class="{{ auth()->user()->favorites->contains($resource) ? 'fas fa-heart' : 'far fa-heart' }}"></i>
                                 </button>
                             </div>
                             </td>

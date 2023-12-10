@@ -10,6 +10,7 @@ use App\Models\ArchiveUser;
 use App\Models\Journal;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Session;  
 use Google\Cloud\Storage\StorageClient;
@@ -200,6 +201,14 @@ class UsermanageController extends Controller
             Mail::to($user->email)->send(new UserVerifiedEmail($user));
         }
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'has verified users',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $activeTab = 'pending';
     
         return redirect()->route('usermanage', compact('activeTab'))->with('success', 'Users verified successfully.');
@@ -219,6 +228,14 @@ class UsermanageController extends Controller
             
             // Delete the user
             $userdata->delete();
+
+            // log
+            \DB::table('activity_logs')->insert([
+                'user_id' => auth()->user()->id,
+                'activity' => 'has deleted a user',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
         }
 
         $activeTab = 'existing';
@@ -277,6 +294,14 @@ class UsermanageController extends Controller
     }
 
     $userdata->save();
+
+    // log
+    \DB::table('activity_logs')->insert([
+        'user_id' => auth()->user()->id,
+        'activity' => 'has updated a user',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 
     $activeTab = 'existing';
 
@@ -635,6 +660,14 @@ public function archive($id)
         
         $activeTab = 'existing';
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'has archived a user',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         // Redirect back to the archive view
         return redirect()->route('usermanage', compact('pendingUsers', 'existingUsers', 'activeTab', 'roles', 'archiveViewableUsers'))->with('success', 'User Archived successfully.');
     } else {
@@ -672,6 +705,14 @@ public function reactivate($id)
     $user->url = $archivedUser->url;
 
     $user->save();
+
+    // log
+    \DB::table('activity_logs')->insert([
+        'user_id' => auth()->user()->id,
+        'activity' => 'has reactivated a user',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 
     // Retrieve the journals of the archived user
     $journals = Journal::where('user_id', $archivedUser->user_id)->get();
@@ -720,6 +761,14 @@ public function deleteArchive($id)
         // User exists, force delete it
         $userdata->forceDelete();
     }
+
+    // log
+    \DB::table('activity_logs')->insert([
+        'user_id' => auth()->user()->id,
+        'activity' => 'has deleted an archived user',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 
     $activeTab = 'archive';
 

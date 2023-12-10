@@ -100,7 +100,7 @@
                 <td><strong>{{ $user->lastname }}</strong></td>
                 <td><strong>{{ $user->firstname }}</strong></td>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->college->collegeName }}</td>
+                <td>{{ $user->college->collegeName ?? 'Not specified' }}</td>
                 <td>{{ $user->role->role }}</td>
                 <td>
                     <!-- Clickable preview image -->
@@ -251,7 +251,7 @@
                         <td><strong>{{ $user->lastname }}</strong></td>
                         <td><strong>{{ $user->firstname }}</strong></td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->college->collegeName }}</td>
+                        <td>{{ $user->college->collegeName ?? 'Not specified' }}</td>
                         <td>{{ $user->role->role }}</td>
                         <td>
                           @if ($user->year_level)
@@ -402,7 +402,7 @@
                         <td><strong>{{ $user->lastname }}</strong></td>
                         <td><strong>{{ $user->firstname }}</strong></td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->college->collegeName }}</td>
+                        <td>{{ $user->college->collegeName ?? 'Not specified' }}</td>
                         <td>{{ $user->role->role }}</td>
                         <td>
                             <!-- Display Uploaded ID with a clickable preview -->

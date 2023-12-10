@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class SettingsController extends Controller
 {
@@ -37,6 +38,14 @@ class SettingsController extends Controller
         if (Hash::check($request->current_password, $user->password)) {
             $user->password = Hash::make($request->password);
             $user->save();
+
+        // Log the 'password' activity before updating
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Changed password',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
             return redirect()->back()->with('password_success', 'Password changed successfully');
         } else {
             return redirect()->back()->with('error', 'Current password is incorrect.');
@@ -53,6 +62,14 @@ class SettingsController extends Controller
         ]);
     
         $user->update($validatedData);
+
+    // Log the 'update' activity before updating
+    \DB::table('activity_logs')->insert([
+        'user_id' => Auth::user()->id,
+        'activity' => 'Updated profile information',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
     
         return redirect()->back()->with('profile_success', 'Profile information updated successfully');
     }

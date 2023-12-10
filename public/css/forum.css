@@ -102,6 +102,14 @@
   max-width: 100%;
 }
 
+.select-height {
+  height: 50px; /* Adjust this value as needed */
+}
+
+.ml-3 {
+  margin-left: 1rem; /* Adjust this value as needed */
+}
+
     /* Hide labels on mobile screens */
     @media (max-width: 767px) {
       label {

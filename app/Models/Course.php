@@ -19,6 +19,11 @@ class Course extends Model
         return $this->belongsTo(College::class);
     }
 
+    public function discipline()
+    {
+        return $this->hasMany(Discipline::class);
+    }
+
     // Relationship with subjects
     public function subjects()
     {

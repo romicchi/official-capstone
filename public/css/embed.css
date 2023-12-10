@@ -50,6 +50,15 @@ body {
     margin-bottom: 20px;
 }
 
+/* description */
+.resource-description {
+    text-indent: 50px;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
 @media screen and (max-width: 993px) {
     body {
           padding-left: 1rem;

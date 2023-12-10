@@ -27,6 +27,18 @@
                     <option value="login">Login</option>
                     <option value="logout">Logout</option>
                     <option value="register">Register</option>
+                    <option value="verified">Verify</option>
+                    <option value="archive">Archive</option>
+                    <option value="reactivate">Reactivate</option>
+                    <option value="upload">Upload</option>
+                    <option value="favorite">Favorite</option>
+                    <option value="download">Download</option>
+                    <option value="rate">Rate</option>
+                    <option value="comment">Comment</option>
+                    <option value="delete">Delete</option>
+                    <option value="create">Create</option>
+                    <option value="update">Update</option>
+                    <option value="add">Add</option>
                 </select>
                 <button type="submit" class="btn btn-primary">Filter</button>
             </div>

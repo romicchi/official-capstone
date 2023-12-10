@@ -16,7 +16,7 @@ body {
 }
 
 .card-body.add {
-    height: 25rem;
+    height: auto;
     overflow: auto;
 }
 
@@ -56,5 +56,25 @@ a {
     .hover:hover {
         color: #007bff; /* Blue color */
         text-decoration: underline;
+    }
+
+    .center {
+        text-align: center;
+    }
+}
+
+.form-control {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.mt {
+    margin-top: 0.9rem;
+}
+
+/* screensize 480 */
+@media (max-width: 768px) {
+    .center {
+        text-align: center;
     }
 }

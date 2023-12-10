@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 
 class CommentController extends Controller
@@ -20,6 +21,14 @@ class CommentController extends Controller
             'resource_id' => $validatedData['resource_id'],
             'comment_text' => $validatedData['comment_text'],
         ]);
+
+        // log
+        DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Commented on a resource',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
@@ -31,6 +40,14 @@ class CommentController extends Controller
         }
     
         $comment->delete();
+
+        // log
+        DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Deleted a comment',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         return redirect()->back()->with('success', 'Comment deleted successfully.');
     }

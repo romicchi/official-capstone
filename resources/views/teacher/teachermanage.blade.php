@@ -14,62 +14,72 @@
     <section class="resource-management">
   <div class="h4 font-poppins-bold">Resource Management</div>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
       <div class="card shadow">
         <div class="card-body add">
-          <h4 class="card-title text-center">Add Resource</h4>
+          <h4 class="card-title">Add Resource</h4>
           <form action="{{ route('resources.store') }}" method="POST" enctype="multipart/form-data">
-          @csrf
-
-          <div class="form-group row my-3 justify-content-center">
-                <div class="col-md-9">
-                    <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" style="width: 100%;" required>
-                    @error('file')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            
-            <div class="form-group">
-              <label for="title">Title</label>
-              <input type="text" class="form-control" id="title" name="title" maxlength="100" value="{{ old('title') }}">
-              @error('title')
-              <small _ngcontent-irw-c66 class="text-danger">* Title is required.</small>
-              @enderror
-            </div>
-
-            <div class="form-group row">
-                <div class="col-md-9 offset-md-3">
-                    <button type="submit" id="upload-button" class="btn btn-primary m-4">
-                        {{ __('Upload') }}
-                    </button>
-                </div>
+            @csrf
+            <div class="form-group row my-3 justify-content-center">
+              <div class="col-md-4">
+                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror input-margin" name="file" required>
+                @error('file')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
+              <div class="col-md-4 d-flex align-items-center">
+                <label for="title" class="ml-2 pb-4">Title:</label>
+                <input type="text" class="form-control input-margin" id="title" name="title" maxlength="100" value="{{ old('title') }}" required>
+                @error('title')
+                <small _ngcontent-irw-c66 class="text-danger">* Title is required.</small>
+                @enderror
+              </div>
+              <div class="col-md-4 center">
+                <button type="submit" id="upload-button" class="btn btn-primary mt input-margin">
+                  {{ __('Upload') }}
+                </button>
+              </div>
             </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="col-md-8 my-1">
+    <div class="col-md-12 my-1">
       <div class="row">
         <div class="col-md-12">
+          <!-- Search Form -->
+          <div class="d-md-flex justify-content-between align-items-center">
+            <!-- Search at the top for screensizes above 480 -->
+            <form action="{{ route('teacher.search') }}" method="GET" class="mb-3 mb-md-0">
+              <div class="input-group">
+                <input type="text" class="form-control" size="30" id="searchInput" name="search" placeholder="Search by Title...">
+              </div>
+            </form>
+            <!-- Filter by discipline at the bottom for screensizes 480 and below -->
+            <form action="{{ route('teacher.manage') }}" method="GET" class="mt-md-3">
+                <div class="input-group">
+                    <select name="filter" class="form-control form-control-md">
+                        <option value="">All Disciplines</option>
+                        @foreach($disciplines as $discipline)
+                            <option value="{{ $discipline->id }}">{{ $discipline->disciplineName }}</option>
+                        @endforeach
+                    </select>
+                    <div class="input-group-append mt-2 mt-sm-2 mt-md-2 mt-lg-2">
+                        <button type="submit" class="btn btn-primary btn-md">Filter</button>
+                    </div>
+                </div>
+            </form>
+          </div>
           <div class="card shadow">
             <div class="card-body">
               <h4 class="card-title">Your File Uploads</h4>
-                            <!-- Search Form -->
-                            <form action="{{ route('teacher.search') }}" method="GET">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="searchInput" name="search" placeholder="Search by Title...">
-                                    <div class="input-group-append">
-                                    </div>
-                                </div>
-                            </form>
                 <table class="table" id="resourceTable">
                   <thead>
                     <tr>
                       <th>Title</th>
-                      <th>Author</th>
+                      <th>Uploader</th>
                       <th>College</th>
                       <th>Discipline</th>
                       <th>Action</th>
@@ -116,7 +126,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-center my-4">
-              {{ $resources->appends(['search' => request('search')])->links('pagination::bootstrap-4') }}
+              {{ $resources->appends(['search' => request('search'), 'filter' => request('filter')])->onEachSide(3)->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

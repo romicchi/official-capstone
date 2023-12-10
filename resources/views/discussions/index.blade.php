@@ -68,7 +68,7 @@
                                             @endif
                                         </div>
                                         <div>
-                                            Course: {{ $discussion->course->courseName }}
+                                            Course: {{ $discussion->course->courseName ?? 'None'}}
                                         </div>
                                         <div>
                                             Date: {{ $discussion->created_at->format('F d, Y') }}

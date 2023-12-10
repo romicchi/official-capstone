@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\History;
 use App\Models\Discussion;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ResourceController;
 use openai;
 
@@ -21,7 +22,7 @@ class ChartController extends Controller
     {
         $user = auth()->user();
         $userFullName = auth()->user()->firstname . ' ' . auth()->user()->lastname;
-$uploads = Resource::where('author', $userFullName)->count();
+        $uploads = Resource::where('author', $userFullName)->count();
         $journals = $user->journals()->count();
         $favorites = $user->favorites()->count();
         $discussions = $user->discussions()->count();

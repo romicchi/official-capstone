@@ -26,6 +26,11 @@ html {
     background-color: #F9FAFB; /* Light gray */
     border-radius: 10px;
   }
+
+.form-control:not(:focus) {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+  }
   
 .form-control:focus {
   border-color: black;

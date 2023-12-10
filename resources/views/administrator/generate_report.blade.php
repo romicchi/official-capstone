@@ -171,6 +171,11 @@
 
             // Submit the form
             this.closest('form').submit();
+
+            // Hide the loader after a delay (adjust delay as needed)
+            setTimeout(function () {
+                document.querySelector('.loader-container').style.display = 'none';
+            }, 3000); // Change the delay time as needed
         }
     });
 </script>

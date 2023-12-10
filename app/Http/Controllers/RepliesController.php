@@ -8,6 +8,7 @@ use App\Models\Discussion;
 use App\Models\Reply;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class RepliesController extends Controller
@@ -54,6 +55,14 @@ class RepliesController extends Controller
             $notification->discussion_slug = $discussionSlug;
             $notification->save();
         }
+
+        // log
+        DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Commented on a discussion',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         session()->flash('success', 'Replied to discussion.');
         return redirect()->back();
@@ -95,6 +104,14 @@ class RepliesController extends Controller
         } else {
             session()->flash('error', 'You are not authorized to delete this reply.');
         }
+
+        // log
+        DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Deleted a reply',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         return redirect()->back();
     }

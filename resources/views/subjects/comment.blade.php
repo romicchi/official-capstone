@@ -29,7 +29,7 @@
                         </div>
                         @endif
                     </div>
-                    <div class="comment-body {{ strlen($comment->comment_text) > 400 ? 'scrollable' : '' }}">
+                    <div class="comment-body {{ strlen($comment->comment_text) > 600 ? 'scrollable' : '' }}">
                         <p style="word-wrap: break-word;">{{ $comment->comment_text }}</p>
                         <small>{{ $comment->created_at->diffForHumans() }}</small>
 

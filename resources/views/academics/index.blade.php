@@ -96,7 +96,7 @@
                 @foreach($courses as $course)
                     <tr class="font-poppins-bold">
                         <td>{{ $course->courseName }}</td>
-                        <td>{{ $course->college->collegeName }}</td>
+                        <td>{{ $course->college->collegeName ?? 'Not specified' }}</td>
                         <td>
                             <div class="p-1 my-1">
                                 <a href="{{ route('academics.editCourse', $course->id) }}" title="Edit" class="btn">
@@ -159,7 +159,7 @@
                 @foreach($disciplines as $discipline)
                     <tr class="font-poppins-bold">
                         <td>{{ $discipline->disciplineName }}</td>
-                        <td>{{ $discipline->college->collegeName }}</td>
+                        <td>{{ $discipline->college->collegeName ?? 'Not specified' }}</td>
                         <td>
                             <div class="p-1 my-1">
                                 <a href="{{ route('academics.editDiscipline', $discipline->id) }}" class="btn" title="Edit">

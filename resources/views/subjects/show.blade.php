@@ -18,15 +18,28 @@
         </head>
         <body>
         <div class="row">
-            <div class="col-md-8">
-                
-                <div class="text-center resource-info">
-                    <h2 class="resource-title font-poppins-bold">{{ $resource->title }}</h2>
-                    <p class="resource-author">Author: {{ $resource->author }}</p>
-                    <!-- rating given -->
-                    @if($userRating)
-                    <p>Your Rating: {{ $userRating->rating }}</p>
-                    @endif
+            <div class="col-md-12">
+            
+                <div class="card p-4 mb-2">
+                    <div class="text-center resource-info">
+                        <h2 class="resource-title font-poppins-bold">{{ $resource->title }}</h2>
+                        <p class="resource-author">Author: {{ $resource->author }}</p>
+                    </div>
+                    <p class="resource-description text-justify font-italic">{{ $resource->description }}</p>                    
+                    <div class="text-center resource-info">
+                        <p class="resource-keywords text-muted"><small>Keywords: {{ $resource->keywords }}</small></p>
+                        <!-- rating given -->
+                        @if($userRating)
+                        <div class="mt-3">
+                            <span class="ml-2">Your Rating: {{ $userRating->rating }}</span>
+                            <span class="text-warning">
+                                @for ($i = 1; $i <= $userRating->rating; $i++)
+                                <i class="fas fa-star"></i>
+                                @endfor
+                            </span>
+                        </div>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
@@ -68,7 +81,7 @@
             </div>
 
             </div>
-            <div class="col-md-4 comment-container">
+            <div class="col-md-12 comment-container mb-5">
                 @include('subjects.comment')
                 @include('subjects.comment_form')
             </div>

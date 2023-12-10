@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 
@@ -46,6 +47,14 @@ class AcademicsController extends Controller
         $college->collegeName = $request->input('collegeName');
         $college->save();
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Added college',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('academics.index')->with('success', 'Successfully added college.');
     }
 
@@ -71,26 +80,37 @@ class AcademicsController extends Controller
         $college->collegeName = $request->input('collegeName');
         $college->save();
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Updated college',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('academics.index')->with('success', 'Successfully updated college.');
     }
 
     public function destroyCollege($id)
     {
         $college = College::findOrFail($id);
-    
-        // Get all the courses associated with the college
-        $courses = $college->courses;
-    
-        // Loop through each course and delete its associated discipline
-        foreach ($courses as $course) {
-            $course->discipline()->delete();
-        }
-    
-        // Delete the courses
-        $courses->each->delete();
+
+        // Set college_id to NULL for all users associated with the college
+        foreach ($college->users as $user) {
+            $user->college_id = null;
+            $user->save();
+        }    
     
         // Delete the college
         $college->delete();
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Deleted college',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         return redirect()->route('academics.index')->with('success', 'Successfully deleted college, courses, and disciplines.');
     }
@@ -112,6 +132,14 @@ class AcademicsController extends Controller
         $course->courseName = $request->input('courseName');
         $course->college_id = $request->input('college_id');
         $course->save();
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Added course',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // Set active tab to "courses"
         $activeTab = 'courses';
@@ -137,6 +165,14 @@ class AcademicsController extends Controller
         $course->college_id = $request->input('college_id');
         $course->save();
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Updated course',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $activeTab = 'courses';
 
         return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully updated course.');
@@ -146,6 +182,14 @@ class AcademicsController extends Controller
     {
         $course = Course::findOrFail($id);
         $course->delete();
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Deleted course',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         // Set active tab to "courses"
         $activeTab = 'courses';
@@ -223,6 +267,14 @@ class AcademicsController extends Controller
 
         $discipline->save();
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Added discipline',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $activeTab = 'disciplines';
 
         return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully added discipline.');
@@ -246,6 +298,14 @@ class AcademicsController extends Controller
         $discipline->college_id = $request->input('college_id');
         $discipline->save();
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Updated discipline',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $activeTab = 'disciplines';
 
         return redirect()->route('academics.index', compact('activeTab'))->with('success', 'Successfully updated discipline.');
@@ -255,6 +315,14 @@ class AcademicsController extends Controller
     {
         $discipline = Discipline::findOrFail($id);
         $discipline->delete();
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => Auth::user()->id,
+            'activity' => 'Deleted discipline',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         $activeTab = 'disciplines';
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Http\Requests\CreateDiscussionRequest;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 
 
@@ -33,7 +34,7 @@ class DiscussionsController extends Controller
         Paginator::useBootstrap();
     
         $query = Discussion::query();
-
+    
         // Eager load author and course relationships
         $query->with(['author', 'course']);
     
@@ -58,17 +59,16 @@ class DiscussionsController extends Controller
             $query->orderBy('created_at', 'desc'); // Default to newest
         }
     
-        $discussions = $query->paginate(7)->onEachSide(1);
+        // Search discussions
+        $searchQuery = $request->input('search');
+        if ($searchQuery) {
+            $query->where('title', 'like', '%' . $searchQuery . '%');
+        }
+    
+        $discussions = $query->paginate(10)->onEachSide(1);
         $discussions->appends($request->query());
-
+    
         $characterLimit = 100;
-
-        $query = $request->input('search');
-        $discussions = Discussion::query()
-            ->when($query, function ($q) use ($query) {
-                return $q->where('title', 'like', '%' . $query . '%');
-            })
-            ->paginate(10);
     
         return view('discussions.index', [
             'discussions' => $discussions,
@@ -105,6 +105,14 @@ class DiscussionsController extends Controller
             'channel_id' => $request->channel,
             'course_id' => $request->course,
             'slug' => $slug,
+        ]);
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Created a discussion',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         session()->flash('success', 'Discussion posted.');
@@ -172,6 +180,14 @@ class DiscussionsController extends Controller
             'content' => $validatedData['content'],
             'slug' => $validatedData['slug'] ?? $discussion->slug, // Use the existing slug if not generated a new one
         ]);
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Updated a discussion',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         // Redirect to the discussion's show page or any other appropriate page
         return redirect()->route('discussions.show', $discussion->slug)->with('success', 'Discussion updated successfully.');
@@ -189,6 +205,14 @@ class DiscussionsController extends Controller
         }
 
         $discussion->delete();
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Deleted a discussion',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         session()->flash('success', 'Discussion deleted.');
         return redirect()->route('discussions.index');

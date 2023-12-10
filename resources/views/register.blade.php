@@ -48,7 +48,7 @@
                         <label for="email" class="col-form-label">Email:</label>
                         <input type="email" class="form-control" maxlength="50" id="email" name="email" placeholder="Enter Email" value="{{ old('email') }}">
                         @error('email')
-                        <small _ngcontent-irw-c66 class="text-danger">* Email is required.</small>
+                        <small _ngcontent-irw-c66 class="text-danger">* {{ $message }}</small>
                         @enderror
                     </div>
                     <div class="col-md-6">

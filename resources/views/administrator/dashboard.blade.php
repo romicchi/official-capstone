@@ -18,7 +18,7 @@
                         <h2 class="text-center">Backup</h2>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('administrator.backup') }}" method="post">
+                        <form class="form-style" action="{{ route('administrator.backup') }}" method="post">
                             @csrf
                             <button type="submit" id="backup-button" class="btn btn-primary">Backup</button>
                         </form>
@@ -34,7 +34,7 @@
                         <h2 class="text-center">Restore Backup</h2>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('administrator.restore') }}" method="post" enctype="multipart/form-data">
+                        <form class="form-style" action="{{ route('administrator.restore') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="backup_file">Select Backup ZIP/Sql File:</label>

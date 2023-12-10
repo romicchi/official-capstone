@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Spatie\GoogleDrive\GoogleDriveAdapter;
 use Illuminate\Support\Facades\File;
 use Google\Client as GoogleClient;
@@ -41,6 +43,11 @@ class JournalController extends Controller
 
         // Retrieve the filtered journals
         $journals = $matchingJournals->paginate(5);
+        
+            // If the request is AJAX, return the journals as JSON
+    if ($request->ajax()) {
+        return response()->json(view('journals.list', compact('journals'))->render());
+    }
 
         // Retrieve all disciplines for the dropdown
         $disciplines = Discipline::all();
@@ -85,6 +92,14 @@ class JournalController extends Controller
             'college_id' => $validatedData['college_id'], // Use college_id
             'discipline_id' => $validatedData['discipline_id'], // Use discipline_id
             'user_id' => auth()->user()->id,
+        ]);
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Created a journal',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     
         $user = auth()->user();
@@ -202,6 +217,14 @@ class JournalController extends Controller
             'title' => $validatedData['title'],
             'content' => $validatedData['content'],
         ]);
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Updated a journal',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         return redirect()->route('journals.show', $journal);
     }
@@ -229,6 +252,14 @@ class JournalController extends Controller
     
         // PDF file name
         $fileName = $journal->title . '.pdf';
+
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'Downloaded a journal',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         return $pdf->download($fileName);
     }

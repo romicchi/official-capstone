@@ -13,6 +13,7 @@ use App\Models\Resource;
 use App\Models\ResourceRating;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Storage\StorageClient;
@@ -38,11 +39,23 @@ class ResourceController extends Controller
     }
 
     //--------------TEACHER-----------------//
-    public function showTeacherManage()
+    public function showTeacherManage(Request $request)
     {
-        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)->paginate(10)->onEachSide(1);
+        $filter = $request->input('filter'); // No default filter
     
-        return view('teacher.teachermanage', compact('resources'));
+        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname);
+    
+        if ($filter) {
+            $resources->where('discipline_id', $filter); // Filter by discipline
+        }
+    
+        $resources = $resources->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->onEachSide(1);
+    
+        $disciplines = Discipline::all(); // Retrieve all disciplines
+    
+        return view('teacher.teachermanage', compact('resources', 'disciplines'));
     }
 
     public function searchTeacherResources(Request $request)
@@ -188,6 +201,14 @@ class ResourceController extends Controller
    // $resource->discipline_id = $validatedData['discipline'];
     $resource->save();
 
+    // Log the 'uploaded' activity before uploading
+    \DB::table('activity_logs')->insert([
+        'user_id' => auth()->user()->id,
+        'activity' => 'has uploaded a resource',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
     if ($resource) {
         // Process PDF file and create JSON file
         if ($extension === 'pdf') {
@@ -308,6 +329,14 @@ public function destroy($resourceId)
     // Initialize the Google Drive service
     $googleDrive = new GoogleDriveService($googleClient);
 
+    // Log the 'deleted' activity before deleting
+    \DB::table('activity_logs')->insert([
+        'user_id' => auth()->user()->id,
+        'activity' => 'has deleted a resource',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
+
     try {
         // Delete the resource file from Google Drive
         $googleDrive->files->delete($fileId);
@@ -404,6 +433,14 @@ public function update(Request $request, Resource $resource)
     
     // Generate unique JSON file name
     $jsonFileName = $this->generateUniqueJsonFileNameAfterUpdate($resource);
+
+    // Log the 'updated' activity before updating
+    \DB::table('activity_logs')->insert([
+        'user_id' => auth()->user()->id,
+        'activity' => 'has updated a resource',
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]);
 
     // Check if the resource has a JSON file associated with it
     if (!empty($resource->json_url)) {
@@ -611,6 +648,14 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
             // Set the appropriate content type and disposition for download
             $response->header('Content-Type', $fileMimeType);
             $response->header('Content-Disposition', 'attachment; filename="' . $resource->title . '.' . $fileExtension . '"');
+
+            // Log the 'downloaded' activity before downloading
+            \DB::table('activity_logs')->insert([
+                'user_id' => auth()->user()->id,
+                'activity' => 'has downloaded a resource',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
     
             // Return the response
             return $response;
@@ -666,6 +711,14 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
             $user->favorites()->attach($resource);
             $isFavorite = true;
         }
+
+        // Log the 'favorited' activity before favoriting
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'has favorited a resource',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
         // Return the updated favorite status
         return response()->json(['isFavorite' => $isFavorite]);
@@ -730,6 +783,14 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
                 'resource_id' => $resourceId,
                 'rating' => $rating,
             ]);
+
+        // Log the 'rated' activity before rating
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'has rated a resource',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     
             return response()->json(['success' => true]);
         }

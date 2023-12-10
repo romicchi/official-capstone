@@ -253,37 +253,75 @@
 
     // Pie Chart Example
     var ctx = document.getElementById("myPieChart");
-    if (ctx) {
-        var myPieChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ["Student", "Teacher", "Admin"],
-                datasets: [{
-                    data: [{{ $studentCount }}, {{ $teacherCount }}, {{ $adminCount }}],
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                    hoverBorderColor: "rgba(234, 236, 244, 1)",
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    caretPadding: 10,
+if (ctx) {
+    var data = [{{ $studentCount }}, {{ $teacherCount }}, {{ $adminCount }}]; // pass the counts instead of percentages
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ["Student", "Teacher", "Admin"],
+            datasets: [{
+                data: data,
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        var label = data.labels[tooltipItem.index];
+                        var count = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        return label + ': ' + count;
+                    }
                 },
-                legend: {
-                    display: false
-                },
-                cutoutPercentage: 80,
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
             },
-        });
-    }
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 80,
+            animation: {
+                onComplete: function () {
+                    var ctx = this.chart.ctx;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+
+                    this.data.datasets.forEach(function (dataset) {
+
+                        for (var i = 0; i < dataset.data.length; i++) {
+                            var model = dataset._meta[Object.keys(dataset._meta)[0]].data[i]._model,
+                                total = dataset._meta[Object.keys(dataset._meta)[0]].total,
+                                mid_radius = model.innerRadius + (model.outerRadius - model.innerRadius)/2,
+                                start_angle = model.startAngle,
+                                end_angle = model.endAngle,
+                                mid_angle = start_angle + (end_angle - start_angle)/4;
+
+                            var x = mid_radius * Math.cos(mid_angle);
+                            var y = mid_radius * Math.sin(mid_angle);
+
+                            ctx.fillStyle = '#212519';
+                            if (i == 3){ 
+                                ctx.fillStyle = '#212519';
+                            }
+                            var percent = String(Math.round(dataset.data[i]/total*100)) + "%";
+                            // Display percent in another line, line break doesn't work for fillText
+                            ctx.fillText(percent, model.x + x, model.y + y + 15);
+                        }
+                    });               
+                }
+            }
+        },
+    });
+}
 
 
     // area chart script
