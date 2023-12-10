@@ -26,18 +26,16 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
                             <!-- Search -->
-                            <form action="" method="GET">
+                            <form action="{{ route('discussions.index') }}" method="GET">
                                 <div class="input-group">
-                                    <input type="text" name="search" class="form-control" size="40" placeholder="Search by title">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">Search</button>
+                                <input type="text" name="search" class="form-control" size="40" placeholder="Search by title" onkeyup="performLiveSearch(this.value)">                                    <div class="input-group-append">
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" id="discussionList">
                     @if($discussions->isEmpty())
                     <div class="card my-4">
                         <div class="card-body d-flex justify-content-center align-items-center"> <!-- Utilizing flexbox classes -->
@@ -81,6 +79,7 @@
                         {{ $discussions->appends(request()->query())->links() }}
                     @endif
                 </div>
+                <div id="live-search-results"></div>
             </div>
         </main>
     @endauth
@@ -88,3 +87,9 @@
     @yield('js')
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="{{ asset('js/discussions.js') }}"></script>
+<script>
+    var searchUrl = '{{ route('discussions.index') }}';
+</script>

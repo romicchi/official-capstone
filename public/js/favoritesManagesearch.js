@@ -2,24 +2,22 @@
 
 //------------------------FAVORITES-MANAGE-SEARCH--------------------------//
 
-function searchFavorites() {
-    var input, filter, favorites, favorite, i, txtValue;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    favorites = document.getElementById("favoriteTable");
-    favorite = favorites.getElementsByTagName("tr");
-  
-    for (i = 0; i < favorite.length; i++) {
-      td = favorite[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          favorite[i].style.display = "";
-        } else {
-          favorite[i].style.display = "none";
-        }
+function performLiveSearch(query) {
+  $.ajax({
+      url: searchUrl,
+      method: 'GET',
+      data: { query: query },
+      success: function(response) {
+          if (query.trim() === '') {
+              $('#favorite-table-container').show(); // Show the favorite table if query is empty
+              $('#live-search-results').empty(); // Clear the live search results
+          } else {
+              $('#favorite-table-container').hide(); // Hide the favorite table if there's a query
+              $('#live-search-results').html(response); // Display the live search results
+          }
+      },
+      error: function(xhr) {
+          console.log(xhr.responseText);
       }
-    }
-  }
-  
-  document.getElementById("searchInput").addEventListener("keyup", searchFavorites);  
+  });
+}

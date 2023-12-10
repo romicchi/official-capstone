@@ -97,3 +97,34 @@ $(document).ready(function() {
         });
     });
 });
+
+
+// livesearch
+function performLiveSearch(query) {
+    $.ajax({
+        url: searchUrl,
+        method: 'GET',
+        data: { search: query },
+        success: function(response) {
+            if (query.trim() === '') {
+                // If the query is empty, show the full discussion list container
+                $('#discussionList').show();
+                $('#live-search-results').empty();
+            } else {
+                // Hide the discussion list container and display live search results
+                $('#discussionList').hide();
+                $('#live-search-results').html(response);
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr.responseText);
+        }
+    });
+}
+
+// Trigger live search on input change
+$(document).ready(function() {
+    $('#searchInput').on('input', function() {
+        performLiveSearch($(this).val());
+    });
+});

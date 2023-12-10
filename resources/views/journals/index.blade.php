@@ -16,7 +16,7 @@
         <!-- Search -->
         <form action="{{ route('journals.index') }}" method="GET" class="mb-3">
             <div class="input-group">
-                <input type="text" name="search" class="form-control" id="searchInput" placeholder="Search by Title..." value="{{ $search }}">            
+            <input type="text" name="search" class="form-control" id="searchInput" placeholder="Search by Title..." value="{{ $search }}" oninput="performLiveSearch(this.value)">
             </div>
         </form>
         <!-- Filter -->
@@ -40,6 +40,9 @@
     </div>
     </div>
 
+    <div id="live-search-results"></div>
+
+    <div id="journal-list-container">
     <div id="journal-list">
         @if ($journals->count() > 0)
             @foreach ($journals as $journal)
@@ -57,10 +60,12 @@
             <p>No journals found.</p>
         @endif
     </div>
+    </div>
     
     <div class="d-flex justify-content-center">
         {{ $journals->appends(['search' => $search])->links('pagination::bootstrap-4') }}
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="{{ asset('js/journalManagesearch.js') }}"></script>

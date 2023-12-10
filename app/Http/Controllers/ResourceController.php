@@ -79,7 +79,14 @@ class ResourceController extends Controller
 
             $resources->appends(['search' => $searchQuery]);
 
-        return view('teacher.teachermanage', compact('resources'));
+            $disciplines = Discipline::all(); // Retrieve all disciplines
+
+        // If the request is an AJAX request, return a JSON response
+        if ($request->ajax()) {
+            return response()->json(view('teacher.list', compact('resources'))->render());
+        }
+
+        return view('teacher.teachermanage', compact('resources', 'disciplines'));
     }
 
     public function getDisciplinesByCollege($collegeId)
@@ -815,7 +822,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     // search resource in disciplines.discipline based on selected discipline
     public function searchDisciplineResources(Request $request, $college_id, $discipline_id)
     {
-        $query = $request->input('query');
+        $query = $request->input('search');
     
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
@@ -827,6 +834,11 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
                     ->orWhere('description', 'LIKE', '%' . $query . '%');
             })
             ->paginate(10);
+
+        // If the request is AJAX, return the resources as JSON
+        if ($request->ajax()) {
+            return response()->json(view('disciplines.list', compact('resources'))->render());
+        }
     
         return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }

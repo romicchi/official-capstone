@@ -12,12 +12,11 @@
     <div class="container">
     <div class="h4 font-poppins-bold">Notes History</div>
 
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
         <!-- Search -->
         <form action="{{ route('history.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn" oninput="performLiveSearch(this.value)">
             </div>
         </form>
 
@@ -29,6 +28,7 @@
                 Clear</button>
         </form>
     </div>
+    <div id="history-table-container">
         <div class="card shadow mb-4">
             <div class="card-body">
         <table class="table table-hover">
@@ -72,6 +72,8 @@
         </table>
     </div>
 </div>
+</div>
+<div id="live-search-results">
 <div class="d-flex justify-content-center">
     {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
 </div>
@@ -80,3 +82,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
+<script>
+    var searchUrl = '{{ route('history.search') }}';
+</script>
+<script src="{{ asset('js/historyManagesearch.js') }}"></script>

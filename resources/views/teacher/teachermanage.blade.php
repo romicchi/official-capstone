@@ -54,8 +54,7 @@
             <!-- Search at the top for screensizes above 480 -->
             <form action="{{ route('teacher.search') }}" method="GET" class="mb-3 mb-md-0">
               <div class="input-group">
-                <input type="text" class="form-control" size="30" id="searchInput" name="search" placeholder="Search by Title...">
-              </div>
+              <input type="text" class="form-control" size="30" id="searchInput" name="search" placeholder="Search by Title..." onkeyup="liveSearch(this.value)">              </div>
             </form>
             <!-- Filter by discipline at the bottom for screensizes 480 and below -->
             <form action="{{ route('teacher.manage') }}" method="GET" class="mt-md-3">
@@ -75,6 +74,7 @@
           <div class="card shadow">
             <div class="card-body">
               <h4 class="card-title">Your File Uploads</h4>
+              <div id="live-search-results"></div>
                 <table class="table" id="resourceTable">
                   <thead>
                     <tr>
@@ -123,6 +123,7 @@
                     @endif
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
             <div class="d-flex justify-content-center my-4">
@@ -133,10 +134,14 @@
 </section>
 
 @include('loader')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
 <script src="{{ asset('js/teacher.js') }}"></script>
 <script src="{{ asset('js/resourceManagesearch.js') }}"></script>
+<script>
+    var searchUrl = '{{ route('teacher.search') }}';
+</script>
 <script>
     // Initialize Bootstrap popovers
     $(function () {

@@ -12,12 +12,11 @@
     <div class="container">
         
         <div class="h4 font-poppins-bold">Favorite Resources</div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
         <!-- Search -->
         <form action="{{ route('favorites.search') }}" method="GET" class="ml-3">
             <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" size="30" id="searchInput" placeholder="Search user" aria-label="Search" aria-describedby="search-btn">
-                <button type="submit" class="btn btn-primary rounded-0" id="search-btn"><i class="fas fa-search"></i></button>
+            <input type="text" class="form-control" size="30" id="searchInput" name="query" placeholder="Search by Title..." onkeyup="performLiveSearch(this.value)" value="{{ request('query') }}">
             </div>
         </form>
 
@@ -30,6 +29,7 @@
         </form>
     </div>
 
+    <div id="favorite-table-container">
         <div class="card shadow mb-4">
             <div class="card-body">
         <table class="table table-hover" id="favoriteTable">
@@ -71,13 +71,14 @@
         </table>
     </div>
 </div>
+</div>
+<div id="live-search-results">
 <div class="d-flex justify-content-center">
     {{ $resources->appends(['query' => request('query')])->links('pagination::bootstrap-4') }}
 </div>
 </div>
 @show
 
-<script src="{{ asset('js/favoritesManagesearch.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/sweetalert.js') }}"></script>
 <script>
@@ -85,4 +86,7 @@
     $(function () {
         $('[data-toggle="popover"]').popover();
     });
+
+    var searchUrl = '{{ route('favorites.search') }}';
 </script>
+<script src="{{ asset('js/favoritesManagesearch.js') }}"></script>

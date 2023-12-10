@@ -2,21 +2,22 @@
 
 //------------------------JOURNAL-MANAGE-SEARCH--------------------------//
 
-function searchJournals() {
-    var input, filter, journals, journal, i, txtValue;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    journals = document.getElementById("journal-list");
-    journal = journals.getElementsByTagName("a");
-  
-    for (i = 0; i < journal.length; i++) {
-      txtValue = journal[i].textContent || journal[i].innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        journal[i].style.display = "";
-      } else {
-        journal[i].style.display = "none";
+function performLiveSearch(query) {
+  $.ajax({
+      url: '/journals', // Update the URL as needed
+      method: 'GET',
+      data: { search: query },
+      success: function(response) {
+          if (query.trim() === '') {
+              $('#journal-list-container').show(); // Show the journal list container if query is empty
+              $('#live-search-results').empty(); // Clear the live search results
+          } else {
+              $('#journal-list-container').hide(); // Hide the journal list container if there's a query
+              $('#live-search-results').html(response); // Display the live search results
+          }
+      },
+      error: function(xhr) {
+          console.log(xhr.responseText);
       }
-    }
-  }
-  
-  document.getElementById("searchInput").addEventListener("keyup", searchJournals);  
+  });
+}

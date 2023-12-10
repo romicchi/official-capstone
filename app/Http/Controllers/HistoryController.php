@@ -37,7 +37,12 @@ class HistoryController extends Controller
         // Retrieve the actual resources based on the extracted IDs
         $resources = Resource::whereIn('id', $resourceIds)
             ->where('title', 'LIKE', "%$query%")
-            ->paginate(20);
+            ->paginate(10);
+
+        // If the request is AJAX, return the resources as JSON
+        if ($request->ajax()) {
+            return view('history.list', compact('resources'));
+        }
 
         return view('history.index', compact('resources'));
     }

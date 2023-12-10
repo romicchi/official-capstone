@@ -19,28 +19,30 @@
         <h2 class="text-center"><strong>{{ $discipline->disciplineName }}</strong></h2>
         <div class="mb-3"></div>
 
-        <div class="d-flex justify-content-between align-items-center">
-        <!-- Search -->
-        <form action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
-            <div class="input-group">
-                <input type="search" class="form-control rounded-0" name="query" id="searchInput" size="30" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
-            </div>
-        </form>
-        <!-- Sort -->
-        <form action="{{ route('disciplines.sort', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mr-3">
-            <div class="input-group">
-                <select class="form-control" name="sort" id="sort">
-                    <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title</option>
-                    <option value="author" {{ request('sort') === 'author' ? 'selected' : '' }}>Author</option>
-                    <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Date</option>
-                    <option value="rating" {{ request('sort') === 'rating' ? 'selected' : '' }}>Rating</option>
-                </select>
-                <button type="submit" class="btn btn-primary">Sort</button>
-            </div>
-        </form>
-    </div>
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <!-- Search Form -->
+    <form id="searchForm" action="{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mb-3">
+        <div class="form-group">
+            <input type="search" class="form-control rounded-0" name="query" id="searchInput" size="30" placeholder="Search by Title..." aria-label="Search" aria-describedby="search-btn" autocomplete="off" value="{{ request('query') }}">
+        </div>
+    </form>
+
+    <!-- Sort Form -->
+    <form action="{{ route('disciplines.sort', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mb-3">
+        <div class="input-group">
+            <select class="form-control" name="sort" id="sort">
+                <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title</option>
+                <option value="author" {{ request('sort') === 'author' ? 'selected' : '' }}>Author</option>
+                <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Date</option>
+                <option value="rating" {{ request('sort') === 'rating' ? 'selected' : '' }}>Rating</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Sort</button>
+        </div>
+    </form>
+</div>
 
 
+    <div id="disciplineList">
         <div class="card shadow">
         <div class="card-body">
             <table class="table">
@@ -85,10 +87,14 @@
         {{ $resources->appends(['sort' => request('sort'), 'query' => request('query')])->onEachSide(3)->links('pagination::bootstrap-4') }}
     </div>
 </div>
+    <div id="live-search-results"></div>
+</div>
 @show
 
 <script>
     var toggleFavoriteRoute = '{{ route('resource.toggleFavorite') }}';
 </script>
 <script src="{{ asset('js/discipline.js') }}"></script>
-<script src="{{ asset('js/resourceManagesearch.js') }}"></script>
+<script>
+    var searchUrl = '{{ route('disciplines.search', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}';
+</script>

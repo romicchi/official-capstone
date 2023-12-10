@@ -24,6 +24,11 @@ class FavoriteController extends Controller
         $user = auth()->user();
         $resources = $user->favorites()->where('title', 'LIKE', "%$query%")->paginate(10);
 
+        // If the request is AJAX, return the resources as JSON
+        if ($request->ajax()) {
+            return view('favorites-list', compact('resources'));
+        }
+
         return view('favorites', compact('resources', 'user'));
     }
 

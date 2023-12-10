@@ -69,7 +69,12 @@ class DiscussionsController extends Controller
         $discussions->appends($request->query());
     
         $characterLimit = 100;
-    
+
+        // If the request is an AJAX request, return a JSON response
+        if ($request->ajax()) {
+            return response()->json(view('discussions.list', compact('discussions', 'characterLimit'))->render());
+        }
+            
         return view('discussions.index', [
             'discussions' => $discussions,
             'characterLimit' => $characterLimit

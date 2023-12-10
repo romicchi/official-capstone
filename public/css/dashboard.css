@@ -158,6 +158,12 @@ footer {
     overflow: auto;
 }
 
+.col-md-12.col-lg-6 {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+
 .table-container-admin {
   border: 1px solid #ccc;
   background-color: #fff !important;

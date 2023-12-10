@@ -45,9 +45,9 @@ class JournalController extends Controller
         $journals = $matchingJournals->paginate(5);
         
             // If the request is AJAX, return the journals as JSON
-    if ($request->ajax()) {
-        return response()->json(view('journals.list', compact('journals'))->render());
-    }
+            if ($request->ajax()) {
+                return view('journals.list', compact('journals'));
+            }
 
         // Retrieve all disciplines for the dropdown
         $disciplines = Discipline::all();
