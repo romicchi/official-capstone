@@ -15,8 +15,28 @@
 <div class="card">
     <div class="card-body">
         <center>
-            <input type="search" class="form-control rounded-0" name="query" id="searchInput" placeholder="Search resource..." aria-label="Search" aria-describedby="search-btn">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <form id="searchForm" action="{{ route('adminresources.search') }}" method="GET" class="mb-3">
+                <div class="input-group">
+                <input type="search" class="form-control rounded-0" size="30" name="query" id="searchInput" placeholder="Search resource or Uploader" aria-label="Search" aria-describedby="search-btn">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary rounded-0" type="submit" id="search-btn">Search</button>
+                    </div>
+                </div>
+            </form>
 
+            <form action="{{ route('adminresourcemanage') }}" method="GET" class="mb-3">
+                <div class="input-group">
+                    <select class="form-control" name="sort" id="sort">
+                        <option value="title" {{ request('sort') === 'title' ? 'selected' : '' }}>Title</option>
+                        <option value="author" {{ request('sort') === 'author' ? 'selected' : '' }}>Author</option>
+                        <option value="created_at" {{ request('sort') === 'created_at' ? 'selected' : '' }}>Date</option>
+                        <option value="rating" {{ request('sort') === 'rating' ? 'selected' : '' }}>Rating</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Sort</button>
+                </div>
+            </form>
+        </div>
             <div class="table-wrapper py-2">
                 <div class="card shadow mb-5">
                     <div class="table-responsive">
@@ -24,10 +44,11 @@
                             <thead>
                                 <tr>
                                     <th>Title</th>
-                                    <th>Author</th>
+                                    <th>Uploader</th>
                                     <th>Date</th>
                                     <th>College</th>
                                     <th>Discipline</th>
+                                    <th>Rating</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -48,6 +69,7 @@
                                             <td>{{ \Carbon\Carbon::parse($resource->created_at)->format('F j, Y') }}</td>
                                             <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
                                             <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
+                                            <td>{{ number_format($resource->resourceRatings->avg('rating'), 2) }}</td>
                                             <td>
                                                 <form action="{{ route('resources.destroy', $resource) }}" method="POST" class="d-inline">
                                                     @csrf

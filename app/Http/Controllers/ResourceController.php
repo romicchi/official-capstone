@@ -579,9 +579,27 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     }
 
      //--------------ADMIN-----------------//
-    public function showAdminResourceManage()
-    {
-        $resources = Resource::paginate(10)->onEachSide(1);
+     public function showAdminResourceManage(Request $request)
+     {
+        $sortBy = $request->input('sort', 'title'); // Get the selected sorting criteria (default to 'title' if not provided)
+    
+        $resources = Resource::query();
+    
+        // Handle different sorting options
+        if ($sortBy === 'title') {
+            $resources->orderBy('title', 'asc');
+        } elseif ($sortBy === 'author') {
+            $resources->orderBy('author', 'asc');
+        } elseif ($sortBy === 'created_at') {
+            $resources->orderBy('created_at', 'desc');
+        } elseif ($sortBy === 'rating') {
+            // Sort by average rating using subquery
+            $resources->select('resources.*')
+                ->selectRaw('(SELECT AVG(rating) FROM resource_ratings WHERE resource_id = resources.id) as avg_rating')
+                ->orderBy('avg_rating', 'desc');
+        }
+    
+        $resources = $resources->paginate(10)->onEachSide(1);
     
         return view('administrator.adminresourcemanage', compact('resources'));
     }
@@ -589,18 +607,17 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     public function adminsearchResources(Request $request)
     {
         $query = $request->input('query');
-
+        $sort = $request->input('sort', 'title'); // Default sort by 'title'
+    
         $resources = Resource::where(function ($queryBuilder) use ($query) {
             $queryBuilder->where('title', 'LIKE', '%' . $query . '%')
                 ->orWhere('author', 'LIKE', '%' . $query . '%')
                 ->orWhere('created_at', 'LIKE', '%' . $query . '%');
         })
-        ->orWhereHas('subject', function ($queryBuilder) use ($query) {
-            $queryBuilder->where('subjectName', 'LIKE', '%' . $query . '%');
-        })
+        ->orderBy($sort)
         ->paginate(10)
         ->onEachSide(1);
-
+    
         return view('administrator.adminresourcemanage', compact('resources'));
     }
 

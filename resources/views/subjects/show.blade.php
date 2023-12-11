@@ -20,6 +20,22 @@
         <div class="row">
             <div class="col-md-12">
             
+            <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
+                    <div> <!-- Left-aligned buttons -->
+                        <a href="{{ route('show.disciplines', ['college_id' => $discipline->college_id, 'discipline_id' => $discipline->id]) }}" class="btn btn-primary mr-2">
+                            <i class="fas fa-arrow-left">
+                            </i> Back</a>
+                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}" title="Rate">
+                            Rate
+                        </button>
+                    </div>
+                    <div> <!-- Right-aligned button -->
+                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})" title="Download">
+                            <i class="fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+
                 <div class="card p-4 mb-2">
                     <div class="text-center resource-info">
                         <h2 class="resource-title font-poppins-bold">{{ $resource->title }}</h2>
@@ -39,22 +55,6 @@
                             </span>
                         </div>
                         @endif
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mb-2"> <!-- Buttons in one line -->
-                    <div> <!-- Left-aligned buttons -->
-                        <a href="{{ route('show.disciplines', ['college_id' => $discipline->college_id, 'discipline_id' => $discipline->id]) }}" class="btn btn-primary mr-2">
-                            <i class="fas fa-arrow-left">
-                            </i> Back</a>
-                        <button class="btn btn-success rate-resource" data-resource-id="{{ $resource->id }}" title="Rate">
-                            Rate
-                        </button>
-                    </div>
-                    <div> <!-- Right-aligned button -->
-                        <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})" title="Download">
-                            <i class="fas fa-download"></i>
-                        </a>
                     </div>
                 </div>
                         

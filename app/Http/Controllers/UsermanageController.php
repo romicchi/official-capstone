@@ -153,6 +153,14 @@ class UsermanageController extends Controller
             return 'your_access_token';
         }
 
+        // log
+        \DB::table('activity_logs')->insert([
+            'user_id' => auth()->user()->id,
+            'activity' => 'has added a user',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         $activeTab = 'existing';
 
         // Redirect the user back to the manage user page with a success message
