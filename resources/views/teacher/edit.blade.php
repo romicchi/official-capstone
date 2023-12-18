@@ -48,10 +48,38 @@
 
                             <div class="form-group">
                                 <label for="title">{{ __('Title') }}</label>
-                                <input type="text" id="title" class="form-control" name="title" value="{{ $resource->title }}">
+                                <input type="text" id="title" class="form-control" name="title" value="{{ $resource->title }}" required>
                                 @error('title')
                                 <small _ngcontent-irw-c66 class="text-danger">* Title is required.</small>
                                 @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="author">{{ __('Author') }}</label>
+                                <input type="text" id="author" class="form-control" name="author" value="{{ $resource->author }}" required>
+                                @error('author')
+                                <small _ngcontent-irw-c66 class="text-danger">* Author is required.</small>
+                                @enderror
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="publish_date">{{ __('Published Date') }}</label>
+                                <input type="date" id="publish_date" class="form-control" name="publish_date" value="{{ $resource->publish_date ? \Carbon\Carbon::parse($resource->publish_date)->format('Y-m-d') : '' }}" required>
+                                @error('publish_date')
+                                <small _ngcontent-irw-c66 class="text-danger">* Publish date is required.</small>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="resource_type_id">Resource Type</label>
+                                <select class="form-control" id="resource_type_id" name="resource_type_id" required>
+                                    <option value="">Select a resource type</option>
+                                    @foreach($resourceTypes as $type)
+                                    <option value="{{ $type->id }}" {{ $resource->resource_type_id == $type->id ? 'selected' : '' }}>
+                                        {{ $type->type }}
+                                    </option>                                    
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -89,6 +117,13 @@
                                 <textarea class="form-control" id="description" name="description" rows="5" required>{{ $resource->description }}</textarea>
                                 @error('description')
                                 <small _ngcontent-irw-c66 class="text-danger">* Description is required.</small>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="downloadable">{{ __('Downloadable') }}</label>
+                                <input type="checkbox" id="downloadable" name="downloadable" value="1" @if($resource->downloadable) checked @endif>
+                                @error('downloadable')
                                 @enderror
                             </div>
 

@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\User;
 use App\Models\Resource;
 use App\Models\ResourceRating;
+use App\Models\ResourceType;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,7 @@ class ResourceController extends Controller
     {
         $filter = $request->input('filter'); // No default filter
     
-        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname);
+        $resources = Resource::where('uploader', auth()->user()->firstname . ' ' . auth()->user()->lastname);
     
         if ($filter) {
             $resources->where('discipline_id', $filter); // Filter by discipline
@@ -63,7 +64,7 @@ class ResourceController extends Controller
         $searchQuery = $request->input('search');
 
         // Query to filter resources based on search query
-        $resources = Resource::where('author', auth()->user()->firstname . ' ' . auth()->user()->lastname)
+        $resources = Resource::where('uploader', auth()->user()->firstname . ' ' . auth()->user()->lastname)
             ->where(function ($query) use ($searchQuery) {
                 $query->where('title', 'LIKE', "%$searchQuery%")
                     ->orWhere('author', 'LIKE', "%$searchQuery%")
@@ -131,12 +132,15 @@ class ResourceController extends Controller
     $validatedData = $request->validate([
         'file' => 'required|file|mimes:jpeg,jpg,png,gif,mp4,avi,pdf|max:25600',
         'title' => 'required|max:100',
+        'publish_date' => 'nullable|date',
         'topic' => 'nullable',
         'keywords' => 'nullable',
         'author' => 'nullable',
+        'uploader' => 'nullable',
         'description' => 'nullable',
         'college' => 'nullable',
         'discipline' => 'nullable',
+        'downloadable' => 'boolean',    
     ]);
 
         // Upload the file to Google Drive
@@ -194,14 +198,17 @@ class ResourceController extends Controller
         $fileUrl = 'https://drive.google.com/uc?id=' . $uploadedFile->id;
 
         // Fetch the firstname and lastname of the teacher who uploaded the resource
-        $author = auth()->user()->firstname . ' ' . auth()->user()->lastname;
+        $uploader = auth()->user()->firstname . ' ' . auth()->user()->lastname;
 
     // Create a new resource instance
     $resource = new Resource();
     $resource->title = $validatedData['title'];
    // $resource->topic = $validatedData['topic'];
    // $resource->keywords = $validatedData['keywords'];
-   $resource->author = $author;
+   $resource->uploader = $uploader;
+   //    $resource->author = $validatedData['author'];
+   //    $resource->publish_date = $validatedData['publish_date'] ? Carbon::parse($validatedData['publish_date']) : null;
+   $resource->downloadable = $request->filled('downloadable');   
    // $resource->description = $validatedData['description'];
     $resource->url = $fileUrl;
    // $resource->college_id = $validatedData['college'];
@@ -382,6 +389,7 @@ public function edit(Resource $resource)
     $colleges = College::all();
     $courses = Course::all();
     $subjects = Subject::all();
+    $resourceTypes = ResourceType::all();
 
     $disciplines = Discipline::pluck('disciplineName', 'id'); // Assuming you have a Discipline model
 
@@ -392,7 +400,7 @@ public function edit(Resource $resource)
     $isImageOrVideo = in_array($fileExtension, ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'avi', 'mov', 'webm', 'mkv', 'flv', 'wmv', '3gp', 'ogg']);
 
     // Pass the information to the view
-    return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines', 'isImageOrVideo'));
+    return view('teacher.edit', compact('resource', 'colleges', 'courses', 'subjects', 'disciplines', 'isImageOrVideo', 'resourceTypes'));
 }
 
 // Helper function to get file extension from Google Drive
@@ -431,12 +439,24 @@ public function update(Request $request, Resource $resource)
 {
     // Validate the form data
     $validatedData = $request->validate([
-        'title' => 'required',
-        // Add other validation rules as needed
+        'title' => 'required|max:100',
+        'publish_date' => 'nullable|date',
+        'topic' => 'nullable',
+        'keywords' => 'nullable',
+        'author' => 'nullable',
+        'uploader' => 'nullable',
+        'description' => 'nullable',
+        'college' => 'nullable',
+        'discipline' => 'nullable',
+        'downloadable' => 'boolean',    
     ]);
 
     // Update resource data
     $resource->update($request->all());
+
+    // Manually update the 'downloadable' field
+    $resource->downloadable = $request->filled('downloadable');
+    $resource->save();
     
     // Generate unique JSON file name
     $jsonFileName = $this->generateUniqueJsonFileNameAfterUpdate($resource);

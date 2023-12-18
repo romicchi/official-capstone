@@ -79,9 +79,12 @@
                   <thead>
                     <tr>
                       <th>Title</th>
-                      <th>Uploader</th>
+                      <th>Author</th>
+                      <th>Published Date</th>
                       <th>College</th>
                       <th>Discipline</th>
+                      <th>Type</th>
+                      <th>Downloadable</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -104,8 +107,11 @@
                         @endif
                       </td>
                       <td>{{ $resource->author }}</td>
+                      <td>{{ date('M. d, Y', strtotime($resource->publish_date)) }}</td>
                       <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
                       <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
+                      <td>{{ optional($resource->resourceType)->type ?? 'Empty' }}</td>
+                      <td>{{ $resource->downloadable ? 'Yes' : 'No' }}</td>
                       <td>
                         <button class="btn mx-1" onclick="window.location='{{ route('resources.edit', $resource->id) }}'" title="Edit">
                           <i class="fas fa-edit"></i>

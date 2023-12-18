@@ -31,7 +31,7 @@
                             </div>
                             <a class="title font-poppins-bold" href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
                         </h4>
-                        <p><strong>Uploader:</strong> {{ $resource->author }}</p>
+                        <p><strong>Author:</strong> {{ $resource->author }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>
                     <td class="justified-text">{{ Str::limit($resource->keywords,200) }}</td>

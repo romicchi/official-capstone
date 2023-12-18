@@ -198,10 +198,24 @@
                 <tbody>
                     @foreach ($mostFavoriteResources as $resource)
                         <tr class="font-poppins-bold">
-                            <td class="text-center hover" onclick="window.location='{{ route('resource.show', $resource->id) }}'" style="cursor: pointer;"
-                            >{{ Str::limit($resource->title, 30) }}</td>
+                        <td class="text-center">
+            @if(!is_null($resource->college))
+                <a class="hover" href="{{ route('resource.show', $resource->id) }}">
+                    <strong>{{ Str::limit($resource->title, 35) }}</strong>
+                </a>
+            @else
+                <a class="hover" href="{{ route('resource.show', $resource->id) }}" style="display: none;">
+                    <strong>{{ Str::limit($resource->title, 35) }}</strong>
+                </a>
+            @endif
+        </td>
                             <td class="text-center">{{ $resource->author }}</td>
-                            <td class="text-center">{{ $resource->favorited_by_count }}</td>
+                            <td class="text-center">
+                                @if(!is_null($resource->college))
+                                    {{ $resource->favorited_by_count }}
+                                @else
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

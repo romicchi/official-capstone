@@ -1,11 +1,14 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Uploader</th>
-            <th>College</th>
-            <th>Discipline</th>
-            <th>Action</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Published Date</th>
+        <th>College</th>
+        <th>Discipline</th>
+        <th>Type</th>
+        <th>Downloadable</th>
+        <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -17,6 +20,7 @@
         @foreach($resources as $resource)
         <tr class="font-poppins-bold">
             <td>
+                <!-- if College and Discipline is null then title link is not clickable -->
                 @if(!is_null($resource->college))
                 <a class="hover" href="{{ route('resource.show', $resource->id) }}">
                     <strong>{{ Str::limit($resource->title, 35) }}</strong>
@@ -26,8 +30,11 @@
                 @endif
             </td>
             <td>{{ $resource->author }}</td>
+            <td>{{ date('M. d, Y', strtotime($resource->publish_date)) }}</td>
             <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
             <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
+            <td>{{ optional($resource->resourceType)->type ?? 'Empty' }}</td>
+            <td>{{ $resource->downloadable ? 'Yes' : 'No' }}</td>
             <td>
                 <button class="btn mx-1" onclick="window.location='{{ route('resources.edit', $resource->id) }}'" title="Edit">
                     <i class="fas fa-edit"></i>

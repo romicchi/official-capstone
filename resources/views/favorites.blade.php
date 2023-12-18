@@ -36,7 +36,9 @@
             <thead class="table">
                 <tr>
                     <th>Title</th>
-                    <th>Uploader</th>
+                    <th>Author</th>
+                    <th>Published Date</th>
+                    <th>Type</th>
                     <th></th>
                 </tr>
             </thead>
@@ -54,6 +56,8 @@
                                 </a>
                             </td>
                             <td>{{ $resource->author }}</td>
+                            <td>{{ date('M. d, Y', strtotime($resource->publish_date)) }}</td>
+                            <td>{{ optional($resource->resourceType)->type ?? 'Empty' }}</td>
                             <td>
                             <form action="{{ route('favorites.destroy', $resource->id) }}" method="POST" class="d-inline">
                                 @csrf

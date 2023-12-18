@@ -14,15 +14,18 @@ class Resource extends Model
         'topic',
         'keywords',
         'author',
+        'uploader',
+        'publish_date',
         'description',
         'url',
         'college_id',
         'course_id',
         'subject_id',
-        'resourceType',
+        'resource_type_id',
         'download_count',
         'view_count',
         'discipline_id',
+        'downloadable',
     ];
 
     public function college()
@@ -58,6 +61,11 @@ class Resource extends Model
     public function resourceRatings()
     {
         return $this->hasMany(ResourceRating::class);
+    }
+
+    public function resourceType()
+    {
+        return $this->belongsTo(ResourceType::class);
     }
 
     public function resource()

@@ -4,7 +4,9 @@
             <thead class="table">
                 <tr>
                     <th>Title</th>
-                    <th>Uploader</th>
+                    <th>Author</th>
+                    <th>Published Date</th>
+                    <th>Action</th>
                     <th></th>
                 </tr>
             </thead>

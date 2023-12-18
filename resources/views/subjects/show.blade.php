@@ -30,9 +30,11 @@
                         </button>
                     </div>
                     <div> <!-- Right-aligned button -->
+                    @if($resource->downloadable)
                         <a href="{{ route('resource.download', ['resource' => $resource->id]) }}" class="btn btn-primary" onclick="trackDownload({{ $resource->id }})" title="Download">
                             <i class="fas fa-download"></i>
                         </a>
+                    @endif
                     </div>
                 </div>
 
@@ -40,6 +42,7 @@
                     <div class="text-center resource-info">
                         <h2 class="resource-title font-poppins-bold">{{ $resource->title }}</h2>
                         <p class="resource-author">Author: {{ $resource->author }}</p>
+                        <p class="resource-date">Published Date: {{ date('M. d, Y', strtotime($resource->publish_date)) }}</p>
                     </div>
                     <p class="resource-description text-justify font-italic">{{ $resource->description }}</p>                    
                     <div class="text-center resource-info">
@@ -77,7 +80,7 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
-                <embed id="pdf-embed" src="{{ $resource->url }}" width="100%" height="100%" onload="handlePdfLoad()">
+                <embed id="pdf-embed" src="{{ $resource->url }}#toolbar=0" width="100%" height="100%" onload="handlePdfLoad()">
             </div>
 
             </div>

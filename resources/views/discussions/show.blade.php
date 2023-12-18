@@ -44,11 +44,11 @@
                 @foreach($replies as $reply)
                 <div class="card my-2 shadow">
                     @php
-                    $replyHeaderClass = auth()->check() && auth()->user()->id == $reply->owner->id ? 'yellow' : 'green';
+                    $replyHeaderClass = auth()->check() && $reply->owner && auth()->user()->id == $reply->owner->id ? 'yellow' : 'green';
                     @endphp
                     <div class="card-header reply-header {{ $replyHeaderClass }}">
-                        <span><strong>{{ $reply->owner->firstname }} {{ $reply->owner->lastname }}</strong></span>
-                        @if (auth()->check() && auth()->user()->id == $reply->owner->id)
+                        <span><strong>{{ optional($reply->owner)->firstname }} {{ optional($reply->owner)->lastname }}</strong></span>
+                        @if (auth()->check() && $reply->owner && auth()->user()->id == $reply->owner->id)
                         <div class="dots-container dropdown-trigger" onclick="toggleDropdown('dropdownmenu_{{ $reply->id }}')">
                             <div class="dot"></div>
                             <div class="dot"></div>
@@ -63,7 +63,6 @@
                         {!! $reply->content !!}
                         <br>
                         <p class="card-text"><small class="text-muted">{{ $reply->created_at->diffForHumans() }}</small></p>
-                        
                     </div>
                 </div>
                 @endforeach

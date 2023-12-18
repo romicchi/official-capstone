@@ -178,6 +178,11 @@ footer {
     padding: 12px;
 }
 
+.hover {
+  color: #303030;
+  text-decoration: none;
+}
+
 /* hover title */
 .hover:hover {
   color: #070372;
