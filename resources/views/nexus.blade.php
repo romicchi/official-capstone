@@ -286,16 +286,25 @@
     }
 
     // Function to extract the year from the publish date string
-    function getFullYearFromDateString(dateString) {
-        return new Date(dateString).getFullYear();
+function getFullYearFromDateString(dateString) {
+    if (!dateString || isNaN(Date.parse(dateString))) {
+        return 'Not Specified';
     }
+    return new Date(dateString).getFullYear();
+}
 
     // Function to format the date string
-    function formatDate(dateString) {
-        var options = { year: 'numeric', month: 'long', day: 'numeric' };
-        var date = new Date(dateString);
-        return date.toLocaleDateString(undefined, options);
+function formatDate(dateString) {
+    if (!dateString) {
+        return 'Not Specified';
     }
+    var date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return 'Not Specified';
+    }
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+}
 
     // Function to update the node and label display based on the selected view
     function updateNodeAndLabelDisplay() {
@@ -307,11 +316,14 @@
                     break;
                 case "author":
                     // Combine author and year
-                    node.label = resources[index].author + ', ' + getFullYearFromDateString(resources[index].publish_date);
+                    var author = resources[index].author ? resources[index].author : 'Unknown';
+                    node.label = author + ', ' + getFullYearFromDateString(resources[index].publish_date);
                     break;
                 case "publishDate":
                     // Use the formatted publish date and author
-                    node.label = formatDate(resources[index].publish_date) + ', ' + resources[index].author;
+                    var author = resources[index].author ? resources[index].author : 'Unknown';
+                    var publishDate = formatDate(resources[index].publish_date);
+                    node.label = publishDate + ', ' + author;
                     break;
             }
         });
@@ -840,17 +852,6 @@
         updateNodeAndLabelDisplay2();
     }
 
-    // Function to extract the year from the publish date string
-    function getFullYearFromDateString2(dateString2) {
-        return new Date(dateString2).getFullYear();
-    }
-    // Function to format the date string
-    function formatDate(dateString) {
-        var options = { year: 'numeric', month: 'long', day: 'numeric' };
-        var date = new Date(dateString);
-        return date.toLocaleDateString(undefined, options);
-    }
-
     // Function to perform semantic search
     function searchResources() {
     var searchTerm = document.getElementById('search-input').value;
@@ -877,32 +878,6 @@
 
     // Declare these variables outside of any function to give them a broader scope
     var filteredNodes, newNodes, labels;
-
-    // Function to update the node and label display based on the selected view
-    function updateNodeAndLabelDisplay2() {
-        // Update the node data based on the selected view
-        newNodes.data().forEach(function (d, i) {
-            switch (view) {
-                case 'title':
-                    d.label = d.title;
-                    break;
-                case 'author':
-                    // Combine author and year
-                    d.label = resources[i].author + ', ' + getFullYearFromDateString2(resources[i].publish_date);
-                    break;
-                case 'publishDate':
-                    // Use the formatted publish date and author
-                    node.label = formatDate(resources[index].publish_date) + ', ' + resources[index].author;
-                    break;
-
-            }
-        });
-
-        // Update the labels
-        labels.text(function (d) {
-            return d.label;
-        });
-    }
 
     // Function to visualize the graph based on search results
     function visualizeGraph(searchResults) {

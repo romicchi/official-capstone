@@ -31,8 +31,8 @@
                             </div>
                             <a class="title font-poppins-bold" href="{{ url('resource/show', $resource->id) }}">{{ $resource->title }}</a>
                         </h4>
-                        <p><strong>Author:</strong> {{ $resource->author }}</p>
-                        <p><strong>Publish Date:</strong> {{ date('M. d, Y', strtotime($resource->publish_date)) ?? 'Not Specified'}}</p>
+                        <p><strong>Author:</strong> {{ $resource->author ?? 'Not Specified' }}</p>
+                        <p><strong>Publish Date:</strong> {{ $resource->publish_date && strtotime($resource->publish_date) ? date('M. d, Y', strtotime($resource->publish_date)) : 'Not Specified' }}</p>
                         <p><strong>Type:</strong> {{ optional($resource->resourceType)->type ?? 'Not Specified' }}</p>
                         <p><strong>Discipline:</strong> {{ $resource->college->collegeName }} > {{ $resource->discipline->disciplineName}}</p>
                     </td>

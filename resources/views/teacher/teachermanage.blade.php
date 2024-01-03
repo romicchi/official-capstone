@@ -106,8 +106,8 @@
                         <strong>{{ Str::limit($resource->title, 35) }}</strong>
                         @endif
                       </td>
-                      <td>{{ $resource->author }}</td>
-                      <td>{{ date('M. d, Y', strtotime($resource->publish_date)) }}</td>
+                      <td>{{ $resource->author ?? 'Empty' }}</td>
+                      <td>{{ $resource->publish_date && strtotime($resource->publish_date) ? date('M. d, Y', strtotime($resource->publish_date)) : 'Empty' }}</td>
                       <td>{{ optional($resource->college)->collegeName ?? 'Empty' }}</td>
                       <td>{{ optional($resource->discipline)->disciplineName ?? 'Empty' }}</td>
                       <td>{{ optional($resource->resourceType)->type ?? 'Empty' }}</td>
