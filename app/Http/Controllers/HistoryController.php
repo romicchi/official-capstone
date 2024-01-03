@@ -12,16 +12,13 @@ class HistoryController extends Controller
     {
         // Get the currently authenticated user's history records
         $user = auth()->user();
-        $history = $user->history()->orderBy('created_at', 'desc')->get();
-        $resourceIds = $history->pluck('resource_id');
+        $history = $user->history;
 
         // Extract the resource IDs from the history records
         $resourceIds = $history->pluck('resource_id');
 
         // Retrieve the actual resources based on the extracted IDs
-        $resources = Resource::whereIn('id', $resourceIds)
-        ->orderByRaw("FIELD(id, " . $resourceIds->join(',') . ")")
-        ->paginate(10);
+        $resources = Resource::whereIn('id', $resourceIds)->paginate(10);
 
         return view('history.index', compact('resources'));
     }

@@ -201,7 +201,6 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::get('/disciplines/{college_id}/{discipline_id}', [ResourceController::class, 'disciplines'])->name('show.disciplines');
     Route::get('/disciplines/{college_id}/{discipline_id}/search', [ResourceController::class, 'searchDisciplineResources'])->name('disciplines.search');
     Route::get('/disciplines/{college_id}/{discipline_id}/sort', [ResourceController::class, 'sortDisciplineResources'])->name('disciplines.sort');
-    Route::get('/disciplines/{college_id}/{discipline_id}/filter', [ResourceController::class, 'filterDisciplineResources'])->name('disciplines.filter');
     Route::get('/download/{resource}',[ResourceController::class, 'download'])->name('resource.download');
     Route::post('/resource/rate', [ResourceController::class, 'rate'])->name('resource.rate');
 

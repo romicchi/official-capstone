@@ -18,6 +18,7 @@
 <body>
   <!-- Nav Bar -->
   @yield('usernav')
+  @include('layout.globalchatbot') 
   <!-- Content -->
     <div class="container">
            <!-- Content Row -->
@@ -132,56 +133,6 @@
 </div>
     </div>
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card shadow">
-                    <div class="card-header"><strong>Talk to Gener</strong>
-                    <button id="toggle-chatbot" style="float: right; color: white; background: transparent; border: none;"><i class="fas fa-chevron-circle-up"></i></button>
-                </div>
-                    <div class="card-body">
-                        <!-- Chatbot container -->
-                        <div class="chatbot-container" id="chatbot-container">
-                            <!-- Wrap the contents of the chatbot in a div -->
-                                <div id="chatbot-contents">
-                            <div class="chatbot-messages" id="chatbot-messages">
-                                <!-- Chatbot messages will appear here -->
-                            </div>
-                            <div class="chatbot-input">
-                                <form method="GET" action="{{ route('getRecommendations') }}">
-                                
-                                    @csrf
-                                    <div style="display: flex; padding-top:30px">
-                                    <textarea name="query" id="user-input" placeholder="Type your message..." autocomplete="off" required></textarea>
-                                    <button type="submit" id="send-button" title="Click to send">&#10148;</button>
-                                </form>
-                                <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-
-                                 <!-- Add the tip element with an initial hidden state -->
-                                 <div id="tip" class="tip-message" style="display: none;">
-                                     <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
-                                 </div>
-                            </div>
-                        </div>
-
-                    </div>
-                        <div class="card-body">
-                            <!-- Recommendations container -->
-                            <div class="recommendations-container" id="recommendations-container">
-                                <!-- Relevant resource URLs will appear here -->
-                            </div>
-                            <div id="hidden-chatbot-message" style="display: none;">Gener Chat is currently minimized. Click the the top right button to maximize.</div>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
 <div class="row">
     <!-- Most Favorite Resources Table -->
     <div class="col-md-12 col-lg-6">

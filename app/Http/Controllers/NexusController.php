@@ -19,23 +19,35 @@ class NexusController extends Controller
     {
         try {
             $keywords = $request->input('keywords');
-
-            // Search by title
-            $titleResults = Resource::where('title', 'like', "%$keywords%")->get();
-
-            // Search by keyword
-            $keywordResults = Resource::where('keywords', 'like', "%$keywords%")->get();
-
-            // Combine and return the results
-            $combinedResults = $titleResults->merge($keywordResults);
-
+            $keywordsArray = explode(',', $keywords);
+        
+            $combinedResults = collect();
+        
+            foreach ($keywordsArray as $keyword) {
+                $keyword = trim($keyword);
+            
+                // Search by title
+                $titleResults = Resource::where('title', 'like', "%$keyword%")->get();
+            
+                // Search by keyword
+                $keywordResults = Resource::where('keywords', 'like', "%$keyword%")->get();
+            
+                // Search by author
+                $authorResults = Resource::where('author', 'like', "%$keyword%")->get();
+            
+                // Search by publish date
+                $publishDateResults = Resource::where('publish_date', 'like', "%$keyword%")->get();
+            
+                // Combine the results
+                $combinedResults = $combinedResults->concat($titleResults)->concat($keywordResults)->concat($authorResults)->concat($publishDateResults);
+            }
+        
             return response()->json($combinedResults);
         } catch (\Exception $e) {
             Log::error('Search error: ' . $e->getMessage());
             return response()->json(['error' => 'An error occurred during the search.']);
         }
     }
-
     public function fetch(Request $request)
     {
         try {

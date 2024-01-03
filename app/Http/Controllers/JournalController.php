@@ -42,7 +42,7 @@ class JournalController extends Controller
         $matchingJournals->where('user_id', $user->id);
 
         // Retrieve the filtered journals
-        $journals = $matchingJournals->orderBy('created_at', 'desc')->paginate(5);
+        $journals = $matchingJournals->paginate(5);
         
             // If the request is AJAX, return the journals as JSON
             if ($request->ajax()) {

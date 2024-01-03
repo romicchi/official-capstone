@@ -12,7 +12,7 @@ class FavoriteController extends Controller
     public function showFavorites()
     {
         $user = auth()->user();
-        $resources = $user->favorites()->orderByRaw('favorites.created_at DESC')->paginate(10);
+        $resources = $user->favorites()->paginate(10);
         
         return view('favorites', compact('resources', 'user'));
     }

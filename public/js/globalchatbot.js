@@ -54,6 +54,18 @@ $(document).ready(function () {
                 const data = await response.json();
                 const chatbotResponse = data.answers[0];
                 addMessage(chatbotResponse, "chatbot");
+
+
+            // Show note after sending a message
+            $("#note").css("display", "block");
+            setTimeout(function () {
+                $("#note").css("display", "none");
+            }, 8000);
+            // Add click event to close the note
+             $("#close-note").on("click", function () {
+                 $("#note").css("display", "none");
+             });
+
             } else {
                 addMessage("Error: Unable to communicate with the chatbot", "chatbot");
             }

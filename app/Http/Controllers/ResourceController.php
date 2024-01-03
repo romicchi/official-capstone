@@ -264,7 +264,7 @@ private function convertPdfToJson($pdfContent)
         if (!empty($text)) {
             // Your logic to convert text to JSON goes here
             // For example, you can use json_encode if the text structure allows it
-            $json = json_encode(['text' => $text]);
+            $json = json_encode(['content' => $text]);
 
             return $json;
         } else {
@@ -601,7 +601,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
      //--------------ADMIN-----------------//
      public function showAdminResourceManage(Request $request)
      {
-        $sortBy = $request->input('sort', 'created_at'); // Get the selected sorting criteria (default to 'title' if not provided)
+        $sortBy = $request->input('sort', 'title'); // Get the selected sorting criteria (default to 'title' if not provided)
     
         $resources = Resource::query();
     
@@ -752,7 +752,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
             $isFavorite = false;
         } else {
             // User is adding this resource to favorites
-            $user->favorites()->attach($resource, ['created_at' => now(), 'updated_at' => now()]);
+            $user->favorites()->attach($resource);
             $isFavorite = true;
         }
 
@@ -803,11 +803,10 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     {
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
-        $resourceTypes = ResourceType::all();
         // resource
-        $resources = $discipline->resources()->orderBy('created_at', 'desc')->paginate(10);
+        $resources = $discipline->resources()->paginate(10);
 
-        return view('disciplines.disciplines', compact('discipline', 'college', 'resources', 'resourceTypes'));
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
 
     public function rate(Request $request)
@@ -864,7 +863,6 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
-        $resourceTypes = ResourceType::all();
     
         $resources = $discipline->resources()
             ->where(function ($queryBuilder) use ($query) {
@@ -872,14 +870,14 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
                     ->orWhere('author', 'LIKE', '%' . $query . '%')
                     ->orWhere('description', 'LIKE', '%' . $query . '%');
             })
-            ->orderBy('created_at', 'desc')->paginate(10);
+            ->paginate(10);
 
         // If the request is AJAX, return the resources as JSON
         if ($request->ajax()) {
             return response()->json(view('disciplines.list', compact('resources'))->render());
         }
     
-        return view('disciplines.disciplines', compact('discipline', 'college', 'resources', 'resourceTypes'));
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
 
     public function sortDisciplineResources(Request $request, $college_id, $discipline_id)
@@ -888,7 +886,6 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     
         $college = College::findOrFail($college_id);
         $discipline = Discipline::findOrFail($discipline_id);
-        $resourceTypes = ResourceType::all();
     
         $resources = $discipline->resources();
     
@@ -908,27 +905,7 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
     
         $resources = $resources->paginate(10);
     
-        return view('disciplines.disciplines', compact('discipline', 'college', 'resources', 'resourceTypes'));
-    }
-
-    public function filterDisciplineResources(Request $request, $college_id, $discipline_id)
-    {
-        $filter = $request->input('filter');
-    
-        $college = College::findOrFail($college_id);
-        $discipline = Discipline::findOrFail($discipline_id);
-    
-        $resources = Resource::where('discipline_id', $discipline_id);
-    
-        if ($filter) {
-            $resources->where('resource_type_id', $filter);
-        }
-    
-        $resources = $resources->orderBy('created_at', 'desc')->paginate(10);
-    
-        $resourceTypes = ResourceType::all();
-    
-        return view('disciplines.disciplines', compact('resources', 'college', 'discipline', 'resourceTypes'));
+        return view('disciplines.disciplines', compact('discipline', 'college', 'resources'));
     }
 
     

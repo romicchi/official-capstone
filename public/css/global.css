@@ -39,6 +39,11 @@ html {
   box-shadow: none;
 }
 
+.form-group select,
+.form-group input[type="file"] {
+	border-radius: 10px;
+}
+
 .page-link {
     border-radius: 10px;
     border-color: rgb(158, 158, 158);
