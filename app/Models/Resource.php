@@ -50,7 +50,7 @@ class Resource extends Model
 
     public function favoritedBy()
     {
-        return $this->belongsToMany(User::class, 'favorites', 'resource_id', 'user_id');
+        return $this->belongsToMany(User::class, 'favorites', 'resource_id', 'user_id', 'created_at');
     }
 
     public function comments()
@@ -86,6 +86,11 @@ class Resource extends Model
     public function keywords()
     {
         return $this->belongsToMany(Keyword::class);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(History::class, 'resource_id');
     }
 
 }

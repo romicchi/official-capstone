@@ -39,6 +39,19 @@
             <button type="submit" class="btn btn-primary">Sort</button>
         </div>
     </form>
+
+    <!-- Filter Form -->
+    <form action="{{ route('disciplines.filter', ['college_id' => $college->id, 'discipline_id' => $discipline->id]) }}" method="GET" class="mb-3">
+        <div class="input-group">
+            <select class="form-control" name="filter" id="filter">
+                <option value="" {{ request('filter') === null ? 'selected' : '' }}>All</option>
+                @foreach ($resourceTypes as $resourceType)
+                    <option value="{{ $resourceType->id }}" {{ request('filter') == $resourceType->id ? 'selected' : '' }}>{{ $resourceType->type }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
 </div>
 
 
