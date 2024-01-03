@@ -9,4 +9,7 @@ class History extends Model
     protected $table = 'history';
 
     protected $fillable = ['user_id', 'resource_id'];
+
+    // Enable timestamps
+    public $timestamps = true;
 }
