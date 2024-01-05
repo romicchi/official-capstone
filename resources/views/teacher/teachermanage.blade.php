@@ -42,6 +42,9 @@
                 </button>
               </div>
             </div>
+            <div class="text-primary">
+            * When uploading multiple images, compile them in PDF form first.
+            </div>
           </form>
         </div>
       </div>
