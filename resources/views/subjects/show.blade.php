@@ -80,7 +80,7 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
-                <embed id="pdf-embed" src="{{ $resource->url }}#toolbar=0" width="100%" height="100%" onload="handlePdfLoad()">
+                <iframe id="pdf-embed" src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ $resource->url }}" width="100%" height="100%" style="border: none;" onload="handlePdfLoad()"></iframe>
             </div>
 
             </div>
