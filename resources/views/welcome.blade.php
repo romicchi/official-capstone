@@ -102,7 +102,7 @@
             <div class="row">
                 <div class="col-lg-6 mb-2 mb-lg-0">
                     <h5><strong>About Us</strong></h5>
-                    <p class="mb-0">{{ config('app.name') }} is an acronym for GEnerative Nexus of Educational Resources conceptualized by Dr. Las Johansen B. Caluza. It is an AI-Powered Learning Object Repository System made for LNU students and teachers.</p>
+                    <p class="mb-0">{{ config('app.name') }} is an AI-Powered Learning Object Repository System made for LNU students and teachers.</p>
                 </div>
                 <div class="col-lg-3">
                     <h5><strong>Links</strong></h5>

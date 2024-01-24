@@ -264,7 +264,7 @@ private function convertPdfToJson($pdfContent)
         if (!empty($text)) {
             // Your logic to convert text to JSON goes here
             // For example, you can use json_encode if the text structure allows it
-            $json = json_encode(['text' => $text]);
+            $json = json_encode(['content' => $text]);
 
             return $json;
         } else {

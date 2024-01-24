@@ -20,6 +20,11 @@
 <div id="tip" class="tip-message" style="display: none;">
                                      <span><b>Tip:</b> Use question mark (?) in your queries for better results.</span>
                                  </div>
+                                 <div id="note" class="note-message" style="display: none;">
+    <button id="close-note" style="position: absolute; top: 0; right: 0; background: transparent; font-weight: bold; color: black;">x</button>
+    <span><b>Note:</b> Do not cite responses from the chatbot directly. Please use the recommendation system below to find resources that can be cited."</span>
+</div>
+
         <div id="chatbot-form-container">
             <form id="chatbot-form">
                 <textarea id="user-input" Title="Please fill out this field" placeholder="Type your message..."></textarea>
@@ -28,7 +33,7 @@
         </div>
     </div>
 
-    <div id="recommendations-card" style="display: none;">
+    <div id="recommendations-card" style="display: none; z-index: 9999">
     <!-- Recommendations container -->
     <div class="recommendations-container" id="recommendations-container">
         <!-- Relevant resource URLs will appear here -->

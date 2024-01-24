@@ -23,19 +23,21 @@
             align-items: center;
         }
 
-        form {
+        form2 {
             margin: 20px 0;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: row;
         }
 
         #search-input {
             padding: 10px;
             border: 1px solid #007bff; /* Blue border */
             border-radius: 4px;
+            margin-top: 20px;
             margin-right: 5px;
-            width: 400px; /* Adjusted width */
+            width: 700px; /* Adjusted width */
             outline: none;
         }
 
@@ -122,6 +124,12 @@
             right: 10px;
         }
 
+        #viewSelect {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
         /* For tablets */
 @media (max-width: 768px) {
     #legend {
@@ -159,6 +167,7 @@
             line {
                 pointer-events: none;
             }
+            
         }
 </style>
 <body>
@@ -167,11 +176,11 @@
             <div class="col-md-12">
 <div class="card">
     <div class="card-header"><strong>Gener Nexus</strong></div>
-<form id="search-form" method="GET" action="{{ route('getRecommendations') }}">                   
+<form2 id="search-form" method="GET" action="{{ route('getRecommendations') }}">                   
         @csrf
-        <input type="text" id="search-input" title="Please Fill out this field" placeholder="Search by title or keyword">
-        <button type="button" name="query"  id="search-input" title="Click to Search"onclick="searchResources()">Search</button>
-    </form>
+        <input type="text" id="search-input" title="Please Fill out this field" placeholder="Search by title, author, date, keyword. Multiple search separated by comma ',' ">
+        <button type="button" name="query"  title="Click to Search"onclick="searchResources()">Search</button>
+    </form2>
 
     <div id="nexus-container" style="width: 95%; height: 80vh; border: 1px solid black; margin: 0 auto;">
     <button title="Zoom In" onclick="zoomIn()"><i class="fas fa-search-plus" style="color: #ffffff;"></i></button>
@@ -180,6 +189,11 @@
     <span style="font-style: italic; color: lightgray; font-size: 11px; margin-left: 10px;"><strong>Note:</strong> Try Dragging the nodes!</span>
     <div id="legend"></div>
         <div id="nexus"></div>
+    <select id="viewSelect" onchange="changeView()">
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="publishDate">Publish Date</option>
+    </select>
     </div>
     
 </div>
@@ -191,8 +205,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -261,9 +273,67 @@
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
+    var view = "title"; // Default view is title
+
+    // Function to change the view based on the selected option
+    function changeView() {
+        view = document.getElementById("viewSelect").value;
+        updateNodeAndLabelDisplay();
+    }
+
+    // Function to extract the year from the publish date string
+function getFullYearFromDateString(dateString) {
+    if (!dateString || isNaN(Date.parse(dateString))) {
+        return 'Not Specified';
+    }
+    return new Date(dateString).getFullYear();
+}
+
+    // Function to format the date string
+function formatDate(dateString) {
+    if (!dateString) {
+        return 'Not Specified';
+    }
+    var date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return 'Not Specified';
+    }
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString(undefined, options);
+}
+
+    // Function to update the node and label display based on the selected view
+    function updateNodeAndLabelDisplay() {
+        // Update the node data based on the selected view
+        nodes.forEach(function (node, index) {
+            switch (view) {
+                case "title":
+                    node.label = node.title;
+                    break;
+                case "author":
+                    // Combine author and year
+                    var author = resources[index].author ? resources[index].author : 'Unknown';
+                    node.label = author + ', ' + getFullYearFromDateString(resources[index].publish_date);
+                    break;
+                case "publishDate":
+                    // Use the formatted publish date and author
+                    var author = resources[index].author ? resources[index].author : 'Unknown';
+                    var publishDate = formatDate(resources[index].publish_date);
+                    node.label = publishDate + ', ' + author;
+                    break;
+            }
+        });
+
+        // Update the labels
+        labels.text(function (d) {
+            return d.label;
+        });
+    }
+
     var resources = {!! $resources->toJson() !!};
 
     // Define width and height
@@ -383,8 +453,8 @@
         .enter().append("marker")
         .attr("id", String)
         .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 20) // Increase the position to make it more visible
-        .attr("refY", 0) // Center the arrow
+        .attr("refX", 20) 
+        .attr("refY", 0) 
         .attr("markerWidth", 6)
         .attr("markerHeight", 6)
         .attr("orient", "auto")
@@ -394,8 +464,8 @@
 
     //SVG for the legend
     var legendSvg = d3.select("#legend").append("svg")
-        .attr("width", 100) // Reduced width
-        .attr("height", 60); // Reduced height
+        .attr("width", 100) 
+        .attr("height", 60); 
 
     // Define the elements for the legend
     var elements = [
@@ -429,7 +499,7 @@
             .attr("x", 20) // position
             .attr("y", 5) // position
             .attr("dy", ".35em")
-            .style("font-size", "10px") // font size
+            .style("font-size", "10px") 
             .text(element.label);
     });
 
@@ -441,7 +511,6 @@
     .force("y", d3.forceY().strength(0.5).y((d, i) => yScale(i))) // Use the scale for the y-force
     .force("x", d3.forceX().strength(0.5).x((d, i) => xScale(i))) // Add an x-force that pushes nodes to the right based on their index
     .force("collide", d3.forceCollide().radius(10)); // Add a collision force to prevent nodes from overlapping
-
 
     // In the tick function, update the positions of the nodes and the links
     simulation.on("tick", () => {
@@ -460,8 +529,8 @@
         .selectAll("line")
         .data(links)
         .enter().append("line")
-        .attr("stroke", "#D3D3D3") // Set the color of the line
-        .attr("stroke-width", 2); // Set the width of the line
+        .attr("stroke", "#D3D3D3") 
+        .attr("stroke-width", 2); 
 
     var node = svg.append("g")
         .selectAll("circle")
@@ -482,8 +551,8 @@
         .data(nodes)
         .enter().append("text")
         .text(function(d) { return d.title; })
-        .attr("dx", -30) // Adjust the horizontal position
-        .attr("dy", 25); // Adjust the vertical position for space
+        .attr("dx", -30) 
+        .attr("dy", 25); 
 
     var interactionEnabled = true;
 
@@ -557,6 +626,13 @@
     function nodeHover(d) {
        
     var clickedNode = d3.select(this);
+    var timeoutId;
+
+    // Clear any existing timeout to prevent previous hover actions from triggering
+    clearTimeout(timeoutId);
+
+    // Set a new timeout
+    timeoutId = setTimeout(function() {
     
     $.ajaxSetup({
         headers: {
@@ -575,9 +651,11 @@
 
                 var keywords = data.keywords.replace(/, /g, '<br>');
                 var metadataContent = '<button id="close-button" style="position: absolute; top: 0; right: 0; background: transparent; font-weight: bold; color: black;">x</button>' +
-                  '<strong>Title:</strong> ' + data.title + '<br><strong>Uploader:</strong> ' + data.author + 
-                  '<br><strong>Keywords:</strong><br>' + keywords +
-                  '<br><a href="http://gener-lnulib.site/resource/show/' + data.id + '" target="_blank">View Resource</a>';
+                 '<strong>Title:</strong> ' + data.title + 
+                 '<br><strong>Keywords:</strong><br>' + keywords +
+                 '<br><a href="#" id="view-more-link">View More</a>' +
+                 '<br><a href="http://gener-lnulib.site/resource/show/' + data.id + '" target="_blank">View Resource</a>';
+
                             
                 // Set the metadata content in the metadataBox
                 metadataBox.html(metadataContent);
@@ -607,14 +685,49 @@
                         metadataBox.style('display', 'none');
                     }
                 }, { once: true });
+
+                // Add click event for View More link
+                d3.select("#view-more-link").on("click", function () {
+                    // Combine the title and keywords into a single string separated by commas
+                    var searchQuery = data.title + ', ' + data.keywords;
+
+                    // Set the value of the search input to the search query
+                    document.getElementById('search-input').value = searchQuery;
+
+                    // Simulate a click on the search button
+                    $("button[name='query']").click();
+                });
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error fetching metadata:', jqXHR.responseText);
             }
         });
+    }, 500); // 1000 milliseconds = 1 second
+
+    // Clear the timeout and close the metadata box when the mouse leaves the node, unless the mouse is over the metadata box
+    clickedNode.on('mouseout', function() {
+            clearTimeout(timeoutId);
+            if (!metadataBox.node().contains(d3.event.relatedTarget)) {
+                metadataBox.style('display', 'none');
+            }
+        });
+
+        // Prevent the metadata box from closing when the mouse is over it
+        metadataBox.on('mouseover', function() {
+            clickedNode.on('mouseout', null);
+        });
+
+        // Re-add the 'mouseout' event to the node when the mouse leaves the metadata box
+        metadataBox.on('mouseout', function() {
+            clickedNode.on('mouseout', function() {
+                clearTimeout(timeoutId);
+                if (!metadataBox.node().contains(d3.event.relatedTarget)) {
+                    metadataBox.style('display', 'none');
+                }
+            });
+        });
     }
     // End of Mouse Hover
-
 
     // Function to handle node click event
     function nodeClick(d) {
@@ -660,9 +773,10 @@
 
                 var keywords = data.keywords.replace(/, /g, '<br>');
                 var metadataContent = '<button id="close-button" style="position: absolute; top: 0; right: 0; background: transparent; font-weight: bold; color: black;">x</button>' +
-                  '<strong>Title:</strong> ' + data.title + '<br><strong>Uploader:</strong> ' + data.author + 
-                  '<br><strong>Keywords:</strong><br>' + keywords +
-                  '<br><a href="http://gener-lnulib.site/resource/show/' + data.id + '" target="_blank">View Resource</a>';
+                 '<strong>Title:</strong> ' + data.title + 
+                 '<br><strong>Keywords:</strong><br>' + keywords +
+                 '<br><a href="#" id="view-more-link">View More</a>' +
+                 '<br><a href="http://gener-lnulib.site/resource/show/' + data.id + '" target="_blank">View Resource</a>';
                             
                 // Set the metadata content in the metadataBox
                 metadataBox.html(metadataContent);
@@ -707,17 +821,40 @@
                         metadataBox.style('display', 'none');
                     }
                 }, { once: true });
+  
+                // Add click event for View More link
+                    d3.select("#view-more-link").on("click", function () {
+                    // Combine the title and keywords into a single string separated by commas
+                    var searchQuery = data.title + ', ' + data.keywords;
+
+                    // Set the value of the search input to the search query
+                    document.getElementById('search-input').value = searchQuery;
+
+                    // Simulate a click on the search button
+                    $("button[name='query']").click();
+                });
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error fetching metadata:', jqXHR.responseText);
             }
         });
     }
+    
     //End of Node Click
+
+    //------------------------NEW NODES FUNCTION------------------------//
+
+    var view = "title"; // Default view is title
+
+    // Function to change the view based on the selected option
+    function changeView2() {
+        view = document.getElementById("viewSelect").value;
+        updateNodeAndLabelDisplay2();
+    }
 
     // Function to perform semantic search
     function searchResources() {
-        var searchTerm = document.getElementById('search-input').value;
+    var searchTerm = document.getElementById('search-input').value;
 
         // Ensure searchTerm is defined before performing the search
         if (searchTerm) {
@@ -726,6 +863,9 @@
                     console.log(response.data); // Log the response data
                     var searchResults = response.data;
                     visualizeGraph(searchResults);
+                
+                    // Reset viewSelect to 'keywords' after search
+                    document.getElementById('viewSelect').value = 'title';
                 })
         } else {
             console.warn('Search term is empty');
@@ -736,132 +876,95 @@
         return true; 
     }
 
-    if (shouldLinkNodes2(filteredNodes[i], filteredNodes[j], searchTerm)) {
-        filteredLinks.push({ source: filteredNodes[i], target: filteredNodes[j] });
-        console.log('Link created:', filteredLinks[filteredLinks.length - 1]); // Log each link created
-    }
+    // Declare these variables outside of any function to give them a broader scope
+    var filteredNodes, newNodes, labels;
 
     // Function to visualize the graph based on search results
     function visualizeGraph(searchResults) {
-    // Clear existing graph visualization
-    clearGraph();
+        // Clear existing graph visualization
+        clearGraph();
 
-    // Extract the titles of the resources from the search results
-    var searchTitles = searchResults.map(resource => resource.title);
-    console.log('Search Titles:', searchTitles); // Log search titles
+        // Extract the titles of the resources from the search results
+        var searchTitles = searchResults.map(resource => resource.title);
+        console.log('Search Titles:', searchTitles); // Log search titles
 
-    // Filter nodes based on whether they are in the search results
-    var filteredNodes = nodes.filter(node => searchTitles.includes(node.title));
-    console.log('Filtered Nodes:', filteredNodes); // Log filtered nodes
+        // Filter nodes based on whether they are in the search results
+        filteredNodes = nodes.filter(node => searchTitles.includes(node.title));
+        console.log('Filtered Nodes:', filteredNodes); // Log filtered nodes
 
-    // Create a map of nodes for easy lookup
-    var nodeMap = {};
-    filteredNodes.forEach(node => nodeMap[node.title] = node);
+        // Create a map of nodes for easy lookup
+        var nodeMap = {};
+        filteredNodes.forEach(node => nodeMap[node.title] = node);
 
-    // Create links based on the filtered nodes
-    var filteredLinks = [];
-    for (var i = 0; i < filteredNodes.length; i++) {
-        for (var j = i + 1; j < filteredNodes.length; j++) {
-            if (shouldLinkNodes2(filteredNodes[i], filteredNodes[j])) {
-                filteredLinks.push({ source: filteredNodes[i], target: filteredNodes[j] });
-                console.log('Link created:', filteredLinks[filteredLinks.length - 1]); // Log each link created
+        // Create links based on the filtered nodes
+        var filteredLinks = [];
+        for (var i = 0; i < filteredNodes.length; i++) {
+            for (var j = i + 1; j < filteredNodes.length; j++) {
+                if (shouldLinkNodes2(filteredNodes[i], filteredNodes[j])) {
+                    filteredLinks.push({ source: filteredNodes[i], target: filteredNodes[j] });
+                    console.log('Link created:', filteredLinks[filteredLinks.length - 1]); // Log each link created
+                }
             }
         }
-    }
-    console.log('Filtered Links:', filteredLinks); // Log all filtered links
+        console.log('Filtered Links:', filteredLinks); // Log all filtered links
+        
+         // Add new links
+    var links = svg.selectAll('line')
+        .data(filteredLinks)
+        .enter().append('line')
+        .attr('stroke', '#D3D3D3') 
+        .attr('stroke-width', 1.5);
 
+    // Add new nodes
+    newNodes = svg.selectAll('circle')
+        .data(filteredNodes)
+        .enter().append('circle')
+        .attr('r', 13)
+        .attr('fill', '#757575')
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended))
+        .on('mouseover', nodeHover)
+        .on('click', nodeClick);
 
-        // Add new links
-        var links = svg.selectAll("line")
-            .data(filteredLinks)
-            .enter().append("line")
-            .attr("stroke", "#D3D3D3") // Set the color of the line
-            .attr("stroke-width", 1.5);
-
-        // Add new nodes
-        var newNodes = svg.selectAll("circle")
-            .data(filteredNodes)
-            .enter().append("circle")
-            .attr("r", 13)
-            .attr("fill", "#757575")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
-            .on("mouseover", nodeHover)
-            .on("click", nodeClick);
-
-        // Add new labels
-        var labels = svg.selectAll("text")
-            .data(filteredNodes)
-        .enter().append("text")
+    // Add new labels
+    labels = svg.selectAll('text')
+        .data(filteredNodes)
+        .enter().append('text')
         .text(function(d) { return d.title; })
-        .attr("dx", -30) // Adjust the horizontal position
-        .attr("dy", 25); // Adjust the vertical position for space
+        .attr('dx', -30) 
+        .attr('dy', 25); 
 
-        // Update the simulation with the filtered nodes and links
-        simulation.nodes(filteredNodes).force("link").links(filteredLinks);
+    // Update the simulation with the filtered nodes and links
+    simulation.nodes(filteredNodes).force('link').links(filteredLinks);
 
-        // Restart the simulation
-        simulation.alpha(1).restart();
+    // Restart the simulation
+    simulation.alpha(1).restart();
 
-        // Update simulation tick function
-        simulation.on("tick", function () {
-            links
-                .attr("x1", function (d) { return d.source.x; })
-                .attr("y1", function (d) { return d.source.y; })
-                .attr("x2", function (d) { return d.target.x; })
-                .attr("y2", function (d) { return d.target.y; });
+    // Update simulation tick function
+    simulation.on('tick', function () {
+        links
+            .attr('x1', function (d) { return d.source.x; })
+            .attr('y1', function (d) { return d.source.y; })
+            .attr('x2', function (d) { return d.target.x; })
+            .attr('y2', function (d) { return d.target.y; });
 
-            newNodes
-                .attr("cx", function (d) { return d.x; })
-                .attr("cy", function (d) { return d.y; });
+        newNodes
+            .attr('cx', function (d) { return d.x; })
+            .attr('cy', function (d) { return d.y; });
 
-            labels
-                .attr("x", function (d) { return d.x; })
-                .attr("y", function (d) { return d.y; });
-        });
+        labels
+            .attr('x', function (d) { return d.x; })
+            .attr('y', function (d) { return d.y; });
+    });
+}
 
-        // Add new nodes
-        var node = svg.append("g")
-            .selectAll("circle")
-            .data(filteredNodesArray)
-            .enter().append("circle")
-            .attr("r", 10)
-            .attr("fill", "#757575")
-            .call(d3.drag()
-                .on("start", dragstarted)
-                .on("drag", dragged)
-                .on("end", dragended))
-            .on("mouseover", nodeHover)
-            .on("click", nodeClick);
-
-
-        // Add new labels
-        var labels = svg.append("g")
-            .selectAll("text")
-            .data(filteredNodesArray)
-            .enter().append("text")
-            .text(function(d) { return d.title; });
-
-        // Set initial positions for the nodes
-        filteredNodesArray.forEach(function(d) {
-            d.x = width / 2 + Math.random() - 0.5;
-            d.y = height / 2 + Math.random() - 0.5;
-        });
-
-        // Update the simulation with the filtered nodes and links
-        simulation.nodes(filteredNodesArray).force("link").links(filteredLinksArray);
-
-        // Restart the simulation
-        simulation.alpha(1).restart();
-        }
-
-        // Function to clear the existing graph visualization
-        function clearGraph() {
-            // Clear the existing nodes, links, and labels
-            svg.selectAll("circle, line, text").remove();
-        }
+    // Function to clear the existing graph visualization
+    function clearGraph() {
+        // Clear the existing nodes, links, and labels
+        svg.selectAll("circle, line, text").remove();
+    }
 </script>
 </body>
 </html>

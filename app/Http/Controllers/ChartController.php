@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\Resource;
 use App\Models\College;
+use App\Models\ResourceType;
 use App\Models\Discpline;
 use App\Models\User;
 use App\Models\History;
@@ -80,15 +81,17 @@ class ChartController extends Controller
                 ->whereRaw("LOWER(CONCAT(',', TRIM(keywords), ',')) LIKE ?", ['%,' . implode(',%', $keywords) . ',%'])
                 ->orWhere(function ($orWhere) use ($keywords) {
                     foreach ($keywords as $keyword) {
+                        $keyword = trim($keyword);
                         $orWhere->orWhereRaw("LOWER(title) LIKE ?", ["%$keyword%"])
-                            ->orWhereRaw("LOWER(keywords) LIKE ?", ["%$keyword%"]);
+                            ->orWhereRaw("LOWER(keywords) LIKE ?", ["%$keyword%"])
+                            ->orWhereRaw("LOWER(author) LIKE ?", ["%$keyword%"]);
                     }
                 });
         });
 
         // Add a condition to filter by the captured resource ID
         $queryBuilder->orWhere('id', $resourceId);
-    })->select('id', 'title', 'url', 'author', 'topic', 'keywords', 'description', 'college_id', 'discipline_id')
+    })->select('id', 'title', 'url', 'author', 'topic', 'keywords', 'description', 'college_id', 'discipline_id', 'resource_type_id', 'publish_date')
         ->paginate(5);
 
     return view('recommendations', compact('resources'));
