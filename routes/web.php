@@ -59,16 +59,21 @@ Route::middleware(['activitylog'])->group(function () {
 // -------------------------- ADMIN ACCESS --------------------------------//
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function(){
 
+    // -------------------------- DASHBOARD --------------------------------//
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminpage');
     Route::get('/get-chart-data', [AdminController::class, 'getChartData'])->name('get.chart.data');
     Route::get('/adminnavlayout', [AdminController::class, 'adminnav'])->name('adminnavlayout');
     Route::get('/generate-report', [AdminController::class, 'generateReport'])->name('generate.report');
     Route::post('/generate-pdf-report', [AdminController::class, 'generatePDFReport'])->name('generate.pdf.report');
     Route::post('/update-report-table', [AdminController::class, 'updateReportTable'])->name('update.report.table');
+    Route::get('/feedback-admin', [AdminController::class, 'feedback_admin'])->name('feedback-admin');
+    Route::delete('/feedback-admin/{feedback}', [AdminController::class, 'destroy_feedback'])->name('feedback.destroy');
 
+    // -------------------------- ADMIN-RESOURCE-MANAGE --------------------------------//
     Route::get('/adminresourcemanage', 'App\Http\Controllers\ResourceController@showAdminResourceManage')->name('adminresourcemanage');
     Route::get('/resources/search', [ResourceController::class, 'adminsearchResources'])->name('adminresources.search');
 
+    // -------------------------- USERMANAGE --------------------------------//
     Route::get('usermanage',[UsermanageController::class, 'show'])->name('usermanage');
     Route::get('usermanage/verify-users',[UsermanageController::class, 'verifyUsers'])->name('verify-users');
     Route::post('usermanage/verify-users',[UsermanageController::class, 'postVerifyUsers'])->name('verify-users.post');
@@ -189,6 +194,10 @@ Route::group(['middleware' => 'auth', 'Authenticated'], function() { //if the us
     Route::post('/settings/update-profile', [SettingsController::class, 'updateProfile'])->name('update-profile');
     Route::post('/settings/change-password', [SettingsController::class, 'changePassword'])->name('changePassword');
     Route::get('/settings/password', [SettingsController::class, 'updatePassword'])->name('user.updatePassword');
+
+    // FEEDBACK
+    Route::get('/feedback', [SettingsController::class, 'feedback_index'])->name('feedback');
+    Route::post('/feedback', [SettingsController::class, 'storefeedback'])->name('feedback.store');
     
     // SUBJECTS & RESOURCES
     // Display the selected resources/subject

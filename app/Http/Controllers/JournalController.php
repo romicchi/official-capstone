@@ -136,7 +136,8 @@ class JournalController extends Controller
 
                 // Get the image file ID and generate the preview link
                 $imageFileId = $uploadedImage->id;
-                $imagePreviewLink = "https://drive.google.com/uc?id=$imageFileId";
+                $imagePreviewLink = "https://drive.google.com/thumbnail?id=$imageFileId&sz=s4000";
+                
 
                 // Return the image URL in Google Drive
                 return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $imagePreviewLink]);

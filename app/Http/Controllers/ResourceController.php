@@ -22,6 +22,8 @@ use Session;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDriveService;
 use Spatie\PdfToText\Pdf;
+// code below to fix Class "App\Http\Controllers\Str" not found
+use Illuminate\Support\Str;
 
 
 class ResourceController extends Controller
@@ -796,7 +798,25 @@ private function generateUniqueJsonFileNameAfterUpdate(Resource $resource)
             return view('subjects.comment', compact('userRating', 'comments', 'resource', 'discipline'));
         }
 
-        return view('subjects.show', compact('userRating', 'comments', 'resource', 'discipline'));
+ 
+        $decodedUrl = urldecode($resource->url);
+        $fileId = Str::afterLast($decodedUrl, 'id=');
+        // Use the Google Drive API to get the file's metadata
+        $client = new \Google_Client();
+        $client->setAccessToken(self::getGoogleDriveAccessToken());
+        $service = new \Google_Service_Drive($client);
+        $file = $service->files->get($fileId);
+
+        // Get the MIME type from the file's metadata
+        $mimeType = $file->getMimeType();
+
+        // Determine if the file is an image based on its MIME type
+        $isImage = Str::startsWith($mimeType, 'image/');
+        $isVideo = Str::startsWith($mimeType, 'video/');
+
+        // Log the MIME type to the console
+        info('MIME type: ' . $mimeType);
+        return view('subjects.show', compact('userRating', 'comments', 'resource', 'discipline', 'isImage', 'isVideo', 'fileId'));
     }
 
     public function disciplines(Request $request, $college_id, $discipline_id)

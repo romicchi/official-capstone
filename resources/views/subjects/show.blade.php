@@ -80,7 +80,14 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
-                <iframe id="pdf-embed" src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ $resource->url }}" width="100%" height="100%" style="border: none;" onload="handlePdfLoad()"></iframe>
+                <!-- Checks the file extension of the file -->
+                @if ($isImage)
+                <img src="https://drive.google.com/thumbnail?id={{ $fileId }}&sz=s4000" width="100%" height="100%" onload="handlePdfLoad()">
+                @elseif ($isVideo)
+                <iframe width="100%" height="100%" src="https://drive.google.com/file/d/{{ $fileId }}/preview" frameborder="0" allowfullscreen></iframe>
+                @else
+                <iframe id="pdf-embed" src="https://drive.google.com/viewerng/viewer?embedded=true&url={{ $resource->url }}" width="100%" height="100%" onload="handlePdfLoad()"></iframe>
+                @endif
             </div>
 
             </div>

@@ -17,8 +17,17 @@
 	<main>
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-end mb-4">
+            <!-- Feedbacks -->
+            <div style="margin-right: 20px">
+            <a href="{{ route('feedback-admin') }}" class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm">
+            <i class="fas fa-comment fa-sm text-white-50 font-poppins-bold"></i> Feedbacks</a>
+            </div>
+
+            <!-- Generate Report -->
+            <div>
             <a href="{{ route('generate.report') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-download fa-sm text-white-50 font-poppins-bold"></i> Generate Report</a>
+            </div>
         </div>
         <div class="card p-4">
             <p class="h4 mb-0 font-poppins-bold">Today's Data</p>
@@ -86,7 +95,7 @@
 
             <!-- Pending Users Card -->
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card border-left-warning shadow h-100 py-2 {{ $pendingUsersCount > 0 ? 'pending-user' : '' }}">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">

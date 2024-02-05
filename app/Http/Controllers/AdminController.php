@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Resource;
 use App\Models\Discussion;
 use App\Models\Discipline;
+use App\Models\Feedback;
+use App\Models\FeedbackCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\View;
@@ -456,14 +458,32 @@ class AdminController extends Controller
     }
 
     // Helper function to extract the file ID from the Google Drive URL
-private function getFileIdFromUrl($fileUrl)
-{
-    $matches = [];
-    if (preg_match('/[?&]id=([^&]+)/', $fileUrl, $matches)) {
-        return $matches[1];
+    private function getFileIdFromUrl($fileUrl)
+    {
+        $matches = [];
+        if (preg_match('/[?&]id=([^&]+)/', $fileUrl, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
-    return null;
-}
+    
+    public function feedback_admin()
+    {
+        $categories = FeedbackCategory::all();
+        $feedbacks = Feedback::orderBy('created_at', 'desc')->paginate(5);
+
+        return view('administrator.feedback', [
+            'categories' => $categories,
+            'feedbacks' => $feedbacks,
+        ]);
+    }
+    
+    public function destroy_feedback(Feedback $feedback)
+    {
+        $feedback->delete();
+
+        return redirect()->back()->with('success', 'Feedback deleted successfully');
+    }
     
     
 }

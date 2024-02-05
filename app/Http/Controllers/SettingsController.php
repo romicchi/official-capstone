@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Models\Feedback;
+use App\Models\FeedbackCategory;
 
 class SettingsController extends Controller
 {
@@ -90,6 +92,32 @@ class SettingsController extends Controller
         $user->save();
     
         return redirect()->back()->with('success', 'Password updated successfully.');
+    }
+
+    // feedback_index
+    public function feedback_index()
+    {
+        $categories = FeedbackCategory::all();
+
+        return view('feedback', [
+            'categories' => $categories,
+        ]);
+    }
+
+    public function storefeedback(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'category_id' => 'required|exists:feedback_categories,id',
+        ]);
+
+        $feedback = new Feedback($request->all());
+        $feedback->name = Auth::user()->firstname . ' ' . Auth::user()->lastname;
+        $feedback->email = Auth::user()->email;
+        $feedback->save();
+
+        return redirect()->back()->with('message', 'Feedback submitted successfully!');
     }
     
 

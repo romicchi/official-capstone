@@ -1,0 +1,64 @@
+.table-container {
+    border: 1px solid #ccc;
+    background-color: #fff !important;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 2rem;
+}
+
+/* Style the table headers */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Remove borders from the table */
+.card table {
+    border-collapse: collapse;
+    border: none;
+}
+
+/* Remove borders and background from table cells */
+.card table th,
+.card table td {
+    border: none;
+    padding: 12px;
+}
+
+
+th {
+    color: #585858;
+    opacity: 0.6;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Style the table rows and cells */
+tr {
+    border-bottom: 1px solid #ccc;
+}
+
+td {
+    color: #303030;
+    padding: 10px;
+}
+
+.card {
+    /* no border line */
+    border: none !important;
+    padding: 2rem;
+    background-color: #fdfdfd !important;
+    overflow-x: auto;
+}
+
+/* card header */
+.card-header {
+    background-color: #fff !important;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Style links within the table */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
