@@ -49,6 +49,8 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a href="{{ route('settings') }}" class="dropdown-item">Profile Settings</a>
+                            <!-- feedback -->
+                            <a href="{{ route('feedback') }}" class="dropdown-item">Feedback</a>
                             <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
                         </div>
                     </div>

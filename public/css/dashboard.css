@@ -158,6 +158,18 @@ footer {
     overflow: auto;
 }
 
+@keyframes borderHighlight {
+  0%   {border-color: #f6c23e; border-width: 0.25rem;}
+  25%  {border-color: #f54242; border-width: 0.25rem;}
+  50%  {border-color: #42f554; border-width: 0.25rem;}
+  75%  {border-color: #4287f5; border-width: 0.25rem;}
+  100% {border-color: #f6c23e; border-width: 0.25rem;}
+}
+
+.border-left-warning.pending-user {
+  animation: borderHighlight 2s infinite;
+}
+
 .col-md-12.col-lg-6 {
   padding-left: 25px;
   padding-right: 25px;
